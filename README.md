@@ -3,7 +3,7 @@ Numbat
 
 Numbat Meta-Analysis Extraction Manager
 
-![image](https://github.com/bgcarlisle/Numbat/blob/master/images/numbat.gif)
+![Numbat](https://github.com/bgcarlisle/Numbat/blob/master/images/numbat.gif "It's a numbat!")
 
 ## Overview
 
