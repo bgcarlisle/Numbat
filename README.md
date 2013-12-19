@@ -3,6 +3,8 @@ Numbat
 
 Numbat Meta-Analysis Extraction Manager
 
+![image](https://github.com/bgcarlisle/Numbat/blob/master/images/numbat.gif)
+
 ## Overview
 
 Numbat is free software first developed by PhD student Benjamin Carlisle in 2014 for use by the STREAM research group[^1] in the Biomedical Ethics Unit at McGill University to facilitate meta-analytic work for the *Animals, Humans and the Continuity of Evidence* grant as well as the *Signals, Safety and Success* grant. This work was funded by the Canadian Institutes of Health Research (MOP 119574), and it is released as free and open-source under the GNU GPL v 2.
@@ -10,6 +12,24 @@ Numbat is free software first developed by PhD student Benjamin Carlisle in 2014
 It is named after the numbat, because numbats feed on termites by extracting them from their hiding places with very long and flexible tongues.
 
 [^1]: <http://www.translationalethics.com/>
+
+## Purpose and limitations
+
+### What Numbat does
+
+Numbat is a piece of software designed for managing the extraction of large volumes of data from primary sources among multiple users, and then reconciling the differences between them.
+
+* Manage large databases of references
+* Different levels of extraction (e.g. title-and-abstract vs full extraction)
+* Multiple extraction forms / codebooks
+* Multiple users, with an assignment manager
+* Can generate reference networks among the publications in the database
+
+### What Numbat doesn't do
+
+* Statistical analysis
+* Automatic semantic analysis (you have to read the papers yourself)
+* Magic
 
 ## Installation requirements
 
