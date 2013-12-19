@@ -2,7 +2,7 @@
 
 session_start ();
 
-function sig_user_is_logged_in () {
+function nbt_user_is_logged_in () {
 	
 	if ( isset ($_SESSION['sig_valid_login']) && $_SESSION['sig_valid_login'] == 1 ) {
 		
@@ -16,7 +16,7 @@ function sig_user_is_logged_in () {
 	
 }
 
-function sig_creds_check_out ( $username, $password ) { // Returns TRUE if the username and password work; FALSE otherwise
+function nbt_creds_check_out ( $username, $password ) { // Returns TRUE if the username and password work; FALSE otherwise
 	
 	try {
 		
@@ -64,7 +64,7 @@ function sig_creds_check_out ( $username, $password ) { // Returns TRUE if the u
 	
 }
 
-function sig_get_username_for_userid ($userid) { // Returns username if the userid is taken; FALSE otherwise
+function nbt_get_username_for_userid ($userid) { // Returns username if the userid is taken; FALSE otherwise
 	
 	try {
 		
@@ -105,7 +105,7 @@ function sig_get_username_for_userid ($userid) { // Returns username if the user
 	
 }
 
-function sig_get_userid_for_username ($username) { // Returns user id if the username is taken; FALSE otherwise
+function nbt_get_userid_for_username ($username) { // Returns user id if the username is taken; FALSE otherwise
 	
 	try {
 		
@@ -146,7 +146,7 @@ function sig_get_userid_for_username ($username) { // Returns user id if the use
 	
 }
 
-function sig_log_user_in ( $username ) {
+function nbt_log_user_in ( $username ) {
 	
 	$_SESSION['sig_valid_login'] = 1;
 	$_SESSION['sig_userid'] = sig_get_userid_for_username ($username);
@@ -177,7 +177,7 @@ function sig_log_user_in ( $username ) {
 	
 }
 
-function sig_username_is_taken ( $username ) { // Returns TRUE if the username is already registered; FALSE otherwise
+function nbt_username_is_taken ( $username ) { // Returns TRUE if the username is already registered; FALSE otherwise
 	
 	try {
 		
@@ -218,7 +218,7 @@ function sig_username_is_taken ( $username ) { // Returns TRUE if the username i
 	
 }
 
-function sig_email_is_in_use ( $email ) { // Returns TRUE if there is an account with that email address already; FALSE otherwise
+function nbt_email_is_in_use ( $email ) { // Returns TRUE if there is an account with that email address already; FALSE otherwise
 	
 	try {
 		
@@ -259,7 +259,7 @@ function sig_email_is_in_use ( $email ) { // Returns TRUE if there is an account
 	
 }
 
-function sig_save_new_user ($username, $email, $password) {
+function nbt_save_new_user ($username, $email, $password) {
 	// Note that this function does NOT check whether the user exists, the email has already been used, etc.
 	// Returns TRUE if it works properly.
 	// Also sends the verification email.
@@ -325,7 +325,7 @@ function sig_save_new_user ($username, $email, $password) {
 	
 }
 
-function sig_send_password_recovery_email ( $username ) {
+function nbt_send_password_recovery_email ( $username ) {
 	
 	// First, generate a 10-character hash
 	
@@ -408,7 +408,7 @@ function sig_send_password_recovery_email ( $username ) {
 	
 }
 
-function sig_password_recovery_code_checks_out ( $username, $code) {
+function nbt_password_recovery_code_checks_out ( $username, $code) {
 	
 	try {
 		
@@ -451,7 +451,7 @@ function sig_password_recovery_code_checks_out ( $username, $code) {
 	
 }
 
-function sig_change_password ( $username, $newpass ) {
+function nbt_change_password ( $username, $newpass ) {
 	
 	$string = md5(uniqid(rand(), true));
 	$salt = substr($string, 0, 3);
@@ -485,7 +485,7 @@ function sig_change_password ( $username, $newpass ) {
 
 }
 
-function sig_get_emailverify_for_userid ($userid) { // Returns user emailverify if the user id is taken; FALSE otherwise
+function nbt_get_emailverify_for_userid ($userid) { // Returns user emailverify if the user id is taken; FALSE otherwise
 	
 	try {
 		
@@ -526,7 +526,7 @@ function sig_get_emailverify_for_userid ($userid) { // Returns user emailverify 
 	
 }
 
-function sig_verify_email_address ($username, $code) { // Returns TRUE if the user's email is verified, FALSE otherwise
+function nbt_verify_email_address ($username, $code) { // Returns TRUE if the user's email is verified, FALSE otherwise
 	
 	$userid = sig_get_userid_for_username ( $username );
 	
@@ -583,7 +583,7 @@ function sig_verify_email_address ($username, $code) { // Returns TRUE if the us
 	
 }
 
-function sig_log_user_out () {
+function nbt_log_user_out () {
 	
 	$_SESSION = array ();
 	session_destroy();
@@ -592,7 +592,7 @@ function sig_log_user_out () {
 	
 }
 
-function sig_get_drugs_that_the_current_user_has_access_to () {
+function nbt_get_drugs_that_the_current_user_has_access_to () {
 	
 	try {
 		
@@ -621,7 +621,7 @@ function sig_get_drugs_that_the_current_user_has_access_to () {
 	
 }
 
-function sig_get_drugname_for_drugid ( $drugid ) {
+function nbt_get_drugname_for_drugid ( $drugid ) {
 	
 	try {
 		
@@ -654,7 +654,7 @@ function sig_get_drugname_for_drugid ( $drugid ) {
 	
 }
 
-function sig_get_drugid_for_drugname ( $drugname ) {
+function nbt_get_drugid_for_drugname ( $drugname ) {
 	
 	try {
 		
@@ -687,7 +687,7 @@ function sig_get_drugid_for_drugname ( $drugname ) {
 	
 }
 
-function sig_echo_reference ( $ref, $drugname ) {
+function nbt_echo_reference ( $ref, $drugname ) {
 	
 	?><div class="sigGreyGradient">
 		<h3><?php echo $ref['authors']; ?>. <?php echo $ref['title']; ?>. <span class="sigJournalName"><?php echo $ref['journal']; ?></span>: <?php echo $ref['year']; ?></h3>
@@ -696,7 +696,7 @@ function sig_echo_reference ( $ref, $drugname ) {
 	
 }
 
-function sig_get_all_references_for_drug_id ( $drugid, $start = 0, $range = 25 ) {
+function nbt_get_all_references_for_drug_id ( $drugid, $start = 0, $range = 25 ) {
 	
 	$drugname = sig_get_drugname_for_drugid ($drugid);
 	
@@ -731,7 +731,7 @@ function sig_get_all_references_for_drug_id ( $drugid, $start = 0, $range = 25 )
 	
 }
 
-function sig_get_all_unstarted_references_for_drug_id ( $drugid, $start = 0, $range = 25 ) {
+function nbt_get_all_unstarted_references_for_drug_id ( $drugid, $start = 0, $range = 25 ) {
 	
 	$drugname = sig_get_drugname_for_drugid ($drugid);
 	
@@ -763,7 +763,7 @@ function sig_get_all_unstarted_references_for_drug_id ( $drugid, $start = 0, $ra
 	
 }
 
-function sig_count_all_references_for_drug_id ( $drugid ) {
+function nbt_count_all_references_for_drug_id ( $drugid ) {
 	
 	$drugname = sig_get_drugname_for_drugid ($drugid);
 	
@@ -792,7 +792,7 @@ function sig_count_all_references_for_drug_id ( $drugid ) {
 	
 }
 
-function sig_get_all_extractions_for_drug_id ( $drugid, $start, $range ) {
+function nbt_get_all_extractions_for_drug_id ( $drugid, $start, $range ) {
 	
 	$drugname = sig_get_drugname_for_drugid ($drugid);
 	
@@ -827,7 +827,7 @@ function sig_get_all_extractions_for_drug_id ( $drugid, $start, $range ) {
 	
 }
 
-function sig_count_all_extractions_for_drug_id ( $drugid ) {
+function nbt_count_all_extractions_for_drug_id ( $drugid ) {
 	
 	$drugname = sig_get_drugname_for_drugid ($drugid);
 	
@@ -856,7 +856,7 @@ function sig_count_all_extractions_for_drug_id ( $drugid ) {
 	
 }
 
-function sig_get_reference_for_drugid_and_refid ( $drugid, $refid ) {
+function nbt_get_reference_for_drugid_and_refid ( $drugid, $refid ) {
 	
 	$drugname = sig_get_drugname_for_drugid ($drugid);
 	
@@ -891,7 +891,7 @@ function sig_get_reference_for_drugid_and_refid ( $drugid, $refid ) {
 	
 }
 
-function sig_return_references_for_drug_and_query ( $drugid, $refid, $query ) {
+function nbt_return_references_for_drug_and_query ( $drugid, $refid, $query ) {
 	
 	$drugname = sig_get_drugname_for_drugid ($drugid);
 	
@@ -986,7 +986,7 @@ function sig_return_references_for_drug_and_query ( $drugid, $refid, $query ) {
 	
 }
 
-function sig_add_citation ( $drugid, $reference, $userid, $section, $citation ) {
+function nbt_add_citation ( $drugid, $reference, $userid, $section, $citation ) {
 	
 	// $section = 1 or 2
 	// 1 means "intro"
@@ -1026,7 +1026,7 @@ function sig_add_citation ( $drugid, $reference, $userid, $section, $citation ) 
 	
 }
 
-function sig_get_citations ( $drugid, $reference, $section, $userid, $orderbycitation = FALSE ) {
+function nbt_get_citations ( $drugid, $reference, $section, $userid, $orderbycitation = FALSE ) {
 	
 	try {
 		
@@ -1070,7 +1070,7 @@ function sig_get_citations ( $drugid, $reference, $section, $userid, $orderbycit
 	
 }
 
-function sig_copy_citation_to_master ( $originalid ) {
+function nbt_copy_citation_to_master ( $originalid ) {
 	
 	try {
 		
@@ -1134,7 +1134,7 @@ function sig_copy_citation_to_master ( $originalid ) {
 	
 }
 
-function sig_get_master_citations ( $drugid, $reference, $section, $orderbycitation = FALSE ) {
+function nbt_get_master_citations ( $drugid, $reference, $section, $orderbycitation = FALSE ) {
 	
 	try {
 		
@@ -1178,7 +1178,7 @@ function sig_get_master_citations ( $drugid, $reference, $section, $orderbycitat
 	
 }
 
-function sig_remove_master_citation ( $id ) {
+function nbt_remove_master_citation ( $id ) {
 	
 	try {
 		
@@ -1207,7 +1207,7 @@ function sig_remove_master_citation ( $id ) {
 	
 }
 
-function sig_remove_citation ( $id ) {
+function nbt_remove_citation ( $id ) {
 	
 	try {
 		
@@ -1236,7 +1236,7 @@ function sig_remove_citation ( $id ) {
 	
 }
 
-function sig_toggle_uncited_question ( $uncitedid, $question ) {
+function nbt_toggle_uncited_question ( $uncitedid, $question ) {
 	
 //	echo "ID: " . $uncitedid . " question: " . $question;
 	
@@ -1300,7 +1300,7 @@ function sig_toggle_uncited_question ( $uncitedid, $question ) {
 	
 }
 
-function sig_toggle_discussion_citation_question ( $citationid, $discussioncitationquestion ) {
+function nbt_toggle_discussion_citation_question ( $citationid, $discussioncitationquestion ) {
 	
 	try {
 		
@@ -1365,7 +1365,7 @@ function sig_toggle_discussion_citation_question ( $citationid, $discussioncitat
 	
 }
 
-function sig_update_extraction ( $id, $column, $value ) {
+function nbt_update_extraction ( $id, $column, $value ) {
 	
 	$columns = array (
 		"status",
@@ -1473,7 +1473,7 @@ function sig_update_extraction ( $id, $column, $value ) {
 	
 }
 
-function sig_update_extraction_arm ( $id, $column, $value ) {
+function nbt_update_extraction_arm ( $id, $column, $value ) {
 	
 	$columns = array (
 		"route",
@@ -1520,7 +1520,7 @@ function sig_update_extraction_arm ( $id, $column, $value ) {
 	
 }
 
-function sig_toggle_extraction ( $id, $column ) {
+function nbt_toggle_extraction ( $id, $column ) {
 	
 	$columns = array (
 		"post_unsampled_dose",
@@ -1630,7 +1630,7 @@ function sig_toggle_extraction ( $id, $column ) {
 	
 }
 
-function sig_get_extraction ( $drugid, $refid, $userid ) {
+function nbt_get_extraction ( $drugid, $refid, $userid ) {
 	
 	// Insert a row
 	// This will fail if there is already a row
@@ -1700,7 +1700,7 @@ function sig_get_extraction ( $drugid, $refid, $userid ) {
 	
 }
 
-function sig_get_uncited ( $drugid, $refid, $userid ) {
+function nbt_get_uncited ( $drugid, $refid, $userid ) {
 	
 	try {
 		
@@ -1733,7 +1733,7 @@ function sig_get_uncited ( $drugid, $refid, $userid ) {
 	
 }
 
-function sig_add_uncited ( $drugid, $refid, $userid, $text ) {
+function nbt_add_uncited ( $drugid, $refid, $userid, $text ) {
 	
 //	echo "drugid: " . $drugid . " refid: " . $refid . " userid: " . $userid . " text: " . $text;
 	
@@ -1769,7 +1769,7 @@ function sig_add_uncited ( $drugid, $refid, $userid, $text ) {
 
 }
 
-function sig_remove_uncited ($uncid) {
+function nbt_remove_uncited ($uncid) {
 	
 	try {
 		
@@ -1797,7 +1797,7 @@ function sig_remove_uncited ($uncid) {
 	}
 }
 
-function sig_echo_multi_select ($extraction, $question, $options) {
+function nbt_echo_multi_select ($extraction, $question, $options) {
 	
 	// $options must be an array of the names of the column in the db
 	
@@ -1819,7 +1819,7 @@ function sig_echo_multi_select ($extraction, $question, $options) {
 	
 }
 
-function sig_echo_single_select ($extraction, $question, $answers) {
+function nbt_echo_single_select ($extraction, $question, $answers) {
 	
 	// $question must be the name of the column in the db
 	// $answers must be an array of the answer entered in the db and the plain text version displayed
@@ -1844,7 +1844,7 @@ function sig_echo_single_select ($extraction, $question, $answers) {
 	
 }
 
-function sig_echo_text_field ($extraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
+function nbt_echo_text_field ($extraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
 	
 	?><input type="text" value="<?php
 	
@@ -1861,7 +1861,7 @@ function sig_echo_text_field ($extraction, $dbcolumn, $maxlength, $allcaps = FAL
 	?>><span class="sigInputFeedback" id="sigTextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span><?php
 }
 
-function sig_echo_inline_text_field ($extraction, $dbcolumn, $plaintext, $maxlength) {
+function nbt_echo_inline_text_field ($extraction, $dbcolumn, $plaintext, $maxlength) {
 	
 	?><p class="sigInlineTextField">
 		<span class="sigInputLabel"><?php echo $plaintext; ?></span>
@@ -1875,7 +1875,7 @@ function sig_echo_inline_text_field ($extraction, $dbcolumn, $plaintext, $maxlen
 	
 }
 
-function sig_echo_date_selector ($extraction, $dbcolumn) {
+function nbt_echo_date_selector ($extraction, $dbcolumn) {
 	
 	?><p class="sigDateSelector">
 		<input type="text" value="<?php
@@ -1891,7 +1891,7 @@ function sig_echo_date_selector ($extraction, $dbcolumn) {
 	</p><?php
 }
 
-function sig_get_arms_table_rows ( $drugid, $refid, $userid ) {
+function nbt_get_arms_table_rows ( $drugid, $refid, $userid ) {
 	
 	try {
 		
@@ -1923,7 +1923,7 @@ function sig_get_arms_table_rows ( $drugid, $refid, $userid ) {
 	}
 }
 
-function sig_get_outcomes_table_rows ( $drugid, $refid, $userid ) {
+function nbt_get_outcomes_table_rows ( $drugid, $refid, $userid ) {
 	
 	try {
 		
@@ -1955,7 +1955,7 @@ function sig_get_outcomes_table_rows ( $drugid, $refid, $userid ) {
 	}
 }
 
-function sig_get_efficacy_table_rows ( $drugid, $refid, $userid ) {
+function nbt_get_efficacy_table_rows ( $drugid, $refid, $userid ) {
 	
 	try {
 		
@@ -1987,7 +1987,7 @@ function sig_get_efficacy_table_rows ( $drugid, $refid, $userid ) {
 	}
 }
 
-function sig_get_safety_table_rows ( $drugid, $refid, $userid ) {
+function nbt_get_safety_table_rows ( $drugid, $refid, $userid ) {
 	
 	try {
 		
@@ -2019,7 +2019,7 @@ function sig_get_safety_table_rows ( $drugid, $refid, $userid ) {
 	}
 }
 
-function sig_add_new_efficacy_table_row ($drugid, $refid, $userid) {
+function nbt_add_new_efficacy_table_row ($drugid, $refid, $userid) {
 	
 	try {
 		
@@ -2060,7 +2060,7 @@ function sig_add_new_efficacy_table_row ($drugid, $refid, $userid) {
 	
 }
 
-function sig_remove_efficacy_table_row ( $rowid ) {
+function nbt_remove_efficacy_table_row ( $rowid ) {
 	
 	try {
 		
@@ -2097,7 +2097,7 @@ function sig_remove_efficacy_table_row ( $rowid ) {
 	
 }
 
-function sig_update_efficacy_table ($rowid, $column, $newvalue) {
+function nbt_update_efficacy_table ($rowid, $column, $newvalue) {
 	
 	try {
 		
@@ -2136,7 +2136,7 @@ function sig_update_efficacy_table ($rowid, $column, $newvalue) {
 	
 }
 
-function sig_update_safety_table ($rowid, $column, $newvalue) {
+function nbt_update_safety_table ($rowid, $column, $newvalue) {
 	
 	try {
 		
@@ -2175,7 +2175,7 @@ function sig_update_safety_table ($rowid, $column, $newvalue) {
 	
 }
 
-function sig_add_new_safety_table_row ($drugid, $refid, $userid) {
+function nbt_add_new_safety_table_row ($drugid, $refid, $userid) {
 	
 	try {
 		
@@ -2216,7 +2216,7 @@ function sig_add_new_safety_table_row ($drugid, $refid, $userid) {
 	
 }
 
-function sig_remove_safety_table_row ( $rowid ) {
+function nbt_remove_safety_table_row ( $rowid ) {
 	
 	try {
 		
@@ -2253,7 +2253,7 @@ function sig_remove_safety_table_row ( $rowid ) {
 	
 }
 
-function sig_get_manual_refs_for_drug_id ( $drugid ) {
+function nbt_get_manual_refs_for_drug_id ( $drugid ) {
 	
 	$drugname = sig_get_drugname_for_drugid ($drugid);
 	
@@ -2282,7 +2282,7 @@ function sig_get_manual_refs_for_drug_id ( $drugid ) {
 	
 }
 
-function sig_count_citations_of_manual_ref ( $refid, $drugid ) {
+function nbt_count_citations_of_manual_ref ( $refid, $drugid ) {
 	
 //	echo "ref: " . $refid . " drug: " . $drugid . "<br>";
 	
@@ -2317,7 +2317,7 @@ function sig_count_citations_of_manual_ref ( $refid, $drugid ) {
 	
 }
 
-function sig_echo_manual_ref ( $ref, $drugid ) {
+function nbt_echo_manual_ref ( $ref, $drugid ) {
 	
 	?><div class="sigManualRef" id="sigManRef<?php echo $drugid; ?>-<?php echo $ref['id']; ?>">
 		<p class="sigInlineTextField">
@@ -2367,7 +2367,7 @@ function sig_echo_manual_ref ( $ref, $drugid ) {
 	</div><?php
 }
 
-function sig_add_manual_ref ( $drugid ) {
+function nbt_add_manual_ref ( $drugid ) {
 	
 	$drugname = sig_get_drugname_for_drugid ( $drugid );
 	
@@ -2409,7 +2409,7 @@ function sig_add_manual_ref ( $drugid ) {
 	
 }
 
-function sig_update_manual_reference ( $drugid, $column, $refid, $newvalue ) {
+function nbt_update_manual_reference ( $drugid, $column, $refid, $newvalue ) {
 	
 	$drugname = sig_get_drugname_for_drugid ($drugid);
 	
@@ -2451,7 +2451,7 @@ function sig_update_manual_reference ( $drugid, $column, $refid, $newvalue ) {
 	
 }
 
-function sig_remove_manual_reference ( $drugid, $refid) {
+function nbt_remove_manual_reference ( $drugid, $refid) {
 	
 	$drugname = sig_get_drugname_for_drugid ($drugid);
 	
@@ -2482,7 +2482,7 @@ function sig_remove_manual_reference ( $drugid, $refid) {
 	
 }
 
-function sig_add_new_arms_table_row ($drugid, $refid, $userid) {
+function nbt_add_new_arms_table_row ($drugid, $refid, $userid) {
 	
 	try {
 		
@@ -2523,7 +2523,7 @@ function sig_add_new_arms_table_row ($drugid, $refid, $userid) {
 	
 }
 
-function sig_add_new_outcomes_table_row ($drugid, $refid, $userid) {
+function nbt_add_new_outcomes_table_row ($drugid, $refid, $userid) {
 	
 	try {
 		
@@ -2564,7 +2564,7 @@ function sig_add_new_outcomes_table_row ($drugid, $refid, $userid) {
 	
 }
 
-function sig_remove_arms_table_row ( $rowid ) {
+function nbt_remove_arms_table_row ( $rowid ) {
 	
 	try {
 		
@@ -2601,7 +2601,7 @@ function sig_remove_arms_table_row ( $rowid ) {
 	
 }
 
-function sig_remove_outcomes_table_row ( $rowid ) {
+function nbt_remove_outcomes_table_row ( $rowid ) {
 	
 	try {
 		
@@ -2638,7 +2638,7 @@ function sig_remove_outcomes_table_row ( $rowid ) {
 	
 }
 
-function sig_update_arms_table ($rowid, $column, $newvalue) {
+function nbt_update_arms_table ($rowid, $column, $newvalue) {
 	
 	try {
 		
@@ -2677,7 +2677,7 @@ function sig_update_arms_table ($rowid, $column, $newvalue) {
 	
 }
 
-function sig_update_outcomes_table ($rowid, $column, $newvalue) {
+function nbt_update_outcomes_table ($rowid, $column, $newvalue) {
 	
 	try {
 		
@@ -2716,7 +2716,7 @@ function sig_update_outcomes_table ($rowid, $column, $newvalue) {
 	
 }
 
-function sig_auto_insert_efficacy_table_rows ($drugid, $refid, $userid) {
+function nbt_auto_insert_efficacy_table_rows ($drugid, $refid, $userid) {
 	
 	// First, find out what arms and outcomes have been added
 	
@@ -2771,7 +2771,7 @@ function sig_auto_insert_efficacy_table_rows ($drugid, $refid, $userid) {
 	
 }
 
-function sig_auto_insert_safety_table_rows ($drugid, $refid, $userid) {
+function nbt_auto_insert_safety_table_rows ($drugid, $refid, $userid) {
 	
 	// First, find out what arms and outcomes have been added
 	
@@ -2818,7 +2818,7 @@ function sig_auto_insert_safety_table_rows ($drugid, $refid, $userid) {
 	
 }
 
-function sig_update_citation ( $id, $column, $value ) {
+function nbt_update_citation ( $id, $column, $value ) {
 	
 	$columns = array (
 		"clinical"
@@ -2864,7 +2864,7 @@ function sig_update_citation ( $id, $column, $value ) {
 	
 }
 
-function sig_get_extractions_for_drug_and_ref ( $drugid, $refid ) {
+function nbt_get_extractions_for_drug_and_ref ( $drugid, $refid ) {
 	
 	$drugname = sig_get_drugname_for_drugid ($drugid);
 	
@@ -2898,7 +2898,7 @@ function sig_get_extractions_for_drug_and_ref ( $drugid, $refid ) {
 	
 }
 
-function sig_update_drug_ref_indication ( $drugid, $refid, $newvalue ) {
+function nbt_update_drug_ref_indication ( $drugid, $refid, $newvalue ) {
 	
 	$drugname = sig_get_drugname_for_drugid ($drugid);
 	
@@ -2938,7 +2938,7 @@ function sig_update_drug_ref_indication ( $drugid, $refid, $newvalue ) {
 	
 }
 
-function sig_update_citeno ( $citid, $newvalue ) {
+function nbt_update_citeno ( $citid, $newvalue ) {
 	
 	try {
 		
@@ -2975,7 +2975,7 @@ function sig_update_citeno ( $citid, $newvalue ) {
 	
 }
 
-function sig_toggle_ref_inclusion ( $drugid, $refid ) {
+function nbt_toggle_ref_inclusion ( $drugid, $refid ) {
 	
 	// First, find out whether it's included or not
 	
@@ -3044,7 +3044,7 @@ function sig_toggle_ref_inclusion ( $drugid, $refid ) {
 	
 }
 
-function sig_delete_extraction ( $extrid ) {
+function nbt_delete_extraction ( $extrid ) {
 	
 	try {
 		
@@ -3070,7 +3070,7 @@ function sig_delete_extraction ( $extrid ) {
 	
 }
 
-function sig_get_completed_extractions ( $drugid, $refid ) {
+function nbt_get_completed_extractions ( $drugid, $refid ) {
 	
 	$drugname = sig_get_drugname_for_drugid ( $drugid );
 	
@@ -3103,7 +3103,7 @@ function sig_get_completed_extractions ( $drugid, $refid ) {
 	
 }
 
-function sig_set_master ( $drugid, $refid, $row, $value ) {
+function nbt_set_master ( $drugid, $refid, $row, $value ) {
 	
 	try {
 		
@@ -3132,7 +3132,7 @@ function sig_set_master ( $drugid, $refid, $row, $value ) {
 	
 }
 
-function sig_test_extractions_for_equality ( $extractions, $master, $row, $title ) {
+function nbt_test_extractions_for_equality ( $extractions, $master, $row, $title ) {
 	
 	// First, see if they're the same
 	
@@ -3197,7 +3197,7 @@ function sig_test_extractions_for_equality ( $extractions, $master, $row, $title
 	
 }
 
-function sig_test_multi_extractions_for_equality ( $extractions, $master, $title, $options ) {
+function nbt_test_multi_extractions_for_equality ( $extractions, $master, $title, $options ) {
 	
 	$allequal = TRUE;
 	
@@ -3334,7 +3334,7 @@ function sig_test_multi_extractions_for_equality ( $extractions, $master, $title
 	
 }
 
-function sig_get_distinct_citations_for_ref ( $drugid, $refid, $section ) {
+function nbt_get_distinct_citations_for_ref ( $drugid, $refid, $section ) {
 	
 	try {
 		
@@ -3367,7 +3367,7 @@ function sig_get_distinct_citations_for_ref ( $drugid, $refid, $section ) {
 	
 }
 
-function sig_get_particular_citation ( $drugid, $refid, $userid, $section, $citationid ) {
+function nbt_get_particular_citation ( $drugid, $refid, $userid, $section, $citationid ) {
 	
 	try {
 		
@@ -3412,7 +3412,7 @@ function sig_get_particular_citation ( $drugid, $refid, $userid, $section, $cita
 	
 }
 
-function sig_get_year_author_for_drug_and_ref ( $drugid, $refid ) {
+function nbt_get_year_author_for_drug_and_ref ( $drugid, $refid ) {
 	
 	$drugname = sig_get_drugname_for_drugid ( $drugid );
 	
@@ -3455,7 +3455,7 @@ function sig_get_year_author_for_drug_and_ref ( $drugid, $refid ) {
 	
 }
 
-function sig_check_double_citations ($extractions, $drugid, $refid, $section, $title) {
+function nbt_check_double_citations ($extractions, $drugid, $refid, $section, $title) {
 	
 	?><div class="sigDoubleResult">
 		<p>&#9998; <?php echo $title ?></p>
@@ -3597,7 +3597,7 @@ function sig_check_double_citations ($extractions, $drugid, $refid, $section, $t
 	
 }
 
-function sig_show_master_citations ( $master ) {
+function nbt_show_master_citations ( $master ) {
 }
 
 function sigMasterUseResponse ( $drugid, $reference, $row, $extrid ) {
@@ -3750,7 +3750,7 @@ function sigUseDoubleCitation ( $id, $drugid, $reference, $section, $citation, $
 	
 }
 
-function sig_get_assignments_for_user ( $userid ) {
+function nbt_get_assignments_for_user ( $userid ) {
 	
 	try {
 		
@@ -3779,7 +3779,7 @@ function sig_get_assignments_for_user ( $userid ) {
 	
 }
 
-function sig_toggle_assignment_hide ( $assignid ) {
+function nbt_toggle_assignment_hide ( $assignid ) {
 	
 	try {
 		
@@ -3843,7 +3843,7 @@ function sig_toggle_assignment_hide ( $assignid ) {
 	
 }
 
-function sig_get_master ( $drugid, $refid ) {
+function nbt_get_master ( $drugid, $refid ) {
 	
 	// Try to insert
 	// If it's already there, it will fail
@@ -3907,7 +3907,7 @@ function sig_get_master ( $drugid, $refid ) {
 	
 }
 
-function sig_copy_arms_row_to_master ( $originalid ) {
+function nbt_copy_arms_row_to_master ( $originalid ) {
 	
 	try {
 		
@@ -3971,7 +3971,7 @@ function sig_copy_arms_row_to_master ( $originalid ) {
 	
 }
 
-function sig_get_master_arms_table_rows ( $drugid, $refid ) {
+function nbt_get_master_arms_table_rows ( $drugid, $refid ) {
 	
 	try {
 		
@@ -4001,7 +4001,7 @@ function sig_get_master_arms_table_rows ( $drugid, $refid ) {
 	}
 }
 
-function sig_remove_master_arms_table_row ( $rowid ) {
+function nbt_remove_master_arms_table_row ( $rowid ) {
 	
 	try {
 		
@@ -4038,7 +4038,7 @@ function sig_remove_master_arms_table_row ( $rowid ) {
 	
 }
 
-function sig_copy_outcomes_row_to_master ( $originalid ) {
+function nbt_copy_outcomes_row_to_master ( $originalid ) {
 	
 	try {
 		
@@ -4091,7 +4091,7 @@ function sig_copy_outcomes_row_to_master ( $originalid ) {
 	
 }
 
-function sig_get_master_outcomes_table_rows ( $drugid, $refid ) {
+function nbt_get_master_outcomes_table_rows ( $drugid, $refid ) {
 	
 	try {
 		
@@ -4121,7 +4121,7 @@ function sig_get_master_outcomes_table_rows ( $drugid, $refid ) {
 	}
 }
 
-function sig_remove_master_outcomes_table_row ( $rowid ) {
+function nbt_remove_master_outcomes_table_row ( $rowid ) {
 	
 	try {
 		
@@ -4158,7 +4158,7 @@ function sig_remove_master_outcomes_table_row ( $rowid ) {
 	
 }
 
-function sig_get_master_efficacy_table_rows ( $drugid, $refid ) {
+function nbt_get_master_efficacy_table_rows ( $drugid, $refid ) {
 	
 	try {
 		
@@ -4188,7 +4188,7 @@ function sig_get_master_efficacy_table_rows ( $drugid, $refid ) {
 	}
 }
 
-function sig_copy_efficacy_row_to_master ( $originalid ) {
+function nbt_copy_efficacy_row_to_master ( $originalid ) {
 	
 	try {
 		
@@ -4255,7 +4255,7 @@ function sig_copy_efficacy_row_to_master ( $originalid ) {
 	
 }
 
-function sig_remove_master_efficacy_table_row ( $rowid ) {
+function nbt_remove_master_efficacy_table_row ( $rowid ) {
 	
 	try {
 		
@@ -4292,7 +4292,7 @@ function sig_remove_master_efficacy_table_row ( $rowid ) {
 	
 }
 
-function sig_copy_safety_row_to_master ( $originalid ) {
+function nbt_copy_safety_row_to_master ( $originalid ) {
 	
 	try {
 		
@@ -4351,7 +4351,7 @@ function sig_copy_safety_row_to_master ( $originalid ) {
 	
 }
 
-function sig_get_master_safety_table_rows ( $drugid, $refid ) {
+function nbt_get_master_safety_table_rows ( $drugid, $refid ) {
 	
 	try {
 		
@@ -4381,7 +4381,7 @@ function sig_get_master_safety_table_rows ( $drugid, $refid ) {
 	}
 }
 
-function sig_remove_master_safety_table_row ( $rowid ) {
+function nbt_remove_master_safety_table_row ( $rowid ) {
 	
 	try {
 		
