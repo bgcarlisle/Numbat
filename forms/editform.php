@@ -1,0 +1,23 @@
+<?php
+
+$form = nbt_get_form_for_id ($_GET['id']);
+
+?><div class="nbtContentPanel nbtGreyGradient">
+	
+	<h2>Name of form</h2>
+	<input type="text" id="nbtFormName" onblur="nbtSaveFormName(<?php echo $form['id']; ?>);" value="<?php echo $form['name']; ?>">
+	<p class="nbtFeedback nbtFeedbackGood nbtHidden nbtFinePrint" id="nbtFormNameFeedback">&nbsp;</p>
+	
+	<h3>Description</h3>
+	<textarea id="nbtFormDescription" onblur="nbtSaveFormDescription(<?php echo $form['id']; ?>);" style="width: 100%; height: 100px;"><?php echo $form['description']; ?></textarea>
+	<p class="nbtFeedback nbtFeedbackGood nbtHidden nbtFinePrint" id="nbtFormDescriptionFeedback">&nbsp;</p>
+	
+	<h2>Form elements</h2>
+	
+	<?php
+	
+	include ('./elements.php');
+	
+	?>
+	
+</div>

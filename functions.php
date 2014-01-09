@@ -4,7 +4,7 @@ session_start ();
 
 function nbt_user_is_logged_in () {
 	
-	if ( isset ($_SESSION['sig_valid_login']) && $_SESSION['sig_valid_login'] == 1 ) {
+	if ( isset ($_SESSION['nbt_valid_login']) && $_SESSION['nbt_valid_login'] == 1 ) {
 		
 		return TRUE;
 		
@@ -148,9 +148,9 @@ function nbt_get_userid_for_username ($username) { // Returns user id if the use
 
 function nbt_log_user_in ( $username ) {
 	
-	$_SESSION['sig_valid_login'] = 1;
-	$_SESSION['sig_userid'] = sig_get_userid_for_username ($username);
-	$_SESSION['sig_username'] = sig_get_username_for_userid ( $_SESSION['sig_userid'] );
+	$_SESSION['nbt_valid_login'] = 1;
+	$_SESSION['nbt_userid'] = nbt_get_userid_for_username ($username);
+	$_SESSION['nbt_username'] = nbt_get_username_for_userid ( $_SESSION['nbt_userid'] );
 	
 	// Set the "last login" to now
 	
@@ -528,11 +528,11 @@ function nbt_get_emailverify_for_userid ($userid) { // Returns user emailverify 
 
 function nbt_verify_email_address ($username, $code) { // Returns TRUE if the user's email is verified, FALSE otherwise
 	
-	$userid = sig_get_userid_for_username ( $username );
+	$userid = nbt_get_userid_for_username ( $username );
 	
 	if ( $userid ) { // if the user exists
 		
-		$emailverify = sig_get_emailverify_for_userid ( $userid );
+		$emailverify = nbt_get_emailverify_for_userid ( $userid );
 		
 		if ( $emailverify == "0" ) { // The account has already been verified
 			
@@ -587,8 +587,8 @@ function nbt_log_user_out () {
 	
 	$_SESSION = array ();
 	session_destroy();
-	setcookie ("sig_userid", "", time(), "/");
-	setcookie ("sig_password", "", time(), "/");
+	setcookie ("nbt_userid", "", time(), "/");
+	setcookie ("nbt_password", "", time(), "/");
 	
 }
 
@@ -601,7 +601,7 @@ function nbt_get_drugs_that_the_current_user_has_access_to () {
 		
 		$stmt->bindParam(':userid', $user);
 		
-		$user = $_SESSION['sig_userid'];
+		$user = $_SESSION['nbt_userid'];
 		
 		$stmt->execute();
 	
@@ -621,12 +621,12 @@ function nbt_get_drugs_that_the_current_user_has_access_to () {
 	
 }
 
-function nbt_get_drugname_for_drugid ( $drugid ) {
+function nbt_get_name_for_refsetid ( $drugid ) {
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT drugname FROM drugs WHERE id = :drugid LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT name FROM referencesets WHERE id = :drugid LIMIT 1;");
 		
 		$stmt->bindParam(':drugid', $did);
 		
@@ -640,7 +640,7 @@ function nbt_get_drugname_for_drugid ( $drugid ) {
 		
 		foreach ( $result as $row ) {
 			
-			return $row['drugname'];
+			return $row['name'];
 			
 		}
 		
@@ -654,16 +654,16 @@ function nbt_get_drugname_for_drugid ( $drugid ) {
 	
 }
 
-function nbt_get_drugid_for_drugname ( $drugname ) {
+function nbt_get_refsetid_for_name ( $name ) {
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT id FROM drugs WHERE drugname = :drugname LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT id FROM referencesets WHERE name = :name LIMIT 1;");
 		
-		$stmt->bindParam(':drugname', $did);
+		$stmt->bindParam(':name', $did);
 		
-		$did = $drugname;
+		$did = $name;
 		
 		$stmt->execute();
 	
@@ -698,7 +698,7 @@ function nbt_echo_reference ( $ref, $drugname ) {
 
 function nbt_get_all_references_for_drug_id ( $drugid, $start = 0, $range = 25 ) {
 	
-	$drugname = sig_get_drugname_for_drugid ($drugid);
+	$drugname = nbt_get_name_for_refsetid ($drugid);
 	
 	try {
 		
@@ -733,7 +733,7 @@ function nbt_get_all_references_for_drug_id ( $drugid, $start = 0, $range = 25 )
 
 function nbt_get_all_unstarted_references_for_drug_id ( $drugid, $start = 0, $range = 25 ) {
 	
-	$drugname = sig_get_drugname_for_drugid ($drugid);
+	$drugname = nbt_get_name_for_refsetid ($drugid);
 	
 	try {
 		
@@ -765,7 +765,7 @@ function nbt_get_all_unstarted_references_for_drug_id ( $drugid, $start = 0, $ra
 
 function nbt_count_all_references_for_drug_id ( $drugid ) {
 	
-	$drugname = sig_get_drugname_for_drugid ($drugid);
+	$drugname = nbt_get_name_for_refsetid ($drugid);
 	
 	try {
 		
@@ -794,7 +794,7 @@ function nbt_count_all_references_for_drug_id ( $drugid ) {
 
 function nbt_get_all_extractions_for_drug_id ( $drugid, $start, $range ) {
 	
-	$drugname = sig_get_drugname_for_drugid ($drugid);
+	$drugname = nbt_get_name_for_refsetid ($drugid);
 	
 	try {
 		
@@ -829,7 +829,7 @@ function nbt_get_all_extractions_for_drug_id ( $drugid, $start, $range ) {
 
 function nbt_count_all_extractions_for_drug_id ( $drugid ) {
 	
-	$drugname = sig_get_drugname_for_drugid ($drugid);
+	$drugname = nbt_get_name_for_refsetid ($drugid);
 	
 	try {
 		
@@ -858,7 +858,7 @@ function nbt_count_all_extractions_for_drug_id ( $drugid ) {
 
 function nbt_get_reference_for_drugid_and_refid ( $drugid, $refid ) {
 	
-	$drugname = sig_get_drugname_for_drugid ($drugid);
+	$drugname = nbt_get_name_for_refsetid ($drugid);
 	
 	try {
 		
@@ -893,7 +893,7 @@ function nbt_get_reference_for_drugid_and_refid ( $drugid, $refid ) {
 
 function nbt_return_references_for_drug_and_query ( $drugid, $refid, $query ) {
 	
-	$drugname = sig_get_drugname_for_drugid ($drugid);
+	$drugname = nbt_get_name_for_refsetid ($drugid);
 	
 	if ( is_numeric ( $query ) ) {
 		
@@ -1663,7 +1663,7 @@ function nbt_get_extraction ( $drugid, $refid, $userid ) {
 	
 	// See if an extraction exists
 	
-	$drugname = sig_get_drugname_for_drugid ( $drugid );
+	$drugname = nbt_get_name_for_refsetid ( $drugid );
 	
 	try {
 		
@@ -2255,7 +2255,7 @@ function nbt_remove_safety_table_row ( $rowid ) {
 
 function nbt_get_manual_refs_for_drug_id ( $drugid ) {
 	
-	$drugname = sig_get_drugname_for_drugid ($drugid);
+	$drugname = nbt_get_name_for_refsetid ($drugid);
 	
 	try {
 		
@@ -2286,7 +2286,7 @@ function nbt_count_citations_of_manual_ref ( $refid, $drugid ) {
 	
 //	echo "ref: " . $refid . " drug: " . $drugid . "<br>";
 	
-	$drugname = sig_get_drugname_for_drugid ($drugid);
+	$drugname = nbt_get_name_for_refsetid ($drugid);
 	
 	try {
 		
@@ -2363,13 +2363,13 @@ function nbt_echo_manual_ref ( $ref, $drugid ) {
 			
 		?></textarea>
 		<span class="sigInputFeedback" id="sigManRefTextField<?php echo $ref['id']; ?>AbstractFeedback">&nbsp;</span>
-		<p class="sigFinePrint" id="sigRemoveManRef<?php echo $ref['id']; ?>">Cited x <?php echo sig_count_citations_of_manual_ref ( $ref['id'], $drugid ); ?> | <a href="#" onclick="sigConfirmRemoveManualReference(event, <?php echo $drugid; ?>, <?php echo $ref['id']; ?>);">Remove this reference</a></p>
+		<p class="sigFinePrint" id="sigRemoveManRef<?php echo $ref['id']; ?>">Cited x <?php echo nbt_count_citations_of_manual_ref ( $ref['id'], $drugid ); ?> | <a href="#" onclick="sigConfirmRemoveManualReference(event, <?php echo $drugid; ?>, <?php echo $ref['id']; ?>);">Remove this reference</a></p>
 	</div><?php
 }
 
 function nbt_add_manual_ref ( $drugid ) {
 	
-	$drugname = sig_get_drugname_for_drugid ( $drugid );
+	$drugname = nbt_get_name_for_refsetid ( $drugid );
 	
 	try {
 		
@@ -2411,7 +2411,7 @@ function nbt_add_manual_ref ( $drugid ) {
 
 function nbt_update_manual_reference ( $drugid, $column, $refid, $newvalue ) {
 	
-	$drugname = sig_get_drugname_for_drugid ($drugid);
+	$drugname = nbt_get_name_for_refsetid ($drugid);
 	
 	try {
 		
@@ -2453,12 +2453,12 @@ function nbt_update_manual_reference ( $drugid, $column, $refid, $newvalue ) {
 
 function nbt_remove_manual_reference ( $drugid, $refid) {
 	
-	$drugname = sig_get_drugname_for_drugid ($drugid);
+	$refsetname = nbt_get_name_for_refsetid ($drugid);
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("DELETE FROM " . $drugname . " WHERE id = :rid LIMIT 1;");
+		$stmt = $dbh->prepare("DELETE FROM " . $refsetname . " WHERE id = :rid LIMIT 1;");
 		
 		$stmt->bindParam(':rid', $rid);
 		
@@ -2720,9 +2720,9 @@ function nbt_auto_insert_efficacy_table_rows ($drugid, $refid, $userid) {
 	
 	// First, find out what arms and outcomes have been added
 	
-	$arms_rows = sig_get_arms_table_rows ( $drugid, $refid, $userid );
+	$arms_rows = nbt_get_arms_table_rows ( $drugid, $refid, $userid );
 	
-	$outcomes_rows = sig_get_outcomes_table_rows ( $drugid, $refid, $userid );
+	$outcomes_rows = nbt_get_outcomes_table_rows ( $drugid, $refid, $userid );
 	
 	foreach ( $outcomes_rows as $outcomes_row ) {
 		
@@ -2775,7 +2775,7 @@ function nbt_auto_insert_safety_table_rows ($drugid, $refid, $userid) {
 	
 	// First, find out what arms and outcomes have been added
 	
-	$arms_rows = sig_get_arms_table_rows ( $drugid, $refid, $userid );
+	$arms_rows = nbt_get_arms_table_rows ( $drugid, $refid, $userid );
 	
 	foreach ( $arms_rows as $arms_row ) {
 		
@@ -2866,12 +2866,12 @@ function nbt_update_citation ( $id, $column, $value ) {
 
 function nbt_get_extractions_for_drug_and_ref ( $drugid, $refid ) {
 	
-	$drugname = sig_get_drugname_for_drugid ($drugid);
+	$refsetname = nbt_get_name_for_refsetid ($drugid);
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-//		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " ORDER BY id ASC LIMIT :start, :range;");
+//		$stmt = $dbh->prepare("SELECT * FROM " . $refsetname . " ORDER BY id ASC LIMIT :start, :range;");
 		$stmt = $dbh->prepare("SELECT * FROM extractions WHERE drugid = :drugid AND referenceid = :refid ORDER BY id ASC;");
 		
 		$stmt->bindParam(':drugid', $did);
@@ -2900,13 +2900,13 @@ function nbt_get_extractions_for_drug_and_ref ( $drugid, $refid ) {
 
 function nbt_update_drug_ref_indication ( $drugid, $refid, $newvalue ) {
 	
-	$drugname = sig_get_drugname_for_drugid ($drugid);
+	$refsetname = nbt_get_name_for_refsetid ($drugid);
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-//		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " ORDER BY id ASC LIMIT :start, :range;");
-		$stmt = $dbh->prepare("UPDATE " . $drugname . " SET indication = :newval WHERE id = :refid;");
+//		$stmt = $dbh->prepare("SELECT * FROM " . $refsetname . " ORDER BY id ASC LIMIT :start, :range;");
+		$stmt = $dbh->prepare("UPDATE " . $refsetname . " SET indication = :newval WHERE id = :refid;");
 		
 		$stmt->bindParam(':newval', $newv);
 		$stmt->bindParam(':refid', $rid);
@@ -2979,12 +2979,12 @@ function nbt_toggle_ref_inclusion ( $drugid, $refid ) {
 	
 	// First, find out whether it's included or not
 	
-	$drugname = sig_get_drugname_for_drugid ($drugid);
+	$refsetname = nbt_get_name_for_refsetid ($drugid);
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " WHERE id = :refid LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT * FROM " . $refsetname . " WHERE id = :refid LIMIT 1;");
 		
 		$stmt->bindParam(':refid', $rid);
 		
@@ -3018,11 +3018,11 @@ function nbt_toggle_ref_inclusion ( $drugid, $refid ) {
 		
 		if ( $priorinclusion == 1 ) {
 			
-			$stmt = $dbh->prepare("UPDATE " . $drugname . " SET include = 0 WHERE id = :refid LIMIT 1;");
+			$stmt = $dbh->prepare("UPDATE " . $refsetname . " SET include = 0 WHERE id = :refid LIMIT 1;");
 			
 		} else {
 			
-			$stmt = $dbh->prepare("UPDATE " . $drugname . " SET include = 1 WHERE id = :refid LIMIT 1;");
+			$stmt = $dbh->prepare("UPDATE " . $refsetname . " SET include = 1 WHERE id = :refid LIMIT 1;");
 			
 		}
 		
@@ -3072,7 +3072,7 @@ function nbt_delete_extraction ( $extrid ) {
 
 function nbt_get_completed_extractions ( $drugid, $refid ) {
 	
-	$drugname = sig_get_drugname_for_drugid ( $drugid );
+	$refsetname = nbt_get_name_for_refsetid ( $drugid );
 	
 	try {
 		
@@ -3165,7 +3165,7 @@ function nbt_test_extractions_for_equality ( $extractions, $master, $row, $title
 		
 		foreach ( $extractions as $extr ) {
 			
-			?><p><span class="sigHidden" id="sigCheck<?php echo $extr['id']; ?>-<?php echo $row; ?>">&#10003;</span><span class="sigExtractionName"><?php echo sig_get_username_for_userid ( $extr['userid'] ); ?></span> <?php echo $extr[$row]; ?></p>
+			?><p><span class="sigHidden" id="sigCheck<?php echo $extr['id']; ?>-<?php echo $row; ?>">&#10003;</span><span class="sigExtractionName"><?php echo nbt_get_username_for_userid ( $extr['userid'] ); ?></span> <?php echo $extr[$row]; ?></p>
 			<button onclick="sigMasterConfirmResponse('<?php echo $extr['id']; ?>-<?php echo $row; ?>');" id="sigConfirm<?php echo $extr['id']; ?>-<?php echo $row; ?>">Use this response</button>
 			<button onclick="sigMasterUseResponse('<?php echo $extr['id']; ?>-<?php echo $row; ?>', <?php echo $extr['drugid']; ?>, <?php echo $extr['referenceid']; ?>, '<?php echo $row; ?>', <?php echo $extr['id']; ?>, '<?php echo $title; ?>');" id="sigUse<?php echo $extr['id']; ?>-<?php echo $row; ?>" class="sigHidden">Use on master copy</button>
 			<button onclick="sigMasterCancelResponse('<?php echo $extr['id']; ?>-<?php echo $row; ?>');" id="sigCancel<?php echo $extr['id']; ?>-<?php echo $row; ?>" class="sigHidden">Cancel</button><?php
@@ -3188,7 +3188,7 @@ function nbt_test_extractions_for_equality ( $extractions, $master, $row, $title
 		?><p class="sigFeedbackGood sigDoubleResult">&#10003; <?php echo $title; ?></p>
 		<?php
 		
-		sig_set_master ( $extr['drugid'], $extr['referenceid'], $row, $extr[$row] );
+		nbt_set_master ( $extr['drugid'], $extr['referenceid'], $row, $extr[$row] );
 		
 		?>
 		<p class="sigMaster">Master copy: <?php echo $extr[$row]; ?></p><?php
@@ -3250,7 +3250,7 @@ function nbt_test_multi_extractions_for_equality ( $extractions, $master, $title
 			
 			if ( $extr[$dbcolumn] == 1 ) {
 				
-				sig_set_master ( $extr['drugid'], $extr['referenceid'], $dbcolumn, $plaintext );
+				nbt_set_master ( $extr['drugid'], $extr['referenceid'], $dbcolumn, $plaintext );
 				
 				?><span class="sigDoubleMultiAnswers"><?php echo $plaintext; ?></span><?php
 				
@@ -3273,7 +3273,7 @@ function nbt_test_multi_extractions_for_equality ( $extractions, $master, $title
 			
 			foreach ( $extractions as $extr ) {
 				
-				?><p><span class="sigHidden" id="sigCheck<?php echo $extr['id']; ?>-<?php echo $row; ?>">&#10003;</span><span class="sigExtractionName"><?php echo sig_get_username_for_userid ( $extr['userid'] ); ?></span> <?php
+				?><p><span class="sigHidden" id="sigCheck<?php echo $extr['id']; ?>-<?php echo $row; ?>">&#10003;</span><span class="sigExtractionName"><?php echo nbt_get_username_for_userid ( $extr['userid'] ); ?></span> <?php
 				
 				foreach ( $options as $dbcolumn => $plaintext ) {
 					
@@ -3414,12 +3414,12 @@ function nbt_get_particular_citation ( $drugid, $refid, $userid, $section, $cita
 
 function nbt_get_year_author_for_drug_and_ref ( $drugid, $refid ) {
 	
-	$drugname = sig_get_drugname_for_drugid ( $drugid );
+	$refsetname = nbt_get_name_for_refsetid ( $drugid );
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("SELECT * FROM " . $drugname . " WHERE id = :refid LIMIT 1;");
+		$stmt = $dbh->prepare ("SELECT * FROM " . $refsetname . " WHERE id = :refid LIMIT 1;");
 		
 		$stmt->bindParam(':refid', $rid);
 		
@@ -3465,7 +3465,7 @@ function nbt_check_double_citations ($extractions, $drugid, $refid, $section, $t
 				
 				foreach ( $extractions as $extr ) {
 					
-					?><td><span class="sigExtractionName"><?php echo sig_get_username_for_userid ( $extr['userid'] ); ?></span></td><?php
+					?><td><span class="sigExtractionName"><?php echo nbt_get_username_for_userid ( $extr['userid'] ); ?></span></td><?php
 					
 				}
 				
@@ -3473,7 +3473,7 @@ function nbt_check_double_citations ($extractions, $drugid, $refid, $section, $t
 			</tr>
 			<?php
 			
-			$distinct_cites = sig_get_distinct_citations_for_ref ( $drugid, $refid, $section );
+			$distinct_cites = nbt_get_distinct_citations_for_ref ( $drugid, $refid, $section );
 			
 			foreach ( $distinct_cites as $distinct_cite ) {
 				
@@ -3491,7 +3491,7 @@ function nbt_check_double_citations ($extractions, $drugid, $refid, $section, $t
 					
 					foreach ( $extractions as $extr ) {
 						
-						$pcite = sig_get_particular_citation ( $drugid, $refid, $extr['userid'], $section, $distinct_cite['citationid']);
+						$pcite = nbt_get_particular_citation ( $drugid, $refid, $extr['userid'], $section, $distinct_cite['citationid']);
 						
 						if ( $pcite ) {
 							
@@ -3505,7 +3505,7 @@ function nbt_check_double_citations ($extractions, $drugid, $refid, $section, $t
 										
 									} else {
 										
-										echo "<p><span class=\"sigHidden\" id=\"sigCitationCheck" . $cite['id'] . "\">&#10003;</span> " . sig_get_year_author_for_drug_and_ref ( $drugid, $cite['citationid'] ) . "</p>";
+										echo "<p><span class=\"sigHidden\" id=\"sigCitationCheck" . $cite['id'] . "\">&#10003;</span> " . nbt_get_year_author_for_drug_and_ref ( $drugid, $cite['citationid'] ) . "</p>";
 										
 									}
 									
@@ -3711,7 +3711,7 @@ function sigUseDoubleCitation ( $id, $drugid, $reference, $section, $citation, $
 	
 	foreach ( $uids as $uid ) {
 		
-		sig_add_citation ( $drugid, $reference, $uid, $section, $citation );
+		nbt_add_citation ( $drugid, $reference, $uid, $section, $citation );
 		
 	}
 	
@@ -4406,6 +4406,381 @@ function nbt_remove_master_safety_table_row ( $rowid ) {
 			
 		}
 		
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_get_privileges_for_userid ( $userid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT privileges FROM users WHERE id = :userid");
+		
+		$stmt->bindParam(':userid', $user);
+		
+		$user = $userid;
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		foreach ($result as $row) {
+			
+			return $row['privileges'];
+			
+			$founduser = 1;
+			
+		}
+		
+		if ($founduser != 1) {
+		
+			return FALSE;
+		
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_get_all_users () {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM users;");
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		return $result;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_change_user_privileges ( $userid, $privileges ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE users SET privileges=:privileges WHERE id = :userid LIMIT 1;");
+		
+		$stmt->bindParam(':userid', $user);
+		$stmt->bindParam(':privileges', $priv);
+		
+		$user = $userid;
+		$priv = $privileges;
+		
+		if ( $stmt->execute() ) {
+			
+			echo "Changes saved";
+			
+		}
+		
+		$dbh = null;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_get_all_ref_sets () {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM referencesets;");
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		return $result;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_get_all_extraction_forms () {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM forms;");
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		return $result;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_new_extraction_form () {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO forms (name, description) VALUES (:name, :description);");
+		
+		$stmt->bindParam(':name', $name);
+		$stmt->bindParam(':description', $desc);
+		
+		$name = "New extraction form";
+		$desc = "Add a useful description of your new form here.";
+		
+		$stmt->execute();
+		
+		$stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+		
+		$stmt2->execute();
+		
+		$result = $stmt2->fetchAll();
+	
+		$dbh = null;
+		
+		foreach ( $result as $row ) {
+			
+			$newid = $row['newid'];
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// Make a new extraction table with the name `extraction_newid`
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("CREATE TABLE `extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `drugid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `status` int(11) NOT NULL, `notes` varchar(1500) DEFAULT NULL, PRIMARY KEY (`id`), UNIQUE KEY `drugid` (`drugid`,`referenceid`,`userid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+			return TRUE;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_delete_extraction_form ( $formid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("DELETE FROM `forms` WHERE id = :id LIMIT 1; DROP TABLE `extractions_" . $formid . "`;");
+		
+		$stmt->bindParam(':id', $fid);
+		
+		$fid = $formid;
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+			return TRUE;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_get_form_for_id ( $formid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `forms` WHERE `id` = :fid LIMIT 1");
+		
+		$stmt->bindParam(':fid', $fid);
+		
+		$fid = $formid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				return $row;
+				
+			}
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_change_form_name ( $formid, $newname ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `forms` SET name=:nn WHERE id = :formid LIMIT 1;");
+		
+		$stmt->bindParam(':formid', $fid);
+		$stmt->bindParam(':nn', $nn);
+		
+		$fid = $formid;
+		$nn = $newname;
+		
+		if ( $stmt->execute() ) {
+			
+			echo "Changes saved";
+			
+		}
+		
+		$dbh = null;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_change_form_description ( $formid, $description ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `forms` SET description=:desc WHERE id = :formid LIMIT 1;");
+		
+		$stmt->bindParam(':formid', $fid);
+		$stmt->bindParam(':desc', $desc);
+		
+		$fid = $formid;
+		$desc = $description;
+		
+		if ( $stmt->execute() ) {
+			
+			echo "Changes saved";
+			
+		}
+		
+		$dbh = null;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_get_elements_for_formid ( $formid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder`;");
+		
+		$stmt->bindParam(':fid', $fid);
+		
+		$fid = $formid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			return $result;
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
 		
 		
 	}
