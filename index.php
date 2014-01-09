@@ -1,7 +1,6 @@
 <?php
 
 include_once ('./config.php');
-include_once ('./functions.php');
 
 if ( nbt_user_is_logged_in () ) { // User is logged in
 	
@@ -10,7 +9,7 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 	
 } else { // User is not logged in
 	
-	if ( isset ( $_POST['sigSigninUsername'] ) ) { // User is trying to log in
+	if ( isset ( $_POST['nbtSigninUsername'] ) ) { // User is trying to log in
 		
 		if ( nbt_creds_check_out ( $_POST['nbtSigninUsername'], $_POST['nbtSigninPassword'] ) ) {
 			
