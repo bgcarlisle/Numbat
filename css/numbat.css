@@ -1,0 +1,458 @@
+h1,h2,h3,h4,h5,h6 {
+	font-family: 'Fenix', serif;
+	font-weight: 400;
+}
+h1 {
+	font-size: 25px;
+}
+h2 {
+	font-size: 35px;
+}
+h3 {
+	font-size: 20px;
+}
+h4 {
+	font-size: 19px;
+}
+h5 {
+	font-size: 18px;
+}
+h6 {
+	font-size: 16px;
+}
+body {
+	background: #fff;
+	color: #3E454C;
+	min-width: 960px;
+	padding-top: 50px;
+}
+div#nbtTopBanner {
+	font-family: 'Fenix', serif;
+	font-weight: 400;
+	font-size: 25px;
+	position: fixed;
+	min-width: 800px;
+	top: 0px;
+	width: 100%;
+	padding: 3px 20px 3px 20px;
+	background-color:#336;
+	background-image:-webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #ccf), color-stop(0.05, #669), color-stop(1, #336));
+	background-image:-moz-linear-gradient(top, #ccf, #669 5%, #336);
+	background-image:-o-linear-gradient(top, #ccf, #669 5%, #336);
+	border-bottom: 1px solid #999;
+	color: #fff;
+}
+div#nbtTopBanner a {
+	color: #fff;
+}
+div#nbtTopBanner h1 {
+	display: inline-block;
+}
+span#nbtTopBannerRight {
+	float: right;
+	margin-right: 30px;
+}
+.nbtSigninPanel {
+	width: 250px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.nbtContentPanel {
+	width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #999;
+}
+.nbtContentPanel ul {
+	margin: 10px 5px 10px 5px;
+	list-style: square;
+}
+.nbtContentPanel ul li {
+	padding-left: 10px;
+	margin-left: 20px;
+}
+.nbtContentPanel p {
+	margin-top: 7px;
+}
+.nbtGreyGradient {
+	padding: 20px;
+	background-color:#FFF6E5;
+	background-image:-webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #eee), color-stop(1, #ddd));
+	background-image:-moz-linear-gradient(top, #eee, #ddd);
+	background-image:-o-linear-gradient(top, #eee, #ddd);
+	border: 1px solid #999;
+	border-radius: 3px;
+}
+#nbtCitationListIntro div.nbtGreyGradient {
+	padding: 5px;
+	margin-bottom: 5px;
+}
+#nbtCitationListComp div.nbtGreyGradient {
+	padding: 5px;
+	margin-bottom: 5px;
+}
+#nbtCitationListDiscussion div.nbtGreyGradient {
+	padding: 5px;
+	margin-bottom: 5px;
+}
+#nbtUncitedList div.nbtGreyGradient {
+	padding: 5px;
+	margin-bottom: 5px;
+}
+.nbtFinePrint {
+	font-size: 10px;
+}
+.nbtFinePrint a {
+	font-size: 10px;
+}
+input[type=text] {
+	width: 200px;
+}
+input[type=password] {
+	width: 200px;
+}
+.nbtFeedbackGood {
+	border-radius: 3px;
+	border: 1px solid #669966;
+	background: #ccffcc;
+	color: #333;
+}
+.nbtFeedbackBad {
+	border-radius: 3px;
+	border: 1px solid #996666;
+	background: #ffcccc;
+	color: #333;
+}
+.nbtFeedback {
+	width: 190px;
+	padding: 5px;
+	margin: 3px 0px 5px 0px;
+}
+.nbtSignupError {
+	margin: 3px 0px 20px 0px;
+	padding: 5px;
+	width: 250px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.nbtDrugviewLinks {
+	font-size: 12px;
+}
+.nbtDrugviewLinks p {
+	margin-bottom: 8px;
+}
+.nbtDrugviewLinks a {
+	border: 1px solid #336;
+	border-radius: 5px;
+	padding: 2px 5px 2px 5px;
+	text-decoration: none;
+	background-color:#336;
+	background-image:-webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #ccf), color-stop(0.05, #669), color-stop(1, #336));
+	background-image:-moz-linear-gradient(top, #ccf, #669 5%, #336);
+	background-image:-o-linear-gradient(top, #ccf, #669 5%, #336);
+	color: #fff;
+}
+.nbtDrugviewLinks a:hover {
+	background: #fff;
+	color: #336;
+}
+#nbtRefList {
+	margin-top: 10px;
+}
+#nbtRefList div.nbtGreyGradient {
+	margin-bottom: 10px;
+}
+#nbtRefList h3 {
+	margin-bottom: 10px;
+}
+.nbtJournalName {
+	font-style: italic;
+}
+#nbtIntroCitationSuggestions {
+	width: 595px;
+	margin-left: 4px;
+	margin-bottom: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+#nbtCompCitationSuggestions {
+	width: 595px;
+	margin-left: 4px;
+	margin-bottom: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+#nbtIntroCitationSuggestions div {
+	padding: 3px 10px 3px 10px;
+}
+#nbtCompCitationSuggestions div {
+	padding: 3px 10px 3px 10px;
+}
+#nbtCompCitationSuggestions div:nth-child(even) {
+	background: #eee;
+}
+#nbtCompCitationSuggestions div:nth-child(odd) {
+	background: #ddd;
+}
+#nbtIntroCitationSuggestions div:nth-child(even) {
+	background: #eee;
+}
+#nbtIntroCitationSuggestions div:nth-child(odd) {
+	background: #ddd;
+}
+input#nbtIntroCitationFinder {
+	width: 600px;
+}
+input#nbtCompCitationFinder {
+	width: 600px;
+}
+input#nbtUncitedNovelHypothesisAdder {
+	width: 600px;
+}
+#nbtDiscussionCitationSuggestions {
+	width: 595px;
+	margin-left: 4px;
+	margin-bottom: 10px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+#nbtDiscussionCitationSuggestions div {
+	padding: 3px 10px 3px 10px;
+}
+#nbtDiscussionCitationSuggestions div:nth-child(even) {
+	background: #eee;
+}
+#nbtDiscussionCitationSuggestions div:nth-child(odd) {
+	background: #ddd;
+}
+input#nbtDiscussionCitationFinder {
+	width: 600px;
+}
+#nbtAbstract {
+	display: none;
+}
+a.nbtTextOptionSelect {
+	border-bottom: 4px solid #eee;
+	color: #888;
+	text-decoration: none;
+	display: inline-block;
+	margin: 1px 4px 2px 4px;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+a.nbtTextOptionSelect:hover {
+	border-bottom: 4px solid #336;
+	color: #333;
+}
+a.nbtTextOptionChosen {
+	border-bottom: 4px solid #336;
+	color: #333;
+}
+hr {
+	border: none;
+	background: #999;
+	height: 1px;
+	margin: 5px 10px 5px 10px;
+}
+.nbtInputFeedback {
+	font-size: 12px;
+	display: none;
+	margin-left: 20px;
+}
+div.nbtCodebook {
+	font-size: 12px;
+	padding: 3px 20px 5px 20px;
+	margin: 3px 20px 5px 20px;
+	border-radius: 4px;
+	background: #eee;
+	display: none;
+}
+div.nbtCodebook p {
+	margin: 2px 0px 4px 0px;
+}
+p.nbtInlineTextField span.nbtInputLabel {
+	display: inline-block;
+	width: 250px;
+	margin-right: 10px;
+}
+div.nbtConditionalDisplay {
+	display: none;
+}
+table.nbtTabledData {
+	width: 100%;
+	font-size: 12px;
+}
+table.nbtTabledData td {
+	padding: 2px;
+}
+tr.nbtTableHeaders td {
+	border: 1px solid #666;
+}
+td.nbtTableSuperset {
+	border: 1px solid #666;
+}
+table.nbtTabledData input {
+	border: 1px solid #999;
+	margin: 0px 1px 0px 0px;
+	width: 90%;
+}
+div.nbtSidebar {
+	position: fixed;
+	width: 33%;
+	min-width: 300px;
+	background: #eee;
+	border-radius: 5px;
+	padding: 5px 5px 5px 7px;
+	margin-top: 50px;
+	margin-left: 20px;
+}
+div.nbtSidebar textarea {
+	width: 97%;
+	margin-right: 20px;
+	height: 50px;
+}
+div.nbtNonsidebar {
+	background: #fff;
+}
+div.nbtNonsidebar div.nbtContentPanel {
+	width: 60%;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #999;
+	float: right;
+}
+div.nbtManualRef {
+	padding: 2px 5px 5px 5px;
+	background-color:#FFF6E5;
+	background-image:-webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #eee), color-stop(1, #ddd));
+	background-image:-moz-linear-gradient(top, #eee, #ddd);
+	background-image:-o-linear-gradient(top, #eee, #ddd);
+	border: 1px solid #999;
+	border-radius: 3px;
+	margin-bottom: 10px;
+}
+div.nbtAlreadyAdded {
+	padding: 5px;
+	margin-bottom: 5px;
+	border: 1px solid #ff0;
+	border-radius: 3px;
+	background: #ffc;
+}
+a.nbtSectionMarker {
+	position: relative;
+	bottom: 40px;
+}
+div.nbtInlineManualNewRef {
+	position: fixed;
+	top: 100px;
+	left: 30%;
+	width: 40%;
+	opacity: 1;
+	display: none;
+	padding: 20px;
+	border-radius: 20px;
+	background: #fff;
+	border: 4px solid #666;
+}
+div.nbtCoverup {
+	opacity: 0.5;
+	background: #333;
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+.nbtDrugRefsTableRow {
+	border-bottom: 1px solid #666;
+}
+.nbtExtractionTags {
+	display: inline-block;
+	background: #666;
+	color: #fff;
+	border-radius: 3px;
+	margin: 3px;
+	padding: 2px 6px 2px 5px;
+	white-space: nowrap;
+}
+span.nbtCiteNo {
+	float: left;
+	margin-right: 5px;
+}
+input.nbtCiteNo {
+	width: 20px;
+}
+div.nbtExtractionProperties {
+	display: none;
+}
+div.nbtExtractionProperties div {
+	position: absolute;
+	border-radius: 3px;
+	border: 2px solid #333;
+	background: #fff;
+	padding: 5px;
+	margin: 13px 20px 20px 20px;
+	z-index: 4;
+}
+img.nbtExtractionPropertiesTip {
+	width: 30px;
+	height: 15px;
+	position: absolute;
+	margin-left: 40px;
+	z-index: 5;
+}
+.nbtDoubleResult {
+	padding: 3px;
+	margin-bottom: 10px;
+}
+.nbtMaster {
+	color: #eee;
+	margin-bottom: 20px;
+	border-radius: 3px;
+	padding: 3px;
+	border: 1px solid #666;
+	background-color: #666;
+	background-image:-webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #eee), color-stop(0.05, #999), color-stop(1, #666));
+	background-image:-moz-linear-gradient(top, #eee, #999 5%, #666);
+	background-image:-o-linear-gradient(top, #eee, #999 5%, #666);
+}
+.nbtDoubleResult p {
+	margin: 5px 3px 7px 3px;
+}
+span.nbtExtractionName {
+	padding: 2px 5px 2px 5px;
+	background: #fff;
+	color: #333;
+	border-radius: 3px;
+	border: 1px solid #333;
+	margin: 0 2px 0 2px;
+}
+span.nbtDoubleMultiAnswers {
+	margin: 0 3px 0 3px;
+}
+.nbtDoubleResult table.nbtTabledData tr {
+	border-top: 1px solid #999;
+	margin: 5px 0 3px 0;
+}
+.nbtDoubleResult table.nbtTabledData td {
+	padding: 6px;
+}
+.nbtHidden {
+	display: none;
+}
+table.nbtAssignments {
+	border-bottom: 2px solid #999;
+}
+table.nbtAssignments td {
+	width: 100%;
+	padding: 10px 5px 5px 5px;
+	border-bottom: 1px solid #aaa;
+}
+table.nbtAssignments tr:first-child {
+	border-bottom: 2px solid #999;
+}
