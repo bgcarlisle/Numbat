@@ -5941,8 +5941,6 @@ function nbt_remove_multi_select_option ( $elementid, $selectid ) {
 		
 	}
 	
-	echo "ALTER TABLE `extractions_" . $element['formid'] . "` DROP COLUMN " . $element['column_name'] . "_" . $select['dbname'] . ";";
-	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));

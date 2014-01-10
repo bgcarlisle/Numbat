@@ -549,6 +549,23 @@ function nbtAddNewMultiSelect ( fid ) {
 	
 }
 
+function nbtAddNewTableData ( fid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addtabledata.php',
+		type: 'post',
+		data: {
+			formid: fid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElements').html(html);
+		
+	});
+	
+}
+
 function nbtUpdateMultiSelectOptionColumn ( eid, sid, oldcolumn ) {
 	
 	$.ajax ({

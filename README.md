@@ -1,7 +1,7 @@
-Numbat
+Numbat v. 0.3
 ======
 
-Numbat Meta-Analysis Extraction Manager
+Numbat Meta-Analysis Extraction Manager: "It's still not ready yet!"
 
 ![Numbat](https://github.com/bgcarlisle/Numbat/blob/master/images/numbat.gif "It's a numbat!")
 

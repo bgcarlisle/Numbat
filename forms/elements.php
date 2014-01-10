@@ -67,6 +67,25 @@ foreach ( $elements as $element ) {
 				
 			break;
 			
+			case "table_data":
+				
+				?><h4>Table data</h4>
+				<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
+				<p class="nbtFinePrint">Will appear on extraction form</p>
+				<p>Table suffix: <input type="text" id="nbtTableSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeTableSuffix(<?php echo $element['id']; ?>);"></p>
+				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
+				<p>Options</p>
+				<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet; Other form elements marked with this toggle class will appear only if this element is selected</p>
+				<div id="nbtMultiSelectOptionsTable<?php echo $element['id']; ?>"><?php
+				
+				$tableelementid = $element['id'];
+				
+				include ('./tabledata.php');
+				
+				?></div><?php
+				
+			break;
+			
 		}
 	
 		?>
@@ -91,8 +110,8 @@ foreach ( $elements as $element ) {
 	<button onclick="nbtAddNewOpenText(<?php echo $_GET['id']; ?>);">Open text</button>
 	<button onclick="nbtAddNewSingleSelect(<?php echo $_GET['id']; ?>);">Single select</button>
 	<button onclick="nbtAddNewMultiSelect(<?php echo $_GET['id']; ?>);">Multi select</button>
+	<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>);">Table data</button>
 	<button>Citation</button>
 	<button>Date</button>
-	<button>Tabled data</button>
 	<button>Arms / outcomes / efficacy</button>
 </div>
