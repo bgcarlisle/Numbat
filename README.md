@@ -27,9 +27,19 @@ Numbat is a piece of software designed for managing the extraction of large volu
 
 ### What Numbat doesn't do
 
-* Statistical analysis
-* Automatic semantic analysis (you have to read the papers yourself)
+* Statistical analysis of results
+* Calculating Kohen's kappa
+* Semantic analysis of papers to extract (you have to read the papers yourself)
 * Magic
+
+### Why not just use a Google Form?
+
+* Google has a bad record for keeping private data private
+* No good, built-in way to reconcile multiple extractions
+* Built-in blinding from other extractors' work to minimise validity threats to your meta-analytic work
+* Built-in assignment manager
+* Google Forms do not accommodate certain data structures, like table data and reference networks
+
 
 ## Installation requirements
 
