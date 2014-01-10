@@ -14,10 +14,14 @@ $form = nbt_get_form_for_id ($_GET['id']);
 	
 	<h2>Form elements</h2>
 	
-	<?php
+	<div id="nbtFormElements">
 	
-	include ('./elements.php');
+		<?php
+		
+		include ('./elements.php');
+		
+		?>
 	
-	?>
+	</div>
 	
 </div>

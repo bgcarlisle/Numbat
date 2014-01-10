@@ -191,3 +191,389 @@ function nbtSaveFormDescription ( fid ) {
 	});
 	
 }
+
+function nbtAddNewOpenText ( fid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addopentext.php',
+		type: 'post',
+		data: {
+			formid: fid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElements').html(html);
+		
+	});
+	
+}
+
+function nbtAddNewSingleSelect ( fid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addsingleselect.php',
+		type: 'post',
+		data: {
+			formid: fid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElements').html(html);
+		
+	});
+	
+}
+
+function nbtAddNewSectionHeading ( fid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addsectionheading.php',
+		type: 'post',
+		data: {
+			formid: fid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElements').html(html);
+		
+	});
+	
+}
+
+function nbtDeleteFormElement ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/deleteformelement.php',
+		type: 'post',
+		data: {
+			element: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElement' + eid).slideUp(1000);
+		
+	});
+	
+}
+
+function nbtChangeColumnName ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/changecolumnname.php',
+		type: 'post',
+		data: {
+			element: eid,
+			newcolumnname: $('#nbtElementColumnName' + eid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElementFeedback' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtChangeMultiSelectColumnPrefix ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/changemultiselectcolumnprefix.php',
+		type: 'post',
+		data: {
+			element: eid,
+			newcolumnname: $('#nbtElementColumnPrefix' + eid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElementFeedback' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtChangeDisplayName ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/changedisplayname.php',
+		type: 'post',
+		data: {
+			element: eid,
+			newdisplayname: $('#nbtElementDisplayName' + eid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElementFeedback' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtChangeElementCodebook ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/changeelementcodebook.php',
+		type: 'post',
+		data: {
+			element: eid,
+			newcodebook: $('#nbtElementCodebook' + eid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElementFeedback' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtMoveFeedElement ( fid, eid, dir ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/moveelement.php',
+		type: 'post',
+		data: {
+			formid: fid,
+			element: eid,
+			direction: dir
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElements').html(html);
+		
+	});
+	
+}
+
+function nbtMoveSelectOption ( eid, sid, dir ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/moveselectoption.php',
+		type: 'post',
+		data: {
+			selectid: sid,
+			element: eid,
+			direction: dir
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSingleSelectOptionsTable' + eid).html(html);
+		
+	});
+	
+}
+
+function nbtMoveMultiSelectOption ( eid, sid, dir ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/movemultiselectoption.php',
+		type: 'post',
+		data: {
+			selectid: sid,
+			element: eid,
+			direction: dir
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtMultiSelectOptionsTable' + eid).html(html);
+		
+	});
+	
+}
+
+function nbtAddSingleSelectOption ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addsingleselectoption.php',
+		type: 'post',
+		data: {
+			element: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSingleSelectOptionsTable' + eid).html(html);
+		
+	});
+	
+}
+
+function nbtAddMultiSelectOption ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addmultiselectoption.php',
+		type: 'post',
+		data: {
+			element: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtMultiSelectOptionsTable' + eid).html(html);
+		
+	});
+	
+}
+
+function nbtRemoveSingleSelectOption ( eid, sid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/removesingleselectoption.php',
+		type: 'post',
+		data: {
+			selectid: sid,
+			element: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSingleSelectOptionsTable' + eid).html(html);
+		
+	});
+	
+}
+
+function nbtRemoveMultiSelectOption ( eid, sid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/removemultiselectoption.php',
+		type: 'post',
+		data: {
+			selectid: sid,
+			element: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtMultiSelectOptionsTable' + eid).html(html);
+		
+	});
+	
+}
+
+function nbtChangeElementToggle ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/changeelementtoggle.php',
+		type: 'post',
+		data: {
+			element: eid,
+			newtoggle: $('#nbtElementToggle' + eid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElementFeedback' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtUpdateSingleSelect ( eid, sid, dbcolumn ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/updatesingleselect.php',
+		type: 'post',
+		data: {
+			selectid: sid,
+			column: dbcolumn,
+			newvalue: $('#nbtSingleSelect' + sid + dbcolumn).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElementFeedback' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtAddNewMultiSelect ( fid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addmultiselect.php',
+		type: 'post',
+		data: {
+			formid: fid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElements').html(html);
+		
+	});
+	
+}
+
+function nbtUpdateMultiSelectOptionColumn ( eid, sid, oldcolumn ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/updatemultiselectoptioncolumn.php',
+		type: 'post',
+		data: {
+			element: eid,
+			selectid: sid,
+			oldcolumn: oldcolumn,
+			newcolumn: $('#nbtMultiSelectColumn' + sid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtMultiSelectOptionsTable' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).html('Changes saved');
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
