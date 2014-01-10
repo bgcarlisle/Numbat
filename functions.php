@@ -6810,4 +6810,219 @@ function nbt_remove_table_data_column ( $elementid, $columnid ) {
 	
 }
 
+function nbt_update_table_data_column_display ( $columnid, $newvalue ) {
+	
+	try {
+			
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `tabledatacolumns` SET `displayname`=:newvalue WHERE `id` = :cid");
+		
+		$stmt->bindParam(':cid', $cid);
+		$stmt->bindParam(':newvalue', $nv);
+		
+		$cid = $columnid;
+		$nv = $newvalue;
+		
+		if ($stmt->execute()) {
+			
+			echo "Changes saved";
+			
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		$dbh = null;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_move_table_data_column ( $columnid, $direction ) {
+	
+	$select = nbt_get_select_for_selectid ( $selectid );
+	
+	if ( $direction == 1 ) { // moving "up"
+		
+		// first, see if there are any elements above it
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
+			
+			$stmt->bindParam(':sort', $sort);
+			
+			$sort = $select['sortorder'];
+			
+			$stmt->execute();
+			
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$moveup = FALSE;
+				
+			} else { // there are elements higher than this one
+				
+				foreach ( $result as $row ) {
+					
+					$moveup = $row['id'];
+					
+				}
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		// move the element up, if necessary
+		
+		if ( $moveup ) {
+			
+			nbt_switch_selects_sortorder ( $selectid, $moveup );
+			
+		}
+		
+	} else { // moving "up"
+		
+		// first, see if there are any elements below it
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
+			
+			$stmt->bindParam(':sort', $sort);
+			
+			$sort = $select['sortorder'];
+			
+			$stmt->execute();
+			
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$movedown = FALSE;
+				
+			} else { // there are elements higher than this one
+				
+				foreach ( $result as $row ) {
+					
+					$movedown = $row['id'];
+					
+				}
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		// move the element down, if necessary
+		
+		if ( $movedown ) {
+			
+			nbt_switch_selects_sortorder ( $selectid, $movedown );
+			
+		}
+		
+	}
+	
+}
+
+function nbt_update_table_data_column_db ( $columnid, $newcolumnname ) {
+	
+	// get the old column name and the form id
+	
+	$column = nbt_get_table_column_for_columnid ( $columnid );
+	
+	$element = nbt_get_form_element_for_elementid ( $column['elementid'] );
+	
+	// Start a counter to see if everything saved properly
+	
+	$itworked = 0;
+	
+	// then alter the column in the extraction table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `tabledata_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " varchar(500) DEFAULT NULL;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	if ( $itworked == 1 ) {
+	
+		// then change the form element table to match
+		
+		try {
+			
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("UPDATE `tabledatacolumns` SET `dbname`=:newname WHERE `id` = :cid");
+			
+			$stmt->bindParam(':cid', $cid);
+			$stmt->bindParam(':newname', $nn);
+			
+			$cid = $columnid;
+			$nn = $newcolumnname;
+			
+			if ($stmt->execute()) {
+				
+				$itworked ++;
+				
+			}
+			
+			$dbh = null;
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+	
+	}
+	
+	if ( $itworked == 2 ) {
+		
+		echo "Changes saved";
+		
+	} else {
+		
+		echo "Error saving—try a different column name";
+		
+	}
+	
+}
+
 ?>

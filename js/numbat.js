@@ -652,3 +652,70 @@ function nbtRemoveTableDataColumn ( eid, cid ) {
 	});
 	
 }
+
+function nbtUpdateTableDataColumnDisplay ( eid, cid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/updatetabledatacolumndisplay.php',
+		type: 'post',
+		data: {
+			column: cid,
+			newvalue: $('#nbtTableDataColumnDisplay' + cid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElementFeedback' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtUpdateTableDataColumnDB ( eid, cid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/updatetabledatacolumndb.php',
+		type: 'post',
+		data: {
+			column: cid,
+			newvalue: $('#nbtTableDataColumnDB' + cid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElementFeedback' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtMoveTableDataColumn ( eid, cid, dir ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/movetabledatacolumn.php',
+		type: 'post',
+		data: {
+			column: cid,
+			element: eid,
+			direction: dir
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtTableDataColumnsTable' + eid).html(html);
+		
+	});
+	
+}
