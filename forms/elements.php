@@ -70,13 +70,13 @@ foreach ( $elements as $element ) {
 			case "table_data":
 				
 				?><h4>Table data</h4>
-				<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
+				<p>Table display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on extraction form</p>
 				<p>Table suffix: <input type="text" id="nbtTableSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeTableSuffix(<?php echo $element['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
-				<p>Options</p>
-				<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet; Other form elements marked with this toggle class will appear only if this element is selected</p>
-				<div id="nbtMultiSelectOptionsTable<?php echo $element['id']; ?>"><?php
+				<p>Table columns</p>
+				<p class="nbtFinePrint">Display name will appear as a column of the table on extraction form; DB name will appear on exported spreadsheet</p>
+				<div id="nbtTableDataColumnsTable<?php echo $element['id']; ?>"><?php
 				
 				$tableelementid = $element['id'];
 				

@@ -8,7 +8,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
 	
 }
 
-$_GET['id'] = $_POST['formid'];
+$tableelementid = $_POST['element'];
 
 include ('./tabledata.php');
 

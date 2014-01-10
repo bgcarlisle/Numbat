@@ -594,3 +594,61 @@ function nbtUpdateMultiSelectOptionColumn ( eid, sid, oldcolumn ) {
 	
 }
 
+function nbtChangeTableSuffix ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/changetablesuffix.php',
+		type: 'post',
+		data: {
+			element: eid,
+			newsuffix: $('#nbtTableSuffix' + eid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElementFeedback' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtAddTableDataColumn ( eid ) { // ***
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addtabledatacolumn.php',
+		type: 'post',
+		data: {
+			element: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtTableDataColumnsTable' + eid).html(html);
+		
+	});
+	
+}
+
+function nbtRemoveTableDataColumn ( eid, cid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/removetabledatacolumn.php',
+		type: 'post',
+		data: {
+			element: eid,
+			column: cid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtTableDataColumnsTable' + eid).html(html);
+		
+	});
+	
+}
