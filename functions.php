@@ -5364,11 +5364,13 @@ function nbt_move_form_element ( $elementid, $direction ) {
 		try {
 		
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
+			$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :form AND `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
 			
 			$stmt->bindParam(':sort', $sort);
+			$stmt->bindParam(':form', $form);
 			
 			$sort = $element['sortorder'];
+			$form = $element['formid'];
 			
 			$stmt->execute();
 			
@@ -5411,11 +5413,13 @@ function nbt_move_form_element ( $elementid, $direction ) {
 		try {
 		
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
+			$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :form AND `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
 			
 			$stmt->bindParam(':sort', $sort);
+			$stmt->bindParam(':form', $form);
 			
 			$sort = $element['sortorder'];
+			$form = $element['formid'];
 			
 			$stmt->execute();
 			
