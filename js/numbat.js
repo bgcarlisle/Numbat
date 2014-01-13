@@ -851,3 +851,70 @@ function nbtAddCitationProperty ( eid ) {
 	});
 	
 }
+
+function nbtUpdateCitationPropertyDisplay ( eid, cid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/updatecitationpropertydisplay.php',
+		type: 'post',
+		data: {
+			column: cid,
+			newvalue: $('#nbtCitationPropertyDisplay' + cid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElementFeedback' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtUpdateCitationPropertyDB ( eid, cid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/updatecitationpropertydb.php',
+		type: 'post',
+		data: {
+			column: cid,
+			newvalue: $('#nbtCitationPropertyDB' + cid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElementFeedback' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtMoveCitationProperty ( eid, cid, dir ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/movecitationproperty.php',
+		type: 'post',
+		data: {
+			column: cid,
+			element: eid,
+			direction: dir
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtCitationSelectorTable' + eid).html(html);
+		
+	});
+	
+}

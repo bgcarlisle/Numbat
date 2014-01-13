@@ -12,12 +12,12 @@
 	foreach ( $citationcolumns as $column ) {
 		
 		?><tr>
-			<td><input type="text" id="nbtTableDataColumnDisplay<?php echo $column['id']; ?>" value="<?php echo $column['displayname']; ?>" onblur="nbtUpdateTableDataColumnDisplay(<?php echo $citationelementid; ?>, <?php echo $column['id']; ?>);"></td>
-			<td><input type="text" id="nbtTableDataColumnDB<?php echo $column['id']; ?>" value="<?php echo $column['dbname']; ?>" onblur="nbtUpdateTableDataColumnDB(<?php echo $citationelementid; ?>, <?php echo $column['id']; ?>);"></td>
-			<td><button onclick="nbtMoveTableDataColumn(<?php echo $citationelementid; ?>, <?php echo $column['id']; ?>, 1);">&#8593;</button> <button onclick="nbtMoveTableDataColumn(<?php echo $citationelementid; ?>, <?php echo $column['id']; ?>, -1);">&#8595;</button></td>
+			<td><input type="text" id="nbtCitationPropertyDisplay<?php echo $column['id']; ?>" value="<?php echo $column['displayname']; ?>" onblur="nbtUpdateCitationPropertyDisplay(<?php echo $citationelementid; ?>, <?php echo $column['id']; ?>);"></td>
+			<td><input type="text" id="nbtCitationPropertyDB<?php echo $column['id']; ?>" value="<?php echo $column['dbname']; ?>" onblur="nbtUpdateCitationPropertyDB(<?php echo $citationelementid; ?>, <?php echo $column['id']; ?>);"></td>
+			<td><button onclick="nbtMoveCitationProperty(<?php echo $citationelementid; ?>, <?php echo $column['id']; ?>, 1);">&#8593;</button> <button onclick="nbtMoveCitationProperty(<?php echo $citationelementid; ?>, <?php echo $column['id']; ?>, -1);">&#8595;</button></td>
 			<td>
 				<button onclick="$(this).fadeOut(0);$('#nbtColumnDelete<?php echo $column['id']; ?>').fadeIn();">Delete</button>
-				<button id="nbtColumnDelete<?php echo $column['id']; ?>" class="nbtHidden" onclick="nbtRemoveTableDataColumn(<?php echo $citationelementid; ?>, <?php echo $column['id']; ?>);">For real</button>
+				<button id="nbtCitationPropertyDelete<?php echo $column['id']; ?>" class="nbtHidden" onclick="nbtRemoveCitationProperty(<?php echo $citationelementid; ?>, <?php echo $column['id']; ?>);">For real</button>
 			</td>
 		</tr><?php
 		

@@ -153,5 +153,5 @@ foreach ( $elements as $element ) {
 	<button onclick="nbtAddNewCountrySelector(<?php echo $_GET['id']; ?>);">Country selector</button>
 	<button onclick="nbtAddNewDateSelector(<?php echo $_GET['id']; ?>);">Date selector</button>
 	<button onclick="nbtAddNewCitationSelector(<?php echo $_GET['id']; ?>);">Citations</button>
-	<button>Arms / outcomes / efficacy</button>
+	<!-- <button>Arms / outcomes / efficacy</button> -->
 </div>

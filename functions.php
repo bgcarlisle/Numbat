@@ -856,14 +856,12 @@ function nbt_count_all_extractions_for_drug_id ( $drugid ) {
 	
 }
 
-function nbt_get_reference_for_drugid_and_refid ( $drugid, $refid ) {
-	
-	$drugname = nbt_get_name_for_refsetid ($drugid);
+function nbt_get_reference_for_refsetid_and_refid ( $refsetid, $refid ) {
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " WHERE id = :refid LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE id = :refid LIMIT 1;");
 		
 		$stmt->bindParam(':refid', $rid);
 		
@@ -1630,7 +1628,7 @@ function nbt_toggle_extraction ( $id, $column ) {
 	
 }
 
-function nbt_get_extraction ( $drugid, $refid, $userid ) {
+function nbt_get_extraction ( $formid, $refsetid, $refid, $userid ) {
 	
 	// Insert a row
 	// This will fail if there is already a row
@@ -1639,13 +1637,13 @@ function nbt_get_extraction ( $drugid, $refid, $userid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("INSERT INTO extractions (drugid, referenceid, userid) VALUES (:drugid, :refid, :userid);");
+		$stmt = $dbh->prepare ("INSERT INTO extractions_" . $formid . " (refsetid, referenceid, userid) VALUES (:refset, :refid, :userid);");
 		
-		$stmt->bindParam(':drugid', $did);
+		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':refid', $rid);
 		$stmt->bindParam(':userid', $uid);
 		
-		$did = $drugid;
+		$rsid = $refsetid;
 		$rid = $refid;
 		$uid = $userid;
 		
@@ -1663,18 +1661,16 @@ function nbt_get_extraction ( $drugid, $refid, $userid ) {
 	
 	// See if an extraction exists
 	
-	$drugname = nbt_get_name_for_refsetid ( $drugid );
-	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("SELECT * FROM extractions WHERE drugid = :drugid AND referenceid = :refid AND userid = :userid LIMIT 1;");
+		$stmt = $dbh->prepare ("SELECT * FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `referenceid` = :refid AND `userid` = :userid LIMIT 1;");
 		
-		$stmt->bindParam(':drugid', $did);
+		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':refid', $rid);
 		$stmt->bindParam(':userid', $uid);
 		
-		$did = $drugid;
+		$rsid = $refsetid;
 		$rid = $refid;
 		$uid = $userid;
 		
@@ -1803,17 +1799,17 @@ function nbt_echo_multi_select ($extraction, $question, $options) {
 	
 	foreach ( $options as $dbcolumn => $plaintext ) {
 		
-		?><a href="#" class="sigTextOptionSelect <?php
+		?><a href="#" class="nbtTextOptionSelect <?php
 		
 			echo "sig" . $question;
 			
 			if ( $extraction[$dbcolumn] == 1 ) {
 				
-				?> sigTextOptionChosen<?php
+				?> nbtTextOptionChosen<?php
 				
 			}
 			
-		?>" id="sigMS<?php echo $dbcolumn; ?>" onclick="sigSaveMultiSelect(event, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'sigMS<?php echo $dbcolumn; ?>');"  conditionalid="sig<?php echo $dbcolumn ?>Cond"><?php echo $plaintext; ?></a><?php
+		?>" id="nbtMS<?php echo $dbcolumn; ?>" onclick="nbtSaveMultiSelect(event, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'sigMS<?php echo $dbcolumn; ?>');"  conditionalid="nbt<?php echo $dbcolumn ?>Cond"><?php echo $plaintext; ?></a><?php
 		
 	}
 	
@@ -1826,17 +1822,17 @@ function nbt_echo_single_select ($extraction, $question, $answers) {
 	
 	foreach ( $answers as $dbanswer => $ptanswer ) {
 		
-		?><a href="#" class="sigTextOptionSelect<?php
+		?><a href="#" class="nbtTextOptionSelect<?php
 		
 		echo " sig" . $question;
 		
 		if ( $extraction[$question] == $dbanswer ) {
 			
-			?> sigTextOptionChosen<?php
+			?> nbtTextOptionChosen<?php
 			
 		}
 		
-		$buttonid = "sigQ" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
+		$buttonid = "nbtQ" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
 		
 		?>" id="<?php echo $buttonid; ?>" onclick="sigSaveSingleSelect(event, <?php echo $extraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'sig<?php echo $question; ?>');" conditionalid="<?php echo $buttonid ?>Cond"><?php echo $ptanswer; ?></a><?php
 		
@@ -1891,6 +1887,41 @@ function nbt_echo_date_selector ($extraction, $dbcolumn) {
 	</p><?php
 }
 
+function nbt_get_table_data_rows ( $elementid, $refsetid, $refid, $userid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `tabledata_" . $element['columnname'] . "` WHERE refsetid = :refset AND referenceid = :ref AND userid = :user ORDER BY id ASC;");
+		
+		$stmt->bindParam(':refset', $rsid);
+		$stmt->bindParam(':ref', $ref);
+		$stmt->bindParam(':user', $user);
+		
+		$rsid = $refsetid;
+		$ref = $refid;
+		$user = $userid;
+		
+		$stmt->execute();
+	
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		return $result;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
 function nbt_get_arms_table_rows ( $drugid, $refid, $userid ) {
 	
 	try {
@@ -1921,6 +1952,7 @@ function nbt_get_arms_table_rows ( $drugid, $refid, $userid ) {
 		echo $e->getMessage();
 		
 	}
+	
 }
 
 function nbt_get_outcomes_table_rows ( $drugid, $refid, $userid ) {
@@ -7933,6 +7965,527 @@ function nbt_add_citation_property ( $elementid ) {
 		
 	}
 	
+}
+
+function nbt_update_citation_property_display ( $columnid, $newvalue ) {
+	
+	try {
+			
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `citationscolumns` SET `displayname`=:newvalue WHERE `id` = :cid");
+		
+		$stmt->bindParam(':cid', $cid);
+		$stmt->bindParam(':newvalue', $nv);
+		
+		$cid = $columnid;
+		$nv = $newvalue;
+		
+		if ($stmt->execute()) {
+			
+			echo "Changes saved";
+			
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		$dbh = null;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_update_citation_property_db ( $columnid, $newcolumnname ) {
+	
+	// get the old column name and the form id
+	
+	$column = nbt_get_citation_property_for_propertyid ( $columnid );
+	
+	$element = nbt_get_form_element_for_elementid ( $column['elementid'] );
+	
+	// Start a counter to see if everything saved properly
+	
+	$itworked = 0;
+	
+	// then alter the column in the extraction table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `citations_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " varchar(500) DEFAULT NULL;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	if ( $itworked == 1 ) {
+	
+		// then change the form element table to match
+		
+		try {
+			
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("UPDATE `citationscolumns` SET `dbname`=:newname WHERE `id` = :cid");
+			
+			$stmt->bindParam(':cid', $cid);
+			$stmt->bindParam(':newname', $nn);
+			
+			$cid = $columnid;
+			$nn = $newcolumnname;
+			
+			if ($stmt->execute()) {
+				
+				$itworked ++;
+				
+			}
+			
+			$dbh = null;
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+	
+	}
+	
+	if ( $itworked == 2 ) {
+		
+		echo "Changes saved";
+		
+	} else {
+		
+		echo "Error saving—try a different column name";
+		
+	}
+	
+}
+
+function nbt_get_citation_property_for_propertyid ( $propertyid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `citationscolumns` WHERE `id` = :pid LIMIT 1;");
+		
+		$stmt->bindParam(':pid', $pid);
+		
+		$pid = $propertyid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				return $row;
+				
+			}
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_move_citation_property ( $columnid, $direction ) {
+	
+	$column = nbt_get_citation_property_for_propertyid ( $columnid );
+	
+	if ( $direction == 1 ) { // moving "up"
+		
+		// first, see if there are any elements above it
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SELECT * FROM `citationscolumns` WHERE `elementid` = :eid AND `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
+			
+			$stmt->bindParam(':sort', $sort);
+			$stmt->bindParam(':eid', $eid);
+			
+			$sort = $column['sortorder'];
+			$eid = $column['elementid'];
+			
+			$stmt->execute();
+			
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$moveup = FALSE;
+				
+			} else { // there are elements higher than this one
+				
+				foreach ( $result as $row ) {
+					
+					$moveup = $row['id'];
+					
+				}
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		// move the element up, if necessary
+		
+		if ( $moveup ) {
+			
+			nbt_switch_citation_property_sortorder ( $columnid, $moveup );
+			
+		}
+		
+	} else { // moving "up"
+		
+		// first, see if there are any elements below it
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SELECT * FROM `citationscolumns` WHERE `elementid` = :eid AND `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
+			
+			$stmt->bindParam(':sort', $sort);
+			$stmt->bindParam(':eid', $eid);
+			
+			$sort = $column['sortorder'];
+			$eid = $column['elementid'];
+			
+			$stmt->execute();
+			
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$movedown = FALSE;
+				
+			} else { // there are elements higher than this one
+				
+				foreach ( $result as $row ) {
+					
+					$movedown = $row['id'];
+					
+				}
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		// move the element down, if necessary
+		
+		if ( $movedown ) {
+			
+			nbt_switch_citation_property_sortorder ( $columnid, $movedown );
+			
+		}
+		
+	}
+	
+}
+
+function nbt_switch_citation_property_sortorder ( $column1id, $column2id ) {
+	
+	// get the original values
+	
+	$column1 = nbt_get_citation_property_for_propertyid ( $column1id );
+	
+	$column2 = nbt_get_citation_property_for_propertyid ( $column2id );
+	
+	// then switch them
+	
+	try {
+			
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `citationscolumns` SET `sortorder` = :sort WHERE `id` = :cid");
+		
+		$stmt->bindParam(':cid', $cid);
+		$stmt->bindParam(':sort', $sort);
+		
+		$cid = $column1id;
+		$sort = $column2['sortorder'];
+		
+		$stmt->execute();
+		
+		$dbh = null;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	try {
+			
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("UPDATE `citationscolumns` SET `sortorder` = :sort WHERE `id` = :cid");
+		
+		$stmt->bindParam(':cid', $cid);
+		$stmt->bindParam(':sort', $sort);
+		
+		$cid = $column2id;
+		$sort = $column1['sortorder'];
+		
+		$stmt->execute();
+		
+		$dbh = null;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_return_country_array () {
+
+return array (
+	"Choose a country",
+	"Afghanistan",
+	"Albania",
+	"Algeria",
+	"Andorra",
+	"Angola",
+	"Antigua & Deps",
+	"Argentina",
+	"Armenia",
+	"Australia",
+	"Austria",
+	"Azerbaijan",
+	"Bahamas",
+	"Bahrain",
+	"Bangladesh",
+	"Barbados",
+	"Belarus",
+	"Belgium",
+	"Belize",
+	"Benin",
+	"Bhutan",
+	"Bolivia",
+	"Bosnia Herzegovina",
+	"Botswana",
+	"Brazil",
+	"Brunei",
+	"Bulgaria",
+	"Burkina",
+	"Burundi",
+	"Cambodia",
+	"Cameroon",
+	"Canada",
+	"Cape Verde",
+	"Central African Rep",
+	"Chad",
+	"Chile",
+	"China",
+	"Colombia",
+	"Comoros",
+	"Congo",
+	"Congo {Democratic Rep}",
+	"Costa Rica",
+	"Croatia",
+	"Cuba",
+	"Cyprus",
+	"Czech Republic",
+	"Denmark",
+	"Djibouti",
+	"Dominica",
+	"Dominican Republic",
+	"East Timor",
+	"Ecuador",
+	"Egypt",
+	"El Salvador",
+	"Equatorial Guinea",
+	"Eritrea",
+	"Estonia",
+	"Ethiopia",
+	"Fiji",
+	"Finland",
+	"France",
+	"Gabon",
+	"Gambia",
+	"Georgia",
+	"Germany",
+	"Ghana",
+	"Greece",
+	"Grenada",
+	"Guatemala",
+	"Guinea",
+	"Guinea-Bissau",
+	"Guyana",
+	"Haiti",
+	"Honduras",
+	"Hungary",
+	"Iceland",
+	"India",
+	"Indonesia",
+	"Iran",
+	"Iraq",
+	"Ireland {Republic}",
+	"Israel",
+	"Italy",
+	"Ivory Coast",
+	"Jamaica",
+	"Japan",
+	"Jordan",
+	"Kazakhstan",
+	"Kenya",
+	"Kiribati",
+	"Korea North",
+	"Korea South",
+	"Kosovo",
+	"Kuwait",
+	"Kyrgyzstan",
+	"Laos",
+	"Latvia",
+	"Lebanon",
+	"Lesotho",
+	"Liberia",
+	"Libya",
+	"Liechtenstein",
+	"Lithuania",
+	"Luxembourg",
+	"Macedonia",
+	"Madagascar",
+	"Malawi",
+	"Malaysia",
+	"Maldives",
+	"Mali",
+	"Malta",
+	"Marshall Islands",
+	"Mauritania",
+	"Mauritius",
+	"Mexico",
+	"Micronesia",
+	"Moldova",
+	"Monaco",
+	"Mongolia",
+	"Montenegro",
+	"Morocco",
+	"Mozambique",
+	"Myanmar, {Burma}",
+	"Namibia",
+	"Nauru",
+	"Nepal",
+	"Netherlands",
+	"New Zealand",
+	"Nicaragua",
+	"Niger",
+	"Nigeria",
+	"Norway",
+	"Oman",
+	"Pakistan",
+	"Palau",
+	"Panama",
+	"Papua New Guinea",
+	"Paraguay",
+	"Peru",
+	"Philippines",
+	"Poland",
+	"Portugal",
+	"Qatar",
+	"Romania",
+	"Russian Federation",
+	"Rwanda",
+	"St Kitts & Nevis",
+	"St Lucia",
+	"Saint Vincent & the Grenadines",
+	"Samoa",
+	"San Marino",
+	"Sao Tome & Principe",
+	"Saudi Arabia",
+	"Senegal",
+	"Serbia",
+	"Seychelles",
+	"Sierra Leone",
+	"Singapore",
+	"Slovakia",
+	"Slovenia",
+	"Solomon Islands",
+	"Somalia",
+	"South Africa",
+	"South Sudan",
+	"Spain",
+	"Sri Lanka",
+	"Sudan",
+	"Suriname",
+	"Swaziland",
+	"Sweden",
+	"Switzerland",
+	"Syria",
+	"Taiwan",
+	"Tajikistan",
+	"Tanzania",
+	"Thailand",
+	"Togo",
+	"Tonga",
+	"Trinidad & Tobago",
+	"Tunisia",
+	"Turkey",
+	"Turkmenistan",
+	"Tuvalu",
+	"Uganda",
+	"Ukraine",
+	"United Arab Emirates",
+	"United Kingdom",
+	"United States",
+	"Uruguay",
+	"Uzbekistan",
+	"Vanuatu",
+	"Vatican City",
+	"Venezuela",
+	"Vietnam",
+	"Yemen",
+	"Zambia",
+	"Zimbabwe"
+);
+		
 }
 
 ?>
