@@ -86,6 +86,45 @@ foreach ( $elements as $element ) {
 				
 			break;
 			
+			case "citations":
+				
+				?><h4>Citation selector</h4>
+				<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
+				<p class="nbtFinePrint">Will appear on extraction form</p>
+				<p>Table suffix: <input type="text" id="nbtCitationSelectorSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeCitationSelectorSuffix(<?php echo $element['id']; ?>);"></p>
+				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
+				<p>Citation properties</p>
+				<p class="nbtFinePrint">You can add properties to be collected regarding each citation. Display name will appear as an open text field for each citation added on the extraction form; DB name will appear on exported spreadsheet.</p>
+				<div id="nbtCitationSelectorTable<?php echo $element['id']; ?>"><?php
+				
+				$citationelementid = $element['id'];
+				
+				include ('./citationproperties.php');
+				
+				?></div><?php
+				
+			break;
+			
+			case "country_selector":
+				
+				?><h4>Country selector</h4>
+				<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
+				<p class="nbtFinePrint">Will appear on extraction form</p>
+				<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);"></p>
+				<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
+			
+			break;
+			
+			case "date_selector":
+				
+				?><h4>Date selector</h4>
+				<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
+				<p class="nbtFinePrint">Will appear on extraction form</p>
+				<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeDateColumnName(<?php echo $element['id']; ?>);"></p>
+				<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
+			
+			break;
+			
 		}
 	
 		?>
@@ -111,7 +150,8 @@ foreach ( $elements as $element ) {
 	<button onclick="nbtAddNewSingleSelect(<?php echo $_GET['id']; ?>);">Single select</button>
 	<button onclick="nbtAddNewMultiSelect(<?php echo $_GET['id']; ?>);">Multi select</button>
 	<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>);">Table data</button>
-	<button>Citation</button>
-	<button>Date</button>
+	<button onclick="nbtAddNewCountrySelector(<?php echo $_GET['id']; ?>);">Country selector</button>
+	<button onclick="nbtAddNewDateSelector(<?php echo $_GET['id']; ?>);">Date selector</button>
+	<button onclick="nbtAddNewCitationSelector(<?php echo $_GET['id']; ?>);">Citations</button>
 	<button>Arms / outcomes / efficacy</button>
 </div>

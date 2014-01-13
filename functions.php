@@ -4873,6 +4873,46 @@ function nbt_get_select_for_selectid ( $selectid ) {
 	
 }
 
+function nbt_get_column_for_columnid ( $columnid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `tabledatacolumns` WHERE `id` = :cid LIMIT 1;");
+		
+		$stmt->bindParam(':cid', $cid);
+		
+		$cid = $columnid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				return $row;
+				
+			}
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
 function nbt_add_open_text_field ( $formid ) {
 	
 	// get the highest sortorder value
@@ -5070,6 +5110,110 @@ function nbt_delete_form_element ( $elementid ) {
 	catch (PDOException $e) {
 		
 		echo $e->getMessage();
+		
+	}
+	
+	switch ( $element['type'] ) {
+		
+		case "table_data":
+			
+			// delete the table
+			
+			try {
+		
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("DROP TABLE `tabledata_" . $element['columnname'] . "`;");
+				
+				if ($stmt->execute()) {
+					
+					$dbh = null;
+					
+				}
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+			
+			// then remove all the columns from the table data columns table
+	
+			try {
+				
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("DELETE FROM `tabledatacolumns` WHERE elementid = :id;");
+				
+				$stmt->bindParam(':id', $eid);
+				
+				$eid = $elementid;
+				
+				if ($stmt->execute()) {
+					
+					$dbh = null;
+					
+				}
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+			
+		break;
+		
+		case "citations":
+		
+			// delete the table
+			
+			try {
+		
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("DROP TABLE `citations_" . $element['columnname'] . "`;");
+				
+				if ($stmt->execute()) {
+					
+					$dbh = null;
+					
+				}
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+			
+			// then remove all the columns from the citations columns table
+	
+			try {
+				
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("DELETE FROM `citationscolumns` WHERE elementid = :id;");
+				
+				$stmt->bindParam(':id', $eid);
+				
+				$eid = $elementid;
+				
+				if ($stmt->execute()) {
+					
+					$dbh = null;
+					
+				}
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+		
+		break;
 		
 	}
 	
@@ -5353,6 +5497,64 @@ function nbt_switch_selects_sortorder ( $select1id, $select2id ) {
 	
 }
 
+function nbt_switch_tablecolumn_sortorder ( $column1id, $column2id ) {
+	
+	// get the original values
+	
+	$column1 = nbt_get_column_for_columnid ( $column1id );
+	
+	$column2 = nbt_get_column_for_columnid ( $column2id );
+	
+	// then switch them
+	
+	try {
+			
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `tabledatacolumns` SET `sortorder` = :sort WHERE `id` = :cid");
+		
+		$stmt->bindParam(':cid', $cid);
+		$stmt->bindParam(':sort', $sort);
+		
+		$cid = $column1id;
+		$sort = $column2['sortorder'];
+		
+		$stmt->execute();
+		
+		$dbh = null;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	try {
+			
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("UPDATE `tabledatacolumns` SET `sortorder` = :sort WHERE `id` = :cid");
+		
+		$stmt->bindParam(':cid', $cid);
+		$stmt->bindParam(':sort', $sort);
+		
+		$cid = $column2id;
+		$sort = $column1['sortorder'];
+		
+		$stmt->execute();
+		
+		$dbh = null;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
 function nbt_move_form_element ( $elementid, $direction ) {
 	
 	$element = nbt_get_form_element_for_elementid ( $elementid );
@@ -5470,11 +5672,13 @@ function nbt_move_select_option ( $selectid, $direction ) {
 		try {
 		
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
+			$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `elementid` = :eid AND `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
 			
 			$stmt->bindParam(':sort', $sort);
+			$stmt->bindParam(':eid', $eid);
 			
 			$sort = $select['sortorder'];
+			$eid = $select['elementid'];
 			
 			$stmt->execute();
 			
@@ -5517,11 +5721,13 @@ function nbt_move_select_option ( $selectid, $direction ) {
 		try {
 		
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
+			$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `elementid` = :eid AND `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
 			
 			$stmt->bindParam(':sort', $sort);
+			$stmt->bindParam(':eid', $eid);
 			
 			$sort = $select['sortorder'];
+			$eid = $select['elementid'];
 			
 			$stmt->execute();
 			
@@ -6716,7 +6922,7 @@ function nbt_add_table_data_column ( $elementid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `tabledata_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " INT(11) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `tabledata_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " VARCHAR(500) DEFAULT NULL;");
 		
 		$stmt->execute();
 		
@@ -6851,7 +7057,7 @@ function nbt_update_table_data_column_display ( $columnid, $newvalue ) {
 
 function nbt_move_table_data_column ( $columnid, $direction ) {
 	
-	$select = nbt_get_select_for_selectid ( $selectid );
+	$column = nbt_get_column_for_columnid ( $columnid );
 	
 	if ( $direction == 1 ) { // moving "up"
 		
@@ -6860,11 +7066,13 @@ function nbt_move_table_data_column ( $columnid, $direction ) {
 		try {
 		
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
+			$stmt = $dbh->prepare("SELECT * FROM `tabledatacolumns` WHERE `elementid` = :eid AND `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
 			
 			$stmt->bindParam(':sort', $sort);
+			$stmt->bindParam(':eid', $eid);
 			
-			$sort = $select['sortorder'];
+			$sort = $column['sortorder'];
+			$eid = $column['elementid'];
 			
 			$stmt->execute();
 			
@@ -6896,7 +7104,7 @@ function nbt_move_table_data_column ( $columnid, $direction ) {
 		
 		if ( $moveup ) {
 			
-			nbt_switch_selects_sortorder ( $selectid, $moveup );
+			nbt_switch_tablecolumn_sortorder ( $columnid, $moveup );
 			
 		}
 		
@@ -6907,11 +7115,13 @@ function nbt_move_table_data_column ( $columnid, $direction ) {
 		try {
 		
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
+			$stmt = $dbh->prepare("SELECT * FROM `tabledatacolumns` WHERE `elementid` = :eid AND `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
 			
 			$stmt->bindParam(':sort', $sort);
+			$stmt->bindParam(':eid', $eid);
 			
-			$sort = $select['sortorder'];
+			$sort = $column['sortorder'];
+			$eid = $column['elementid'];
 			
 			$stmt->execute();
 			
@@ -6943,7 +7153,7 @@ function nbt_move_table_data_column ( $columnid, $direction ) {
 		
 		if ( $movedown ) {
 			
-			nbt_switch_selects_sortorder ( $selectid, $movedown );
+			nbt_switch_tablecolumn_sortorder ( $columnid, $movedown );
 			
 		}
 		
@@ -7024,6 +7234,702 @@ function nbt_update_table_data_column_db ( $columnid, $newcolumnname ) {
 	} else {
 		
 		echo "Error saving—try a different column name";
+		
+	}
+	
+}
+
+function nbt_add_country_selector ( $formid ) {
+	
+	// get the highest sortorder value
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder` DESC LIMIT 1;");
+		
+		$stmt->bindParam(':fid', $fid);
+		
+		$fid = $formid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				$highestsortorder = $row['sortorder'];
+				
+			}
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// find a good name for the new column
+	
+	$foundgoodcolumn = FALSE;
+	
+	$counter = 1;
+	
+	while ( $foundgoodcolumn == FALSE ) {
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'country_" . $counter . "';");
+			
+			$stmt->execute();
+		
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$columnname = "country_" . $counter;
+				
+				$foundgoodcolumn = TRUE;
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		$counter ++;
+		
+	}
+	
+	// then insert a new element into the form elements table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname) VALUES (:form, :sort, :type, :column);");
+		
+		$stmt->bindParam(':form', $fid);
+		$stmt->bindParam(':sort', $sort);
+		$stmt->bindParam(':type', $type);
+		$stmt->bindParam(':column', $col);
+		
+		$fid = $formid;
+		$sort = $highestsortorder + 1;
+		$type = "country_selector";
+		$col = $columnname;
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// then, add a column to the extractions table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_new_dump_file () {
+	
+	date_default_timezone_set ('America/Montreal');
+	
+	exec('mysqldump --user=' . DB_USER . ' --password=' . DB_PASS . ' --host=' . DB_HOST . ' ' . DB_NAME . ' > ' . ABS_PATH . 'export/dumpfiles/' . date('Y-m-d-H-i') . '.sql' );
+	
+}
+
+function nbt_add_date_selector ( $formid ) {
+	
+	// get the highest sortorder value
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder` DESC LIMIT 1;");
+		
+		$stmt->bindParam(':fid', $fid);
+		
+		$fid = $formid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				$highestsortorder = $row['sortorder'];
+				
+			}
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// find a good name for the new column
+	
+	$foundgoodcolumn = FALSE;
+	
+	$counter = 1;
+	
+	while ( $foundgoodcolumn == FALSE ) {
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'date_" . $counter . "';");
+			
+			$stmt->execute();
+		
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$columnname = "date_" . $counter;
+				
+				$foundgoodcolumn = TRUE;
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		$counter ++;
+		
+	}
+	
+	// then insert a new element into the form elements table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname) VALUES (:form, :sort, :type, :column);");
+		
+		$stmt->bindParam(':form', $fid);
+		$stmt->bindParam(':sort', $sort);
+		$stmt->bindParam(':type', $type);
+		$stmt->bindParam(':column', $col);
+		
+		$fid = $formid;
+		$sort = $highestsortorder + 1;
+		$type = "date_selector";
+		$col = $columnname;
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// then, add a column to the extractions table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " DATE DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
+	
+	// get the old column name and the form id
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// Start a counter to see if everything saved properly
+	
+	$itworked = 0;
+	
+	// then alter the column in the extraction table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " DATE DEFAULT NULL;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	if ( $itworked == 1 ) {
+	
+		// then change the form element table to match
+		
+		try {
+			
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("UPDATE `formelements` SET `columnname`=:newname WHERE `id` = :eid");
+			
+			$stmt->bindParam(':eid', $eid);
+			$stmt->bindParam(':newname', $nn);
+			
+			$eid = $element['id'];
+			$nn = $newcolumnname;
+			
+			if ($stmt->execute()) {
+				
+				$itworked ++;
+				
+			}
+			
+			$dbh = null;
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+	
+	}
+	
+	if ( $itworked == 2 ) {
+		
+		echo "Changes saved";
+		
+	} else {
+		
+		echo "Error saving—try a different column name";
+		
+	}
+	
+}
+
+function nbt_add_citation_selector ( $formid ) {
+	
+	// get the highest sortorder value
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder` DESC LIMIT 1;");
+		
+		$stmt->bindParam(':fid', $fid);
+		
+		$fid = $formid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				$highestsortorder = $row['sortorder'];
+				
+			}
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// find a good name for the table
+	
+	$foundgoodcolumn = FALSE;
+	
+	$counter = 1;
+	
+	while ( $foundgoodcolumn == FALSE ) {
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SHOW TABLES LIKE `citations_" . $counter . "';");
+			
+			$stmt->execute();
+		
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$columnname = "citations_" . $counter;
+				
+				$foundgoodcolumn = TRUE;
+				
+			} else {
+				
+				$counter ++;
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+	}
+	
+	// then make a new table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("CREATE TABLE `citations_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `cite_no` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`,`userid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// then, add it into the form elements table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname) VALUES (:form, :sort, :type, :column);");
+		
+		$stmt->bindParam(':form', $fid);
+		$stmt->bindParam(':sort', $sort);
+		$stmt->bindParam(':type', $type);
+		$stmt->bindParam(':column', $col);
+		
+		$fid = $formid;
+		$sort = $highestsortorder + 1;
+		$type = "citations";
+		$col = $counter;
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_change_citation_selector_suffix ( $elementid, $newsuffix ) {
+	
+	// get the old column name and the form id
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// Start a counter to see if everything saved properly
+	
+	$itworked = 0;
+	
+	// then alter the column in the extraction table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("RENAME TABLE `citations_" . $element['columnname'] . "` TO `citations_" . $newsuffix . "`;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	if ( $itworked == 1 ) {
+	
+		// then change the form element table to match
+		
+		try {
+			
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("UPDATE `formelements` SET `columnname`=:newname WHERE `id` = :eid");
+			
+			$stmt->bindParam(':eid', $eid);
+			$stmt->bindParam(':newname', $nn);
+			
+			$eid = $element['id'];
+			$nn = $newsuffix;
+			
+			if ($stmt->execute()) {
+				
+				$itworked ++;
+				
+			}
+			
+			$dbh = null;
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+	
+	}
+	
+	if ( $itworked == 2 ) {
+		
+		echo "Changes saved";
+		
+	} else {
+		
+		echo "Error saving—try a different column name";
+		
+	}
+	
+}
+
+function nbt_get_all_columns_for_citation_selector ( $elementid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `citationscolumns` WHERE `elementid` = :eid ORDER BY `sortorder` ASC;");
+		
+		$stmt->bindParam(':eid', $eid);
+		
+		$eid = $elementid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			return $result;
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_add_citation_property ( $elementid ) {
+	
+	// get the highest sortorder
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `citationscolumns` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
+		
+		$stmt->bindParam(':eid', $eid);
+		
+		$eid = $elementid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				$highestsortorder = $row['sortorder'];
+				
+			}
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// find a good name for the new column
+	
+	$foundgoodcolumn = FALSE;
+	
+	$counter = 1;
+	
+	while ( $foundgoodcolumn == FALSE ) {
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SHOW COLUMNS FROM `citations_" . $element['columnname'] . "` LIKE 'property_" . $counter . "';");
+			
+			$stmt->execute();
+		
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$columnname = "property_" . $counter;
+				
+				$foundgoodcolumn = TRUE;
+				
+			} else {
+				
+				$counter ++;
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+	}
+	
+	// then insert a new option into the citationscolumns table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO `citationscolumns` (elementid, sortorder, dbname) VALUES (:eid, :sort, :column);");
+		
+		$stmt->bindParam(':eid', $eid);
+		$stmt->bindParam(':sort', $sort);
+		$stmt->bindParam(':column', $col);
+		
+		$eid = $elementid;
+		$sort = $highestsortorder + 1;
+		$col = "property_" . $counter;
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// then, add a column to the table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `citations_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " VARCHAR(50) DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
 		
 	}
 	

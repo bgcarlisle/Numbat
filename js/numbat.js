@@ -284,6 +284,30 @@ function nbtChangeColumnName ( eid ) {
 	
 }
 
+function nbtChangeDateColumnName ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/changedatecolumnname.php',
+		type: 'post',
+		data: {
+			element: eid,
+			newcolumnname: $('#nbtElementColumnName' + eid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElementFeedback' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
 function nbtChangeMultiSelectColumnPrefix ( eid ) {
 	
 	$.ajax ({
@@ -618,7 +642,7 @@ function nbtChangeTableSuffix ( eid ) {
 	
 }
 
-function nbtAddTableDataColumn ( eid ) { // ***
+function nbtAddTableDataColumn ( eid ) {
 	
 	$.ajax ({
 		url: numbaturl + 'forms/addtabledatacolumn.php',
@@ -715,6 +739,114 @@ function nbtMoveTableDataColumn ( eid, cid, dir ) {
 	}).done ( function (html) {
 		
 		$('#nbtTableDataColumnsTable' + eid).html(html);
+		
+	});
+	
+}
+
+function nbtAddNewCountrySelector ( fid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addcountryselector.php',
+		type: 'post',
+		data: {
+			formid: fid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElements').html(html);
+		
+	});
+	
+}
+
+function nbtAddNewDateSelector ( fid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/adddateselector.php',
+		type: 'post',
+		data: {
+			formid: fid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElements').html(html);
+		
+	});
+	
+}
+
+function nbtNewDumpFile () {
+	
+	$.ajax ({
+		url: numbaturl + 'export/newdumpfile.php',
+		type: 'post',
+		data: {
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtListOfDumpFiles').html(html);
+		
+	});
+	
+}
+
+function nbtAddNewCitationSelector ( fid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addcitationselector.php',
+		type: 'post',
+		data: {
+			formid: fid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElements').html(html);
+		
+	});
+	
+}
+
+function nbtChangeCitationSelectorSuffix ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/changecitationselectorsuffix.php',
+		type: 'post',
+		data: {
+			element: eid,
+			newsuffix: $('#nbtCitationSelectorSuffix' + eid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElementFeedback' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtAddCitationProperty ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addcitationproperty.php',
+		type: 'post',
+		data: {
+			element: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtCitationSelectorTable' + eid).html(html);
 		
 	});
 	
