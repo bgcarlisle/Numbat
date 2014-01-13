@@ -105,7 +105,26 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 						
 					}
 					
-					?><?php nbt_echo_text_field ($extraction, "<?php echo columnname; ?>", 500, TRUE); ?><?php
+					nbt_echo_text_field ($extraction, $element['columnname'], 500, TRUE);
+					
+				break;
+				
+				case "date_selector":
+					
+					?><p><?php echo $element['displayname']; ?><?php
+					
+					if ( $element['codebook'] != "" ) {
+						
+						?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
+						<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
+						
+					} else {
+						
+						?></p><?php
+						
+					}
+					
+					nbt_echo_date_selector ($extraction, $element['columnname']);
 					
 				break;
 				
