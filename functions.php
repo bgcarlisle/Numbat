@@ -1363,112 +1363,42 @@ function nbt_toggle_discussion_citation_question ( $citationid, $discussioncitat
 	
 }
 
-function nbt_update_extraction ( $id, $column, $value ) {
+function nbt_update_extraction ( $fid, $id, $column, $value ) {
 	
-	$columns = array (
-		"status",
-		"corrauthorlocation",
-		"ctgnctid",
-		"phase",
-		"phasestated",
-		"multicentre",
-		"post_unsampled_dose",
-		"post_unsampled_drug",
-		"post_unsampled_pop",
-		"post_unsampled_outcome",
-		"post_unsampled_caution",
-		"post_unsampled_unclear",
-		"indication",
-		"subindication",
-		"stage",
-		"conflictofinterest",
-		"conflictofinterest_disclosed",
-		"effectsize",
-		"alpha",
-		"beta",
-		"methods_minimum",
-		"threshold",
-		"randomisation",
-		"primary_outcome_blinding",
-		"allocation_blinding",
-		"description_of_withdrawals",
-		"study_design",
-		"study_design_other",
-		"primary_drug_name",
-		"primary_drug_dose",
-		"primary_drug_schedule",
-		"primary_drug_route",
-		"primary_drug_route_other",
-		"primary_drug_combination",
-		"primary_drug_combo_drugname",
-		"primary_drug_combo_route",
-		"primary_drug_combo_route_other",
-		"comparator_drug_name",
-		"comparator_drug_dose",
-		"comparator_drug_schedule",
-		"comparator_drug_route",
-		"comparator_drug_route_other",
-		"comparator_drug_combination",
-		"comparator_drug_combo_drugname",
-		"comparator_drug_combo_route",
-		"comparator_drug_combo_route_other",
-		"no_comp_cites",
-		"duration_of_treatment",
-		"duration_of_tx_imputed",
-		"date_of_pt_enrolment",
-		"date_of_closure",
-		"concomitant_meds",
-		"paediatric_subjects",
-		"burdens_washout_text",
-		"burdens_other_text",
-		"burdens_none",
-		"results_primary_endpoint",
-		"results_toxicity",
-		"results_assessment_risk_benefit",
-		"stats_measure",
-		"total_n",
-		"clinicalinterest",
-		"notes"
-	);
+	try {
 	
-	if ( in_array ($column, $columns) ) {
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `extractions_" . $fid . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
 		
-		try {
+		$stmt->bindParam(':id', $rid);
+		$stmt->bindParam(':value', $val);
 		
-			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("UPDATE extractions SET " . $column . " = :value WHERE id = :id LIMIT 1;");
+		$rid = $id;
+		$val = $value;
+		
+		if ( $stmt->execute() ) {
 			
-			$stmt->bindParam(':id', $rid);
-			$stmt->bindParam(':value', $val);
+			$dbh = null;
 			
-			$rid = $id;
-			$val = $value;
+			return TRUE;
 			
-			if ( $stmt->execute() ) {
-				
-				$dbh = null;
-				
-				return TRUE;
-				
-			} else {
-				
-				$dbh = null;
-				
-				return FALSE;
-				
-			}
+		} else {
 			
+			$dbh = null;
+			
+			return FALSE;
 			
 		}
 		
-		catch (PDOException $e) {
-			
-			echo $e->getMessage();
-			
-		}
 		
 	}
 	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+
 }
 
 function nbt_update_extraction_arm ( $id, $column, $value ) {
@@ -1518,114 +1448,74 @@ function nbt_update_extraction_arm ( $id, $column, $value ) {
 	
 }
 
-function nbt_toggle_extraction ( $id, $column ) {
+function nbt_toggle_extraction ( $formid, $id, $column ) {
 	
-	$columns = array (
-		"post_unsampled_dose",
-		"post_unsampled_drug",
-		"post_unsampled_pop",
-		"post_unsampled_outcome",
-		"post_unsampled_caution",
-		"post_unsampled_unclear",
-		"statedgoal_safety",
-		"statedgoal_dosage",
-		"statedgoal_efficacy",
-		"statedgoal_pd",
-		"statedgoal_pk",
-		"statedgoal_other",
-		"sponsor_govt",
-		"sponsor_biotech",
-		"sponsor_pharma",
-		"sponsor_nonprofit",
-		"sponsor_ns",
-		"burdens_invasive_res_procedures",
-		"burdens_wash_out",
-		"burdens_other",
-		"burdens_none",
-		"study_design_dose_esc",
-		"study_design_dose_find",
-		"study_design_dose_rang",
-		"study_design_hist_cont",
-		"study_design_parallel",
-		"study_design_futility",
-		"study_design_simon2",
-		"study_design_placebo",
-		"study_design_crossover",
-		"study_design_invasv",
-		"study_design_is_other"
-		
-	);
+	try {
 	
-	if ( in_array ($column, $columns) ) {
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("SELECT * FROM `extractions_" . $formid . "` WHERE id = :id LIMIT 1;");
 		
-		try {
+		$stmt->bindParam(':id', $rid);
 		
-			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare ("SELECT * FROM extractions WHERE id = :id LIMIT 1;");
-			
-			$stmt->bindParam(':id', $rid);
-			
-			$rid = $id;
-			
-			$stmt->execute();
-			
-			$result = $stmt->fetchAll();
-			
-			$dbh = null;
-			
-			foreach ( $result as $row ) {
-				
-				$old_answer = $row[$column];
-				
-			}
-			
-		}
+		$rid = $id;
 		
-		catch (PDOException $e) {
-			
-			echo $e->getMessage();
-			
-		}
+		$stmt->execute();
 		
-		try {
+		$result = $stmt->fetchAll();
 		
-			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare ("UPDATE extractions SET " . $column . " = :value WHERE id = :id LIMIT 1;");
-			
-			$stmt->bindParam(':id', $rid);
-			$stmt->bindParam(':value', $val);
-			
-			$rid = $id;
-			if ( $old_answer == 0 ) {
-				$val = 1;
-			} else {
-				$val = 0;
-			}
-			
-			if ( $stmt->execute() ) {
-				
-				$dbh = null;
-				
-				return TRUE;
-				
-			} else {
-				
-				$dbh = null;
-				
-				return FALSE;
-				
-			}
-			
-		}
+		$dbh = null;
 		
-		catch (PDOException $e) {
+		foreach ( $result as $row ) {
 			
-			echo $e->getMessage();
+			$old_answer = $row[$column];
 			
 		}
 		
 	}
 	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	try {
+	
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("UPDATE `extractions_" . $formid . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
+		
+		$stmt->bindParam(':id', $rid);
+		$stmt->bindParam(':value', $val);
+		
+		$rid = $id;
+		if ( $old_answer == 0 ) {
+			$val = 1;
+		} else {
+			$val = 0;
+		}
+		
+		if ( $stmt->execute() ) {
+			
+			$dbh = null;
+			
+			return TRUE;
+			
+		} else {
+			
+			$dbh = null;
+			
+			return FALSE;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+
 }
 
 function nbt_get_extraction ( $formid, $refsetid, $refid, $userid ) {
@@ -1793,7 +1683,7 @@ function nbt_remove_uncited ($uncid) {
 	}
 }
 
-function nbt_echo_multi_select ($extraction, $question, $options) {
+function nbt_echo_multi_select ($formid, $extraction, $question, $options) {
 	
 	// $options must be an array of the names of the column in the db
 	
@@ -1803,19 +1693,19 @@ function nbt_echo_multi_select ($extraction, $question, $options) {
 		
 			echo "sig" . $question;
 			
-			if ( $extraction[$dbcolumn] == 1 ) {
+			if ( $extraction[$question . "_" . $dbcolumn] == 1 ) {
 				
 				?> nbtTextOptionChosen<?php
 				
 			}
 			
-		?>" id="nbtMS<?php echo $dbcolumn; ?>" onclick="nbtSaveMultiSelect(event, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'sigMS<?php echo $dbcolumn; ?>');"  conditionalid="nbt<?php echo $dbcolumn ?>Cond"><?php echo $plaintext; ?></a><?php
+		?>" id="nbtMS<?php echo $dbcolumn; ?>" onclick="event.preventDefault();nbtSaveMultiSelect(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $question . "_" . $dbcolumn; ?>', 'nbtMS<?php echo $dbcolumn; ?>');"  conditionalid="nbt<?php echo $dbcolumn ?>Cond"><?php echo $plaintext; ?></a><?php
 		
 	}
 	
 }
 
-function nbt_echo_single_select ($extraction, $question, $answers) {
+function nbt_echo_single_select ($formid, $extraction, $question, $answers) {
 	
 	// $question must be the name of the column in the db
 	// $answers must be an array of the answer entered in the db and the plain text version displayed
@@ -1824,7 +1714,7 @@ function nbt_echo_single_select ($extraction, $question, $answers) {
 		
 		?><a href="#" class="nbtTextOptionSelect<?php
 		
-		echo " sig" . $question;
+		echo " nbt" . $question;
 		
 		if ( $extraction[$question] == $dbanswer ) {
 			
@@ -1834,19 +1724,19 @@ function nbt_echo_single_select ($extraction, $question, $answers) {
 		
 		$buttonid = "nbtQ" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
 		
-		?>" id="<?php echo $buttonid; ?>" onclick="sigSaveSingleSelect(event, <?php echo $extraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'sig<?php echo $question; ?>');" conditionalid="<?php echo $buttonid ?>Cond"><?php echo $ptanswer; ?></a><?php
+		?>" id="<?php echo $buttonid; ?>" onclick="event.preventDefault();nbtSaveSingleSelect(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbt<?php echo $question; ?>');" conditionalid="<?php echo $buttonid ?>Cond"><?php echo $ptanswer; ?></a><?php
 		
 	}
 	
 }
 
-function nbt_echo_text_field ($extraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
+function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
 	
 	?><input type="text" value="<?php
 	
 	echo $extraction[$dbcolumn];
 	
-	?>" id="sigTextField<?php echo $dbcolumn; ?>" onblur="sigSaveTextField(<?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'sigTextField<?php echo $dbcolumn; ?>', 'sigTextField<?php echo $dbcolumn; ?>Feedback');" maxlength="<?php echo $maxlength; ?>"<?php
+	?>" id="nbtTextField<?php echo $dbcolumn; ?>" onblur="nbtSaveTextField(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtTextField<?php echo $dbcolumn; ?>', 'nbtTextField<?php echo $dbcolumn; ?>Feedback');" maxlength="<?php echo $maxlength; ?>"<?php
 	
 	if ( $allcaps ) {
 		
@@ -1854,26 +1744,12 @@ function nbt_echo_text_field ($extraction, $dbcolumn, $maxlength, $allcaps = FAL
 		
 	}
 	
-	?>><span class="sigInputFeedback" id="sigTextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span><?php
+	?>><span class="nbtInputFeedback" id="nbtTextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span><?php
 }
 
-function nbt_echo_inline_text_field ($extraction, $dbcolumn, $plaintext, $maxlength) {
+function nbt_echo_date_selector ($formid, $extraction, $dbcolumn) {
 	
-	?><p class="sigInlineTextField">
-		<span class="sigInputLabel"><?php echo $plaintext; ?></span>
-		<input type="text" value="<?php
-			
-			echo $extraction[$dbcolumn];
-			
-		?>" id="sigTextField<?php echo $dbcolumn; ?>" onblur="sigSaveTextField(<?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'sigTextField<?php echo $dbcolumn; ?>', 'sigTextField<?php echo $dbcolumn; ?>Feedback');" maxlength="<?php echo $maxlength; ?>">
-		<span class="sigInputFeedback" id="sigTextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span>
-	</p><?php
-	
-}
-
-function nbt_echo_date_selector ($extraction, $dbcolumn) {
-	
-	?><p class="sigDateSelector">
+	?><p class="nbtDateSelector">
 		<input type="text" value="<?php
 			
 			if ( substr ($extraction[$dbcolumn], 0, 7) != "0000-00" ) {
@@ -1882,9 +1758,10 @@ function nbt_echo_date_selector ($extraction, $dbcolumn) {
 				
 			}
 			
-		?>" id="sigDateField<?php echo $dbcolumn; ?>" onblur="sigSaveDateField(<?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'sigDateField<?php echo $dbcolumn; ?>', 'sigTextField<?php echo $dbcolumn; ?>Feedback');">
-		<span class="sigInputFeedback" id="sigTextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span>
+		?>" id="nbtDateField<?php echo $dbcolumn; ?>" onblur="nbtSaveDateField(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtDateField<?php echo $dbcolumn; ?>', 'nbtTextField<?php echo $dbcolumn; ?>Feedback');">
+		<span class="nbtInputFeedback" id="nbtTextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span>
 	</p><?php
+	
 }
 
 function nbt_get_table_data_rows ( $elementid, $refsetid, $refid, $userid ) {

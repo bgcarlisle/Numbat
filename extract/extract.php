@@ -48,7 +48,7 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 	</div>
 	<div class="nbtContentPanel">
 		<h3>Status of extraction</h3>
-		<?php nbt_echo_single_select ($extraction, "status", array (
+		<?php nbt_echo_single_select ($_GET['form'], $extraction, "status", array (
 			0 => "Not yet started",
 			1 => "In progress",
 			2 => "Completed"
@@ -105,7 +105,7 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 						
 					}
 					
-					nbt_echo_text_field ($extraction, $element['columnname'], 500, TRUE);
+					nbt_echo_text_field ($_GET['form'], $extraction, $element['columnname'], 500, FALSE);
 					
 				break;
 				
@@ -124,7 +124,7 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 						
 					}
 					
-					nbt_echo_date_selector ($extraction, $element['columnname']);
+					nbt_echo_date_selector ($_GET['form'], $extraction, $element['columnname']);
 					
 				break;
 				
@@ -153,7 +153,7 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 						
 					}
 					
-					nbt_echo_single_select ($extraction, "phase", $answers );
+					nbt_echo_single_select ( $_GET['form'], $extraction, $element['columnname'], $answers );
 					
 				break;
 				
@@ -182,7 +182,7 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 						
 					}
 					
-					nbt_echo_multi_select ($extraction, "phase", $answers );
+					nbt_echo_multi_select ($_GET['form'], $extraction, $element['columnname'], $answers );
 					
 				break;
 				

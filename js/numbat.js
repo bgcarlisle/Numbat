@@ -918,3 +918,144 @@ function nbtMoveCitationProperty ( eid, cid, dir ) {
 	});
 	
 }
+
+function nbtSaveTextField (formid, extractionid, questionid, textfieldid, feedbackid) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/updateextraction.php',
+		type: 'post',
+		data: {
+			fid: formid,
+			id: extractionid,
+			question: questionid,
+			answer: $('#' + textfieldid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#' + feedbackid).html(html);
+		
+		$('#' + feedbackid).fadeIn(50, function () {
+			
+			setTimeout ( function () {
+				
+				$('#' + feedbackid).fadeOut(1000);
+				
+			}, 2000);
+			
+		});
+		
+	});
+	
+}
+
+function nbtSaveDateField (formid, extractionid, questionid, textfieldid, feedbackid) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/formatdate.php',
+		type: 'post',
+		data: {
+			datestring: $('#' + textfieldid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#' + textfieldid).val(html);
+		
+		$.ajax ({
+			url: numbaturl + 'extract/updateextraction.php',
+			type: 'post',
+			data: {
+				fid: formid,
+				id: extractionid,
+				question: questionid,
+				answer: html + '-01'
+			},
+			dataType: 'html'
+		}).done ( function (html2) {
+			
+			$('#' + feedbackid).html(html2);
+			
+			$('#' + feedbackid).fadeIn(50, function () {
+				
+				setTimeout ( function () {
+					
+					$('#' + feedbackid).fadeOut(1000);
+					
+				}, 2000);
+				
+			})
+			
+		});
+		
+	});
+	
+}
+
+function nbtSaveSingleSelect (formid, extractionid, questionlabel, response, buttonid, classid) {
+	
+	if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // IF it's already selected
+		
+		$.ajax ({
+			url: numbaturl + 'extract/updateextraction.php',
+			type: 'post',
+			data: {
+				fid: formid,
+				id: extractionid,
+				question: questionlabel,
+				answer: 'NULL'
+			},
+			dataType: 'html'
+		}).done ( function (html) {
+			
+			$('.' + classid).removeClass('nbtTextOptionChosen');
+			
+//			sigUpdateConditionalDisplays ();
+			
+		});
+		
+	} else { // It's not already selected
+		
+		$.ajax ({
+			url: numbaturl + 'extract/updateextraction.php',
+			type: 'post',
+			data: {
+				fid: formid,
+				id: extractionid,
+				question: questionlabel,
+				answer: response
+			},
+			dataType: 'html'
+		}).done ( function (html) {
+			
+			$('.' + classid).removeClass('nbtTextOptionChosen');
+			$('#' + buttonid).addClass('nbtTextOptionChosen');
+			
+//			sigUpdateConditionalDisplays ();
+			
+		});
+	
+	}
+	
+}
+
+function nbtSaveMultiSelect (formid, extractionid, questionlabel, buttonid) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/togglefield.php',
+		type: 'post',
+		data: {
+			fid: formid,
+			id: extractionid,
+			question: questionlabel
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#' + buttonid).toggleClass('nbtTextOptionChosen');
+		
+//		nbtUpdateConditionalDisplays ();
+		
+	});
+	
+}
