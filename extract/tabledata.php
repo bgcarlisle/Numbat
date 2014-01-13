@@ -23,8 +23,16 @@ $no_of_columns = count ( $columns );
 	
 	foreach ( $rows as $row ) {
 		
-		?><tr>
+		?><tr><?php
 			
+			foreach ( $columns as $column ) {
+				
+				?><td><input type="text" value="<?php echo $row[$column['dbname']]; ?>"></td><?php
+				
+			}
+			
+			?><td><button>Delete</button>
+			<button class="nbtHidden">For real</button></td>
 		</tr><?php
 		
 	}
