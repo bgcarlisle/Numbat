@@ -203,14 +203,14 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 					
 					$countries = nbt_return_country_array (); ?>
 					
-					<select id="nbtCountrySelectcorrauthorlocation" onblur="nbtSaveTextField(<?php echo $extraction['id']; ?>, '<?php echo $element['dbname']; ?>', 'nbtCountrySelectcorrauthorlocation', 'sigCorrauthorlocationFeedback');">
+					<select id="nbtCountrySelect<?php echo $element['columnname']; ?>" onblur="nbtSaveTextField(<?php echo $_GET['form']; ?>, <?php echo $extraction['id']; ?>, '<?php echo $element['columnname']; ?>', 'nbtCountrySelect<?php echo $element['columnname']; ?>', 'sigCountrySelect<?php echo $element['columnname']; ?>Feedback');">
 						<?php
 						
 						foreach ( $countries as $country ) {
 							
 							?><option value="<?php echo $country; ?>"<?php
 							
-								if ( $extraction[$element['dbname']] == $country ) {
+								if ( $extraction[$element['columnname']] == $country ) {
 									
 									?> selected<?php
 									
@@ -221,7 +221,8 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 						}
 						
 						?>
-					</select><?php
+					</select>
+					<span class="nbtInputFeedback" id="sigCountrySelect<?php echo $element['columnname']; ?>Feedback">&nbsp;</span><?php
 					
 				break;
 				
