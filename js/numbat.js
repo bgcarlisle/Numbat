@@ -1059,3 +1059,70 @@ function nbtSaveMultiSelect (formid, extractionid, questionlabel, buttonid) {
 	});
 	
 }
+
+function nbtUpdateExtractionTableData ( tableid, rowid, columnid, inputid) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/updatetabledata.php',
+		type: 'post',
+		data: {
+			tid: tableid,
+			row: rowid,
+			column: columnid,
+			newvalue: $('#' + inputid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtTable' + tableid + 'Feedback').html(html);
+		
+		$('#nbtTable' + tableid + 'Feedback').fadeIn(50, function () {
+			
+			setTimeout ( function () {
+				
+				$('#nbtTable' + tableid + 'Feedback').fadeOut(1000);
+				
+			}, 2000);
+			
+		});
+		
+	});
+	
+}
+
+function nbtAddExtractionTableDataRow (tableid, refsetid, refid) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/addtabledatarow.php',
+		type: 'post',
+		data: {
+			tid: tableid,
+			refset: refsetid,
+			ref: refid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtTableExtraction' + tableid).html(html);
+		
+	});
+	
+}
+
+function nbtRemoveExtractionTableDataRow ( tableid, rowid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/removetabledatarow.php',
+		type: 'post',
+		data: {
+			tid: tableid,
+			row: rowid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtTDRowID' + rowid).fadeOut(200).removeClass('nbtTDRow' + tableid);
+		
+	});
+	
+}

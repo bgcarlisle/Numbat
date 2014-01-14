@@ -1928,57 +1928,22 @@ function nbt_get_safety_table_rows ( $drugid, $refid, $userid ) {
 	}
 }
 
-function nbt_add_new_efficacy_table_row ($drugid, $refid, $userid) {
+function nbt_add_new_extraction_table_data_row ($tableid, $refsetid, $refid, $userid) {
+	
+	$element = nbt_get_form_element_for_elementid ( $tableid );
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("INSERT INTO efficacy (drugid, referenceid, userid) VALUES (:drugid, :refid, :userid);");
+		$stmt = $dbh->prepare ("INSERT INTO `tabledata_" . $element['columnname'] . "` (refsetid, referenceid, userid) VALUES (:refset, :refid, :userid);");
 		
-		$stmt->bindParam(':drugid', $did);
+		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':refid', $rid);
 		$stmt->bindParam(':userid', $uid);
 		
-		$did = $drugid;
+		$rsid = $refsetid;
 		$rid = $refid;
 		$uid = $userid;
-		
-		if ($stmt->execute()) {
-			
-			$dbh = null;
-			
-			return TRUE;
-			
-		} else {
-			
-			$dbh = null;
-			
-			return FALSE;
-			
-		}
-		
-		
-		
-	}
-	
-	catch (PDOException $e) {
-		
-		echo $e->getMessage();
-		
-	}
-	
-}
-
-function nbt_remove_efficacy_table_row ( $rowid ) {
-	
-	try {
-		
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("DELETE FROM efficacy WHERE id = :rowid;");
-		
-		$stmt->bindParam(':rowid', $rid);
-		
-		$rid = $rowid;
 		
 		if ($stmt->execute()) {
 			
@@ -6563,7 +6528,7 @@ function nbt_add_table_data ( $formid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("CREATE TABLE `tabledata_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`,`userid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		$stmt = $dbh->prepare("CREATE TABLE `tabledata_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 		
 		if ($stmt->execute()) {
 			
@@ -7562,7 +7527,7 @@ function nbt_add_citation_selector ( $formid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("CREATE TABLE `citations_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `cite_no` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`,`userid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		$stmt = $dbh->prepare("CREATE TABLE `citations_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `cite_no` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `unique_cite` (`refsetid`,`referenceid`,`userid`,`cite_no`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 		
 		if ($stmt->execute()) {
 			
@@ -8363,6 +8328,86 @@ return array (
 	"Zimbabwe"
 );
 		
+}
+
+function nbt_remove_table_data_row ( $tableid, $rowid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $tableid );
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("DELETE FROM `tabledata_" . $element['columnname'] . "` WHERE id = :rowid;");
+		
+		$stmt->bindParam(':rowid', $rid);
+		
+		$rid = $rowid;
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+			return TRUE;
+			
+		} else {
+			
+			$dbh = null;
+			
+			return FALSE;
+			
+		}
+		
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function sig_update_extraction_table_data ($tableid, $rowid, $column, $newvalue) {
+	
+	$element = nbt_get_form_element_for_elementid ( $tableid );
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("UPDATE `tabledata_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :rowid;");
+		
+		$stmt->bindParam(':rowid', $rid);
+		$stmt->bindParam(':value', $val);
+		
+		$rid = $rowid;
+		$val = $newvalue;
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+			return TRUE;
+			
+		} else {
+			
+			$dbh = null;
+			
+			return FALSE;
+			
+		}
+		
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 }
 
 ?>

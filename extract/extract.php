@@ -241,11 +241,15 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 						
 					}
 					
+					?><div id="nbtTableExtraction<?php echo $element['id']; ?>"><?php
+					
 					$nbtExtractTableDataID = $element['id'];
 					$nbtExtractRefSet = $_GET['refset'];
 					$nbtExtractRefID = $_GET['ref'];
 					
 					include ('./tabledata.php');
+					
+					?></div><?php
 					
 				break;
 				
