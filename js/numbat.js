@@ -1224,3 +1224,32 @@ function nbtRemoveCitation ( sectionid, citationid ) {
 	});
 	
 }
+
+function nbtUpdateCiteNo ( section, citid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/updateciteno.php',
+		type: 'post',
+		data: {
+			sectionid: section,
+			id: citid,
+			newvalue: $('#nbtCiteNo' + section + '-' + citid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtCiteNoFeedback' + section + '-' + citid).html(html);
+		
+		$('#nbtCiteNoFeedback' + section + '-' + citid).fadeIn(50, function () {
+			
+			setTimeout ( function () {
+				
+				$('#nbtCiteNoFeedback' + section + '-' + citid).fadeOut(1000);
+				
+			}, 2000);
+			
+		});
+		
+	});
+	
+}

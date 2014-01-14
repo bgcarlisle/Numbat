@@ -10,21 +10,39 @@ foreach ( $citations as $citation ) {
 	
 	?><div class="nbtGreyGradient nbtCitation nbtCitOrigRef<?php echo $nbtListCitationsCitationID; ?>-<?php echo $ref['id']; ?>" id="nbtCitation<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?>">
 		<p class="nbtFinePrint" style="float: right;" id="nbtRemoveCite<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?>">
-			<a href="#" onclick="event.preventDefault();$(this).fadeOut(0);$('#nbtRemoveCitation<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?>').fadeIn();" id="nbtConfirmRemoveCitation<?php echo $nbtListCitationsCitationID; ?>-<?php echo $ref['id']; ?>">Remove citation</a>
+			<a href="#" onclick="event.preventDefault();$(this).fadeOut(0);$('#nbtRemoveCitation<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?>').fadeIn();" id="nbtConfirmRemoveCitation<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?>">Remove citation</a>
 			<span class="nbtHidden" id="nbtRemoveCitation<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?>">Are you sure? This can't be undone.<br>
 				<a href="#" onclick="event.preventDefault();nbtRemoveCitation(<?php echo $nbtListCitationsCitationID; ?>, <?php echo $citation['id']; ?>);">Yes, remove</a> |
-				<a href="#" onclick="event.preventDefault();$('#nbtRemoveCitation<?php echo $nbtListCitationsCitationID; ?>-<?php echo $ref['id']; ?>').fadeOut(0);$('#nbtConfirmRemoveCitation<?php echo $nbtListCitationsCitationID; ?>-<?php echo $ref['id']; ?>').fadeIn();">No, keep it</a>
+				<a href="#" onclick="event.preventDefault();$('#nbtRemoveCitation<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?>').fadeOut(0);$('#nbtConfirmRemoveCitation<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?>').fadeIn();">No, keep it</a>
 			</span>
 		</p>
-		<span class="nbtCiteNo">#<input type="text" id="nbtCiteNo<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?>" value="<?php echo $citation['cite_no']; ?>" onblur="nbtUpdateCiteNo(<?php echo $nbtListCitationsCitationID; ?>, <?php echo $citation['id']; ?>);" class="nbtCiteNo"><span id="nbtCiteNoFeedback<?php echo $citation['id']; ?>">&nbsp;</span></span>
+		<span class="nbtCiteNo">#<input type="text" id="nbtCiteNo<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?>" value="<?php echo $citation['cite_no']; ?>" onblur="nbtUpdateCiteNo(<?php echo $nbtListCitationsCitationID; ?>, <?php echo $citation['id']; ?>);" class="nbtCiteNo"><span id="nbtCiteNoFeedback<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?>" style="margin-left: 5px;">&nbsp;</span></span>
 		<h4><?php echo $ref['title']; ?>.</h4>
 		<p><?php echo $ref['authors']; ?>
 		<span class="nbtJournalName"><?php echo $ref['journal']; ?></span>:
 		<?php echo $ref['year']; ?>.</p>
 		
-		<hr>
+		<?php
 		
-		<p>Citation properties</p>
+		$citationcolumns = nbt_get_all_columns_for_citation_selector ( $nbtListCitationsCitationID );
+		
+		if ( count ( $citationcolumns ) > 0 ) {
+			
+			?><hr>
+			<p>Citation properties</p><?php
+			
+			foreach ( $citationcolumns as $column ) {
+				
+				echo $column['displayname'];
+				
+				?><?php
+				
+			}
+			
+		}
+		
+		?>
+		
 	</div><?php
 	
 }

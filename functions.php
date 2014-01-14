@@ -2810,12 +2810,14 @@ function nbt_update_drug_ref_indication ( $drugid, $refid, $newvalue ) {
 	
 }
 
-function nbt_update_citeno ( $citid, $newvalue ) {
+function nbt_update_citeno ( $section, $citid, $newvalue ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $section );
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("UPDATE citations SET cite_no = :newval WHERE id = :citid;");
+		$stmt = $dbh->prepare("UPDATE `citations_" . $element['columnname'] ."` SET cite_no = :newval WHERE id = :citid;");
 		
 		$stmt->bindParam(':newval', $newv);
 		$stmt->bindParam(':citid', $cid);
