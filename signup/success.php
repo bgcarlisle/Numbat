@@ -2,7 +2,7 @@
 
 include_once ('../functions.php');
 
-sig_save_new_user ($_POST['nbtSignupUsername'], $_POST['nbtSignupEmail'], $_POST['nbtSignupPassword1']);
+nbt_save_new_user ($_POST['nbtSignupUsername'], $_POST['nbtSignupEmail'], $_POST['nbtSignupPassword1']);
 
 ?><div class="nbtSigninPanel nbtGreyGradient">
 	<h2>Success</h2>
