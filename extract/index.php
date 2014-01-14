@@ -13,9 +13,10 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 				case "preview":
 				
 					$ref['title'] = "Example title for a very special paper";
-					$ref['authors'] = "Carlisle, BG, et al.";
+					$ref['authors'] = "Carlisle, BG et al.";
 					$ref['journal'] = "The Journal of Fancypants";
 					$ref['year'] = "2014";
+					$ref['abstract'] = "BACKGROUND: Mostly white. METHODS: Many? RESULTS: Few. DISCUSSION: No thank you.";
 					
 					include ( ABS_PATH . "header.php" );
 					include ( ABS_PATH . "extract/extract.php" );

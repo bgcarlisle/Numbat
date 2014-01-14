@@ -25,7 +25,15 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 	<div class="nbtContentPanel">
 		<h2><?php echo $ref['title']; ?></h2>
 		<p><?php echo $ref['authors']; ?></p>
-		<p><span class="nbtJournalName"><?php echo $ref['journal']; ?></span>: <?php echo $ref['year']; ?></p>
+		<?php
+		
+		if (( $ref['journal'] != "") && ($ref['year'] != "")) {
+			
+			?><p><span class="nbtJournalName"><?php echo $ref['journal']; ?></span>: <?php echo $ref['year']; ?></p><?php
+			
+		}
+		
+		?>
 	</div>
 	<div class="nbtContentPanel">
 		<h3>Abstract</h3>
