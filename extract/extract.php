@@ -6,11 +6,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'], $_SESSION['nbt_userid'] );
 
-?><button onclick="$('.sigSidebar').fadeIn(200);$(this).fadeOut(0);" id="sigUnhideSidebar" style="display: none; position: fixed; left: 20px; top: 100px;">Unhide notes</button>
+?><button onclick="$('.nbtSidebar').fadeIn(200);$(this).fadeOut(0);" id="nbtUnhideSidebar" style="display: none; position: fixed; left: 20px; top: 100px;">Unhide notes</button>
 <div class="nbtSidebar">
 	<h3>Extraction notes</h3>
-	<p class="nbtFinePrint">These notes are for your own reference. These will not be included in the final report, and they are not visible to other extractors. <a href="#" onclick="event.preventDefault();$(this).parent().parent().fadeOut(200);$('button#sigUnhideSidebar').fadeIn(200);">[Hide]</a></p>
-	<textarea id="nbtExtractionNotes" onblur="nbtUpdateNotes(<?php echo $extraction['id']; ?>);"><?php
+	<p class="nbtFinePrint">These notes are for your own reference. These will not be included in the final report, and they are not visible to other extractors. <a href="#" onclick="event.preventDefault();$(this).parent().parent().fadeOut(200);$('button#nbtUnhideSidebar').fadeIn(200);">[Hide]</a></p>
+	<textarea id="nbtExtractionNotes" onblur="nbtSaveTextField(<?php echo $_GET['form']; ?>, <?php echo $extraction['id']; ?>, 'notes', 'nbtExtractionNotes', 'nbtNotesFeedback');"><?php
 	
 	echo $extraction['notes'];
 	
