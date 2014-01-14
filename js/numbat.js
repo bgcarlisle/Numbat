@@ -1178,8 +1178,7 @@ function nbtAddCitation (cid, csuffix, rsid, origrefid, citid, user) {
 			
 			$('.nbtCitOrigRef' + cid + '-' + citid).addClass('nbtGreyGradient').removeClass('nbtAlreadyAdded');
 			
-			
-			$('#sigDoubleCitationFeedback' + cid).fadeOut();
+			$('#nbtDoubleCitationFeedback' + cid).fadeOut();
 			
 			
 		}, 1700);
@@ -1205,5 +1204,23 @@ function nbtAddCitation (cid, csuffix, rsid, origrefid, citid, user) {
 		});
 	
 	}
+	
+}
+
+function nbtRemoveCitation ( sectionid, citationid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/removecitation.php',
+		type: 'post',
+		data: {
+			section: sectionid,
+			citation: citationid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtCitation' + sectionid + '-' + citationid).slideUp();
+		
+	});
 	
 }

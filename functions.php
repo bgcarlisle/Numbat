@@ -1197,16 +1197,22 @@ function nbt_remove_master_citation ( $id ) {
 	
 }
 
-function nbt_remove_citation ( $id ) {
+function nbt_remove_citation ( $section, $citation ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $section );
+	
+	echo $citation . " : ";
+	
+	echo "DELETE FROM `citations_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;";
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("DELETE FROM citations WHERE id = :id LIMIT 1;");
+		$stmt = $dbh->prepare("DELETE FROM `citations_" . $element['columnname'] . "` WHERE `id` = :id LIMIT 1;");
 		
 		$stmt->bindParam(':id', $cid);
 		
-		$cid = $id;
+		$cid = $citation;
 		
 		if ($stmt->execute()) {
 			
