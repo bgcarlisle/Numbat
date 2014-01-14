@@ -33,9 +33,14 @@ foreach ( $citations as $citation ) {
 			
 			foreach ( $citationcolumns as $column ) {
 				
-				echo $column['displayname'];
+				?><p><?php echo $column['displayname']; ?> <?php
 				
-				?><?php
+				?><input type="text" value="<?php
+	
+				echo $citation[$column['dbname']];
+				
+				?>" id="nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>" onblur="nbtSaveCitationTextField(<?php echo $nbtListCitationsCitationID; ?>, <?php echo $citation['id']; ?>, '<?php echo $column['dbname']; ?>', 'nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>', 'nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>Feedback');" maxlength="500">
+				<span class="nbtInputFeedback" id="nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>Feedback">&nbsp;</span></p><?php
 				
 			}
 			

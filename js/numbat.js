@@ -949,6 +949,36 @@ function nbtSaveTextField (formid, extractionid, questionid, textfieldid, feedba
 	
 }
 
+function nbtSaveCitationTextField (sectionid, citationid, questionid, textfieldid, feedbackid) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/updatecitationproperty.php',
+		type: 'post',
+		data: {
+			section: sectionid,
+			cid: citationid,
+			question: questionid,
+			answer: $('#' + textfieldid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#' + feedbackid).html(html);
+		
+		$('#' + feedbackid).fadeIn(50, function () {
+			
+			setTimeout ( function () {
+				
+				$('#' + feedbackid).fadeOut(1000);
+				
+			}, 2000);
+			
+		});
+		
+	});
+	
+}
+
 function nbtSaveDateField (formid, extractionid, questionid, textfieldid, feedbackid) {
 	
 	$.ajax ({
