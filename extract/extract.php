@@ -1,7 +1,5 @@
 <?php
 
-$ref = nbt_get_reference_for_refsetid_and_refid ( $_GET['refset'], $_GET['ref'] );
-
 $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'], $_SESSION['nbt_userid'] );

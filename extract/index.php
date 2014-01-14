@@ -6,8 +6,36 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 	
 	if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) >= 2 ) {
 		
-		include ( ABS_PATH . "header.php" );
-		include ( ABS_PATH . "extract/extract.php" );
+		if ( isset ( $_GET['action'] ) ) {
+			
+			switch ( $_GET['action'] ) {
+				
+				case "preview":
+				
+					$ref['title'] = "Example title for a very special paper";
+					$ref['authors'] = "Carlisle, BG, et al.";
+					$ref['journal'] = "The Journal of Fancypants";
+					$ref['year'] = "2014";
+					
+					include ( ABS_PATH . "header.php" );
+					include ( ABS_PATH . "extract/extract.php" );
+				
+				break;
+				
+				case "extract":
+				
+					$ref = nbt_get_reference_for_refsetid_and_refid ( $_GET['refset'], $_GET['ref'] );
+				
+					include ( ABS_PATH . "header.php" );
+					include ( ABS_PATH . "extract/extract.php" );
+				
+				break;
+				
+			}
+			
+		}
+		
+		
 		
 	} else {
 		

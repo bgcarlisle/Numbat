@@ -3,6 +3,8 @@
 $form = nbt_get_form_for_id ($_GET['id']);
 
 ?><div class="nbtContentPanel nbtGreyGradient">
+
+	<div class="nbtFinePrint" style="float: right;"><a href="<?php echo SITE_URL; ?>extract/?action=preview&form=<?php echo $_GET['id']; ?>" target="_blank">View preview</a></div>
 	
 	<h2>Name of form</h2>
 	<input type="text" id="nbtFormName" onblur="nbtSaveFormName(<?php echo $form['id']; ?>);" value="<?php echo $form['name']; ?>">
