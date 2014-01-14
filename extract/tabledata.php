@@ -17,7 +17,7 @@ $no_of_columns = count ( $columns );
 		}
 		
 		?>
-		<td style="width: 100px;">Delete</td>
+		<td style="width: 70px;">Delete</td>
 	</tr>
 	<?php
 	
