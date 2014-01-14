@@ -1040,7 +1040,7 @@ function nbtSaveSingleSelect (formid, extractionid, questionlabel, response, but
 			
 			$('.' + classid).removeClass('nbtTextOptionChosen');
 			
-//			sigUpdateConditionalDisplays ();
+			nbtUpdateConditionalDisplays ();
 			
 		});
 		
@@ -1061,7 +1061,7 @@ function nbtSaveSingleSelect (formid, extractionid, questionlabel, response, but
 			$('.' + classid).removeClass('nbtTextOptionChosen');
 			$('#' + buttonid).addClass('nbtTextOptionChosen');
 			
-//			sigUpdateConditionalDisplays ();
+			nbtUpdateConditionalDisplays ();
 			
 		});
 	
@@ -1084,7 +1084,7 @@ function nbtSaveMultiSelect (formid, extractionid, questionlabel, buttonid) {
 		
 		$('#' + buttonid).toggleClass('nbtTextOptionChosen');
 		
-//		nbtUpdateConditionalDisplays ();
+		nbtUpdateConditionalDisplays ();
 		
 	});
 	
@@ -1279,6 +1279,32 @@ function nbtUpdateCiteNo ( section, citid ) {
 			}, 2000);
 			
 		});
+		
+	});
+	
+}
+
+function nbtUpdateConditionalDisplays () {
+	
+	$('a.nbtTextOptionSelect').each( function () {
+		
+		if ( $(this).hasClass('nbtTextOptionChosen') ) {
+			
+			if ( $(this).attr('conditionalid') != '') {
+				
+				$('.' + $(this).attr('conditionalid')).slideDown(50);
+				
+			}
+			
+		} else {
+			
+			if ( $(this).attr('conditionalid') != '') {
+			
+				$('.' + $(this).attr('conditionalid')).slideUp(50);
+			
+			}
+			
+		}
 		
 	});
 	

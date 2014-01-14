@@ -58,7 +58,7 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 			0 => "Not yet started",
 			1 => "In progress",
 			2 => "Completed"
-		) ); ?>
+		), array () ); ?>
 	</div>
 	<?php
 	
@@ -98,199 +98,286 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 				
 				case "open_text":
 					
-					?><p><?php echo $element['displayname']; ?><?php
+					?><div<?php
 					
-					if ( $element['codebook'] != "" ) {
+					if ( $element['toggle'] != "" ) {
 						
-						?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
-						<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
-						
-					} else {
-						
-						?></p><?php
+						?> class="nbtHidden <?php echo $element['toggle']; ?>"<?php
 						
 					}
 					
-					nbt_echo_text_field ($_GET['form'], $extraction, $element['columnname'], 500, FALSE);
+					?>>
+					
+						<p><?php echo $element['displayname']; ?><?php
+						
+						if ( $element['codebook'] != "" ) {
+							
+							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
+							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
+							
+						} else {
+							
+							?></p><?php
+							
+						}
+						
+						nbt_echo_text_field ($_GET['form'], $extraction, $element['columnname'], 500, FALSE);
+					
+					?></div><?php
 					
 				break;
 				
 				case "date_selector":
 					
-					?><p><?php echo $element['displayname']; ?><?php
+					?><div<?php
 					
-					if ( $element['codebook'] != "" ) {
+					if ( $element['toggle'] != "" ) {
 						
-						?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
-						<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
-						
-					} else {
-						
-						?></p><?php
+						?> class="nbtHidden <?php echo $element['toggle']; ?>"<?php
 						
 					}
 					
-					nbt_echo_date_selector ($_GET['form'], $extraction, $element['columnname']);
+					?>>
+					
+						<p><?php echo $element['displayname']; ?><?php
+						
+						if ( $element['codebook'] != "" ) {
+							
+							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
+							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
+							
+						} else {
+							
+							?></p><?php
+							
+						}
+						
+						nbt_echo_date_selector ($_GET['form'], $extraction, $element['columnname']);
+					
+					?></div><?php
 					
 				break;
 				
 				case "single_select":
 					
-					?><p><?php echo $element['displayname']; ?><?php
+					?><div<?php
 					
-					if ( $element['codebook'] != "" ) {
+					if ( $element['toggle'] != "" ) {
 						
-						?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
-						<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
-						
-					} else {
-						
-						?></p><?php
+						?> class="nbtHidden <?php echo $element['toggle']; ?>"<?php
 						
 					}
 					
-					$answers = array ();
-					
-					$selectoptions = nbt_get_all_select_options_for_element ( $element['id'] );
-					
-					foreach ( $selectoptions as $option ) {
+					?>>
 						
-						$answers[$option['dbname']] = $option['displayname'];
+						<p><?php echo $element['displayname']; ?><?php
 						
-					}
+						if ( $element['codebook'] != "" ) {
+							
+							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
+							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
+							
+						} else {
+							
+							?></p><?php
+							
+						}
+						
+						$answers = array ();
+						$toggles = array ();
+						
+						$selectoptions = nbt_get_all_select_options_for_element ( $element['id'] );
+						
+						foreach ( $selectoptions as $option ) {
+							
+							$answers[$option['dbname']] = $option['displayname'];
+							$toggles[$option['dbname']] = $option['toggle'];
+							
+						}
+						
+						nbt_echo_single_select ( $_GET['form'], $extraction, $element['columnname'], $answers, $toggles );
 					
-					nbt_echo_single_select ( $_GET['form'], $extraction, $element['columnname'], $answers );
+					?></div><?php
 					
 				break;
 				
 				case "multi_select":
 					
-					?><p><?php echo $element['displayname']; ?><?php
+					?><div<?php
 					
-					if ( $element['codebook'] != "" ) {
+					if ( $element['toggle'] != "" ) {
 						
-						?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
-						<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
-						
-					} else {
-						
-						?></p><?php
+						?> class="nbtHidden <?php echo $element['toggle']; ?>"<?php
 						
 					}
 					
-					$answers = array ();
+					?>>
 					
-					$selectoptions = nbt_get_all_select_options_for_element ( $element['id'] );
-					
-					foreach ( $selectoptions as $option ) {
+						<p><?php echo $element['displayname']; ?><?php
 						
-						$answers[$option['dbname']] = $option['displayname'];
+						if ( $element['codebook'] != "" ) {
+							
+							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
+							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
+							
+						} else {
+							
+							?></p><?php
+							
+						}
 						
-					}
+						$answers = array ();
+						$toggles = array ();
+						
+						$selectoptions = nbt_get_all_select_options_for_element ( $element['id'] );
+						
+						foreach ( $selectoptions as $option ) {
+							
+							$answers[$option['dbname']] = $option['displayname'];
+							$toggles[$option['dbname']] = $option['toggle'];
+							
+						}
+						
+						nbt_echo_multi_select ($_GET['form'], $extraction, $element['columnname'], $answers, $toggles );
 					
-					nbt_echo_multi_select ($_GET['form'], $extraction, $element['columnname'], $answers );
+					?></div><?php
 					
 				break;
 				
 				case "country_selector":
 					
-					?><p><?php echo $element['displayname']; ?><?php
+					?><div<?php
 					
-					if ( $element['codebook'] != "" ) {
+					if ( $element['toggle'] != "" ) {
 						
-						?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
-						<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
-						
-					} else {
-						
-						?></p><?php
+						?> class="nbtHidden <?php echo $element['toggle']; ?>"<?php
 						
 					}
 					
-					$countries = nbt_return_country_array (); ?>
+					?>>
 					
-					<select id="nbtCountrySelect<?php echo $element['columnname']; ?>" onblur="nbtSaveTextField(<?php echo $_GET['form']; ?>, <?php echo $extraction['id']; ?>, '<?php echo $element['columnname']; ?>', 'nbtCountrySelect<?php echo $element['columnname']; ?>', 'sigCountrySelect<?php echo $element['columnname']; ?>Feedback');">
-						<?php
+						<p><?php echo $element['displayname']; ?><?php
 						
-						foreach ( $countries as $country ) {
+						if ( $element['codebook'] != "" ) {
 							
-							?><option value="<?php echo $country; ?>"<?php
+							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
+							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
 							
-								if ( $extraction[$element['columnname']] == $country ) {
-									
-									?> selected<?php
-									
-								}
+						} else {
 							
-							?>><?php echo $country; ?></option><?php
+							?></p><?php
 							
 						}
 						
-						?>
-					</select>
-					<span class="nbtInputFeedback" id="sigCountrySelect<?php echo $element['columnname']; ?>Feedback">&nbsp;</span><?php
+						$countries = nbt_return_country_array (); ?>
+						
+						<select id="nbtCountrySelect<?php echo $element['columnname']; ?>" onblur="nbtSaveTextField(<?php echo $_GET['form']; ?>, <?php echo $extraction['id']; ?>, '<?php echo $element['columnname']; ?>', 'nbtCountrySelect<?php echo $element['columnname']; ?>', 'sigCountrySelect<?php echo $element['columnname']; ?>Feedback');">
+							<?php
+							
+							foreach ( $countries as $country ) {
+								
+								?><option value="<?php echo $country; ?>"<?php
+								
+									if ( $extraction[$element['columnname']] == $country ) {
+										
+										?> selected<?php
+										
+									}
+								
+								?>><?php echo $country; ?></option><?php
+								
+							}
+							
+							?>
+						</select>
+						<span class="nbtInputFeedback" id="sigCountrySelect<?php echo $element['columnname']; ?>Feedback">&nbsp;</span>
+					</div><?php
 					
 				break;
 				
 				case "table_data":
 					
-					?><p><?php echo $element['displayname']; ?><?php
+					?><div<?php
 					
-					if ( $element['codebook'] != "" ) {
+					if ( $element['toggle'] != "" ) {
 						
-						?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
-						<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
-						
-					} else {
-						
-						?></p><?php
+						?> class="nbtHidden <?php echo $element['toggle']; ?>"<?php
 						
 					}
 					
-					?><div id="nbtTableExtraction<?php echo $element['id']; ?>"><?php
+					?>>
 					
-					$nbtExtractTableDataID = $element['id'];
-					$nbtExtractRefSet = $_GET['refset'];
-					$nbtExtractRefID = $_GET['ref'];
+						<p><?php echo $element['displayname']; ?><?php
+						
+						if ( $element['codebook'] != "" ) {
+							
+							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
+							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
+							
+						} else {
+							
+							?></p><?php
+							
+						}
+						
+						?><div id="nbtTableExtraction<?php echo $element['id']; ?>"><?php
+						
+						$nbtExtractTableDataID = $element['id'];
+						$nbtExtractRefSet = $_GET['refset'];
+						$nbtExtractRefID = $_GET['ref'];
+						
+						include ('./tabledata.php');
+						
+						?></div>
 					
-					include ('./tabledata.php');
-					
-					?></div><?php
+					</div><?php
 					
 				break;
 				
 				case "citations":
 					
-					?><p><?php echo $element['displayname']; ?><?php
+					?><div<?php
 					
-					if ( $element['codebook'] != "" ) {
+					if ( $element['toggle'] != "" ) {
 						
-						?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
-						<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
-						
-					} else {
-						
-						?></p><?php
+						?> class="nbtHidden <?php echo $element['toggle']; ?>"<?php
 						
 					}
 					
-					?><p>
-						Add a new citation:
-						<a href="#" onclick="event.preventDefault();$('#nbtCitationSuggestions<?php echo $element['id']; ?>').html('&nbsp;');$('#nbtCitationFinder<?php echo $element['id']; ?>').val('');">(Clear field)</a>
-						<span class="nbtDoubleCitationFeedback nbtHidden" id="nbtDoubleCitationFeedback<?php echo $element['id']; ?>">You have already cited this reference here!</span>
-					</p>
-					<input type="text" class="nbtCitationFinder" id="nbtCitationFinder<?php echo $element['id']; ?>" onkeyup="nbtFindCitation(<?php echo $element['id']; ?>, '<?php echo $element['columnname']; ?>', 'nbtCitationSuggestions<?php echo $element['id']; ?>', <?php echo $element['id']; ?>, <?php echo $_GET['refset']; ?>, <?php echo $_GET['ref']; ?>);">
-					<div class="nbtCitationSuggestions" id="nbtCitationSuggestions<?php echo $element['id']; ?>">&nbsp;</div>
-					<div class="nbtCitationList" id="nbtCitationList<?php echo $element['id']; ?>"><?php
+					?>>
+					
+						<p><?php echo $element['displayname']; ?><?php
 						
-						$nbtListCitationsCitationID = $element['id'];
-						$nbtListCitationsCitationDB = $element['columnname'];
-						$nbtListCitationsRefSetID = $_GET['refset'];
-						$nbtListCitationsReference = $_GET['ref'];
+						if ( $element['codebook'] != "" ) {
+							
+							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
+							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
+							
+						} else {
+							
+							?></p><?php
+							
+						}
 						
-						include ("./listcitations.php");
-						
-					?></div><?php
+						?><p>
+							Add a new citation:
+							<a href="#" onclick="event.preventDefault();$('#nbtCitationSuggestions<?php echo $element['id']; ?>').html('&nbsp;');$('#nbtCitationFinder<?php echo $element['id']; ?>').val('');">(Clear field)</a>
+							<span class="nbtDoubleCitationFeedback nbtHidden" id="nbtDoubleCitationFeedback<?php echo $element['id']; ?>">You have already cited this reference here!</span>
+						</p>
+						<input type="text" class="nbtCitationFinder" id="nbtCitationFinder<?php echo $element['id']; ?>" onkeyup="nbtFindCitation(<?php echo $element['id']; ?>, '<?php echo $element['columnname']; ?>', 'nbtCitationSuggestions<?php echo $element['id']; ?>', <?php echo $element['id']; ?>, <?php echo $_GET['refset']; ?>, <?php echo $_GET['ref']; ?>);">
+						<div class="nbtCitationSuggestions" id="nbtCitationSuggestions<?php echo $element['id']; ?>">&nbsp;</div>
+						<div class="nbtCitationList" id="nbtCitationList<?php echo $element['id']; ?>"><?php
+							
+							$nbtListCitationsCitationID = $element['id'];
+							$nbtListCitationsCitationDB = $element['columnname'];
+							$nbtListCitationsRefSetID = $_GET['refset'];
+							$nbtListCitationsReference = $_GET['ref'];
+							
+							include ("./listcitations.php");
+							
+						?></div>
+					
+					</div><?php
 					
 				break;
 				
@@ -304,6 +391,5 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 	<div style="height: 200px;">&nbsp;</div>
 </div>
 <script type="text/javascript">
-sigUpdateConditionalDisplays ();
-sigUpdateProgress ();
+nbtUpdateConditionalDisplays ();
 </script>

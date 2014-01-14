@@ -1681,7 +1681,7 @@ function nbt_remove_uncited ($uncid) {
 	}
 }
 
-function nbt_echo_multi_select ($formid, $extraction, $question, $options) {
+function nbt_echo_multi_select ($formid, $extraction, $question, $options, $toggles = NULL ) {
 	
 	// $options must be an array of the names of the column in the db
 	
@@ -1697,13 +1697,13 @@ function nbt_echo_multi_select ($formid, $extraction, $question, $options) {
 				
 			}
 			
-		?>" id="nbtMS<?php echo $dbcolumn; ?>" onclick="event.preventDefault();nbtSaveMultiSelect(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $question . "_" . $dbcolumn; ?>', 'nbtMS<?php echo $dbcolumn; ?>');"  conditionalid="nbt<?php echo $dbcolumn ?>Cond"><?php echo $plaintext; ?></a><?php
+		?>" id="nbtMS<?php echo $dbcolumn; ?>" onclick="event.preventDefault();nbtSaveMultiSelect(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $question . "_" . $dbcolumn; ?>', 'nbtMS<?php echo $dbcolumn; ?>');"  conditionalid="<?php echo $toggles[$dbcolumn]; ?>"><?php echo $plaintext; ?></a><?php
 		
 	}
 	
 }
 
-function nbt_echo_single_select ($formid, $extraction, $question, $answers) {
+function nbt_echo_single_select ($formid, $extraction, $question, $answers, $toggles = NULL) {
 	
 	// $question must be the name of the column in the db
 	// $answers must be an array of the answer entered in the db and the plain text version displayed
@@ -1722,7 +1722,7 @@ function nbt_echo_single_select ($formid, $extraction, $question, $answers) {
 		
 		$buttonid = "nbtQ" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
 		
-		?>" id="<?php echo $buttonid; ?>" onclick="event.preventDefault();nbtSaveSingleSelect(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbt<?php echo $question; ?>');" conditionalid="<?php echo $buttonid ?>Cond"><?php echo $ptanswer; ?></a><?php
+		?>" id="<?php echo $buttonid; ?>" onclick="event.preventDefault();nbtSaveSingleSelect(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbt<?php echo $question; ?>');" conditionalid="<?php echo $toggles[$dbanswer]; ?>"><?php echo $ptanswer; ?></a><?php
 		
 	}
 	
