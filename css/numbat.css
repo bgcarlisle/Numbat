@@ -170,64 +170,23 @@ input[type=password] {
 .nbtJournalName {
 	font-style: italic;
 }
-#nbtIntroCitationSuggestions {
+.nbtCitationSuggestions {
 	width: 595px;
 	margin-left: 4px;
 	margin-bottom: 10px;
 	border-bottom-right-radius: 10px;
 	border-bottom-left-radius: 10px;
 }
-#nbtCompCitationSuggestions {
-	width: 595px;
-	margin-left: 4px;
-	margin-bottom: 10px;
-	border-bottom-right-radius: 10px;
-	border-bottom-left-radius: 10px;
-}
-#nbtIntroCitationSuggestions div {
+.nbtCitationSuggestions div {
 	padding: 3px 10px 3px 10px;
 }
-#nbtCompCitationSuggestions div {
-	padding: 3px 10px 3px 10px;
-}
-#nbtCompCitationSuggestions div:nth-child(even) {
+.nbtCitationSuggestions div:nth-child(even) {
 	background: #eee;
 }
-#nbtCompCitationSuggestions div:nth-child(odd) {
+.nbtCitationSuggestions div:nth-child(odd) {
 	background: #ddd;
 }
-#nbtIntroCitationSuggestions div:nth-child(even) {
-	background: #eee;
-}
-#nbtIntroCitationSuggestions div:nth-child(odd) {
-	background: #ddd;
-}
-input#nbtIntroCitationFinder {
-	width: 600px;
-}
-input#nbtCompCitationFinder {
-	width: 600px;
-}
-input#nbtUncitedNovelHypothesisAdder {
-	width: 600px;
-}
-#nbtDiscussionCitationSuggestions {
-	width: 595px;
-	margin-left: 4px;
-	margin-bottom: 10px;
-	border-bottom-right-radius: 10px;
-	border-bottom-left-radius: 10px;
-}
-#nbtDiscussionCitationSuggestions div {
-	padding: 3px 10px 3px 10px;
-}
-#nbtDiscussionCitationSuggestions div:nth-child(even) {
-	background: #eee;
-}
-#nbtDiscussionCitationSuggestions div:nth-child(odd) {
-	background: #ddd;
-}
-input#nbtDiscussionCitationFinder {
+input.nbtCitationFinder {
 	width: 600px;
 }
 #nbtAbstract {

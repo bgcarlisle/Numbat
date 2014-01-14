@@ -270,12 +270,12 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 					
 					?><p>
 						Add a new citation:
-						<a href="#" onclick="event.preventDefault();$('#sigIntroCitationSuggestions').html('&nbsp;');$('#nbtIntroCitationFinder').val('');">(Clear field)</a>
+						<a href="#" onclick="event.preventDefault();$('#sigIntroCitationSuggestions').html('&nbsp;');$('#nbtCitationFinder<?php echo $element['id']; ?>').val('');">(Clear field)</a>
 						<span class="nbtDoubleCitationFeedback nbtHidden" id="nbtDoubleCitationFeedback-Intro">You have already cited this reference here!</span>
 					</p>
-					<input type="text" id="nbtIntroCitationFinder" onkeyup="nbtFindIntroCitation('nbtIntroCitationSuggestions', <?php echo $refsetid; ?>, <?php echo $_GET['reference']; ?>);">
-					<div id="nbtIntroCitationSuggestions">&nbsp;</div>
-					<div id="nbtCitationListIntro">
+					<input type="text" class="nbtCitationFinder" id="nbtCitationFinder<?php echo $element['id']; ?>" onkeyup="nbtFindCitation('nbtCitationSuggestions<?php echo $element['id']; ?>', <?php echo $_GET['refset']; ?>, <?php echo $_GET['ref']; ?>);">
+					<div class="nbtCitationSuggestions" id="nbtCitationSuggestions<?php echo $element['id']; ?>">&nbsp;</div>
+					<div id="nbtCitationList<?php echo $element['id']; ?>">
 						<?php
 						
 						$sigListCitationsDrugID = $drugid;
