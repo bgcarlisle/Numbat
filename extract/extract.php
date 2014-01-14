@@ -253,6 +253,41 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 					
 				break;
 				
+				case "citations":
+					
+					?><p><?php echo $element['displayname']; ?><?php
+					
+					if ( $element['codebook'] != "" ) {
+						
+						?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
+						<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
+						
+					} else {
+						
+						?></p><?php
+						
+					}
+					
+					?><p>
+						Add a new citation:
+						<a href="#" onclick="event.preventDefault();$('#sigIntroCitationSuggestions').html('&nbsp;');$('#nbtIntroCitationFinder').val('');">(Clear field)</a>
+						<span class="nbtDoubleCitationFeedback nbtHidden" id="nbtDoubleCitationFeedback-Intro">You have already cited this reference here!</span>
+					</p>
+					<input type="text" id="nbtIntroCitationFinder" onkeyup="nbtFindIntroCitation('nbtIntroCitationSuggestions', <?php echo $refsetid; ?>, <?php echo $_GET['reference']; ?>);">
+					<div id="nbtIntroCitationSuggestions">&nbsp;</div>
+					<div id="nbtCitationListIntro">
+						<?php
+						
+						$sigListCitationsDrugID = $drugid;
+						$sigListCitationsReference = $_GET['reference'];
+						
+//						include ("./listintrocitations.php");
+						
+						?>
+					</div><?php
+					
+				break;
+				
 			}
 			
 		}
