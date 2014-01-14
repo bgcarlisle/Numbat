@@ -1,9 +1,7 @@
-Numbat v. 0.3
+Numbat v. 0.4
 ======
 
-Numbat Meta-Analysis Extraction Manager: "It's still not ready yet!"
-
-![Numbat](https://github.com/bgcarlisle/Numbat/blob/master/images/numbat.gif "It's a numbat!")
+Numbat Academic Meta-Analysis Extraction Manager: "It's still not ready yet!"
 
 ## Overview
 
@@ -17,7 +15,9 @@ It is named after the numbat, because numbats feed on termites by extracting the
 
 ### What Numbat does
 
-Numbat is a piece of software designed for managing the extraction of large volumes of data from primary sources among multiple users, and then reconciling the differences between them.
+Numbat is a piece of software designed for managing the extraction of large volumes of data from primary sources among multiple users, and then reconciling the differences between them. It is designed for use in meta-analytic projects in an academic context.
+
+The following are the intended uses of Numbat.
 
 * Manage large databases of references
 * Different levels of extraction (e.g. title-and-abstract vs full extraction)
@@ -31,6 +31,16 @@ Numbat is a piece of software designed for managing the extraction of large volu
 * Calculating Kohen's kappa
 * Semantic analysis of papers to extract (you have to read the papers yourself)
 * Magic
+
+### Values for the Numbat project
+
+* "Easy in, easy out" as a philosophy for data in Numbat—data entered in Numbat should be easily imported and exported, so that users are not trapped in this software
+* Adherence to standards
+* Usability
+* Expandability / modularity of software
+* Ownership of one's own data
+* Ease of back-up
+
 
 ### Why not just use a Google Form?
 
@@ -54,9 +64,14 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 
 ## Contact info
 
-I cannot guarantee that I will be able to help you with your problems. Depending on the nature and scope of your problems, I may not even try. That said, if you have found bugs, or if you have ideas for future directions for the software, here are some reasonably reliable ways to contact me.
+I cannot guarantee that I will be able to help you with your problems. Depending on the nature and scope of your problems, you may be better off calling 911 or admitting yourself to the nearest hospital. That said, if you have found bugs, or if you have ideas for future directions for the software, here are some reasonably reliable ways to contact me.
 
 * Email: <benjamin.carlisle@mcgill.ca>
 * Twitter: @numbatmanager
 * Bitmessage: BM-2DBF2CD9Dq25NnESpf4gZ69r5UqoCAbVZV
 * Post: Room 303, 3647 rue Peel, Montréal QC H1M 2N9
+
+Best,
+
+Benjamin Carlisle  
+Murph E.

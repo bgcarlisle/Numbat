@@ -1,10 +1,10 @@
 <?php
 
-include_once('../functions.php');
+include_once('../config.php');
 
 // Here's the actual code.
 
-if ( sig_email_is_in_use ( $_POST['email'] ) ) {
+if ( nbt_email_is_in_use ( $_POST['email'] ) ) {
 	
 	echo "Email is already in use :(";
 		

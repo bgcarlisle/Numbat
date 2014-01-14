@@ -1,10 +1,10 @@
 <?php
 
-include_once('../functions.php');
+include_once('../config.php');
 
 // Here's the actual code.
 
-if ( sig_username_is_taken ( $_POST['username'] ) ) {
+if ( nbt_username_is_taken ( $_POST['username'] ) ) {
 	
 	echo "Username is not available :(";
 	

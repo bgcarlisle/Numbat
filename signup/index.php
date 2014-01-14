@@ -1,8 +1,8 @@
 <?php
 
-include_once ('../functions.php');
+include_once ('../config.php');
 
-if ( isset ( $_POST['sigSignupUsername'] ) ) {
+if ( isset ( $_POST['nbtSignupUsername'] ) ) {
 	
 	include ("../header.php");
 	include ("./submit.php");
@@ -11,7 +11,7 @@ if ( isset ( $_POST['sigSignupUsername'] ) ) {
 	
 	if ( isset ($_GET['code']) ) {
 		
-		if ( sig_verify_email_address ($_GET['username'], $_GET['code']) ) {
+		if ( nbt_verify_email_address ($_GET['username'], $_GET['code']) ) {
 			
 			include ("../header.php");
 			include ("./verify.php");
