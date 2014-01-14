@@ -889,18 +889,16 @@ function nbt_get_reference_for_refsetid_and_refid ( $refsetid, $refid ) {
 	
 }
 
-function nbt_return_references_for_drug_and_query ( $drugid, $refid, $query ) {
-	
-	$drugname = nbt_get_name_for_refsetid ($drugid);
+function nbt_return_references_for_refset_and_query ( $citationsid, $refsetid, $refid, $query ) {
 	
 	if ( is_numeric ( $query ) ) {
 		
 		try { // Search citations for a particular number
 			
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SELECT * FROM citations WHERE drugid = :drugid AND referenceid = :refid AND cite_no = :cite LIMIT 6;");
+			$stmt = $dbh->prepare("SELECT * FROM `citations` WHERE refsetid = :refset AND referenceid = :refid AND cite_no = :cite LIMIT 6;");
 			
-			$stmt->bindParam(':drugid', $did);
+			$stmt->bindParam(':refset', $rsid);
 			$stmt->bindParam(':refid', $rid);
 			$stmt->bindParam(':cite', $cid);
 			
@@ -923,7 +921,7 @@ function nbt_return_references_for_drug_and_query ( $drugid, $refid, $query ) {
 			try {
 			
 				$dbh2 = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-				$stmt2 = $dbh2->prepare("SELECT * FROM " . $drugname . " WHERE id = :citationid LIMIT 1;");
+				$stmt2 = $dbh2->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE id = :citationid LIMIT 1;");
 				
 				$stmt2->bindParam(':citationid', $citid);
 				
@@ -958,7 +956,7 @@ function nbt_return_references_for_drug_and_query ( $drugid, $refid, $query ) {
 		try {
 			
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " WHERE title LIKE :query OR authors LIKE :query LIMIT 6;");
+			$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE title LIKE :query OR authors LIKE :query LIMIT 6;");
 			
 			$stmt->bindParam(':query', $quer);
 			
@@ -984,27 +982,23 @@ function nbt_return_references_for_drug_and_query ( $drugid, $refid, $query ) {
 	
 }
 
-function nbt_add_citation ( $drugid, $reference, $userid, $section, $citation ) {
+function nbt_add_citation ( $citationsection, $refsetid, $reference, $userid, $citation ) {
 	
-	// $section = 1 or 2
-	// 1 means "intro"
-	// 2 means "discussion"
+	$element = nbt_get_form_element_for_elementid ( $citationsection );
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ('INSERT INTO citations (drugid, referenceid, userid, section, citationid) VALUES (:drug, :ref, :user, :sect, :cit)');
+		$stmt = $dbh->prepare ("INSERT INTO `citations_" . $element['columnname'] . "` (refsetid, referenceid, userid, citationid) VALUES (:refset, :ref, :user, :cit)");
 		
-		$stmt->bindParam(':drug', $did);
+		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':ref', $ref);
 		$stmt->bindParam(':user', $user);
-		$stmt->bindParam(':sect', $sect);
 		$stmt->bindParam(':cit', $cit);
 		
-		$did = $drugid;
+		$rsid = $refsetid;
 		$ref = $reference;
 		$user = $userid;
-		$sect = $section;
 		$cit = $citation;
 		
 		if ($stmt->execute()) {
@@ -1024,7 +1018,7 @@ function nbt_add_citation ( $drugid, $reference, $userid, $section, $citation ) 
 	
 }
 
-function nbt_get_citations ( $drugid, $reference, $section, $userid, $orderbycitation = FALSE ) {
+function nbt_get_citations ( $citations, $refsetid, $reference, $userid, $orderbycitation = FALSE ) {
 	
 	try {
 		
@@ -1032,23 +1026,21 @@ function nbt_get_citations ( $drugid, $reference, $section, $userid, $orderbycit
 		
 		if ( $orderbycitation ) {
 			
-			$stmt = $dbh->prepare("SELECT * FROM citations WHERE drugid = :drug AND referenceid = :ref AND userid = :user AND section = :section ORDER by citationid;");
+			$stmt = $dbh->prepare("SELECT * FROM `citations_" . $citations . "` WHERE refsetid = :refset AND referenceid = :ref AND userid = :user ORDER by citationid;");
 			
 		} else {
 			
-			$stmt = $dbh->prepare("SELECT * FROM citations WHERE drugid = :drug AND referenceid = :ref AND userid = :user AND section = :section ORDER by id DESC;");
+			$stmt = $dbh->prepare("SELECT * FROM `citations_" . $citations . "` WHERE refsetid = :refset AND referenceid = :ref AND userid = :user ORDER by id DESC;");
 			
 		}
 		
-		$stmt->bindParam(':drug', $did);
+		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':ref', $ref);
 		$stmt->bindParam(':user', $user);
-		$stmt->bindParam(':section', $sect);
 		
-		$did = $drugid;
+		$rsid = $refsetid;
 		$ref = $reference;
 		$user = $userid;
-		$sect = $section;
 		
 		$stmt->execute();
 	
@@ -7527,7 +7519,7 @@ function nbt_add_citation_selector ( $formid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("CREATE TABLE `citations_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `cite_no` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `unique_cite` (`refsetid`,`referenceid`,`userid`,`cite_no`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		$stmt = $dbh->prepare("CREATE TABLE `citations_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `citationid` int(11) NOT NULL, `cite_no` int(11) NULL, PRIMARY KEY (`id`), UNIQUE KEY `unique_cite` (`refsetid`,`referenceid`,`userid`,`citationid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 		
 		if ($stmt->execute()) {
 			

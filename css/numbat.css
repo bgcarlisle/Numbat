@@ -85,15 +85,7 @@ span#nbtTopBannerRight {
 	border: 1px solid #999;
 	border-radius: 3px;
 }
-#nbtCitationListIntro div.nbtGreyGradient {
-	padding: 5px;
-	margin-bottom: 5px;
-}
-#nbtCitationListComp div.nbtGreyGradient {
-	padding: 5px;
-	margin-bottom: 5px;
-}
-#nbtCitationListDiscussion div.nbtGreyGradient {
+.nbtCitationList div.nbtGreyGradient {
 	padding: 5px;
 	margin-bottom: 5px;
 }

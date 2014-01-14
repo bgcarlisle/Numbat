@@ -1126,3 +1126,84 @@ function nbtRemoveExtractionTableDataRow ( tableid, rowid ) {
 	});
 	
 }
+
+function nbtFindCitation (eid, suffix, targetid, cid, rsid, refid) {
+	
+	if ( $('#nbtCitationFinder' + eid).val() == '' ) {
+		
+		$('#' + targetid).fadeOut(100);
+		
+		$('#' + targetid).html('');
+		
+	} else {
+		
+		$('#nbtCitationSuggestions' + eid).fadeIn(100);
+		
+		$.ajax ({
+			url: numbaturl + 'extract/citationfinder.php',
+			type: 'post',
+			data: {
+				citationsid: cid,
+				citationsuffix: suffix,
+				refset: rsid,
+				query: $('#nbtCitationFinder' + eid).val(),
+				reference: refid
+			},
+			dataType: 'html'
+		}).done ( function (html) {
+			
+			$('#' + targetid).html(html);
+			
+		});
+	
+	}
+	
+}
+
+function nbtAddCitation (cid, csuffix, rsid, origrefid, citid, user) {
+	
+	// citation section id
+	// rsid => refset id
+	// origrefid => id of the reference being extracted
+	// citid => id of the citation in the paper being extracted
+	// user => user id
+	
+	if ( $('.nbtCitOrigRef' + cid + '-' + citid).length ) {
+		
+		$('.nbtCitOrigRef' + cid + '-' + citid).removeClass('nbtGreyGradient').addClass('nbtAlreadyAdded');
+		
+		$('#nbtDoubleCitationFeedback' + cid).fadeIn();
+		
+		setTimeout ( function () {
+			
+			$('.nbtCitOrigRef' + cid + '-' + citid).addClass('nbtGreyGradient').removeClass('nbtAlreadyAdded');
+			
+			
+			$('#sigDoubleCitationFeedback' + cid).fadeOut();
+			
+			
+		}, 1700);
+	
+	} else {
+	
+		$.ajax ({
+			url: numbaturl + 'extract/addcitation.php',
+			type: 'post',
+			data: {
+				citationsid: cid,
+				citationsuffix: csuffix,
+				refset: rsid,
+				reference: origrefid,
+				citation: citid,
+				userid: user
+			},
+			dataType: 'html'
+		}).done ( function (html) {
+			
+			$('#nbtCitationList' + cid).html(html);
+			
+		});
+	
+	}
+	
+}

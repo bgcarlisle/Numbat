@@ -270,21 +270,21 @@ $extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'],
 					
 					?><p>
 						Add a new citation:
-						<a href="#" onclick="event.preventDefault();$('#sigIntroCitationSuggestions').html('&nbsp;');$('#nbtCitationFinder<?php echo $element['id']; ?>').val('');">(Clear field)</a>
-						<span class="nbtDoubleCitationFeedback nbtHidden" id="nbtDoubleCitationFeedback-Intro">You have already cited this reference here!</span>
+						<a href="#" onclick="event.preventDefault();$('#nbtCitationSuggestions<?php echo $element['id']; ?>').html('&nbsp;');$('#nbtCitationFinder<?php echo $element['id']; ?>').val('');">(Clear field)</a>
+						<span class="nbtDoubleCitationFeedback nbtHidden" id="nbtDoubleCitationFeedback<?php echo $element['id']; ?>">You have already cited this reference here!</span>
 					</p>
-					<input type="text" class="nbtCitationFinder" id="nbtCitationFinder<?php echo $element['id']; ?>" onkeyup="nbtFindCitation('nbtCitationSuggestions<?php echo $element['id']; ?>', <?php echo $_GET['refset']; ?>, <?php echo $_GET['ref']; ?>);">
+					<input type="text" class="nbtCitationFinder" id="nbtCitationFinder<?php echo $element['id']; ?>" onkeyup="nbtFindCitation(<?php echo $element['id']; ?>, '<?php echo $element['columnname']; ?>', 'nbtCitationSuggestions<?php echo $element['id']; ?>', <?php echo $element['id']; ?>, <?php echo $_GET['refset']; ?>, <?php echo $_GET['ref']; ?>);">
 					<div class="nbtCitationSuggestions" id="nbtCitationSuggestions<?php echo $element['id']; ?>">&nbsp;</div>
-					<div id="nbtCitationList<?php echo $element['id']; ?>">
-						<?php
+					<div class="nbtCitationList" id="nbtCitationList<?php echo $element['id']; ?>"><?php
 						
-						$sigListCitationsDrugID = $drugid;
-						$sigListCitationsReference = $_GET['reference'];
+						$nbtListCitationsCitationID = $element['id'];
+						$nbtListCitationsCitationDB = $element['columnname'];
+						$nbtListCitationsRefSetID = $_GET['refset'];
+						$nbtListCitationsReference = $_GET['ref'];
 						
-//						include ("./listintrocitations.php");
+						include ("./listcitations.php");
 						
-						?>
-					</div><?php
+					?></div><?php
 					
 				break;
 				
