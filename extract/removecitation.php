@@ -2,6 +2,10 @@
 
 include_once ("../config.php");
 
-nbt_remove_citation ($_POST['section'], $_POST['citation']);
+if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) >= 2 ) {
+
+	nbt_remove_citation ($_POST['section'], $_POST['citation']);
+
+}
 
 ?>

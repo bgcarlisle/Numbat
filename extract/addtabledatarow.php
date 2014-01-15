@@ -2,18 +2,22 @@
 
 include_once ('../config.php');
 
-if (nbt_add_new_extraction_table_data_row ( $_POST['tid'], $_POST['refset'], $_POST['ref'], $_SESSION['nbt_userid'] )) {
+if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) >= 2 ) {
 
-	$nbtExtractTableDataID = $_POST['tid'];
-	$nbtExtractRefSet = $_POST['refset'];
-	$nbtExtractRefID = $_POST['ref'];
+	if (nbt_add_new_extraction_table_data_row ( $_POST['tid'], $_POST['refset'], $_POST['ref'], $_SESSION['nbt_userid'] )) {
 	
-	include ('./tabledata.php');
-	
-} else {
-	
-	echo "Something went wrong";
-	
+		$nbtExtractTableDataID = $_POST['tid'];
+		$nbtExtractRefSet = $_POST['refset'];
+		$nbtExtractRefID = $_POST['ref'];
+		
+		include ('./tabledata.php');
+		
+	} else {
+		
+		echo "Something went wrong";
+		
+	}
+
 }
 
 ?>
