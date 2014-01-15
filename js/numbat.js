@@ -1,5 +1,3 @@
-var numbaturl = 'http://127.0.0.1/~carlisle/Numbat/';
-
 function nbtClearText (id, originalText) { // This clears the "user name" field when it's clicked on.
 	
 	if (id.value == originalText) {

@@ -31,6 +31,8 @@
 	<!-- / Google Fonts -->
 	
 	<!-- Numbat JS -->
+	<script type="text/javascript" src="<?php echo SITE_URL; ?>js/config.js">
+	</script>
 	<script type="text/javascript" src="<?php echo SITE_URL; ?>js/numbat.js">
 	</script>
 	<!-- / Signals JS -->
