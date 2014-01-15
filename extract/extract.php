@@ -2,8 +2,6 @@
 
 $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
-$extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'], $_SESSION['nbt_userid'] );
-
 ?><button onclick="$('.nbtSidebar').fadeIn(200);$(this).fadeOut(0);" id="nbtUnhideSidebar" style="display: none; position: fixed; left: 20px; top: 100px;">Unhide notes</button>
 <div class="nbtSidebar">
 	<h3>Extraction notes</h3>

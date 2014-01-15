@@ -18,6 +18,8 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 					$ref['year'] = "2014";
 					$ref['abstract'] = "BACKGROUND: Mostly white. METHODS: Many? RESULTS: Few. DISCUSSION: No thank you.";
 					
+					$extraction['id'] = 0;
+					
 					include ( ABS_PATH . "header.php" );
 					include ( ABS_PATH . "extract/extract.php" );
 				
@@ -26,6 +28,8 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 				case "extract":
 				
 					$ref = nbt_get_reference_for_refsetid_and_refid ( $_GET['refset'], $_GET['ref'] );
+					
+					$extraction = nbt_get_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'], $_SESSION['nbt_userid'] );
 				
 					include ( ABS_PATH . "header.php" );
 					include ( ABS_PATH . "extract/extract.php" );
