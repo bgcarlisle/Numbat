@@ -122,6 +122,12 @@ input[type=password] {
 	padding: 5px;
 	margin: 3px 0px 5px 0px;
 }
+.nbtBadField {
+	border: 1px solid #996666;
+	padding: 2px;
+	background: #ffcccc;
+	color: #333;
+}
 .nbtSignupError {
 	margin: 3px 0px 20px 0px;
 	padding: 5px;

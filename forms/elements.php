@@ -132,7 +132,7 @@ foreach ( $elements as $element ) {
 		<p class="nbtFinePrint">Will appear on extraction sheet when (?) is clicked</p>
 		<textarea style="width: 100%; height: 80px;" id="nbtElementCodebook<?php echo $element['id']; ?>" onblur="nbtChangeElementCodebook(<?php echo $element['id']; ?>);"><?php echo $element['codebook']; ?></textarea>
 		<p>Toggle: <input type="text" id="nbtElementToggle<?php echo $element['id']; ?>" value="<?php echo $element['toggle']; ?>" onblur="nbtChangeElementToggle(<?php echo $element['id']; ?>);"></p>
-		<p class="nbtFinePrint">If the toggle field is filled in, this form element will be hidden until an extractor clicks a selector marked with the same toggle class</p>
+		<p class="nbtFinePrint">If the toggle field is filled in, this form element will be hidden until an extractor clicks a selector marked with the same toggle class. Do not put spaces, #'s or periods here.</p>
 		<button onclick="nbtMoveFeedElement(<?php echo $element['formid']; ?>, <?php echo $element['id']; ?>, 1);">Move up</button>
 		<button onclick="nbtMoveFeedElement(<?php echo $element['formid']; ?>, <?php echo $element['id']; ?>, -1);">Move down</button>
 	<p id="nbtFormElementFeedback<?php echo $element['id']; ?>" class="nbtHidden nbtFinePrint">&nbsp;</p>

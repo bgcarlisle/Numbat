@@ -507,6 +507,26 @@ function nbtRemoveMultiSelectOption ( eid, sid ) {
 
 function nbtChangeElementToggle ( eid ) {
 	
+	if ( $('#nbtElementToggle' + eid).val() != '' ) {
+		
+		var regex=/^[0-9A-Za-z.\-_]+$/; //^[a-zA-z]+$/
+		
+		if ( ! regex.test ( $('#nbtElementToggle' + eid).val() ) ) {
+			
+			$('#nbtElementToggle' + eid).addClass('nbtBadField');
+			
+		} else {
+			
+			$('#nbtElementToggle' + eid).removeClass('nbtBadField');
+			
+		}
+		
+	} else {
+		
+		$('#nbtElementToggle' + eid).removeClass('nbtBadField');
+		
+	}
+	
 	$.ajax ({
 		url: numbaturl + 'forms/changeelementtoggle.php',
 		type: 'post',
