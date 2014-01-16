@@ -26,7 +26,7 @@
 								<td>
 									<h4><?php echo $assignment['title']; ?></h4>
 									<p><?php echo $assignment['authors']; ?></p>
-									<p><?php echo $assignment['journal']; ?>: <?php echo $assignment['year']; ?></p>
+									<p><?php echo $assignment['journalname']; ?>: <?php echo $assignment['year']; ?></p>
 								</td>
 								<td>
 									<button onclick="window.open('<?php echo SITE_URL; ?>extract/?action=extract&form=<?php echo $assignment['formid'] ?>&refset=<?php echo $assignment['refsetid']; ?>&ref=<?php echo $assignment['referenceid']; ?>','_self');">Extract</button>
