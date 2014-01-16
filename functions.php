@@ -1743,9 +1743,13 @@ function nbt_echo_single_select ($formid, $extraction, $question, $answers, $tog
 		
 		echo " nbt" . $question;
 		
-		if ( $extraction[$question] == $dbanswer ) {
+		if ( ! is_null ( $extraction[$question] ) ) { // This is because PHP will say that 0 and NULL are the same
 			
-			?> nbtTextOptionChosen<?php
+			if ( $extraction[$question] . " " == $dbanswer . " " ) { // This is because PHP has a hard time testing for equality between strings and integers
+			
+				?> nbtTextOptionChosen<?php
+				
+			}
 			
 		}
 		
