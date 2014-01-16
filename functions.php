@@ -3658,7 +3658,7 @@ function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("SELECT *, (SELECT `title` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `title`, (SELECT `authors` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `authors`, (SELECT `journal` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `journal`, (SELECT `year` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `year`, (SELECT `id` FROM `forms` WHERE `id` LIKE `formid`) as `formid`, (SELECT `name` FROM `forms` WHERE `id` LIKE `formid`) as `formname` FROM `assignments` WHERE userid = :userid AND whenassigned < NOW() ORDER BY `whenassigned` DESC;");
+		$stmt = $dbh->prepare ("SELECT *, (SELECT `title` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `title`, (SELECT `authors` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `authors`, (SELECT `journal` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `journalname`, (SELECT `year` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `year`, (SELECT `id` FROM `forms` WHERE `id` LIKE `formid`) as `formid`, (SELECT `name` FROM `forms` WHERE `id` LIKE `formid`) as `formname` FROM `assignments` WHERE userid = :userid AND whenassigned < NOW() ORDER BY `whenassigned` DESC;");
 		
 		$stmt->bindParam(':userid', $uid);
 		
@@ -8576,6 +8576,25 @@ function nbtDeleteAssignment ( $assignmentid ) {
 		
 	}
 	
+}
+
+function nbt_echo_display_name_and_codebook ( $displayname, $codebook ) {
+	
+	?><p><?php echo $displayname; ?><?php
+	
+	if ( $codebook != "" ) {
+		
+		$codebook = str_replace ("\n", "<br>", $codebook);
+		
+		?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
+		<div class="nbtCodebook"><?php echo $codebook; ?></div><?php
+		
+	} else {
+		
+		?></p><?php
+		
+	}
+
 }
 
 ?>

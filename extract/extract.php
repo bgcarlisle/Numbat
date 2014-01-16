@@ -104,20 +104,9 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 						
 					}
 					
-					?>>
+					?>><?php
 					
-						<p><?php echo $element['displayname']; ?><?php
-						
-						if ( $element['codebook'] != "" ) {
-							
-							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
-							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
-							
-						} else {
-							
-							?></p><?php
-							
-						}
+						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 						
 						nbt_echo_text_field ($_GET['form'], $extraction, $element['columnname'], 500, FALSE);
 					
@@ -135,20 +124,9 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 						
 					}
 					
-					?>>
+					?>><?php
 					
-						<p><?php echo $element['displayname']; ?><?php
-						
-						if ( $element['codebook'] != "" ) {
-							
-							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
-							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
-							
-						} else {
-							
-							?></p><?php
-							
-						}
+						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 						
 						nbt_echo_date_selector ($_GET['form'], $extraction, $element['columnname']);
 					
@@ -166,20 +144,9 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 						
 					}
 					
-					?>>
+					?>><?php
 						
-						<p><?php echo $element['displayname']; ?><?php
-						
-						if ( $element['codebook'] != "" ) {
-							
-							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
-							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
-							
-						} else {
-							
-							?></p><?php
-							
-						}
+						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 						
 						$answers = array ();
 						$toggles = array ();
@@ -209,20 +176,9 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 						
 					}
 					
-					?>>
+					?>><?php
 					
-						<p><?php echo $element['displayname']; ?><?php
-						
-						if ( $element['codebook'] != "" ) {
-							
-							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
-							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
-							
-						} else {
-							
-							?></p><?php
-							
-						}
+						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 						
 						$answers = array ();
 						$toggles = array ();
@@ -252,20 +208,9 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 						
 					}
 					
-					?>>
+					?>><?php
 					
-						<p><?php echo $element['displayname']; ?><?php
-						
-						if ( $element['codebook'] != "" ) {
-							
-							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
-							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
-							
-						} else {
-							
-							?></p><?php
-							
-						}
+						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 						
 						$countries = nbt_return_country_array (); ?>
 						
@@ -303,20 +248,9 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 						
 					}
 					
-					?>>
+					?>><?php
 					
-						<p><?php echo $element['displayname']; ?><?php
-						
-						if ( $element['codebook'] != "" ) {
-							
-							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
-							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
-							
-						} else {
-							
-							?></p><?php
-							
-						}
+						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 						
 						?><div id="nbtTableExtraction<?php echo $element['id']; ?>"><?php
 						
@@ -342,20 +276,9 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 						
 					}
 					
-					?>>
+					?>><?php
 					
-						<p><?php echo $element['displayname']; ?><?php
-						
-						if ( $element['codebook'] != "" ) {
-							
-							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></p>
-							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
-							
-						} else {
-							
-							?></p><?php
-							
-						}
+						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 						
 						?><p>
 							Add a new citation:
