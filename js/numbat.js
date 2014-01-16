@@ -1454,3 +1454,196 @@ function nbtAddNewSubExtraction ( fid ) {
 	});
 	
 }
+
+function nbtChangeSubExtractionSuffix ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/changesubextractionsuffix.php',
+		type: 'post',
+		data: {
+			element: eid,
+			newsuffix: $('#nbtTableSuffix' + eid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElementFeedback' + eid).html(html);
+		
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+			
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtAddNewSubOpenText ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addsubopentext.php',
+		type: 'post',
+		data: {
+			elementid: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSubExtractionElements' + eid).html(html);
+		
+	});
+	
+}
+
+function nbtDeleteSubElement ( seid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/deletesubelement.php',
+		type: 'post',
+		data: {
+			element: seid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSubElement' + seid).slideUp(1000);
+		
+	});
+	
+}
+
+function nbtChangeSubDisplayName ( seid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/changesubdisplayname.php',
+		type: 'post',
+		data: {
+			subelement: seid,
+			newdisplayname: $('#nbtSubElementDisplayName' + seid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSubElementFeedback' + seid).html(html);
+		
+		$('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
+			
+			$('#nbtSubElementFeedback' + seid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtChangeSubColumnName ( seid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/changesubcolumnname.php',
+		type: 'post',
+		data: {
+			subelement: seid,
+			newcolumnname: $('#nbtSubElementColumnName' + seid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSubElementFeedback' + seid).html(html);
+		
+		$('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
+			
+			$('#nbtSubElementFeedback' + seid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtChangeSubElementCodebook ( seid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/changesubelementcodebook.php',
+		type: 'post',
+		data: {
+			subelement: seid,
+			newcodebook: $('#nbtSubElementCodebook' + seid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSubElementFeedback' + seid).html(html);
+		
+		$('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
+			
+			$('#nbtSubElementFeedback' + seid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtChangeSubElementToggle ( seid ) {
+	
+	if ( $('#nbtSubElementToggle' + seid).val() != '' ) {
+		
+		var regex=/^[0-9A-Za-z.\-_]+$/; //^[a-zA-z]+$/
+		
+		if ( ! regex.test ( $('#nbtSubElementToggle' + seid).val() ) ) {
+			
+			$('#nbtSubElementToggle' + seid).addClass('nbtBadField');
+			
+		} else {
+			
+			$('#nbtSubElementToggle' + seid).removeClass('nbtBadField');
+			
+		}
+		
+	} else {
+		
+		$('#nbtSubElementToggle' + seid).removeClass('nbtBadField');
+		
+	}
+	
+	$.ajax ({
+		url: numbaturl + 'forms/changesubelementtoggle.php',
+		type: 'post',
+		data: {
+			subelement: seid,
+			newtoggle: $('#nbtSubElementToggle' + seid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSubElementFeedback' + seid).html(html);
+		
+		$('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
+			
+			$('#nbtSubElementFeedback' + seid).fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtMoveSubElement ( eid, seid, dir ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/movesubelement.php',
+		type: 'post',
+		data: {
+			element: eid,
+			subelement: seid,
+			direction: dir
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSubExtractionElements' + eid).html(html);
+		
+	});
+	
+}

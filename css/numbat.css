@@ -413,3 +413,9 @@ table.nbtAssignments td {
 table.nbtAssignments tr:first-child {
 	border-bottom: 2px solid #999;
 }
+.nbtSubExtractionEditor {
+	border: 1px solid #999;
+	border-radius: 3px;
+	padding: 5px;
+	background: #ccc;
+}
