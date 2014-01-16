@@ -7,6 +7,6 @@
 		<li><a href="<?php echo SITE_URL; ?>assignments/">Manage user assignments</a></li>
 		<li><a href="<?php echo SITE_URL; ?>extractions/">Do extractions</a></li>
 		<li><a href="<?php echo SITE_URL; ?>reconcile/">Reconcile finished extractions</li>
-		<li><a href="<?php echo SITE_URL; ?>export/">Export data</a></li>
+		<li><a href="<?php echo SITE_URL; ?>backup/">Export data</a></li>
 	</ul>
 </div>
