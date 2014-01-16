@@ -8601,4 +8601,133 @@ function nbt_echo_display_name_and_codebook ( $displayname, $codebook ) {
 
 }
 
+function nbt_add_sub_extraction ( $formid ) {
+	
+	// get the highest sortorder value
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder` DESC LIMIT 1;");
+		
+		$stmt->bindParam(':fid', $fid);
+		
+		$fid = $formid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				$highestsortorder = $row['sortorder'];
+				
+			}
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// find a good name for the table
+	
+	$foundgoodcolumn = FALSE;
+	
+	$counter = 1;
+	
+	while ( $foundgoodcolumn == FALSE ) {
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SHOW TABLES LIKE `sub_" . $counter . "';");
+			
+			$stmt->execute();
+		
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$columnname = "sub_" . $counter;
+				
+				$foundgoodcolumn = TRUE;
+				
+			} else {
+				
+				$counter ++;
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+	}
+	
+	// then make a new table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("CREATE TABLE `tabledata_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// then, add it into the form elements table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname) VALUES (:form, :sort, :type, :column);");
+		
+		$stmt->bindParam(':form', $fid);
+		$stmt->bindParam(':sort', $sort);
+		$stmt->bindParam(':type', $type);
+		$stmt->bindParam(':column', $col);
+		
+		$fid = $formid;
+		$sort = $highestsortorder + 1;
+		$type = "sub_extraction";
+		$col = $counter;
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
 ?>

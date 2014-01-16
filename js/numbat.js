@@ -1437,3 +1437,20 @@ function nbtDeleteAssignment ( aid ) {
 	});
 	
 }
+
+function nbtAddNewSubExtraction ( fid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addsubextraction.php',
+		type: 'post',
+		data: {
+			formid: fid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElements').html(html);
+		
+	});
+	
+}

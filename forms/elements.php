@@ -125,6 +125,26 @@ foreach ( $elements as $element ) {
 			
 			break;
 			
+			case "sub_extraction":
+				
+				?><h4>Sub-extraction</h4>
+				<p class="nbtFinePrint">A sub-extraction is a form element that can be repeated by the extractor as many times as necessary within an extraction. E.g. if you were extracting a set of papers that each contained a different number of experiments to be extracted, you could make an "experiment" sub-extraction that the extractor could repeat as many times as she needs.</p>
+				<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
+				<p class="nbtFinePrint">Will appear on extraction form</p>
+				<p>Table suffix: <input type="text" id="nbtTableSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeTableSuffix(<?php echo $element['id']; ?>);"></p>
+				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
+				<p>Table columns</p>
+				<p class="nbtFinePrint">Display name will appear as a column of the table on extraction form; DB name will appear on exported spreadsheet</p>
+				<div id="nbtTableDataColumnsTable<?php echo $element['id']; ?>"><?php
+				
+				$subelementid = $element['id'];
+				
+				include ('./subextraction.php');
+				
+				?></div><?php
+				
+			break;
+			
 		}
 	
 		?>
@@ -153,5 +173,5 @@ foreach ( $elements as $element ) {
 	<button onclick="nbtAddNewCountrySelector(<?php echo $_GET['id']; ?>);">Country selector</button>
 	<button onclick="nbtAddNewDateSelector(<?php echo $_GET['id']; ?>);">Date selector</button>
 	<button onclick="nbtAddNewCitationSelector(<?php echo $_GET['id']; ?>);">Citations</button>
-	<!-- <button>Arms / outcomes / efficacy</button> -->
+	<button onclick="nbtAddNewSubExtraction(<?php echo $_GET['id']; ?>);">Sub-extraction</button>
 </div>
