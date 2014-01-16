@@ -7269,7 +7269,7 @@ function nbt_new_dump_file () {
 	
 	date_default_timezone_set ('America/Montreal');
 	
-	exec('mysqldump --user=' . DB_USER . ' --password=' . DB_PASS . ' --host=' . DB_HOST . ' ' . DB_NAME . ' > ' . ABS_PATH . 'export/dumpfiles/' . date('Y-m-d-H-i') . '.sql' );
+	exec('mysqldump --user=' . DB_USER . ' --password=' . DB_PASS . ' --host=' . DB_HOST . ' ' . DB_NAME . ' > ' . ABS_PATH . 'backup/dumpfiles/' . date('Y-m-d-H-i') . '.sql' );
 	
 }
 

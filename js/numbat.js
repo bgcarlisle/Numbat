@@ -799,7 +799,7 @@ function nbtAddNewDateSelector ( fid ) {
 function nbtNewDumpFile () {
 	
 	$.ajax ({
-		url: numbaturl + 'export/newdumpfile.php',
+		url: numbaturl + 'backup/newdumpfile.php',
 		type: 'post',
 		data: {
 		},
