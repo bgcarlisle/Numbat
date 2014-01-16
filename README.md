@@ -1,7 +1,7 @@
-Numbat v. 0.4
+Numbat v. 0.5
 ======
 
-Numbat Academic Meta-Analysis Extraction Manager: "It's still not ready yet!"
+Numbat Academic Meta-Analysis Extraction Manager: "Getting closer!"
 
 ## Overview
 
