@@ -982,6 +982,35 @@ function nbt_return_references_for_refset_and_query ( $citationsid, $refsetid, $
 	
 }
 
+function nbt_return_references_for_assignment_search ( $refsetid, $query ) {
+	
+	try {
+			
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE title LIKE :query OR authors LIKE :query LIMIT 6;");
+		
+		$stmt->bindParam(':query', $quer);
+		
+		$quer = "%" . $query . "%";
+		
+		$stmt->execute();
+	
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		return $result;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
 function nbt_add_citation ( $citationsection, $refsetid, $reference, $userid, $citation ) {
 	
 	$element = nbt_get_form_element_for_elementid ( $citationsection );
@@ -3624,12 +3653,12 @@ function sigUseDoubleCitation ( $id, $drugid, $reference, $section, $citation, $
 	
 }
 
-function nbt_get_assignments_for_user ( $userid ) {
+function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid ) {
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("SELECT * FROM assignments WHERE userid = :userid AND whenassigned < NOW() ORDER BY whenassigned DESC;");
+		$stmt = $dbh->prepare ("SELECT *, (SELECT `title` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `title`, (SELECT `authors` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `authors`, (SELECT `journal` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `journal`, (SELECT `year` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `year`, (SELECT `id` FROM `forms` WHERE `id` LIKE `formid`) as `formid`, (SELECT `name` FROM `forms` WHERE `id` LIKE `formid`) as `formname` FROM `assignments` WHERE userid = :userid AND whenassigned < NOW() ORDER BY `whenassigned` DESC;");
 		
 		$stmt->bindParam(':userid', $uid);
 		
@@ -8448,6 +8477,105 @@ function nbt_update_citation_property ( $section, $cid, $column, $value ) {
 		
 	}
 
+}
+
+function nbt_get_all_assignments_for_refset ( $refsetid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT *, (SELECT `username` FROM `users` WHERE `id` LIKE `userid`) as `username`, (SELECT `title` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `title`, (SELECT `authors` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `authors`, (SELECT `journal` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `journal`, (SELECT `year` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `year`, (SELECT `id` FROM `forms` WHERE `id` LIKE `formid`) as `formid`, (SELECT `name` FROM `forms` WHERE `id` LIKE `formid`) as `formname` FROM `assignments` ORDER BY `whenassigned` DESC;");
+		
+		$stmt->bindParam(':username', $user);
+		
+		$user = $username;
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		return $result;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbtAddAssignment ( $userid, $formid, $refsetid, $refid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO `assignments` (userid, assignerid, formid, refsetid, referenceid) VALUES (:user, :assigner, :form, :refset, :ref)");
+		
+		$stmt->bindParam(':user', $user);
+		$stmt->bindParam(':assigner', $assign);
+		$stmt->bindParam(':form', $form);
+		$stmt->bindParam(':refset', $rsid);
+		$stmt->bindParam(':ref', $ref);
+		
+		$user = $userid;
+		$assign = $_SESSION['nbt_userid'];
+		$form = $formid;
+		$rsid = $refsetid;
+		$ref = $refid;
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+			return TRUE;
+			
+		} else {
+			
+			return FALSE;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbtDeleteAssignment ( $assignmentid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("DELETE FROM `assignments` WHERE id = :id LIMIT 1;");
+		
+		$stmt->bindParam(':id', $aid);
+		
+		$aid = $assignmentid;
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+			return TRUE;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 }
 
 ?>

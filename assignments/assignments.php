@@ -3,8 +3,7 @@
 	<table class="nbtTabledData">
 		<tr class="nbtTableHeaders">
 			<td>Reference set</td>
-			<td>View all references</td>
-			<td>Delete</td>
+			<td>View all assignments</td>
 		</tr>
 		<?php
 		
@@ -14,15 +13,14 @@
 			
 			?><tr>
 				<td><?php echo $refset['name']; ?></td>
-				<td>View</td>
-				<td><button>Delete</button></td>
+				<td><a href="<?php echo SITE_URL; ?>assignments/?action=viewrefset&refset=<?php echo $refset['id']; ?>">View</a></td>
 			</tr><?php
 			
 		}
 		
 		?>
-		<tr>
-			<td colspan=3><button>Add new reference set</button></td>
+		<tr colspan="2">
+			<td><button onclick="window.open('<?php echo SITE_URL; ?>assignments/?action=new','_self');">Add new assignments</button></td>
 		</tr>
 	</table>
 	

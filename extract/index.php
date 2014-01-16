@@ -38,9 +38,12 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 				
 			}
 			
+		} else {
+			
+			include ( ABS_PATH . "header.php" );
+			include ( ABS_PATH . "extract/assignments.php" );
+			
 		}
-		
-		
 		
 	} else {
 		

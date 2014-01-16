@@ -1327,3 +1327,113 @@ function nbtUpdateConditionalDisplays () {
 	});
 	
 }
+
+function nbtFindReferenceToAssign () {
+	
+	if ( $('#nbtAssignUser').val() == 'NULL' ) {
+		
+		$('#nbtFoundReferencesForAssigment').addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint').removeClass('nbtCitationSuggestions').html('Choose a user to be assigned');
+		
+	} else {
+		
+		if ( $('#nbtAssignForm').val() == 'NULL' ) {
+			
+			$('#nbtFoundReferencesForAssigment').addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint').removeClass('nbtCitationSuggestions').html('Choose a form');
+			
+		} else {
+			
+			if ( $('#nbtAssignRefSet').val() == 'NULL' ) {
+				
+				$('#nbtFoundReferencesForAssigment').addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint').removeClass('nbtCitationSuggestions').html('Choose a reference set');
+
+
+			} else {
+				
+				$('#nbtFoundReferencesForAssigment').removeClass('nbtFeedback').removeClass('nbtFeedbackBad').removeClass('nbtFinePrint').addClass('nbtCitationSuggestions');
+				
+				if ( $('#nbtReferenceFinder').val() == '' ) {
+		
+					$('#nbtFoundReferencesForAssigment').fadeOut(100);
+					
+					$('#nbtFoundReferencesForAssigment').html('');
+					
+				} else {
+					
+					$('#nbtFoundReferencesForAssigment').fadeIn(100);
+					
+					$.ajax ({
+						url: numbaturl + 'assignments/referencefinder.php',
+						type: 'post',
+						data: {
+							userid: $('#nbtAssignUser').val(),
+							formid: $('#nbtAssignForm').val(),
+							refset: $('#nbtAssignRefSet').val(),
+							query: $('#nbtReferenceFinder').val()
+						},
+						dataType: 'html'
+					}).done ( function (html) {
+						
+						$('#nbtFoundReferencesForAssigment').html(html);
+						
+					});
+				
+				}
+				
+			}
+			
+		}
+		
+	}
+	
+}
+
+function nbtAddAssignment ( uid, fid, rsid, rid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'assignments/addassignment.php',
+		type: 'post',
+		data: {
+			userid: uid,
+			formid: fid,
+			refset: rsid,
+			ref: rid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		if ( html == 'Assignment added' ) {
+			
+			$('#nbtAddAssignmentFeedback' + rid).addClass('nbtFeedback').addClass('nbtFeedbackGood').addClass('nbtFinePrint');
+			
+		} else {
+			
+			$('#nbtAddAssignmentFeedback' + rid).addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint');
+			
+		}
+		
+		$('#nbtAddAssignmentFeedback' + rid).html(html);
+		
+	});
+	
+}
+
+function nbtDeleteAssignment ( aid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'assignments/deleteassignment.php',
+		type: 'post',
+		data: {
+			assignment: aid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		if ( html == 'deleted' ) {
+			
+			$('#nbtAssignmentTableRow' + aid).fadeOut();
+			
+		}
+		
+	});
+	
+}
