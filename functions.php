@@ -6273,23 +6273,6 @@ function nbt_add_multi_select ( $formid ) {
 		
 	}
 	
-	// then, add a column to the extractions table
-	
-	try {
-		
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
-		
-		$stmt->execute();
-		
-	}
-	
-	catch (PDOException $e) {
-		
-		echo $e->getMessage();
-		
-	}
-	
 }
 
 function nbt_add_section_heading ( $formid ) {
