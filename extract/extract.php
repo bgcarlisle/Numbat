@@ -78,7 +78,15 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 						
 					}
 					
-					?><div class="nbtContentPanel">
+					?><div class="nbtContentPanel<?php
+					
+					if ( $element['toggle'] != "" ) {
+						
+						?> nbtHidden <?php echo $element['toggle']; ?><?php
+						
+					}
+					
+					?>">
 						<h3><?php echo $element['displayname']; ?><?php
 					
 						if ( $element['codebook'] != "" ) {
