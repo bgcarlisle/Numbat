@@ -1866,3 +1866,20 @@ function nbtMoveSubMultiSelectOption ( seid, sid, dir ) {
 	});
 	
 }
+
+function nbtAddNewSubDateSelector ( eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addsubdateselector.php',
+		type: 'post',
+		data: {
+			elementid: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSubExtractionElements' + eid).html(html);
+		
+	});
+	
+}

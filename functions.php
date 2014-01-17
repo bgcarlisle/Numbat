@@ -10167,4 +10167,129 @@ function nbt_add_sub_multi_select_option ( $subelementid ) {
 	
 }
 
+function nbt_add_sub_date_selector ( $elementid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// get the highest sortorder value
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
+		
+		$stmt->bindParam(':eid', $eid);
+		
+		$eid = $elementid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				$highestsortorder = $row['sortorder'];
+				
+			}
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// find a good name for the new column
+	
+	$foundgoodcolumn = FALSE;
+	
+	$counter = 1;
+	
+	while ( $foundgoodcolumn == FALSE ) {
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'date_" . $counter . "';");
+			
+			$stmt->execute();
+		
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$columnname = "date_" . $counter;
+				
+				$foundgoodcolumn = TRUE;
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		$counter ++;
+		
+	}
+	
+	// then insert a new element into the form elements table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname) VALUES (:element, :sort, :type, :column);");
+		
+		$stmt->bindParam(':element', $eid);
+		$stmt->bindParam(':sort', $sort);
+		$stmt->bindParam(':type', $type);
+		$stmt->bindParam(':column', $col);
+		
+		$eid = $elementid;
+		$sort = $highestsortorder + 1;
+		$type = "date_selector";
+		$col = $columnname;
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// then, add a column to the extractions table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " DATE DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
 ?>

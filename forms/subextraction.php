@@ -59,22 +59,12 @@ foreach ( $subelements as $subelement ) {
 				
 			break;
 			
-			case "country_selector":
-				
-				?><h4>Country selector</h4>
-				<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
-				<p class="nbtFinePrint">Will appear on extraction form</p>
-				<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);"></p>
-				<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
-			
-			break;
-			
 			case "date_selector":
 				
 				?><h4>Date selector</h4>
-				<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
+				<p>Display name: <input type="text" id="nbtSubElementDisplayName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['displayname']; ?>" onblur="nbtChangeSubDisplayName(<?php echo $subelement['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on extraction form</p>
-				<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeDateColumnName(<?php echo $element['id']; ?>);"></p>
+				<p>Column name: <input type="text" id="nbtSubElementColumnName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubColumnName(<?php echo $subelement['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
 			
 			break;
@@ -102,6 +92,5 @@ foreach ( $subelements as $subelement ) {
 	<button onclick="nbtAddNewSubOpenText(<?php echo $subelementid; ?>);">Open text</button>
 	<button onclick="nbtAddNewSubSingleSelect(<?php echo $subelementid; ?>);">Single select</button>
 	<button onclick="nbtAddNewSubMultiSelect(<?php echo $subelementid; ?>);">Multi select</button>
-	<button onclick="nbtAddNewCountrySelector(<?php echo $_GET['id']; ?>);">Country selector</button>
-	<button onclick="nbtAddNewDateSelector(<?php echo $_GET['id']; ?>);">Date selector</button>
+	<button onclick="nbtAddNewSubDateSelector(<?php echo $subelementid; ?>);">Date selector</button>
 </div>
