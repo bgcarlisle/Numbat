@@ -12,7 +12,16 @@ foreach ( $suggestions as $suggestion ) {
 	
 		?><div>
 			<h4><?php echo $suggestion['title']; ?>.</h4>
-			<p><?php echo $suggestion['authors']; ?>. <span class="nbtJournalName"><?php echo $suggestion['journal']; ?></span>: <?php echo $suggestion['year']; ?>.</p>
+			<p><?php echo $suggestion['authors']; ?>.
+			<?php
+			
+			if ( $suggestion['journal'] != "" && $suggestion['year'] != "" ) {
+				
+				?><span class="nbtJournalName"><?php echo $suggestion['journal']; ?></span>: <?php echo $suggestion['year']; ?>.<?php
+				
+			}
+			
+			?></p>
 			<span id="nbtAddAssignmentFeedback<?php echo $suggestion['id']; ?>"><button onclick="nbtAddAssignment(<?php echo $_POST['userid']; ?>, <?php echo $_POST['formid']; ?>, <?php echo $_POST['refset']; ?>, <?php echo $suggestion['id']; ?>);">Assign this reference to be extracted</button></span>
 		</div><?php
 		
