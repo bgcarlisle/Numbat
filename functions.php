@@ -1428,6 +1428,46 @@ function nbt_update_extraction ( $fid, $id, $column, $value ) {
 
 }
 
+function nbt_update_sub_extraction ( $eid, $id, $column, $value ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $eid );
+	
+	try {
+	
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `sub_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
+		
+		$stmt->bindParam(':id', $subexid);
+		$stmt->bindParam(':value', $val);
+		
+		$subexid = $id;
+		$val = $value;
+		
+		if ( $stmt->execute() ) {
+			
+			$dbh = null;
+			
+			return TRUE;
+			
+		} else {
+			
+			$dbh = null;
+			
+			return FALSE;
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+
+}
+
 function nbt_update_extraction_arm ( $id, $column, $value ) {
 	
 	$columns = array (
@@ -1515,6 +1555,78 @@ function nbt_toggle_extraction ( $formid, $id, $column ) {
 		$stmt->bindParam(':value', $val);
 		
 		$rid = $id;
+		if ( $old_answer == 0 ) {
+			$val = 1;
+		} else {
+			$val = 0;
+		}
+		
+		if ( $stmt->execute() ) {
+			
+			$dbh = null;
+			
+			return TRUE;
+			
+		} else {
+			
+			$dbh = null;
+			
+			return FALSE;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+
+}
+
+function nbt_toggle_sub_extraction ( $elementid, $id, $column ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	try {
+	
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
+		
+		$stmt->bindParam(':id', $seid);
+		
+		$seid = $id;
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		foreach ( $result as $row ) {
+			
+			$old_answer = $row[$column];
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	try {
+	
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("UPDATE `sub_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
+		
+		$stmt->bindParam(':id', $seid);
+		$stmt->bindParam(':value', $val);
+		
+		$seid = $id;
 		if ( $old_answer == 0 ) {
 			$val = 1;
 		} else {
@@ -1732,6 +1844,28 @@ function nbt_echo_multi_select ($formid, $extraction, $question, $options, $togg
 	
 }
 
+function nbt_echo_subextraction_multi_select ($elementid, $subextraction, $question, $options, $toggles = NULL ) {
+	
+	// $options must be an array of the names of the column in the db
+	
+	foreach ( $options as $dbcolumn => $plaintext ) {
+		
+		?><a href="#" class="nbtTextOptionSelect <?php
+		
+			echo "sig" . $question;
+			
+			if ( $subextraction[$question . "_" . $dbcolumn] == 1 ) {
+				
+				?> nbtTextOptionChosen<?php
+				
+			}
+			
+		?>" id="nbtSub<?php echo $elementid ?>-<?php echo $subextraction['id']; ?>MS<?php echo $dbcolumn; ?>" onclick="event.preventDefault();nbtSaveSubExtractionMultiSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question . "_" . $dbcolumn; ?>', 'nbtSub<?php echo $elementid ?>-<?php echo $subextraction['id']; ?>MS<?php echo $dbcolumn; ?>');"  conditionalid="<?php echo $toggles[$dbcolumn]; ?>"><?php echo $plaintext; ?></a><?php
+		
+	}
+	
+}
+
 function nbt_echo_single_select ($formid, $extraction, $question, $answers, $toggles = NULL) {
 	
 	// $question must be the name of the column in the db
@@ -1761,6 +1895,35 @@ function nbt_echo_single_select ($formid, $extraction, $question, $answers, $tog
 	
 }
 
+function nbt_echo_subextraction_single_select ($elementid, $subextraction, $question, $answers, $toggles = NULL) {
+	
+	// $question must be the name of the column in the db
+	// $answers must be an array of the answer entered in the db and the plain text version displayed
+	
+	foreach ( $answers as $dbanswer => $ptanswer ) {
+		
+		?><a href="#" class="nbtTextOptionSelect<?php
+		
+		echo " nbtSub" . $subextraction['id'] . "-" . $question;
+		
+		if ( ! is_null ( $subextraction[$question] ) ) { // This is because PHP will say that 0 and NULL are the same
+			
+			if ( $subextraction[$question] . " " == $dbanswer . " " ) { // This is because PHP has a hard time testing for equality between strings and integers
+			
+				?> nbtTextOptionChosen<?php
+				
+			}
+			
+		}
+		
+		$buttonid = "nbtSub" . $elementid . "-" . $subextraction['id'] . "Q" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
+		
+		?>" id="<?php echo $buttonid; ?>" onclick="event.preventDefault();nbtSaveSubExtractionSingleSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbtSub<?php echo $subextraction['id'] . "-" . $question; ?>');" conditionalid="<?php echo $toggles[$dbanswer]; ?>"><?php echo $ptanswer; ?></a><?php
+		
+	}
+	
+}
+
 function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
 	
 	?><input type="text" value="<?php
@@ -1776,6 +1939,27 @@ function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $maxlength, $allc
 	}
 	
 	?>><span class="nbtInputFeedback" id="nbtTextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span><?php
+	
+}
+
+
+
+function nbt_echo_subextraction_text_field ($elementid, $subextraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
+	
+	?><input type="text" value="<?php
+	
+	echo $subextraction[$dbcolumn];
+	
+	?>" id="nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>" onblur="nbtSaveSubExtractionTextField(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>Feedback');" maxlength="<?php echo $maxlength; ?>"<?php
+	
+	if ( $allcaps ) {
+		
+		echo " style=\"text-transform: uppercase\"";
+		
+	}
+	
+	?>><span class="nbtInputFeedback" id="nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span><?php
+	
 }
 
 function nbt_echo_date_selector ($formid, $extraction, $dbcolumn) {
@@ -1791,6 +1975,23 @@ function nbt_echo_date_selector ($formid, $extraction, $dbcolumn) {
 			
 		?>" id="nbtDateField<?php echo $dbcolumn; ?>" onblur="nbtSaveDateField(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtDateField<?php echo $dbcolumn; ?>', 'nbtTextField<?php echo $dbcolumn; ?>Feedback');">
 		<span class="nbtInputFeedback" id="nbtTextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span>
+	</p><?php
+	
+}
+
+function nbt_echo_sub_date_selector ($elementid, $subextraction, $dbcolumn) {
+	
+	?><p class="nbtDateSelector">
+		<input type="text" value="<?php
+			
+			if ( substr ($subextraction[$dbcolumn], 0, 7) != "0000-00" ) {
+				
+				echo substr ($subextraction[$dbcolumn], 0, 7);
+				
+			}
+			
+		?>" id="nbtSub<?php echo $subextraction['id']; ?>DateField<?php echo $dbcolumn; ?>" onblur="nbtSaveSubExtractionDateField(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>DateField<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>Feedback');">
+		<span class="nbtInputFeedback" id="nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span>
 	</p><?php
 	
 }
@@ -10281,6 +10482,123 @@ function nbt_add_sub_date_selector ( $elementid ) {
 		$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " DATE DEFAULT NULL;");
 		
 		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_get_sub_extractions ( $elementid, $refsetid, $refid, $userid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE refsetid = :refset AND referenceid = :ref AND userid = :user ORDER BY id ASC;");
+		
+		$stmt->bindParam(':refset', $rsid);
+		$stmt->bindParam(':ref', $ref);
+		$stmt->bindParam(':user', $user);
+		
+		$rsid = $refsetid;
+		$ref = $refid;
+		$user = $userid;
+		
+		$stmt->execute();
+	
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		return $result;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_add_new_sub_extraction ($elementid, $refsetid, $refid, $userid) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO `sub_" . $element['columnname'] . "` (refsetid, referenceid, userid) VALUES (:refset, :refid, :userid);");
+		
+		$stmt->bindParam(':refset', $rsid);
+		$stmt->bindParam(':refid', $rid);
+		$stmt->bindParam(':userid', $uid);
+		
+		$rsid = $refsetid;
+		$rid = $refid;
+		$uid = $userid;
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+			return TRUE;
+			
+		} else {
+			
+			$dbh = null;
+			
+			return FALSE;
+			
+		}
+		
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_remove_sub_extraction_instance ( $elementid, $subextractionid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("DELETE FROM `sub_" . $element['columnname'] . "` WHERE id = :seid;");
+		
+		$stmt->bindParam(':seid', $seid);
+		
+		$seid = $subextractionid;
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+			return TRUE;
+			
+		} else {
+			
+			$dbh = null;
+			
+			return FALSE;
+			
+		}
+		
+		
 		
 	}
 	

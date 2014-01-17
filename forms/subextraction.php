@@ -90,7 +90,7 @@ foreach ( $subelements as $subelement ) {
 <div id="nbtNewElementSelector<?php echo $subelementid; ?>" class="nbtHidden">
 	<h3>Add new sub-extraction element</h3>
 	<button onclick="nbtAddNewSubOpenText(<?php echo $subelementid; ?>);">Open text</button>
+	<button onclick="nbtAddNewSubDateSelector(<?php echo $subelementid; ?>);">Date selector</button>
 	<button onclick="nbtAddNewSubSingleSelect(<?php echo $subelementid; ?>);">Single select</button>
 	<button onclick="nbtAddNewSubMultiSelect(<?php echo $subelementid; ?>);">Multi select</button>
-	<button onclick="nbtAddNewSubDateSelector(<?php echo $subelementid; ?>);">Date selector</button>
 </div>

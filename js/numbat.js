@@ -1056,6 +1056,36 @@ function nbtSaveTextField (formid, extractionid, questionid, textfieldid, feedba
 	
 }
 
+function nbtSaveSubExtractionTextField (elementid, extractionid, questionid, textfieldid, feedbackid) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/updatesubextraction.php',
+		type: 'post',
+		data: {
+			eid: elementid,
+			id: extractionid,
+			question: questionid,
+			answer: $('#' + textfieldid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#' + feedbackid).html(html);
+		
+		$('#' + feedbackid).fadeIn(50, function () {
+			
+			setTimeout ( function () {
+				
+				$('#' + feedbackid).fadeOut(1000);
+				
+			}, 2000);
+			
+		});
+		
+	});
+	
+}
+
 function nbtSaveCitationTextField (sectionid, citationid, questionid, textfieldid, feedbackid) {
 	
 	$.ajax ({
@@ -1129,6 +1159,49 @@ function nbtSaveDateField (formid, extractionid, questionid, textfieldid, feedba
 	
 }
 
+function nbtSaveSubExtractionDateField (elementid, subextractionid, questionid, textfieldid, feedbackid) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/formatdate.php',
+		type: 'post',
+		data: {
+			datestring: $('#' + textfieldid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#' + textfieldid).val(html);
+		
+		$.ajax ({
+			url: numbaturl + 'extract/updatesubextraction.php',
+			type: 'post',
+			data: {
+				eid: elementid,
+				id: subextractionid,
+				question: questionid,
+				answer: html + '-01'
+			},
+			dataType: 'html'
+		}).done ( function (html2) {
+			
+			$('#' + feedbackid).html(html2);
+			
+			$('#' + feedbackid).fadeIn(50, function () {
+				
+				setTimeout ( function () {
+					
+					$('#' + feedbackid).fadeOut(1000);
+					
+				}, 2000);
+				
+			})
+			
+		});
+		
+	});
+	
+}
+
 function nbtSaveSingleSelect (formid, extractionid, questionlabel, response, buttonid, classid) {
 	
 	if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // IF it's already selected
@@ -1176,6 +1249,53 @@ function nbtSaveSingleSelect (formid, extractionid, questionlabel, response, but
 	
 }
 
+function nbtSaveSubExtractionSingleSelect (elementid, subextractionid, questionlabel, response, buttonid, classid) {
+	
+	if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // IF it's already selected
+		
+		$.ajax ({
+			url: numbaturl + 'extract/updatesubextraction.php',
+			type: 'post',
+			data: {
+				eid: elementid,
+				id: subextractionid,
+				question: questionlabel,
+				answer: 'NULL'
+			},
+			dataType: 'html'
+		}).done ( function (html) {
+			
+			$('.' + classid).removeClass('nbtTextOptionChosen');
+			
+			nbtUpdateConditionalDisplays ();
+			
+		});
+		
+	} else { // It's not already selected
+		
+		$.ajax ({
+			url: numbaturl + 'extract/updatesubextraction.php',
+			type: 'post',
+			data: {
+				eid: elementid,
+				id: subextractionid,
+				question: questionlabel,
+				answer: response
+			},
+			dataType: 'html'
+		}).done ( function (html) {
+			
+			$('.' + classid).removeClass('nbtTextOptionChosen');
+			$('#' + buttonid).addClass('nbtTextOptionChosen');
+			
+			nbtUpdateConditionalDisplays ();
+			
+		});
+	
+	}
+	
+}
+
 function nbtSaveMultiSelect (formid, extractionid, questionlabel, buttonid) {
 	
 	$.ajax ({
@@ -1184,6 +1304,27 @@ function nbtSaveMultiSelect (formid, extractionid, questionlabel, buttonid) {
 		data: {
 			fid: formid,
 			id: extractionid,
+			question: questionlabel
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#' + buttonid).toggleClass('nbtTextOptionChosen');
+		
+		nbtUpdateConditionalDisplays ();
+		
+	});
+	
+}
+
+function nbtSaveSubExtractionMultiSelect (elementid, subextractionid, questionlabel, buttonid) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/subtogglefield.php',
+		type: 'post',
+		data: {
+			eid: elementid,
+			id: subextractionid,
 			question: questionlabel
 		},
 		dataType: 'html'
@@ -1879,6 +2020,43 @@ function nbtAddNewSubDateSelector ( eid ) {
 	}).done ( function (html) {
 		
 		$('#nbtSubExtractionElements' + eid).html(html);
+		
+	});
+	
+}
+
+function nbtNewSubExtraction (eid, rsid, rid) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/addsubextraction.php',
+		type: 'post',
+		data: {
+			elementid: eid,
+			refset: rsid,
+			ref: rid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSubExtraction' + eid).html(html);
+		
+	});
+	
+}
+
+function nbtDeleteSubExtraction ( eid, seid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/removesubextraction.php',
+		type: 'post',
+		data: {
+			elementid: eid,
+			subextractionid: seid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSubExtractionInstance' + eid + '-' + seid).slideUp();
 		
 	});
 	

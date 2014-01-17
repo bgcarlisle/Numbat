@@ -310,6 +310,34 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 					
 				break;
 				
+				case "sub_extraction":
+					
+					?><div<?php
+					
+					if ( $element['toggle'] != "" ) {
+						
+						?> class="nbtHidden <?php echo $element['toggle']; ?>"<?php
+						
+					}
+					
+					?>><?php
+					
+						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+						
+						?><div class="nbtSubExtraction" id="nbtSubExtraction<?php echo $element['id']; ?>"><?php
+						
+						$nbtSubExtractionElementID = $element['id'];
+						$nbtExtractRefSet = $_GET['refset'];
+						$nbtExtractRefID = $_GET['ref'];
+						
+						include ('./subextraction.php');
+						
+						?></div>
+					
+					</div><?php
+					
+				break;
+				
 			}
 			
 		}

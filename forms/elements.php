@@ -166,11 +166,11 @@ foreach ( $elements as $element ) {
 	<h3>Add new form element</h3>
 	<button onclick="nbtAddNewSectionHeading(<?php echo $_GET['id']; ?>);">Section heading</button>
 	<button onclick="nbtAddNewOpenText(<?php echo $_GET['id']; ?>);">Open text</button>
+	<button onclick="nbtAddNewDateSelector(<?php echo $_GET['id']; ?>);">Date selector</button>
 	<button onclick="nbtAddNewSingleSelect(<?php echo $_GET['id']; ?>);">Single select</button>
 	<button onclick="nbtAddNewMultiSelect(<?php echo $_GET['id']; ?>);">Multi select</button>
 	<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>);">Table data</button>
 	<button onclick="nbtAddNewCountrySelector(<?php echo $_GET['id']; ?>);">Country selector</button>
-	<button onclick="nbtAddNewDateSelector(<?php echo $_GET['id']; ?>);">Date selector</button>
 	<button onclick="nbtAddNewCitationSelector(<?php echo $_GET['id']; ?>);">Citations</button>
 	<button onclick="nbtAddNewSubExtraction(<?php echo $_GET['id']; ?>);">Sub-extraction</button>
 </div>
