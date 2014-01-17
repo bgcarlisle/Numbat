@@ -15,6 +15,7 @@
 					<tr class="nbtTableHeaders">
 						<td>When assigned</td>
 						<td>Assignment</td>
+						<td>Form</td>
 						<td>Extract</td>
 					</tr>
 						<?php
@@ -36,6 +37,13 @@
 									
 									?>
 								</td>
+								<td><?php
+									
+									$form = nbt_get_form_for_id ( $assignment['formid'] );
+									
+									echo $form['name'];
+									
+								?></td>
 								<td>
 									<button onclick="window.open('<?php echo SITE_URL; ?>extract/?action=extract&form=<?php echo $assignment['formid'] ?>&refset=<?php echo $assignment['refsetid']; ?>&ref=<?php echo $assignment['referenceid']; ?>','_self');">Extract</button>
 								</td>
