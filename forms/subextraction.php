@@ -24,17 +24,17 @@ foreach ( $subelements as $subelement ) {
 			case "single_select":
 				
 				?><h4>Single select</h4>
-				<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
+				<p>Display name: <input type="text" id="nbtSubElementDisplayName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['displayname']; ?>" onblur="nbtChangeSubDisplayName(<?php echo $subelement['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on extraction form</p>
-				<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);"></p>
+				<p>Column name: <input type="text" id="nbtSubElementColumnName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubColumnName(<?php echo $subelement['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
 				<p>Options</p>
 				<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet; Other form elements marked with this toggle class will appear only if this element is selected</p>
-				<div id="nbtSingleSelectOptionsTable<?php echo $element['id']; ?>"><?php
+				<div id="nbtSubSingleSelectOptionsTable<?php echo $subelement['id']; ?>"><?php
 				
-				$tableelementid = $element['id'];
+				$tablesubelementid = $subelement['id'];
 				
-				include ('./singleselectoptionstable.php');
+				include ('./subsingleselectoptionstable.php');
 				
 				?></div><?php
 				
@@ -43,17 +43,17 @@ foreach ( $subelements as $subelement ) {
 			case "multi_select":
 			
 				?><h4>Multi select</h4>
-				<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
+				<p>Display name: <input type="text" id="nbtSubElementDisplayName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['displayname']; ?>" onblur="nbtChangeSubDisplayName(<?php echo $subelement['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on extraction form</p>
-				<p>Column prefix: <input type="text" id="nbtElementColumnPrefix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeMultiSelectColumnPrefix(<?php echo $element['id']; ?>);"></p>
+				<p>Column prefix: <input type="text" id="nbtSubElementColumnPrefix<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubMultiSelectColumnPrefix(<?php echo $subelement['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
 				<p>Options</p>
 				<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet; Other form elements marked with this toggle class will appear only if this element is selected</p>
-				<div id="nbtMultiSelectOptionsTable<?php echo $element['id']; ?>"><?php
+				<div id="nbtSubMultiSelectOptionsTable<?php echo $subelement['id']; ?>"><?php
 				
-				$tableelementid = $element['id'];
+				$tablesubelementid = $subelement['id'];
 				
-				include ('./multiselectoptionstable.php');
+				include ('./submultiselectoptionstable.php');
 				
 				?></div><?php
 				
@@ -95,13 +95,13 @@ foreach ( $subelements as $subelement ) {
 }
 
 ?>
-<button onclick="$(this).fadeOut(0);$('#nbtNewElementSelector<?php echo $subelementid; ?>').fadeIn();">Add new element</button>
+<button onclick="$(this).fadeOut(0);$('#nbtNewElementSelector<?php echo $subelementid; ?>').fadeIn();">Add new sub-extraction element</button>
 
 <div id="nbtNewElementSelector<?php echo $subelementid; ?>" class="nbtHidden">
 	<h3>Add new sub-extraction element</h3>
 	<button onclick="nbtAddNewSubOpenText(<?php echo $subelementid; ?>);">Open text</button>
-	<button onclick="nbtAddNewSingleSelect(<?php echo $_GET['id']; ?>);">Single select</button>
-	<button onclick="nbtAddNewMultiSelect(<?php echo $_GET['id']; ?>);">Multi select</button>
+	<button onclick="nbtAddNewSubSingleSelect(<?php echo $subelementid; ?>);">Single select</button>
+	<button onclick="nbtAddNewSubMultiSelect(<?php echo $subelementid; ?>);">Multi select</button>
 	<button onclick="nbtAddNewCountrySelector(<?php echo $_GET['id']; ?>);">Country selector</button>
 	<button onclick="nbtAddNewDateSelector(<?php echo $_GET['id']; ?>);">Date selector</button>
 </div>

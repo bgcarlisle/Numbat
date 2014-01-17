@@ -6121,6 +6121,52 @@ function nbt_remove_multi_select_option ( $elementid, $selectid ) {
 	
 }
 
+function nbt_remove_sub_multi_select_option ( $subelementid, $selectid ) {
+	
+	$subelement = nbt_get_sub_element_for_subelementid ( $subelementid );
+	
+	$element = nbt_get_form_element_for_elementid ( $subelement['elementid'] );
+	
+	$select = nbt_get_select_for_selectid ( $selectid );
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` DROP COLUMN " . $subelement['dbname'] . "_" . $select['dbname'] . ";");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("DELETE FROM selectoptions WHERE id = :sid;");
+		
+		$stmt->bindParam(':sid', $sid);
+		
+		$sid = $selectid;
+		
+		$stmt->execute();
+		
+		$dbh = null;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
 function nbt_change_element_toggle ( $elementid, $newtoggle ) {
 	
 	$itworked = 0;
@@ -6359,6 +6405,78 @@ function nbt_update_multi_select_option_column ( $elementid, $selectid, $oldcolu
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $previous . " " . $newcolumnname . " INT(11) DEFAULT NULL;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	if ( $itworked == 1) {
+		
+		try {
+			
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("UPDATE `selectoptions` SET `dbname`=:newcolumn WHERE `id` = :sid");
+			
+			$stmt->bindParam(':sid', $sid);
+			$stmt->bindParam(':newcolumn', $nc);
+			
+			$sid = $selectid;
+			$nc = $newcolumn;
+			
+			if ($stmt->execute()) {
+				
+				$itworked ++;
+				
+			}
+			
+			$dbh = null;
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+	} else {
+		
+		echo "Error saving";
+		
+	}
+	
+	
+	
+}
+
+function nbt_update_sub_multi_select_option_column ( $subelementid, $selectid, $oldcolumn, $newcolumn ) {
+	
+	$itworked = 0;
+	
+	// update the extractions table
+	
+	$subelement = nbt_get_sub_element_for_subelementid ( $subelementid );
+	
+	$element = nbt_get_form_element_for_elementid ( $subelement['elementid'] );
+	
+	$previous = $subelement['dbname'] . "_" . $oldcolumn;
+	
+	$newcolumnname = $subelement['dbname'] . "_" . $newcolumn;
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` CHANGE " . $previous . " " . $newcolumnname . " INT(11) DEFAULT NULL;");
 		
 		if ($stmt->execute()) {
 			
@@ -9439,6 +9557,611 @@ function nbt_move_sub_element ( $subelementid, $direction ) {
 			nbt_switch_sub_elements_sortorder ( $subelementid, $movedown );
 			
 		}
+		
+	}
+	
+}
+
+function nbt_add_sub_single_select ( $elementid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// get the highest sortorder value
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
+		
+		$stmt->bindParam(':eid', $eid);
+		
+		$eid = $elementid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				$highestsortorder = $row['sortorder'];
+				
+			}
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// find a good name for the new column
+	
+	$foundgoodcolumn = FALSE;
+	
+	$counter = 1;
+	
+	while ( $foundgoodcolumn == FALSE ) {
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'single_select_" . $counter . "';");
+			
+			$stmt->execute();
+		
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$columnname = "single_select_" . $counter;
+				
+				$foundgoodcolumn = TRUE;
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		$counter ++;
+		
+	}
+	
+	// then insert a new element into the form elements table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname) VALUES (:element, :sort, :type, :column);");
+		
+		$stmt->bindParam(':element', $eid);
+		$stmt->bindParam(':sort', $sort);
+		$stmt->bindParam(':type', $type);
+		$stmt->bindParam(':column', $col);
+		
+		$eid = $elementid;
+		$sort = $highestsortorder + 1;
+		$type = "single_select";
+		$col = $columnname;
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// then, add a column to the extractions table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_get_all_select_options_for_sub_element ( $subelementid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `subelementid` = :seid ORDER BY `sortorder` ASC;");
+		
+		$stmt->bindParam(':seid', $seid);
+		
+		$seid = $subelementid;
+		
+		$stmt->execute();
+			
+		$result = $stmt->fetchAll();
+		
+		return $result;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_add_sub_single_select_option ( $subelementid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `subelementid` = :seid ORDER BY `sortorder` DESC LIMIT 1;");
+		
+		$stmt->bindParam(':seid', $seid);
+		
+		$seid = $subelementid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				$highestsortorder = $row['sortorder'];
+				
+			}
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// then add the element
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO selectoptions (subelementid, sortorder) VALUES (:seid, :sort);");
+		
+		$stmt->bindParam(':seid', $seid);
+		$stmt->bindParam(':sort', $sort);
+		
+		$seid = $subelementid;
+		$sort = $highestsortorder + 1;
+		
+		$stmt->execute();
+		
+		$dbh = null;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_move_sub_select_option ( $selectid, $direction ) {
+	
+	$select = nbt_get_select_for_selectid ( $selectid );
+	
+	if ( $direction == 1 ) { // moving "up"
+		
+		// first, see if there are any elements above it
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `subelementid` = :seid AND `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
+			
+			$stmt->bindParam(':sort', $sort);
+			$stmt->bindParam(':seid', $seid);
+			
+			$sort = $select['sortorder'];
+			$seid = $select['subelementid'];
+			
+			$stmt->execute();
+			
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$moveup = FALSE;
+				
+			} else { // there are elements higher than this one
+				
+				foreach ( $result as $row ) {
+					
+					$moveup = $row['id'];
+					
+				}
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		// move the element up, if necessary
+		
+		if ( $moveup ) {
+			
+			nbt_switch_selects_sortorder ( $selectid, $moveup );
+			
+		}
+		
+	} else { // moving "up"
+		
+		// first, see if there are any elements below it
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `subelementid` = :seid AND `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
+			
+			$stmt->bindParam(':sort', $sort);
+			$stmt->bindParam(':seid', $seid);
+			
+			$sort = $select['sortorder'];
+			$seid = $select['subelementid'];
+			
+			$stmt->execute();
+			
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$movedown = FALSE;
+				
+			} else { // there are elements higher than this one
+				
+				foreach ( $result as $row ) {
+					
+					$movedown = $row['id'];
+					
+				}
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		// move the element down, if necessary
+		
+		if ( $movedown ) {
+			
+			nbt_switch_selects_sortorder ( $selectid, $movedown );
+			
+		}
+		
+	}
+	
+}
+
+function nbt_add_sub_multi_select ( $elementid ) {
+	
+	
+	// get the highest sortorder value
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
+		
+		$stmt->bindParam(':eid', $eid);
+		
+		$eid = $elementid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				$highestsortorder = $row['sortorder'];
+				
+			}
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname) VALUES (:element, :sort, :type, :column);");
+		
+		$stmt->bindParam(':element', $eid);
+		$stmt->bindParam(':sort', $sort);
+		$stmt->bindParam(':type', $type);
+		$stmt->bindParam(':column', $col);
+		
+		$eid = $elementid;
+		$sort = $highestsortorder + 1;
+		$type = "multi_select";
+		$col = "multi_select";
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_change_sub_multi_select_column_prefix ( $subelementid, $newcolumn ) {
+	
+	// get the old column name and the form id
+	
+	$subelement = nbt_get_sub_element_for_subelementid ( $subelementid );
+	
+	$element = nbt_get_form_element_for_elementid ( $subelement['elementid'] );
+	
+	// Start a counter to see if everything saved properly
+	
+	$itworked = 0;
+	
+	$selectoptions = nbt_get_all_select_options_for_sub_element ( $subelementid );
+	
+	if ( count ( $selectoptions ) == 0 ) {
+		
+		$itworked = 1;
+		
+	}
+	
+	foreach ( $selectoptions as $select ) {
+		
+		try {
+			
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . "_" . $select['dbname'] . " " . $newcolumn . "_" . $select['dbname'] . " INT(11) DEFAULT NULL;");
+			
+			if ($stmt->execute()) {
+				
+				$itworked = 1;
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+	}
+	
+	
+	if ( $itworked == 1 ) {
+	
+		// then change the form element table to match
+		
+		try {
+			
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("UPDATE `subelements` SET `dbname`=:newname WHERE `id` = :seid");
+			
+			$stmt->bindParam(':seid', $seid);
+			$stmt->bindParam(':newname', $nn);
+			
+			$seid = $subelement['id'];
+			$nn = $newcolumn;
+			
+			if ($stmt->execute()) {
+				
+				$itworked ++;
+				
+			}
+			
+			$dbh = null;
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+	
+	}
+	
+	if ( $itworked == 2 ) {
+		
+		echo "Changes saved";
+		
+	} else {
+		
+		echo "Error saving—try a different column name";
+		
+	}
+	
+}
+
+function nbt_add_sub_multi_select_option ( $subelementid ) {
+	
+	// get the highest sortorder
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `subelementid` = :seid ORDER BY `sortorder` DESC LIMIT 1;");
+		
+		$stmt->bindParam(':seid', $seid);
+		
+		$seid = $subelementid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				$highestsortorder = $row['sortorder'];
+				
+			}
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	$subelement = nbt_get_sub_element_for_subelementid ( $subelementid );
+	
+	$element = nbt_get_form_element_for_elementid ( $subelement['elementid'] );
+	
+	// find a good name for the new column
+	
+	$foundgoodcolumn = FALSE;
+	
+	$counter = 1;
+	
+	while ( $foundgoodcolumn == FALSE ) {
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE '" . $subelement['dbname'] . "_" . $counter . "';");
+			
+			$stmt->execute();
+		
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$columnname = $subelement['dbname'] . "_" . $counter;
+				
+				$foundgoodcolumn = TRUE;
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		$counter ++;
+		
+	}
+	
+	// then insert a new option into the selectoptions table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO `selectoptions` (subelementid, sortorder, dbname) VALUES (:seid, :sort, :column);");
+		
+		$stmt->bindParam(':seid', $seid);
+		$stmt->bindParam(':sort', $sort);
+		$stmt->bindParam(':column', $col);
+		
+		$seid = $subelementid;
+		$sort = $highestsortorder + 1;
+		$col = $counter - 1;
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// then, add a column to the extractions table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " INT(11) DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
 		
 	}
 	

@@ -73,7 +73,7 @@ foreach ( $elements as $element ) {
 				<p>Table display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on extraction form</p>
 				<p>Table suffix: <input type="text" id="nbtTableSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeTableSuffix(<?php echo $element['id']; ?>);"></p>
-				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
+				<p class="nbtFinePrint">Suffix for table in database</p>
 				<p>Table columns</p>
 				<p class="nbtFinePrint">Display name will appear as a column of the table on extraction form; DB name will appear on exported spreadsheet</p>
 				<div id="nbtTableDataColumnsTable<?php echo $element['id']; ?>"><?php
@@ -92,7 +92,7 @@ foreach ( $elements as $element ) {
 				<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on extraction form</p>
 				<p>Table suffix: <input type="text" id="nbtCitationSelectorSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeCitationSelectorSuffix(<?php echo $element['id']; ?>);"></p>
-				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
+				<p class="nbtFinePrint">Suffix for citations table in database</p>
 				<p>Citation properties</p>
 				<p class="nbtFinePrint">You can add properties to be collected regarding each citation. Display name will appear as an open text field for each citation added on the extraction form; DB name will appear on exported spreadsheet.</p>
 				<div id="nbtCitationSelectorTable<?php echo $element['id']; ?>"><?php
@@ -132,7 +132,7 @@ foreach ( $elements as $element ) {
 				<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on extraction form</p>
 				<p>Table suffix: <input type="text" id="nbtTableSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeSubExtractionSuffix(<?php echo $element['id']; ?>);"></p>
-				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
+				<p class="nbtFinePrint">Suffix for table in database</p>
 				<p>Sub-extraction elements</p>
 				<div class="nbtSubExtractionEditor" id="nbtSubExtractionElements<?php echo $element['id']; ?>"><?php
 				
