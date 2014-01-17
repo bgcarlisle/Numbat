@@ -34,7 +34,7 @@ The following are the intended uses of Numbat.
 
 ### Values for the Numbat project
 
-* "Easy in, easy out" as a philosophy for data in Numbat—data entered in Numbat should be easily imported and exported, so that users are not trapped in this software
+* "Easy in, easy out" as a philosophy for data in Numbat—data entered in Numbat should be easily imported and exported, so that users are never trapped
 * Adherence to standards
 * Usability
 * Expandability / modularity of software
