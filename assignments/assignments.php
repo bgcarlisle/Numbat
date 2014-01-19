@@ -1,5 +1,8 @@
 <div class="nbtContentPanel nbtGreyGradient">
-	<h2>Manage extraction assignments</h2>
+	<h2>
+		<img src="<?php echo SITE_URL; ?>images/assignments.png" class="nbtTitleImage">
+		Manage extraction assignments
+	</h2>
 	<table class="nbtTabledData">
 		<tr class="nbtTableHeaders">
 			<td>Reference set</td>

@@ -1,5 +1,8 @@
 <div class="nbtContentPanel nbtGreyGradient">
-	<h2>Manage reference sets</h2>
+	<h2>
+		<img src="<?php echo SITE_URL; ?>images/managerefsets.png" class="nbtTitleImage">
+		Manage reference sets
+	</h2>
 	<table class="nbtTabledData">
 		<tr class="nbtTableHeaders">
 			<td>Reference set</td>

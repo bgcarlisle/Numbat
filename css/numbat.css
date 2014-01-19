@@ -425,3 +425,27 @@ table.nbtAssignments tr:first-child {
 	padding: 20px 10px 20px 10px;
 	background: #eee;
 }
+nav {
+	display: none;
+	position: fixed;
+	top: 35px;
+	left: 5px;
+	border-bottom-right-radius: 5px;
+	border: 1px solid #666;
+	border-top: none;
+	min-width: 250px;
+	background: #eee;
+	padding: 10px 20px 20px 20px;
+	z-index: 10;
+}
+nav li {
+	margin-bottom: 5px;
+}
+nav img {
+	float: left;
+	padding-right: 5px;
+	height: 20px;
+}
+img.nbtTitleImage {
+	margin: 0 5px 10px 0;
+}

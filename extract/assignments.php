@@ -1,5 +1,8 @@
 <div class="nbtContentPanel nbtGreyGradient">
-	<h2>Your assignments</h2>
+	<h2>
+		<img src="<?php echo SITE_URL; ?>images/extract.png" class="nbtTitleImage">
+		Your extractions
+	</h2>
 		<?php
 		
 		$referencesets = nbt_get_all_ref_sets ();

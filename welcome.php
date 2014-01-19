@@ -1,4 +1,4 @@
-<div class="nbtSigninPanel nbtGreyGradient">
+<div class="nbtSigninPanel nbtGreyGradient" style="background-image: url('<?php echo SITE_URL; ?>images/numbat-background.png'); background-position: top center; background-color: #eee; background-repeat: no-repeat;">
 	<p class="nbtFinePrint" style="float: right;"><a href="<?php echo SITE_URL; ?>signup/">New here? Sign up.</a></p>
 	<h2>Sign in</h2>
 	<form action="<?php echo SITE_URL; ?>" method="post">
