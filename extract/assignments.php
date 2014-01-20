@@ -18,7 +18,7 @@
 					<tr class="nbtTableHeaders">
 						<td>When assigned</td>
 						<td>Assignment</td>
-						<td>Form</td>
+						<td>Reference set / form</td>
 						<td>Extract</td>
 					</tr>
 						<?php
@@ -41,10 +41,12 @@
 									?>
 								</td>
 								<td><?php
+								
+									$refsetname = nbt_get_name_for_refsetid ( $assignment['refsetid'] );
 									
 									$form = nbt_get_form_for_id ( $assignment['formid'] );
 									
-									echo $form['name'];
+									echo $refsetname . " / " . $form['name'];
 									
 								?></td>
 								<td>
