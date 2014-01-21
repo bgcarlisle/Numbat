@@ -67,12 +67,15 @@
 	
 	<div class="nbtHidden" id="nbtAdvancedAssignments">
 		<p>Type a MySQL "WHERE" clause to be queried against the reference set table selected above (<span id="nbtSelectedRefSet">none chosen yet</span>).</p>
-		<p>E.g. If you wanted to choose 50 random ones, write, "ORDER BY RAND() LIMIT 50". To assign 50 more that haven't been assigned yet, write, "`id` NOT IN (SELECT `referenceid` FROM `assignments` WHERE `refsetid` = 1) ORDER BY RAND() LIMIT 50"</p>
+		<p>E.g. If your reference set has an "include" column that indicates whether the paper is to be extracted, you could write "`include` = 1" and that would 
+		
+		Or if you wanted to choose 50 random ones, write, "ORDER BY RAND() LIMIT 50". To assign 50 more that haven't been assigned yet, write, "`id` NOT IN (SELECT `referenceid` FROM `assignments` WHERE `refsetid` = 1) ORDER BY RAND() LIMIT 50"</p>
 		<input type="text" class="nbtCitationFinder" id="nbtAdvancedAssignInput">
 		<button onclick="$(this).fadeOut(0);$('#nbtExecuteQuery').fadeIn();">Execute query</button>
 		<div class="nbtHidden" id="nbtExecuteQuery">
-			<p>Are you sure? This can't be undone.</p>
-			<button>Yes, God help me</button>
+			<p>Are you sure? This can't be undone, and you could seriously ruin everything. <a href="<?php echo SITE_URL; ?>backup/">Did you make a backup yet? You should probably make a backup now.</a></p>
+			<button onclick="nbtAddAdvancedAssignment();">Yes, God help me</button>
+			<p class="nbtFinePrint nbtHidden" id="nbtAdvancedAssignmentFeedback">&nbsp;</p>
 		</div>
 	</div>
 	

@@ -2102,3 +2102,29 @@ function nbtDeleteRefSet ( rsid ) {
 	});
 	
 }
+
+function nbtAddAdvancedAssignment () {
+	
+	$.ajax ({
+		url: numbaturl + 'assignments/addadvassignment.php',
+		type: 'post',
+		data: {
+			userid: $('#nbtAssignUser').val(),
+			formid: $('#nbtAssignForm').val(),
+			refset: $('#nbtAssignRefSet').val(),
+			query: $('#nbtAdvancedAssignInput').val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtAdvancedAssignmentFeedback').html(html);
+		
+		$('#nbtAdvancedAssignmentFeedback').fadeIn(500, function () {
+			
+			$('#nbtAdvancedAssignmentFeedback').fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
