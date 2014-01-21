@@ -47,8 +47,17 @@
 <body>
 
 <div id="nbtTopBanner">
-	<a <?php if ( nbt_user_is_logged_in () ) { ?>href="#" onclick="event.preventDefault();$('nav').slideToggle();"<?php } else { ?>href="<?php echo SITE_URL; } ?>"><h1>Numbat</h1></a>
 	<?php
+	
+	if ( nbt_user_is_logged_in () ) {
+		
+		?><a href="#" onclick="event.preventDefault();$('nav').slideToggle();"><h1>Numbat</h1></a><?php
+		
+	} else {
+		
+		?><a href="<?php echo SITE_URL; ?>"><h1>Numbat</h1></a><?php
+		
+	}
 	
 	if ( nbt_user_is_logged_in () ) {
 		
