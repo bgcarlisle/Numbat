@@ -58,7 +58,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
 				
 				$lines = array();
 				
-				foreach ( split( "\r", $filecontent ) as $line ) {
+				foreach ( explode ( "\r", $filecontent ) as $line ) {
 					
 					$lines[$counter] = $line;
 					
