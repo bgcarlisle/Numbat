@@ -91,6 +91,8 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 					
 						if ( $element['codebook'] != "" ) {
 							
+							$element['codebook'] = str_replace ("\n", "<br>", $element['codebook']);
+							
 							?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></h3>
 							<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
 							
