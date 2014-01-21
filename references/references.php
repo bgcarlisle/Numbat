@@ -7,6 +7,7 @@
 		<tr class="nbtTableHeaders">
 			<td>Reference set</td>
 			<td>View all references</td>
+			<td>Edit reference set</td>
 			<td>Delete</td>
 		</tr>
 		<?php
@@ -15,20 +16,30 @@
 		
 		foreach ( $allrefsets as $refset ) {
 			
-			?><tr>
+			?><tr id="nbtRefSetRow<?php echo $refset['id']; ?>">
 				<td><?php echo $refset['name']; ?></td>
 				<td>View</td>
-				<td><button>Delete</button></td>
+				<td><a href="<?php echo SITE_URL; ?>references/?action=edit&refset=<?php echo $refset['id']; ?>">Edit</a></td>
+				<td>
+					<button onclick="$(this).fadeOut(0);$('#nbtDeleteRefSet<?php echo $refset['id']; ?>').fadeIn();">Delete</button>
+					<button class="nbtHidden" id="nbtDeleteRefSet<?php echo $refset['id']; ?>" onclick="nbtDeleteRefSet(<?php echo $refset['id']; ?>);">For real</button>
+				</td>
 			</tr><?php
 			
 		}
 		
 		?>
 		<tr>
-			<td colspan=3><button>Add new reference set</button></td>
+			<td colspan=3><button onclick="$('#nbtNewReferenceSetInstructions').slideDown();$(this).fadeOut();">Add new reference set</button></td>
 		</tr>
 	</table>
 	
-	<div class="nbtHidden nbtFeedbackGood nbtFeedback nbtFinePrint" id="nbtPrivilegeFeedback">&nbsp;</div>
+	<div class="nbtHidden" id="nbtNewReferenceSetInstructions">
+		<p>To make a new reference set, prepare your references as a tab-delimited text file. The first row should include column headings for your reference metadata. You may include any other columns you like. Required column headings are: title, authors, year, journal, abstract. Recommended column headings: include, database, databaseid, etc.</p>
+		<form action="<?php echo SITE_URL; ?>references/upload.php" method="post" enctype="multipart/form-data">
+			<input type="file" name="file" id="file">
+			<input type="submit" style="" value="Upload new reference set">
+		</form>
+	</div>
 	
 </div>

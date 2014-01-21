@@ -2061,3 +2061,44 @@ function nbtDeleteSubExtraction ( eid, seid ) {
 	});
 	
 }
+
+function nbtChangeRefSetName ( rsid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'references/changename.php',
+		type: 'post',
+		data: {
+			refset: rsid,
+			newname: $('#nbtNewRefSetName').val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtNewRefSetNameFeedback').html(html);
+		
+		$('#nbtNewRefSetNameFeedback').fadeIn(500, function () {
+			
+			$('#nbtNewRefSetNameFeedback').fadeOut(1500);
+			
+		});
+		
+	});
+	
+}
+
+function nbtDeleteRefSet ( rsid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'references/deleterefset.php',
+		type: 'post',
+		data: {
+			refset: rsid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtRefSetRow' + rsid).fadeOut();
+		
+	});
+	
+}

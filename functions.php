@@ -687,6 +687,39 @@ function nbt_get_refsetid_for_name ( $name ) {
 	
 }
 
+function nbt_get_refset_for_id ( $refsetid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM referencesets WHERE id = :id LIMIT 1;");
+		
+		$stmt->bindParam(':id', $rsid);
+		
+		$rsid = $refsetid;
+		
+		$stmt->execute();
+	
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		foreach ( $result as $row ) {
+			
+			return $row;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
 function nbt_echo_reference ( $ref, $drugname ) {
 	
 	?><div class="sigGreyGradient">
@@ -8830,7 +8863,7 @@ function nbt_get_all_assignments_for_refset ( $refsetid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT *, (SELECT `username` FROM `users` WHERE `id` LIKE `userid`) as `username`, (SELECT `title` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `title`, (SELECT `authors` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `authors`, (SELECT `journal` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `journal`, (SELECT `year` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `year`, (SELECT `id` FROM `forms` WHERE `id` LIKE `formid`) as `formid`, (SELECT `name` FROM `forms` WHERE `id` LIKE `formid`) as `formname` FROM `assignments` ORDER BY `whenassigned` DESC;");
+		$stmt = $dbh->prepare("SELECT *, (SELECT `username` FROM `users` WHERE `id` LIKE `userid`) as `username`, (SELECT `title` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `title`, (SELECT `authors` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `authors`, (SELECT `journal` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `journal`, (SELECT `year` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `year`, (SELECT `id` FROM `forms` WHERE `id` LIKE `formid`) as `formid`, (SELECT `name` FROM `forms` WHERE `id` LIKE `formid`) as `formname` FROM `assignments` WHERE `refsetid` = '" . $refsetid . "' ORDER BY `whenassigned` DESC;");
 		
 		$stmt->bindParam(':username', $user);
 		
@@ -10599,6 +10632,252 @@ function nbt_remove_sub_extraction_instance ( $elementid, $subextractionid ) {
 		}
 		
 		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_change_refset_name ( $refsetid, $newname ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE referencesets SET name=:newname WHERE id = :id");
+		
+		$stmt->bindParam(':id', $rsid);
+		$stmt->bindParam(':newname', $nn);
+		
+		$rsid = $refsetid;
+		$nn = $newname;
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			return TRUE;
+			
+		} else {
+			
+			$dbh = null;
+			return FALSE;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_make_new_refset_row ( $newname ) { // Returns the id of the new refset
+	
+	try {
+			
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("INSERT INTO referencesets (name) VALUES (:name)");
+		
+		$stmt->bindParam(':name', $name);
+		
+		$name = $newname;
+		
+		$stmt->execute();
+		
+		$stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+		$stmt2->execute();
+		
+		$result = $stmt2->fetchAll();
+	
+		$dbh = null;
+		
+		foreach ( $result as $row ) {
+			
+			return $row['newid']; // This is the auto_increment-generated ID for the new row
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_make_new_refset_table ( $refsetid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("CREATE TABLE `referenceset_" . $refsetid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+			return TRUE;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_add_column_to_refset_table ( $refsetid, $columnname, $columntype ) {
+	
+	switch ( $columntype ) {
+		
+		case "int":
+			
+			$sqltype = "int(11) DEFAULT NULL";
+			
+		break;
+		
+		case "varchar50":
+		
+			$sqltype = "varchar(50) DEFAULT NULL";
+		
+		break;
+		
+		case "varchar500":
+		
+			$sqltype = "varchar(500) DEFAULT NULL";
+		
+		break;
+		
+		case "varchar1000":
+		
+			$sqltype = "varchar(1000) DEFAULT NULL";
+		
+		break;
+		
+		case "varchar6000":
+		
+			$sqltype = "varchar(6000) DEFAULT NULL";
+		
+		break;
+		
+		case "date":
+		
+			$sqltype = "date DEFAULT NULL";
+		
+		break;
+		
+	}
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `referenceset_" . $refsetid . "` ADD COLUMN `" . $columnname . "` " . $sqltype . ";");
+		
+		if ( $stmt->execute() ) {
+			
+			return TRUE;
+			
+		} else {
+			
+			return FALSE;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_insert_row_into_columns ( $refset, $columns, $row, $separator ) {
+	
+	$sqlcols = "`" . implode ( "`, `", $columns ) . "`";
+	
+	$sqlparams = ":" . implode ( ", :", $columns );
+	
+	$values = explode ($separator, $row);
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO `referenceset_" . $refset . "` (" . $sqlcols . ") VALUES (" . $sqlparams . ")");
+		
+		$counter = 0;
+		$colvars = array ();
+		
+		foreach ( $columns as $column ) {
+			
+			$stmt->bindParam(':' . $column, $colvars[$counter]);
+			
+			// This removes quotes if they're at the beginning and the end of a field
+			
+			$length = strlen ($values[$counter]);
+								
+			if ( ( substr ($values[$counter], $length-1, 1) == "\"" ) && ( substr ($values[$counter], 0, 1) == "\"" ) ) {
+				
+				$values[$counter] = substr ( $values[$counter], 1, $length-2 );
+				
+			}
+			
+			$colvars[$counter] = $values[$counter];
+			
+			$counter++;
+			
+		}
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			return TRUE;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_delete_refset ( $refsetid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("DELETE FROM `referencesets` WHERE id = :id LIMIT 1; DROP TABLE `referenceset_" . $refsetid . "`;");
+		
+		$stmt->bindParam(':id', $rsid);
+		
+		$rsid = $refsetid;
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+			return TRUE;
+			
+		}
 		
 	}
 	
