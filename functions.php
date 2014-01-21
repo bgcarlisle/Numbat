@@ -293,7 +293,7 @@ function nbt_save_new_user ($username, $email, $password) {
 		
 		$message = "Greetings!";
 		
-		$message = $message . "\n\n" . "You are receiving this message because your email was registered for an account on the Signals extraction form with the following user name:";
+		$message = $message . "\n\n" . "You are receiving this message because your email was registered for an account on an installation of Numbat with the following user name:";
 		
 		$message = $message . " " . $username;
 		
@@ -307,9 +307,9 @@ function nbt_save_new_user ($username, $email, $password) {
 		
 		$message = $message . "\n\n" . "Enjoy! :)";
 		
-		$message = $message . "\n\nBenjamin Carlisle MA\nwww.bgcarlisle.com/signals/";
+		$message = $message . "\n\nBenjamin Carlisle MA\nwww.bgcarlisle.com";
 		
-		mail ($email, "Confirm your email address for Signals extraction", $message, "From: Benjamin Carlisle MA <murph@bgcarlisle.com>");
+		mail ($email, "Confirm your email address for Numbat", $message, "From: Numbat <murph@bgcarlisle.com>");
 			
 		return TRUE;
 		
@@ -402,9 +402,9 @@ function nbt_send_password_recovery_email ( $username ) {
 	
 	$message = $message . "\n\n" . "Enjoy! :)";
 	
-	$message = $message . "\n\nBenjamin Carlisle MA\nwww.bgcarlisle.com/signals/";
+	$message = $message . "\n\nBenjamin Carlisle MA\nwww.bgcarlisle.com";
 	
-	mail ($email, "Signals extraction password reset", $message, "From: Benjamin Carlisle MA <murph@bgcarlisle.com>");
+	mail ($email, "Numbat password reset", $message, "From: Benjamin Carlisle MA <murph@bgcarlisle.com>");
 	
 }
 
