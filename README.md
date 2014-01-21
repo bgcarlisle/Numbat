@@ -1,4 +1,4 @@
-Numbat v. 0.5
+Numbat v. 0.6
 ======
 
 Numbat Academic Meta-Analysis Extraction Manager: "Getting closer!"
