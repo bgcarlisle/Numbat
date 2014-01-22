@@ -2,7 +2,7 @@
 
 include_once ("../config.php");
 
-if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
+if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) >= 2 ) {
 	
 	nbt_new_dump_file ();
 	
