@@ -2200,3 +2200,41 @@ function nbtRemoveManualReference ( rsid, refid ) {
 	});
 	
 }
+
+function nbtCopyTableDataRow ( eid, rsid, refid, rid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'master/copytabledatarow.php',
+		type: 'post',
+		data: {
+			elementid: eid,
+			refset: rsid,
+			ref: refid,
+			row: rid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtMasterTable' + eid).html(html);
+		
+	});
+	
+}
+
+function nbtDeleteMasterTableRow ( eid, rid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'master/deletemastertabledatarow.php',
+		type: 'post',
+		data: {
+			elementid: eid,
+			row: rid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtMasterTD' + eid + 'RowID' + rid).slideUp();
+		
+	});
+	
+}

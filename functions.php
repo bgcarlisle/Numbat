@@ -2409,12 +2409,14 @@ function nbt_add_new_safety_table_row ($drugid, $refid, $userid) {
 	
 }
 
-function nbt_remove_safety_table_row ( $rowid ) {
+function nbt_remove_master_table_row ( $elementid, $rowid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("DELETE FROM safety WHERE id = :rowid;");
+		$stmt = $dbh->prepare ("DELETE FROM `mtable_" . $element['columnname'] . "` WHERE id = :rowid;");
 		
 		$stmt->bindParam(':rowid', $rid);
 		
@@ -3547,17 +3549,14 @@ function nbt_check_double_citations ($extractions, $drugid, $refid, $section, $t
 	
 }
 
-function nbt_show_master_citations ( $master ) {
-}
-
-function sigMasterUseResponse ( $drugid, $reference, $row, $extrid ) {
+function nbt_copy_to_master ( $formid, $refsetid, $reference, $row, $extrid ) {
 	
 	// Get the value for the extraction
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("SELECT " . $row . " FROM extractions WHERE id = :extrid LIMIT 1;");
+		$stmt = $dbh->prepare ("SELECT " . $row . " FROM `extractions_" . $formid . "` WHERE id = :extrid LIMIT 1;");
 		
 		$stmt->bindParam(':extrid', $eid);
 		
@@ -3592,15 +3591,15 @@ function sigMasterUseResponse ( $drugid, $reference, $row, $extrid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("UPDATE `master` SET " . $row . " = :value WHERE drugid = :drug AND referenceid = :ref;");
+		$stmt = $dbh->prepare ("UPDATE `m_extractions_" . $formid . "` SET " . $row . " = :value WHERE refsetid = :refset AND referenceid = :ref;");
 		
 		$stmt->bindParam(':value', $val2);
 		$stmt->bindParam(':ref', $rid);
-		$stmt->bindParam(':drug', $did);
+		$stmt->bindParam(':refset', $rsid);
 		
 		$val2 = $value;
 		$rid = $reference;
-		$did = $drugid;
+		$rsid = $refsetid;
 		
 		$stmt->execute();
 		
@@ -3793,7 +3792,7 @@ function nbt_toggle_assignment_hide ( $assignid ) {
 	
 }
 
-function nbt_get_master ( $drugid, $refid ) {
+function nbt_get_master ( $formid, $refsetid, $refid ) {
 	
 	// Try to insert
 	// If it's already there, it will fail
@@ -3802,12 +3801,12 @@ function nbt_get_master ( $drugid, $refid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("INSERT INTO `master` (drugid, referenceid) VALUES (:drugid, :refid);");
+		$stmt = $dbh->prepare ("INSERT INTO `m_extractions_" . $formid . "` (refsetid, referenceid) VALUES (:refset, :refid);");
 		
-		$stmt->bindParam(':drugid', $did);
+		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':refid', $rid);
 		
-		$did = $drugid;
+		$rsid = $refsetid;
 		$rid = $refid;
 		
 		$stmt->execute();
@@ -3827,12 +3826,12 @@ function nbt_get_master ( $drugid, $refid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `master` WHERE `drugid` = :drugid AND `referenceid` = :refid LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT * FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :refset AND `referenceid` = :refid LIMIT 1;");
 		
-		$stmt->bindParam(':drugid', $did);
+		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':refid', $rid);
 		
-		$did = $drugid;
+		$rsid = $refsetid;
 		$rid = $refid;
 		
 		$stmt->execute();
@@ -4108,17 +4107,19 @@ function nbt_remove_master_outcomes_table_row ( $rowid ) {
 	
 }
 
-function nbt_get_master_efficacy_table_rows ( $drugid, $refid ) {
+function nbt_get_master_table_rows ( $elementid, $refsetid, $refid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM master_efficacy WHERE drugid = :drug AND referenceid = :ref ORDER BY id ASC;");
+		$stmt = $dbh->prepare("SELECT * FROM `mtable_" . $element['columnname'] . "` WHERE `refsetid` = :refset AND `referenceid` = :ref ORDER BY id ASC;");
 		
-		$stmt->bindParam(':drug', $did);
+		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':ref', $ref);
 		
-		$did = $drugid;
+		$rsid = $refsetid;
 		$ref = $refid;
 		
 		$stmt->execute();
@@ -4138,12 +4139,14 @@ function nbt_get_master_efficacy_table_rows ( $drugid, $refid ) {
 	}
 }
 
-function nbt_copy_efficacy_row_to_master ( $originalid ) {
+function nbt_copy_table_row_to_master ( $elementid, $refsetid, $refid, $originalid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM efficacy WHERE id = :id LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT * FROM `tabledata_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
 		
 		$stmt->bindParam(':id', $oid);
 		
@@ -4153,6 +4156,12 @@ function nbt_copy_efficacy_row_to_master ( $originalid ) {
 		
 		$result = $stmt->fetchAll();
 		
+		foreach ( $result as $row ) {
+			
+			$original = $row;
+			
+		}
+		
 	}
 	
 	catch (PDOException $e) {
@@ -4161,38 +4170,63 @@ function nbt_copy_efficacy_row_to_master ( $originalid ) {
 		
 	}
 	
-	foreach ( $result as $row ) {
+	// Make a new row, get the id
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO `mtable_" . $element['columnname'] . "` (refsetid, referenceid) VALUES (:refset, :ref);");
+		
+		$stmt->bindParam(':refset', $rsid);
+		$stmt->bindParam(':ref', $rid);
+		
+		$rsid = $refsetid;
+		$rid = $refid;
+		
+		$stmt->execute();
+		
+		$stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+		
+		$stmt2->execute();
+		
+		$result = $stmt2->fetchAll();
+	
+		$dbh = null;
+		
+		foreach ( $result as $row ) {
+			
+			$newid = $row['newid'];
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// Copy the data over
+	
+	$columns = nbt_get_all_columns_for_table_data ( $elementid );
+	
+	foreach ( $columns as $column ) {
 		
 		try {
-		
+			
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("INSERT INTO `master_efficacy` (drugid, referenceid, outcome, arm, treated_mean, treated_sd, aggr_value, aggr_variance, aggr_units, direction, significance) VALUES (:drugid, :refid, :outcome, :arm, :treatedmean, :treatedsd, :aggrvalue, :aggrvariance, :aggrunits, :direction, :significance);");
+			$stmt = $dbh->prepare("UPDATE `mtable_" . $element['columnname'] . "` SET `" . $column['dbname'] . "` = :value WHERE id = :id LIMIT 1;");
 			
-			$stmt->bindParam(':drugid', $did);
-			$stmt->bindParam(':refid', $rid);
-			$stmt->bindParam(':outcome', $out);
-			$stmt->bindParam(':arm', $arm);
-			$stmt->bindParam(':treatedmean', $tmean);
-			$stmt->bindParam(':treatedsd', $tsd);
-			$stmt->bindParam(':aggrvalue', $agval);
-			$stmt->bindParam(':aggrvariance', $agvar);
-			$stmt->bindParam(':aggrunits', $agun);
-			$stmt->bindParam(':direction', $dir);
-			$stmt->bindParam(':significance', $sig);
+			$stmt->bindParam(':id', $nid);
+			$stmt->bindParam(':value', $val);
 			
-			$did = $row['drugid'];
-			$rid = $row['referenceid'];
-			$out = $row['outcome'];
-			$arm = $row['arm'];
-			$tmean = $row['treated_mean'];
-			$tsd = $row['treated_sd'];
-			$agval = $row['aggr_value'];
-			$agvar = $row['aggr_variance'];
-			$agun = $row['aggr_units'];
-			$dir = $row['direction'];
-			$sig = $row['significance'];
+			$nid = $newid;
+			$val = $original[$column['dbname']];
 			
 			$stmt->execute();
+			
+			$result = $stmt->fetchAll();
 			
 		}
 		
@@ -4201,6 +4235,7 @@ function nbt_copy_efficacy_row_to_master ( $originalid ) {
 			echo $e->getMessage();
 			
 		}
+		
 	}
 	
 }
