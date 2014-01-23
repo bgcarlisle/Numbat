@@ -1354,11 +1354,11 @@ function nbtUpdateExtractionTableData ( tableid, rowid, columnid, inputid) {
 		
 		$('#nbtTable' + tableid + 'Feedback').html(html);
 		
-		$('#nbtTable' + tableid + 'Feedback').fadeIn(50, function () {
+		$('#nbtTable' + tableid + 'Feedback').slideDown(50, function () {
 			
 			setTimeout ( function () {
 				
-				$('#nbtTable' + tableid + 'Feedback').fadeOut(1000);
+				$('#nbtTable' + tableid + 'Feedback').slideUp(1000);
 				
 			}, 2000);
 			

@@ -40,7 +40,7 @@ $no_of_columns = count ( $columns );
 	?>
 	<tr>
 		<td colspan="<?php echo $no_of_columns + 1; ?>">
-			<button onclick="nbtAddExtractionTableDataRow(<?php echo $nbtExtractTableDataID; ?>, <?php echo $nbtExtractRefSet; ?>, <?php echo $nbtExtractRefID; ?>);">Add a new row</button>
-			<span class="nbtInputFeedback" id="nbtTable<?php echo $element['id']; ?>Feedback">&nbsp;</span></td>
+			<button onclick="nbtAddExtractionTableDataRow(<?php echo $nbtExtractTableDataID; ?>, <?php echo $nbtExtractRefSet; ?>, <?php echo $nbtExtractRefID; ?>);">Add a new row</button></td>
 	</tr>
 </table>
+<p class="nbtFinePrint" id="nbtTable<?php echo $element['id']; ?>Feedback">&nbsp;</p>
