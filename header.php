@@ -92,7 +92,7 @@ if ( nbt_user_is_logged_in () ) {
 				</a>
 			</li>
 			<li>
-				<a href="<?php echo SITE_URL; ?>reconcile/">
+				<a href="<?php echo SITE_URL; ?>master/">
 					<img src="<?php echo SITE_URL; ?>images/reconcile.png">
 					Reconcile finished extractions
 				</a>

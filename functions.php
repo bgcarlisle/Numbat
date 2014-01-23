@@ -729,22 +729,72 @@ function nbt_echo_reference ( $ref, $drugname ) {
 	
 }
 
-function nbt_get_all_references_for_drug_id ( $drugid, $start = 0, $range = 25 ) {
-	
-	$drugname = nbt_get_name_for_refsetid ($drugid);
+function nbt_get_all_references_for_refset ( $refsetid ) {
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-//		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " ORDER BY id ASC LIMIT :start, :range;");
-		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " ORDER BY id ASC;");
+		$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` ORDER BY id ASC;");
 		
-		$stmt->bindParam(':start', $sta);
-		$stmt->bindParam(':range', $ran);
+		$stmt->execute();
+	
+		$result = $stmt->fetchAll();
 		
-		$dname = $drugname;
-		$sta = $start;
-		$ran = $range;
+		$dbh = null;
+		
+		return $result;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_get_all_extracted_references_for_refset_and_form ( $refsetid, $formid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `id` IN (SELECT `referenceid` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset) ORDER BY id ASC;");
+		
+		$stmt->bindParam(':refset', $rsid);
+		
+		$rsid = $refsetid;
+		
+		$stmt->execute();
+	
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		return $result;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_get_extractions_for_refset_ref_and_form ( $refsetid, $refid, $formid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT *, (SELECT `username` FROM `users` WHERE `users`.`id` = `extractions_" . $formid . "`.`userid`) as `username` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `referenceid` = :ref ORDER BY id ASC;");
+		
+		$stmt->bindParam(':refset', $rsid);
+		$stmt->bindParam(':ref', $rid);
+		
+		$rsid = $refsetid;
+		$rid = $refid;
 		
 		$stmt->execute();
 	
@@ -3229,208 +3279,6 @@ function nbt_set_master ( $drugid, $refid, $row, $value ) {
 	catch (PDOException $e) {
 		
 		echo $e->getMessage();
-		
-	}
-	
-}
-
-function nbt_test_extractions_for_equality ( $extractions, $master, $row, $title ) {
-	
-	// First, see if they're the same
-	
-	$counter = 0;
-	
-	$allequal = TRUE;
-	
-	foreach ( $extractions as $extr ) {
-		
-		if ( $counter > 0 ) {
-			
-			if ( $value != $extr[$row] ) {
-				
-				$allequal = FALSE;
-				
-			}
-			
-		}
-		
-		$value = $extr[$row];
-		
-		$counter ++;
-		
-	}
-	
-	if ( ! $allequal ) {
-		
-		?><div class="sigFeedbackBad sigDoubleResult"><p>&#9998; <?php echo $title; ?></p>
-		<hr><?php
-		
-		foreach ( $extractions as $extr ) {
-			
-			?><p><span class="sigHidden" id="sigCheck<?php echo $extr['id']; ?>-<?php echo $row; ?>">&#10003;</span><span class="sigExtractionName"><?php echo nbt_get_username_for_userid ( $extr['userid'] ); ?></span> <?php echo $extr[$row]; ?></p>
-			<button onclick="sigMasterConfirmResponse('<?php echo $extr['id']; ?>-<?php echo $row; ?>');" id="sigConfirm<?php echo $extr['id']; ?>-<?php echo $row; ?>">Use this response</button>
-			<button onclick="sigMasterUseResponse('<?php echo $extr['id']; ?>-<?php echo $row; ?>', <?php echo $extr['drugid']; ?>, <?php echo $extr['referenceid']; ?>, '<?php echo $row; ?>', <?php echo $extr['id']; ?>, '<?php echo $title; ?>');" id="sigUse<?php echo $extr['id']; ?>-<?php echo $row; ?>" class="sigHidden">Use on master copy</button>
-			<button onclick="sigMasterCancelResponse('<?php echo $extr['id']; ?>-<?php echo $row; ?>');" id="sigCancel<?php echo $extr['id']; ?>-<?php echo $row; ?>" class="sigHidden">Cancel</button><?php
-			
-		}
-		
-		?></div>
-		<p class="sigMaster<?php
-		
-		if ( $master[$row] == NULL ) {
-			
-			echo " sigHidden";
-			
-		}
-		
-		?>" id="sigMasterFeedback<?php echo $extr['drugid']; ?>-<?php echo $extr['referenceid']; ?>-<?php echo $row; ?>">Master copy: <?php echo $master[$row]; ?></p><?php
-		
-	} else {
-		
-		?><p class="sigFeedbackGood sigDoubleResult">&#10003; <?php echo $title; ?></p>
-		<?php
-		
-		nbt_set_master ( $extr['drugid'], $extr['referenceid'], $row, $extr[$row] );
-		
-		?>
-		<p class="sigMaster">Master copy: <?php echo $extr[$row]; ?></p><?php
-		
-	}
-	
-}
-
-function nbt_test_multi_extractions_for_equality ( $extractions, $master, $title, $options ) {
-	
-	$allequal = TRUE;
-	
-	foreach ( $options as $dbcolumn => $plaintext ) {
-		
-		$counter = 0;
-	
-		foreach ( $extractions as $extr ) {
-			
-			if ( $counter > 0 ) {
-				
-//				echo $dbcolumn . " value: " . $value . " other: " . $extr[$dbcolumn] . "<br>";
-				
-				if ( $value == NULL ) {
-					
-					$value = 0;
-					
-				}
-				
-				if ( $extr[$dbcolumn] == NULL ) {
-					
-					$extr[$dbcolumn] = 0;
-					
-				}
-				
-				if ( $value != $extr[$dbcolumn] ) {
-					
-					$allequal = FALSE;
-					
-				}
-				
-			}
-			
-			$value = $extr[$dbcolumn];
-			
-			$counter ++;
-			
-		}
-		
-	}
-	
-	if ( $allequal ) {
-		
-		?><p class="sigFeedbackGood sigDoubleResult">&#10003; <?php echo $title; ?></p><?php
-		
-		?>
-		<p class="sigMaster">Master copy: <?php
-		
-		foreach ( $options as $dbcolumn => $plaintext ) {
-			
-			if ( $extr[$dbcolumn] == 1 ) {
-				
-				nbt_set_master ( $extr['drugid'], $extr['referenceid'], $dbcolumn, $plaintext );
-				
-				?><span class="sigDoubleMultiAnswers"><?php echo $plaintext; ?></span><?php
-				
-			}
-			
-		}
-		
-		?></p><?php
-		
-	} else {
-		
-		?><div class="sigFeedbackBad sigDoubleResult"><p>&#9998; <?php echo $title; ?></p>
-		<hr><?php
-		
-			$row = str_replace (" ", "", $title);
-			
-			$rows = implode (" ", array_keys ( $options ) );
-			
-			$plaintextimplode = implode ("; ", $options );
-			
-			foreach ( $extractions as $extr ) {
-				
-				?><p><span class="sigHidden" id="sigCheck<?php echo $extr['id']; ?>-<?php echo $row; ?>">&#10003;</span><span class="sigExtractionName"><?php echo nbt_get_username_for_userid ( $extr['userid'] ); ?></span> <?php
-				
-				foreach ( $options as $dbcolumn => $plaintext ) {
-					
-					if ( $extr[$dbcolumn] == 1 ) {
-						
-						?><span class="sigDoubleMultiAnswers"><?php echo $plaintext; ?></span><?php
-						
-					}
-					
-				}
-				
-				?></p>
-				<button onclick="sigMasterConfirmResponse('<?php echo $extr['id']; ?>-<?php echo $row; ?>');" id="sigConfirm<?php echo $extr['id']; ?>-<?php echo $row; ?>">Use this response</button>
-				<button onclick="sigMasterUseMultiResponse('<?php echo $extr['id']; ?>-<?php echo $row; ?>', <?php echo $extr['drugid']; ?>, <?php echo $extr['referenceid']; ?>, '<?php echo $rows; ?>', '<?php echo $plaintextimplode; ?>', <?php echo $extr['id']; ?>, '<?php echo $title; ?>');" id="sigUse<?php echo $extr['id']; ?>-<?php echo $row; ?>" class="sigHidden">Use on master copy</button>
-				<button onclick="sigMasterCancelResponse('<?php echo $extr['id']; ?>-<?php echo $row; ?>');" id="sigCancel<?php echo $extr['id']; ?>-<?php echo $row; ?>" class="sigHidden">Cancel</button><?php
-				
-			}
-			
-		?></div>
-		
-		<p class="sigMaster<?php
-		
-		$masternull = TRUE;
-		
-		foreach ( $options as $dbcolumn => $plaintext ) {
-			
-			if ( ! ( $master[$dbcolumn] === NULL ) ) {
-				
-				$masternull = FALSE;
-				
-			}
-			
-		}
-		
-		if ( $masternull == TRUE ) {
-			
-			echo " sigHidden";
-			
-		}
-		
-		$titlenospaces = str_replace (" ", "", $title);
-		
-		?>" id="sigMasterFeedback<?php echo $extr['drugid']; ?>-<?php echo $extr['referenceid']; ?>-<?php echo $titlenospaces; ?>">Master copy: <?php
-		
-		foreach ( $options as $dbcolumn => $plaintext ) {
-			
-			if ( $master[$dbcolumn] == 1 ) {
-				
-				?><span class="sigDoubleMultiAnswers"><?php echo $plaintext; ?></span><?php
-				
-			}
-			
-		}
-		
-		?></p><?php
 		
 	}
 	
