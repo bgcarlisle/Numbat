@@ -2392,14 +2392,12 @@ function nbt_remove_safety_table_row ( $rowid ) {
 	
 }
 
-function nbt_get_manual_refs_for_drug_id ( $drugid ) {
-	
-	$drugname = nbt_get_name_for_refsetid ($drugid);
+function nbt_get_manual_refs_for_refset ( $refsetid ) {
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " WHERE `manual` = 1 ORDER BY id ASC;");
+		$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `manual` = 1 ORDER BY id ASC;");
 		
 		$dname = $drugname;
 		
@@ -2467,7 +2465,8 @@ function nbt_echo_manual_ref ( $ref, $refsetid ) {
 			
 		?></textarea>
 		<span class="nbtInputFeedback" id="nbtManRefTextField<?php echo $ref['id']; ?>AbstractFeedback">&nbsp;</span>
-		<button onclick="nbtRemoveManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>);">Remove this reference</button>
+		<button onclick="$(this).fadeOut(0);$('#nbtRemoveReference<?php echo $ref['id']; ?>').fadeIn()">Remove this reference</button>
+		<button id="nbtRemoveReference<?php echo $ref['id']; ?>" onclick="nbtRemoveManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>);" class="nbtHidden">For real</button>
 	</div><?php
 }
 
