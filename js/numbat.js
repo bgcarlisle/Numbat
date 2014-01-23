@@ -2128,3 +2128,75 @@ function nbtAddAdvancedAssignment () {
 	});
 	
 }
+
+function nbtAddNewReferenceToRefSet ( rsid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/addnewreference.php',
+		type: 'post',
+		data: {
+			refset: rsid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtManualRefs').html(html);
+		
+	});
+	
+	$('#nbtManualRefs').fadeIn(500);
+	$('#nbtManualRefsCoverup').fadeIn(500);
+	
+}
+
+function nbtUpdateManualReference ( rsid, refid, columnid, textfieldid, feedbackid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/updatemanref.php',
+		type: 'post',
+		data: {
+			refset: rsid,
+			ref: refid,
+			column: columnid,
+			newvalue: $('#' + textfieldid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#' + feedbackid).html(html);
+		
+		$('#' + feedbackid).fadeIn(50, function () {
+			
+			setTimeout ( function () {
+				
+				$('#' + feedbackid).fadeOut(1000);
+				
+			}, 2000);
+			
+		});
+		
+	});
+	
+}
+
+function nbtRemoveManualReference ( rsid, refid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/removemanual.php',
+		type: 'post',
+		data: {
+			refset: rsid,
+			ref: refid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtManRef' + rsid + '-' + refid).slideUp(200);
+		
+		$('#nbtManualRefsCoverup').fadeOut(500);
+		
+		$('#nbtManualRefs').fadeOut(500);
+		
+	});
+	
+}

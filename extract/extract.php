@@ -14,7 +14,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 	<p class="nbtInputFeedback" id="nbtNotesFeedback">&nbsp;</p>
 	
 	<h3>Manual citations</h3>
-	<button onclick="nbtInlineAddNewReferenceToDrug(event, <?php echo $extraction['drugid']; ?>);">Add a new reference</button>
+	<button onclick="nbtAddNewReferenceToRefSet(<?php echo $extraction['refsetid']; ?>);">Add a new reference</button>
 	<button onclick="window.open('<?php echo SITE_URL . "drug/" . $_GET['drug'] . "/" . "new/"; ?>','_blank');">View manually added references</button>
 </div>
 <div class="nbtCoverup" id="nbtManualRefsCoverup">&nbsp;</div>

@@ -2421,99 +2421,62 @@ function nbt_get_manual_refs_for_drug_id ( $drugid ) {
 	
 }
 
-function nbt_count_citations_of_manual_ref ( $refid, $drugid ) {
+function nbt_echo_manual_ref ( $ref, $refsetid ) {
 	
-//	echo "ref: " . $refid . " drug: " . $drugid . "<br>";
-	
-	$drugname = nbt_get_name_for_refsetid ($drugid);
-	
-	try {
-		
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `signals_extractions`.`citations` WHERE drugid = :drugid AND citationid = :refid;");
-		
-		$stmt->bindParam(':drugid', $did);
-		$stmt->bindParam(':refid', $rid);
-		
-		$did = $drugid;
-		$rid = $refid;
-		
-		$stmt->execute();
-	
-		$result = $stmt->fetchAll();
-		
-		$dbh = null;
-		
-		return count ($result);
-		
-	}
-	
-	catch (PDOException $e) {
-		
-		echo $e->getMessage();
-		
-	}
-	
-}
-
-function nbt_echo_manual_ref ( $ref, $drugid ) {
-	
-	?><div class="sigManualRef" id="sigManRef<?php echo $drugid; ?>-<?php echo $ref['id']; ?>">
-		<p class="sigInlineTextField">
-			<span class="sigInputLabel">Title</span>
+	?><div class="nbtManualRef" id="nbtManRef<?php echo $refsetid; ?>-<?php echo $ref['id']; ?>">
+		<p class="nbtInlineTextField">
+			<span class="nbtInputLabel">Title</span>
 			<input type="text" value="<?php
 				
 				echo $ref['title'];
 				
-			?>" id="sigManRefTextField<?php echo $ref['id']; ?>Title" onblur="sigUpdateManualReference(<?php echo $drugid; ?>, <?php echo $ref['id']; ?>, 'title', 'sigManRefTextField<?php echo $ref['id']; ?>Title', 'sigManRefTextField<?php echo $ref['id']; ?>TitleFeedback');">
-			<span class="sigInputFeedback" id="sigManRefTextField<?php echo $ref['id']; ?>TitleFeedback">&nbsp;</span>
+			?>" id="nbtManRefTextField<?php echo $ref['id']; ?>Title" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'title', 'nbtManRefTextField<?php echo $ref['id']; ?>Title', 'nbtManRefTextField<?php echo $ref['id']; ?>TitleFeedback');">
+			<span class="nbtInputFeedback" id="nbtManRefTextField<?php echo $ref['id']; ?>TitleFeedback">&nbsp;</span>
 		</p>
-		<p class="sigInlineTextField">
-			<span class="sigInputLabel">Authors</span>
+		<p class="nbtInlineTextField">
+			<span class="nbtInputLabel">Authors</span>
 			<input type="text" value="<?php
 				
 				echo $ref['authors'];
 				
-			?>" id="sigManRefTextField<?php echo $ref['id']; ?>Authors" onblur="sigUpdateManualReference(<?php echo $drugid; ?>, <?php echo $ref['id']; ?>, 'authors', 'sigManRefTextField<?php echo $ref['id']; ?>Authors', 'sigManRefTextField<?php echo $ref['id']; ?>AuthorsFeedback');">
-			<span class="sigInputFeedback" id="sigManRefTextField<?php echo $ref['id']; ?>AuthorsFeedback">&nbsp;</span>
+			?>" id="nbtManRefTextField<?php echo $ref['id']; ?>Authors" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'authors', 'nbtManRefTextField<?php echo $ref['id']; ?>Authors', 'nbtManRefTextField<?php echo $ref['id']; ?>AuthorsFeedback');">
+			<span class="nbtInputFeedback" id="nbtManRefTextField<?php echo $ref['id']; ?>AuthorsFeedback">&nbsp;</span>
 		</p>
-		<p class="sigInlineTextField">
-			<span class="sigInputLabel">Year</span>
+		<p class="nbtInlineTextField">
+			<span class="nbtInputLabel">Year</span>
 			<input type="text" value="<?php
 				
 				echo $ref['year'];
 				
-			?>" id="sigManRefTextField<?php echo $ref['id']; ?>Year" onblur="sigUpdateManualReference(<?php echo $drugid; ?>, <?php echo $ref['id']; ?>, 'year', 'sigManRefTextField<?php echo $ref['id']; ?>Year', 'sigManRefTextField<?php echo $ref['id']; ?>YearFeedback');">
-			<span class="sigInputFeedback" id="sigManRefTextField<?php echo $ref['id']; ?>YearFeedback">&nbsp;</span>
+			?>" id="nbtManRefTextField<?php echo $ref['id']; ?>Year" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'year', 'nbtManRefTextField<?php echo $ref['id']; ?>Year', 'nbtManRefTextField<?php echo $ref['id']; ?>YearFeedback');">
+			<span class="nbtInputFeedback" id="nbtManRefTextField<?php echo $ref['id']; ?>YearFeedback">&nbsp;</span>
 		</p>
-		<p class="sigInlineTextField">
-			<span class="sigInputLabel">Journal</span>
+		<p class="nbtInlineTextField">
+			<span class="nbtInputLabel">Journal</span>
 			<input type="text" value="<?php
 				
 				echo $ref['journal'];
 				
-			?>" id="sigManRefTextField<?php echo $ref['id']; ?>Journal" onblur="sigUpdateManualReference(<?php echo $drugid; ?>, <?php echo $ref['id']; ?>, 'journal', 'sigManRefTextField<?php echo $ref['id']; ?>Journal', 'sigManRefTextField<?php echo $ref['id']; ?>JournalFeedback');">
-			<span class="sigInputFeedback" id="sigManRefTextField<?php echo $ref['id']; ?>JournalFeedback">&nbsp;</span>
+			?>" id="nbtManRefTextField<?php echo $ref['id']; ?>Journal" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'journal', 'nbtManRefTextField<?php echo $ref['id']; ?>Journal', 'nbtManRefTextField<?php echo $ref['id']; ?>JournalFeedback');">
+			<span class="nbtInputFeedback" id="nbtManRefTextField<?php echo $ref['id']; ?>JournalFeedback">&nbsp;</span>
 		</p>
-		<p class="sigInputLabel">Abstract</p>
-		<textarea id="sigManRefTextField<?php echo $ref['id']; ?>Abstract" onblur="sigUpdateManualReference(<?php echo $drugid; ?>, <?php echo $ref['id']; ?>, 'abstract', 'sigManRefTextField<?php echo $ref['id']; ?>Abstract', 'sigManRefTextField<?php echo $ref['id']; ?>AbstractFeedback');" style="width: 90%;"><?php
+		<p class="nbtInputLabel">Abstract</p>
+		<textarea id="nbtManRefTextField<?php echo $ref['id']; ?>Abstract" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'abstract', 'nbtManRefTextField<?php echo $ref['id']; ?>Abstract', 'nbtManRefTextField<?php echo $ref['id']; ?>AbstractFeedback');" style="width: 90%;"><?php
 			
 			echo $ref['abstract'];
 			
 		?></textarea>
-		<span class="sigInputFeedback" id="sigManRefTextField<?php echo $ref['id']; ?>AbstractFeedback">&nbsp;</span>
-		<p class="sigFinePrint" id="sigRemoveManRef<?php echo $ref['id']; ?>">Cited x <?php echo nbt_count_citations_of_manual_ref ( $ref['id'], $drugid ); ?> | <a href="#" onclick="sigConfirmRemoveManualReference(event, <?php echo $drugid; ?>, <?php echo $ref['id']; ?>);">Remove this reference</a></p>
+		<span class="nbtInputFeedback" id="nbtManRefTextField<?php echo $ref['id']; ?>AbstractFeedback">&nbsp;</span>
+		<button onclick="nbtRemoveManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>);">Remove this reference</button>
 	</div><?php
 }
 
-function nbt_add_manual_ref ( $drugid ) {
-	
-	$drugname = nbt_get_name_for_refsetid ( $drugid );
+function nbt_add_manual_ref ( $refset ) {
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ('INSERT INTO ' . $drugname . ' (manual) VALUES (1);');
+		$stmt = $dbh->prepare ('INSERT INTO `referenceset_' . $refset . '` (manual) VALUES (1);');
 		
 		if ($stmt->execute()) {
 			
@@ -2548,15 +2511,12 @@ function nbt_add_manual_ref ( $drugid ) {
 	
 }
 
-function nbt_update_manual_reference ( $drugid, $column, $refid, $newvalue ) {
-	
-	$drugname = nbt_get_name_for_refsetid ($drugid);
+function nbt_update_manual_reference ( $refsetid, $column, $refid, $newvalue ) {
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("UPDATE `signals_extractions`.`" . $drugname . "` SET `" . $column . "` = :value WHERE `sunitinib`.`id` = :refid;");
-//		UPDATE  `signals_extractions`.`sunitinib` SET  `title` =  'Title' WHERE  `sunitinib`.`id` =2886;
+		$stmt = $dbh->prepare ("UPDATE `referenceset_" . $refsetid . "` SET `" . $column . "` = :value WHERE `id` = :refid;");
 		
 		$stmt->bindParam(':refid', $rid);
 		$stmt->bindParam(':value', $val);
@@ -2590,14 +2550,12 @@ function nbt_update_manual_reference ( $drugid, $column, $refid, $newvalue ) {
 	
 }
 
-function nbt_remove_manual_reference ( $drugid, $refid) {
-	
-	$refsetname = nbt_get_name_for_refsetid ($drugid);
+function nbt_remove_manual_reference ( $refsetid, $refid) {
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("DELETE FROM " . $refsetname . " WHERE id = :rid LIMIT 1;");
+		$stmt = $dbh->prepare("DELETE FROM `referenceset_" . $refsetid . "` WHERE id = :rid LIMIT 1;");
 		
 		$stmt->bindParam(':rid', $rid);
 		
@@ -10720,7 +10678,7 @@ function nbt_make_new_refset_table ( $refsetid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("CREATE TABLE `referenceset_" . $refsetid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		$stmt = $dbh->prepare("CREATE TABLE `referenceset_" . $refsetid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `manual` int(11) NOT NULL DEFAULT '0', PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 		
 		if ($stmt->execute()) {
 			
