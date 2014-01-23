@@ -923,21 +923,25 @@ function nbt_get_reference_for_refsetid_and_refid ( $refsetid, $refid ) {
 }
 
 function nbt_return_references_for_refset_and_query ( $citationsid, $refsetid, $refid, $query ) {
-	
+
+	$element = nbt_get_form_element_for_elementid ( $citationsid );
+		
 	if ( is_numeric ( $query ) ) {
 		
 		try { // Search citations for a particular number
 			
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SELECT * FROM `citations` WHERE refsetid = :refset AND referenceid = :refid AND cite_no = :cite LIMIT 6;");
+			$stmt = $dbh->prepare("SELECT * FROM `citations_" . $element['columnname'] . "` WHERE userid = :user AND refsetid = :refset AND referenceid = :refid AND cite_no = :cite LIMIT 6;");
 			
 			$stmt->bindParam(':refset', $rsid);
 			$stmt->bindParam(':refid', $rid);
 			$stmt->bindParam(':cite', $cid);
+			$stmt->bindParam(':user', $uid);
 			
 			$cid = $query;
 			$did = $drugid;
 			$rid = $refid;
+			$uid = $_SESSION['nbt_userid'];
 			
 			$stmt->execute();
 		
