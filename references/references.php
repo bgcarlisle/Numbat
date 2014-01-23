@@ -6,8 +6,8 @@
 	<table class="nbtTabledData">
 		<tr class="nbtTableHeaders">
 			<td>Reference set</td>
-			<td>View all references</td>
 			<td>Edit reference set</td>
+			<td>Manually added references</td>
 			<td>Delete</td>
 		</tr>
 		<?php
@@ -18,8 +18,8 @@
 			
 			?><tr id="nbtRefSetRow<?php echo $refset['id']; ?>">
 				<td><?php echo $refset['name']; ?></td>
-				<td>View</td>
 				<td><a href="<?php echo SITE_URL; ?>references/?action=edit&refset=<?php echo $refset['id']; ?>">Edit</a></td>
+				<td><a href="<?php echo SITE_URL; ?>references/manual/?refset=<?php echo $refset['id']; ?>">Edit</a></td>
 				<td>
 					<button onclick="$(this).fadeOut(0);$('#nbtDeleteRefSet<?php echo $refset['id']; ?>').fadeIn();">Delete</button>
 					<button class="nbtHidden" id="nbtDeleteRefSet<?php echo $refset['id']; ?>" onclick="nbtDeleteRefSet(<?php echo $refset['id']; ?>);">For real</button>
