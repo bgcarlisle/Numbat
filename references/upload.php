@@ -26,6 +26,16 @@ if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
 		
 		include ( ABS_PATH . "header.php" );
 		
+		if ( ! is_dir ( ABS_PATH . "references/tmp/" ) ) {
+			
+			mkdir ( ABS_PATH . "references/tmp/", 0777 );
+			
+		} else {
+			
+			chmod ( ABS_PATH . "references/tmp/", 0777 );
+			
+		}
+		
 		move_uploaded_file ( $_FILES["file"]["tmp_name"], ABS_PATH . "references/tmp/tmp.txt" );
 		
 		$file = fopen ( ABS_PATH . "references/tmp/tmp.txt", "r" );
