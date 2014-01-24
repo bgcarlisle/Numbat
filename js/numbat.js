@@ -1503,6 +1503,24 @@ function nbtRemoveCitation ( sectionid, citationid ) {
 	
 }
 
+function nbtRemoveMasterCitation ( sectionid, citationid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'master/removecitation.php',
+		type: 'post',
+		data: {
+			section: sectionid,
+			citation: citationid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtCitation' + sectionid + '-' + citationid).slideUp();
+		
+	});
+	
+}
+
 function nbtUpdateCiteNo ( section, citid ) {
 	
 	$.ajax ({
@@ -2234,6 +2252,76 @@ function nbtDeleteMasterTableRow ( eid, rid ) {
 	}).done ( function (html) {
 		
 		$('#nbtMasterTD' + eid + 'RowID' + rid).slideUp();
+		
+	});
+	
+}
+
+function nbtCopyToMaster ( fid, rsid, refid, rowid, exid, eid, uid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'master/copytomaster.php',
+		type: 'post',
+		data: {
+			formid: fid,
+			refset: rsid,
+			ref: refid,
+			row: rowid,
+			extrid: exid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtExtractedElement' + eid).removeClass('nbtFeedbackBad').addClass('nbtFeedbackGood');
+		
+		$('.nbtElement' + eid + 'Check').fadeOut(0);
+		
+		$('#nbtExtractedElement' + eid + '-' + uid).fadeIn();
+		
+	});
+	
+}
+
+function nbtCopyMultiSelectToMaster ( fid, rsid, refid, exid, eid, uid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'master/copymstomaster.php',
+		type: 'post',
+		data: {
+			formid: fid,
+			refset: rsid,
+			ref: refid,
+			extrid: exid,
+			element: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtExtractedElement' + eid).removeClass('nbtFeedbackBad').addClass('nbtFeedbackGood');
+		
+		$('.nbtElement' + eid + 'Check').fadeOut(0);
+		
+		$('#nbtExtractedElement' + eid + '-' + uid).fadeIn();
+		
+	});
+	
+}
+
+function nbtCopyCitationToMaster ( eid, cid, rsid, ref ) {
+	
+	$.ajax ({
+		url: numbaturl + 'master/copycitetomaster.php',
+		type: 'post',
+		data: {
+			element: eid,
+			citationid: cid,
+			refset: rsid,
+			refid: ref
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtMasterCitations' + eid).html(html);
 		
 	});
 	

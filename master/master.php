@@ -108,7 +108,7 @@ if ( $formelements[0]['type'] != "section_heading" ) {
 					
 				} else { // If not all the extractions are the same
 					
-					?><div class="nbtFeedbackBad nbtDoubleResult">
+					?><div class="nbtFeedbackBad nbtDoubleResult" id="nbtExtractedElement<?php echo $element['id']; ?>">
 						<?php nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 						
 						foreach ( $extractions as $extraction ) {
@@ -119,9 +119,9 @@ if ( $formelements[0]['type'] != "section_heading" ) {
 								
 							}
 							
-							?><p><?php echo $extraction[$element['columnname']]; ?></p>
+							?><p><?php echo $extraction[$element['columnname']]; ?><span id="nbtExtractedElement<?php echo $element['id']; ?>-<?php echo $extraction['userid']; ?>" class="nbtHidden nbtFeedback nbtElement<?php echo $element['id']; ?>Check">&#x2713;</span></p>
 							<span class="nbtExtractionName"><?php echo $extraction['username']; ?></span>
-							<button>Copy to master</button><?php
+							<button onclick="nbtCopyToMaster(<?php echo $_GET['form']; ?>, <?php echo $_GET['refset'] ?>, <?php echo $_GET['ref']; ?>, '<?php echo $element['columnname']; ?>', <?php echo $extraction['id']; ?>, <?php echo $element['id']; ?>, <?php echo $extraction['userid']; ?>);">Copy to master</button><?php
 							
 						}
 						
@@ -157,14 +157,14 @@ if ( $formelements[0]['type'] != "section_heading" ) {
 					
 				} else {
 					
-					?><div class="nbtFeedbackBad nbtDoubleResult">
+					?><div class="nbtFeedbackBad nbtDoubleResult" id="nbtExtractedElement<?php echo $element['id']; ?>">
 						<?php nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 						
 						foreach ( $extractions as $extraction ) {
 							
-							?><p><?php echo substr ( $extraction[$element['columnname']], 0, 7 ); ?></p>
+							?><p><?php echo substr ( $extraction[$element['columnname']], 0, 7 ); ?><span id="nbtExtractedElement<?php echo $element['id']; ?>-<?php echo $extraction['userid']; ?>" class="nbtHidden nbtFeedback nbtElement<?php echo $element['id']; ?>Check">&#x2713;</span></p>
 							<span class="nbtExtractionName"><?php echo $extraction['username']; ?></span>
-							<button>Copy to master</button><?php
+							<button onclick="nbtCopyToMaster(<?php echo $_GET['form']; ?>, <?php echo $_GET['refset'] ?>, <?php echo $_GET['ref']; ?>, '<?php echo $element['columnname']; ?>', <?php echo $extraction['id']; ?>, <?php echo $element['id']; ?>, <?php echo $extraction['userid']; ?>);">Copy to master</button><?php
 							
 						}
 						
@@ -214,7 +214,7 @@ if ( $formelements[0]['type'] != "section_heading" ) {
 					
 				} else {
 					
-					?><div class="nbtFeedbackBad nbtDoubleResult">
+					?><div class="nbtFeedbackBad nbtDoubleResult" id="nbtExtractedElement<?php echo $element['id']; ?>">
 						<?php nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 						
 						foreach ( $extractions as $extraction ) {
@@ -235,9 +235,9 @@ if ( $formelements[0]['type'] != "section_heading" ) {
 								
 							}
 							
-							?></p>
+							?><span id="nbtExtractedElement<?php echo $element['id']; ?>-<?php echo $extraction['userid']; ?>" class="nbtHidden nbtFeedback nbtElement<?php echo $element['id']; ?>Check">&#x2713;</span></p>
 							<span class="nbtExtractionName"><?php echo $extraction['username']; ?></span>
-							<button>Copy to master</button><?php
+							<button onclick="nbtCopyToMaster(<?php echo $_GET['form']; ?>, <?php echo $_GET['refset'] ?>, <?php echo $_GET['ref']; ?>, '<?php echo $element['columnname']; ?>', <?php echo $extraction['id']; ?>, <?php echo $element['id']; ?>, <?php echo $extraction['userid']; ?>);">Copy to master</button><?php
 							
 						}
 						
@@ -313,7 +313,7 @@ if ( $formelements[0]['type'] != "section_heading" ) {
 					
 				} else { // If they're not all the same
 					
-					?><div class="nbtFeedbackBad nbtDoubleResult">
+					?><div class="nbtFeedbackBad nbtDoubleResult" id="nbtExtractedElement<?php echo $element['id']; ?>">
 						<?php nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] ); ?>
 						
 						<?php
@@ -336,9 +336,9 @@ if ( $formelements[0]['type'] != "section_heading" ) {
 								
 							}
 							
-							?></p>
+							?><span id="nbtExtractedElement<?php echo $element['id']; ?>-<?php echo $extraction['userid']; ?>" class="nbtHidden nbtFeedback nbtElement<?php echo $element['id']; ?>Check">&#x2713;</span></p>
 							<span class="nbtExtractionName"><?php echo $extraction['username']; ?></span>
-							<button>Copy to master</button><?php
+							<button onclick="nbtCopyMultiSelectToMaster(<?php echo $_GET['form']; ?>, <?php echo $_GET['refset'] ?>, <?php echo $_GET['ref']; ?>, <?php echo $extraction['id']; ?>, <?php echo $element['id']; ?>, <?php echo $extraction['userid']; ?>);">Copy to master</button><?php
 							
 						}
 						
@@ -373,13 +373,13 @@ if ( $formelements[0]['type'] != "section_heading" ) {
 							
 						}
 						
-						?><p><?php echo $extractions[0][$element['columnname']]; ?></p>
+						?><p></p>
 						
 					</div><?php
 					
 				} else {
 					
-					?><div class="nbtFeedbackBad nbtDoubleResult">
+					?><div class="nbtFeedbackBad nbtDoubleResult" id="nbtExtractedElement<?php echo $element['id']; ?>">
 						<?php nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 						
 						foreach ( $extractions as $extraction ) {
@@ -390,9 +390,9 @@ if ( $formelements[0]['type'] != "section_heading" ) {
 								
 							}
 							
-							?><p><?php echo $extraction[$element['columnname']]; ?></p>
+							?><p><?php echo $extraction[$element['columnname']]; ?><span id="nbtExtractedElement<?php echo $element['id']; ?>-<?php echo $extraction['userid']; ?>" class="nbtHidden nbtFeedback nbtElement<?php echo $element['id']; ?>Check">&#x2713;</span></p>
 							<span class="nbtExtractionName"><?php echo $extraction['username']; ?></span>
-							<button>Copy to master</button><?php
+							<button onclick="nbtCopyToMaster(<?php echo $_GET['form']; ?>, <?php echo $_GET['refset'] ?>, <?php echo $_GET['ref']; ?>, '<?php echo $element['columnname']; ?>', <?php echo $extraction['id']; ?>, <?php echo $element['id']; ?>, <?php echo $extraction['userid']; ?>);">Copy to master</button><?php
 							
 						}
 						
@@ -439,37 +439,29 @@ if ( $formelements[0]['type'] != "section_heading" ) {
 			
 			case "citations":
 				
-				?><div<?php
+				nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 				
-				if ( $element['toggle'] != "" ) {
+				?><div class="nbtCitationList"><?php
 					
-					?> class="nbtHidden <?php echo $element['toggle']; ?>"<?php
+					$nbtListCitationsCitationID = $element['id'];
+					$nbtListCitationsRefSetID = $_GET['refset'];
+					$nbtListCitationsReference = $_GET['ref'];
+					$nbtListCitationsUserID = $extraction['userid'];
 					
-				}
-				
-				?>><?php
-				
-					nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+					include ("./listcitations.php");
 					
-					?><p>
-						Add a new citation:
-						<a href="#" onclick="event.preventDefault();$('#nbtCitationSuggestions<?php echo $element['id']; ?>').html('&nbsp;');$('#nbtCitationFinder<?php echo $element['id']; ?>').val('');">(Clear field)</a>
-						<span class="nbtDoubleCitationFeedback nbtHidden" id="nbtDoubleCitationFeedback<?php echo $element['id']; ?>">You have already cited this reference here!</span>
-					</p>
-					<input type="text" class="nbtCitationFinder" id="nbtCitationFinder<?php echo $element['id']; ?>" onkeyup="nbtFindCitation(<?php echo $element['id']; ?>, '<?php echo $element['columnname']; ?>', 'nbtCitationSuggestions<?php echo $element['id']; ?>', <?php echo $element['id']; ?>, <?php echo $_GET['refset']; ?>, <?php echo $_GET['ref']; ?>);">
-					<div class="nbtCitationSuggestions" id="nbtCitationSuggestions<?php echo $element['id']; ?>">&nbsp;</div>
-					<div class="nbtCitationList" id="nbtCitationList<?php echo $element['id']; ?>"><?php
-						
-						$nbtListCitationsCitationID = $element['id'];
-						$nbtListCitationsCitationDB = $element['columnname'];
-						$nbtListCitationsRefSetID = $_GET['refset'];
-						$nbtListCitationsReference = $_GET['ref'];
-						
-						include ("./listcitations.php");
-						
-					?></div>
+				?></div>
 				
-				</div><?php
+				<p style="margin-bottom: 5px;"><span class="nbtExtractionName">Master citations list</span></p>
+				<div class="nbtCitationList" id="nbtMasterCitations<?php echo $element['id']; ?>"><?php
+					
+					$nbtListCitationsCitationID = $element['id'];
+					$nbtListCitationsRefSetID = $_GET['refset'];
+					$nbtListCitationsReference = $_GET['ref'];
+					
+					include ("./mastercitations.php");
+				
+				?></div><?php
 				
 			break;
 			

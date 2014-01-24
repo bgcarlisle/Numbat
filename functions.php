@@ -1176,12 +1176,16 @@ function nbt_get_citations ( $citations, $refsetid, $reference, $userid, $orderb
 	
 }
 
-function nbt_copy_citation_to_master ( $originalid ) {
+function nbt_copy_citation_to_master ( $elementid, $originalid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	$columns = nbt_get_all_columns_for_citation_selector ( $elementid );
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM citations WHERE id = :id LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT * FROM `citations_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
 		
 		$stmt->bindParam(':id', $oid);
 		
@@ -1208,27 +1212,34 @@ function nbt_copy_citation_to_master ( $originalid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("INSERT INTO `master_citations` (drugid, referenceid, cite_no, section, citationid, samedrug, citedasnegative, clinical) VALUES (:drugid, :refid, :cite, :sect, :citid, :samedrug, :citneg, :clinic);");
+		$stmt = $dbh->prepare("INSERT INTO `mcite_" . $element['columnname'] . "` (refsetid, referenceid, cite_no, citationid) VALUES (:refset, :refid, :cite, :citid);");
 		
-		$stmt->bindParam(':drugid', $did);
+		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':refid', $rid);
 		$stmt->bindParam(':cite', $cit);
-		$stmt->bindParam(':sect', $sec);
 		$stmt->bindParam(':citid', $cid);
-		$stmt->bindParam(':samedrug', $sd);
-		$stmt->bindParam(':citneg', $citn);
-		$stmt->bindParam(':clinic', $clin);
 		
-		$did = $cite['drugid'];
+		$rsid = $cite['refsetid'];
 		$rid = $cite['referenceid'];
 		$cit = $cite['cite_no'];
-		$sec = $cite['section'];
 		$cid = $cite['citationid'];
-		$sd = $cite['samedrug'];
-		$citn = $cite['citedasnegative'];
-		$clin = $cite['clinical'];
 		
-		$stmt->execute();
+		if ( $stmt->execute() ) {
+			
+			$stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+			$stmt2->execute();
+			
+			$result = $stmt2->fetchAll();
+		
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				$newid = $row['newid']; // This is the auto_increment-generated ID for the new compare
+				
+			}
+			
+		}
 		
 	}
 	
@@ -1238,9 +1249,36 @@ function nbt_copy_citation_to_master ( $originalid ) {
 		
 	}
 	
+	foreach ( $columns as $column ) {
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("UPDATE `mcite_" . $element['columnname'] . "` SET `" . $column['dbname'] . "` = :newvalue WHERE `id` = :id;");
+			
+			$stmt->bindParam(':newvalue', $new);
+			$stmt->bindParam(':id', $cid);
+			
+			$new = $cite[$column['dbname']];
+			$cid = $newid;
+			
+			$stmt->execute();
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+	}
+	
 }
 
-function nbt_get_master_citations ( $drugid, $reference, $section, $orderbycitation = FALSE ) {
+function nbt_get_master_citations ( $elementid, $refsetid, $reference, $orderbycitation = FALSE ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
 	
 	try {
 		
@@ -1248,23 +1286,21 @@ function nbt_get_master_citations ( $drugid, $reference, $section, $orderbycitat
 		
 		if ( $orderbycitation ) {
 			
-			$stmt = $dbh->prepare("SELECT * FROM `master_citations` WHERE drugid = :drug AND referenceid = :ref AND section = :section ORDER by citationid;");
+			$stmt = $dbh->prepare("SELECT * FROM `mcite_" . $element['columnname'] . "` WHERE `refsetid` = :refset AND `referenceid` = :ref ORDER by `citationid`;");
 			
 		} else {
 			
-			$stmt = $dbh->prepare("SELECT * FROM `master_citations` WHERE drugid = :drug AND referenceid = :ref AND section = :section ORDER by id;");
+			$stmt = $dbh->prepare("SELECT * FROM `mcite_" . $element['columnname'] . "` WHERE `refsetid` = :refset AND `referenceid` = :ref ORDER by `id`;");
 			
 		}
 		
 		
 		
-		$stmt->bindParam(':drug', $did);
+		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':ref', $ref);
-		$stmt->bindParam(':section', $sect);
 		
-		$did = $drugid;
+		$rsid = $refsetid;
 		$ref = $reference;
-		$sect = $section;
 		
 		$stmt->execute();
 	
@@ -1284,12 +1320,14 @@ function nbt_get_master_citations ( $drugid, $reference, $section, $orderbycitat
 	
 }
 
-function nbt_remove_master_citation ( $id ) {
+function nbt_remove_master_citation ( $section, $id ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $section );
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("DELETE FROM `master_citations` WHERE id = :id LIMIT 1;");
+		$stmt = $dbh->prepare("DELETE FROM `mcite_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
 		
 		$stmt->bindParam(':id', $cid);
 		
@@ -3092,6 +3130,12 @@ function nbt_update_drug_ref_indication ( $drugid, $refid, $newvalue ) {
 
 function nbt_update_citeno ( $section, $citid, $newvalue ) {
 	
+	if ( $newvalue == "" ) {
+		
+		$newvalue = NULL;
+		
+	}
+	
 	$element = nbt_get_form_element_for_elementid ( $section );
 	
 	try {
@@ -3286,20 +3330,20 @@ function nbt_set_master ( $drugid, $refid, $row, $value ) {
 	
 }
 
-function nbt_get_distinct_citations_for_ref ( $drugid, $refid, $section ) {
+function nbt_get_distinct_citations_for_element_refset_and_ref ( $elementid, $refsetid, $refid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("SELECT DISTINCT citationid FROM citations WHERE drugid = :drugid AND referenceid = :refid AND section = :section;");
+		$stmt = $dbh->prepare ("SELECT DISTINCT citationid FROM `citations_" . $element['columnname'] . "` WHERE refsetid = :refset AND referenceid = :refid;");
 		
-		$stmt->bindParam(':drugid', $did);
+		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':refid', $rid);
-		$stmt->bindParam(':section', $sid);
 		
-		$did = $drugid;
+		$rsid = $refsetid;
 		$rid = $refid;
-		$sid = $section;
 		
 		$stmt->execute();
 		
@@ -3319,23 +3363,23 @@ function nbt_get_distinct_citations_for_ref ( $drugid, $refid, $section ) {
 	
 }
 
-function nbt_get_particular_citation ( $drugid, $refid, $userid, $section, $citationid ) {
+function nbt_get_particular_citation ( $elementid, $refsetid, $refid, $userid, $citationid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("SELECT * FROM citations WHERE drugid = :drugid AND referenceid = :refid AND userid = :userid AND section = :section AND citationid = :citid;");
+		$stmt = $dbh->prepare ("SELECT *, (SELECT `title` FROM `referenceset_" . $refsetid . "` WHERE `id` = :citid) as `title`, (SELECT `authors` FROM `referenceset_" . $refsetid . "` WHERE `id` = :citid) as `authors`, (SELECT `journal` FROM `referenceset_" . $refsetid . "` WHERE `id` = :citid) as `journal`, (SELECT `year` FROM `referenceset_" . $refsetid . "` WHERE `id` = :citid) as `year` FROM `citations_" . $element['columnname'] . "` WHERE `refsetid` = :refset AND `referenceid` = :refid AND `userid` = :userid AND `citationid` = :citid;");
 		
-		$stmt->bindParam(':drugid', $did);
+		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':refid', $rid);
 		$stmt->bindParam(':userid', $uid);
-		$stmt->bindParam(':section', $sid);
 		$stmt->bindParam(':citid', $cid);
 		
-		$did = $drugid;
+		$rsid = $refsetid;
 		$rid = $refid;
 		$uid = $userid;
-		$sid = $section;
 		$cid = $citationid;
 		
 		$stmt->execute();
@@ -3614,6 +3658,80 @@ function nbt_copy_to_master ( $formid, $refsetid, $reference, $row, $extrid ) {
 	}
 	
 	return $val2 . " ";
+	
+}
+
+function nbt_copy_multi_select_to_master ( $formid, $refsetid, $reference, $extrid, $elementid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	$selectoptions = nbt_get_all_select_options_for_element ( $elementid );
+	
+	foreach ( $selectoptions as $option ) {
+		
+		// Get the value for the extraction
+		
+		try {
+			
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare ("SELECT `" . $element['columnname'] . "_" . $option['dbname'] . "` FROM `extractions_" . $formid . "` WHERE id = :extrid LIMIT 1;");
+			
+			$stmt->bindParam(':extrid', $eid);
+			
+			$eid = $extrid;
+			
+			$stmt->execute();
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			if ( count ($result) > 0 ) {
+				
+				foreach ( $result as $val ) {
+					
+					$value = $val[$element['columnname'] . "_" . $option['dbname']];
+					
+				}
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		// Set the other extraction to that value
+		
+		try {
+			
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare ("UPDATE `m_extractions_" . $formid . "` SET " . $element['columnname'] . "_" . $option['dbname'] . " = :value WHERE refsetid = :refset AND referenceid = :ref LIMIT 1;");
+			
+			$stmt->bindParam(':value', $val2);
+			$stmt->bindParam(':ref', $rid);
+			$stmt->bindParam(':refset', $rsid);
+			
+			$val2 = $value;
+			$rid = $reference;
+			$rsid = $refsetid;
+			
+			$stmt->execute();
+			
+			$dbh = null;
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+	}
 	
 }
 
