@@ -4101,6 +4101,27 @@ function nbt_new_extraction_form () {
 			
 			$dbh = null;
 			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// Make the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("CREATE TABLE `m_extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
 			return TRUE;
 			
 		}
@@ -4563,6 +4584,23 @@ function nbt_add_open_text_field ( $formid ) {
 		
 	}
 	
+	// then, add the column to the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 }
 
 function nbt_delete_form_element ( $elementid ) {
@@ -4606,6 +4644,23 @@ function nbt_delete_form_element ( $elementid ) {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// then remove it from the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
 		
 		$stmt->execute();
 		
@@ -4779,7 +4834,28 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
 		
 	}
 	
-	if ( $itworked == 1 ) {
+	// then alter the column in the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " varchar(500) DEFAULT NULL;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	if ( $itworked == 2 ) {
 	
 		// then change the form element table to match
 		
@@ -4812,7 +4888,7 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
 	
 	}
 	
-	if ( $itworked == 2 ) {
+	if ( $itworked == 3 ) {
 		
 		echo "Changes saved";
 		
@@ -5417,6 +5493,23 @@ function nbt_add_single_select ( $formid ) {
 		
 	}
 	
+	// then, add a column to the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 }
 
 function nbt_get_all_select_options_for_element ( $elementid ) {
@@ -5632,6 +5725,23 @@ function nbt_add_multi_select_option ( $elementid ) {
 		
 	}
 	
+	// then, add a column to the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` ADD COLUMN " . $columnname . " INT(11) DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 }
 
 function nbt_remove_single_select_option ( $selectid ) {
@@ -5680,6 +5790,25 @@ function nbt_remove_multi_select_option ( $elementid, $selectid ) {
 		
 	}
 	
+	// drop the column from the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` DROP COLUMN " . $element['columnname'] . "_" . $select['dbname'] . ";");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// remove from options table
+	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -5725,6 +5854,25 @@ function nbt_remove_sub_multi_select_option ( $subelementid, $selectid ) {
 		echo $e->getMessage();
 		
 	}
+	
+	// remove from master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` DROP COLUMN " . $subelement['dbname'] . "_" . $select['dbname'] . ";");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// remove from options table
 	
 	try {
 		
@@ -6002,7 +6150,30 @@ function nbt_update_multi_select_option_column ( $elementid, $selectid, $oldcolu
 		
 	}
 	
-	if ( $itworked == 1) {
+	// update the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $previous . " " . $newcolumnname . " INT(11) DEFAULT NULL;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// update options table
+	
+	if ( $itworked == 2) {
 		
 		try {
 			
@@ -6074,6 +6245,29 @@ function nbt_update_sub_multi_select_option_column ( $subelementid, $selectid, $
 		
 	}
 	
+	// update the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` CHANGE " . $previous . " " . $newcolumnname . " INT(11) DEFAULT NULL;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// update the options table
+	
 	if ( $itworked == 1) {
 		
 		try {
@@ -6133,10 +6327,33 @@ function nbt_change_multi_select_column_prefix ( $elementid, $newcolumn ) {
 	
 	foreach ( $selectoptions as $select ) {
 		
+		// update the extractions table
+		
 		try {
 			
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 			$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . "_" . $select['dbname'] . " " . $newcolumn . "_" . $select['dbname'] . " INT(11) DEFAULT NULL;");
+			
+			if ($stmt->execute()) {
+				
+				$itworked = 1;
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		// update the master table
+		
+		try {
+			
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . "_" . $select['dbname'] . " " . $newcolumn . "_" . $select['dbname'] . " INT(11) DEFAULT NULL;");
 			
 			if ($stmt->execute()) {
 				
@@ -6300,6 +6517,27 @@ function nbt_add_table_data ( $formid ) {
 		
 	}
 	
+	// then make the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("CREATE TABLE `mtable_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 	// then, add it into the form elements table
 	
 	try {
@@ -6396,7 +6634,28 @@ function nbt_change_table_suffix ( $elementid, $newsuffix ) {
 		
 	}
 	
-	if ( $itworked == 1 ) {
+	// then alter the column in the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("RENAME TABLE `mtable_" . $element['columnname'] . "` TO `tabledata_" . $newsuffix . "`;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	if ( $itworked == 2 ) {
 	
 		// then change the form element table to match
 		
@@ -6429,7 +6688,7 @@ function nbt_change_table_suffix ( $elementid, $newsuffix ) {
 	
 	}
 	
-	if ( $itworked == 2 ) {
+	if ( $itworked == 3 ) {
 		
 		echo "Changes saved";
 		
@@ -6564,6 +6823,23 @@ function nbt_add_table_data_column ( $elementid ) {
 		
 	}
 	
+	// then add a column to the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `mtable_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " VARCHAR(500) DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 }
 
 function nbt_get_table_column_for_columnid ( $columnid ) {
@@ -6612,6 +6888,8 @@ function nbt_remove_table_data_column ( $elementid, $columnid ) {
 	
 	$column = nbt_get_table_column_for_columnid ( $columnid );
 	
+	// tabledata
+	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -6626,6 +6904,25 @@ function nbt_remove_table_data_column ( $elementid, $columnid ) {
 		echo $e->getMessage();
 		
 	}
+	
+	// master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `mtable_" . $element['columnname'] . "` DROP COLUMN " . $column['dbname'] . ";");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// columns table
 	
 	try {
 		
@@ -6824,6 +7121,27 @@ function nbt_update_table_data_column_db ( $columnid, $newcolumnname ) {
 		
 	}
 	
+	// alter the column in the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `mtable_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " varchar(500) DEFAULT NULL;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 	if ( $itworked == 1 ) {
 	
 		// then change the form element table to match
@@ -6990,6 +7308,23 @@ function nbt_add_country_selector ( $formid ) {
 		
 	}
 	
+	// then add a column to the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 }
 
 function nbt_new_dump_file () {
@@ -7121,6 +7456,23 @@ function nbt_add_date_selector ( $formid ) {
 		
 	}
 	
+	// then add a column to the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " DATE DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 }
 
 function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
@@ -7154,7 +7506,28 @@ function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
 		
 	}
 	
-	if ( $itworked == 1 ) {
+	// alter the column in the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " DATE DEFAULT NULL;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	if ( $itworked == 2 ) {
 	
 		// then change the form element table to match
 		
@@ -7187,7 +7560,7 @@ function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
 	
 	}
 	
-	if ( $itworked == 2 ) {
+	if ( $itworked == 3 ) {
 		
 		echo "Changes saved";
 		
@@ -7299,6 +7672,27 @@ function nbt_add_citation_selector ( $formid ) {
 		
 	}
 	
+	// then make the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("CREATE TABLE `mcite_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `citationid` int(11) NOT NULL, `cite_no` int(11) NULL, PRIMARY KEY (`id`), UNIQUE KEY `unique_cite` (`refsetid`,`referenceid`,`citationid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 	// then, add it into the form elements table
 	
 	try {
@@ -7359,7 +7753,28 @@ function nbt_change_citation_selector_suffix ( $elementid, $newsuffix ) {
 		
 	}
 	
-	if ( $itworked == 1 ) {
+	// then alter the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("RENAME TABLE `mcite_" . $element['columnname'] . "` TO `citations_" . $newsuffix . "`;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	if ( $itworked == 2 ) {
 	
 		// then change the form element table to match
 		
@@ -7392,7 +7807,7 @@ function nbt_change_citation_selector_suffix ( $elementid, $newsuffix ) {
 	
 	}
 	
-	if ( $itworked == 2 ) {
+	if ( $itworked == 3 ) {
 		
 		echo "Changes saved";
 		
@@ -7563,6 +7978,23 @@ function nbt_add_citation_property ( $elementid ) {
 		
 	}
 	
+	// then add a column to the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `mcite_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " VARCHAR(50) DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 }
 
 function nbt_update_citation_property_display ( $columnid, $newvalue ) {
@@ -7633,7 +8065,28 @@ function nbt_update_citation_property_db ( $columnid, $newcolumnname ) {
 		
 	}
 	
-	if ( $itworked == 1 ) {
+	// then alter the column in the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `mcite_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " varchar(500) DEFAULT NULL;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	if ( $itworked == 2 ) {
 	
 		// then change the form element table to match
 		
@@ -7666,7 +8119,7 @@ function nbt_update_citation_property_db ( $columnid, $newcolumnname ) {
 	
 	}
 	
-	if ( $itworked == 2 ) {
+	if ( $itworked == 3 ) {
 		
 		echo "Changes saved";
 		
@@ -8424,6 +8877,27 @@ function nbt_add_sub_extraction ( $formid ) {
 		
 	}
 	
+	// then make a master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("CREATE TABLE `msub_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 	// then, add it into the form elements table
 	
 	try {
@@ -8520,7 +8994,28 @@ function nbt_change_sub_extraction_suffix ( $elementid, $newsuffix ) {
 		
 	}
 	
-	if ( $itworked == 1 ) {
+	// then alter the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("RENAME TABLE `msub_" . $element['columnname'] . "` TO `sub_" . $newsuffix . "`;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	if ( $itworked == 2 ) {
 	
 		// then change the form element table to match
 		
@@ -8553,7 +9048,7 @@ function nbt_change_sub_extraction_suffix ( $elementid, $newsuffix ) {
 	
 	}
 	
-	if ( $itworked == 2 ) {
+	if ( $itworked == 3 ) {
 		
 		echo "Changes saved";
 		
@@ -8688,6 +9183,23 @@ function nbt_add_sub_open_text_field ( $elementid ) {
 		
 	}
 	
+	// then add a column to the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 }
 
 function nbt_delete_sub_element ( $subelementid ) {
@@ -8733,6 +9245,23 @@ function nbt_delete_sub_element ( $subelementid ) {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` DROP COLUMN " . $dbname . ";");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// then remove the column from the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` DROP COLUMN " . $dbname . ";");
 		
 		$stmt->execute();
 		
@@ -8849,7 +9378,28 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
 		
 	}
 	
-	if ( $itworked == 1 ) {
+	// then alter the column in the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . " " . $newcolumnname . " varchar(500) DEFAULT NULL;");
+		
+		if ($stmt->execute()) {
+			
+			$itworked ++;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	if ( $itworked == 2 ) {
 	
 		// then change the form element table to match
 		
@@ -8882,7 +9432,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
 	
 	}
 	
-	if ( $itworked == 2 ) {
+	if ( $itworked == 3 ) {
 		
 		echo "Changes saved";
 		
@@ -9267,6 +9817,23 @@ function nbt_add_sub_single_select ( $elementid ) {
 		
 	}
 	
+	// then add a column to the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 }
 
 function nbt_get_all_select_options_for_sub_element ( $subelementid ) {
@@ -9576,6 +10143,25 @@ function nbt_change_sub_multi_select_column_prefix ( $subelementid, $newcolumn )
 			
 		}
 		
+		try {
+			
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . "_" . $select['dbname'] . " " . $newcolumn . "_" . $select['dbname'] . " INT(11) DEFAULT NULL;");
+			
+			if ($stmt->execute()) {
+				
+				$itworked = 1;
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
 	}
 	
 	
@@ -9747,6 +10333,23 @@ function nbt_add_sub_multi_select_option ( $subelementid ) {
 		
 	}
 	
+	// then add a column to the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " INT(11) DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
 }
 
 function nbt_add_sub_date_selector ( $elementid ) {
@@ -9861,6 +10464,23 @@ function nbt_add_sub_date_selector ( $elementid ) {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " DATE DEFAULT NULL;");
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// then add a column to the master table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " DATE DEFAULT NULL;");
 		
 		$stmt->execute();
 		
