@@ -6639,7 +6639,7 @@ function nbt_change_table_suffix ( $elementid, $newsuffix ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("RENAME TABLE `mtable_" . $element['columnname'] . "` TO `tabledata_" . $newsuffix . "`;");
+		$stmt = $dbh->prepare ("RENAME TABLE `mtable_" . $element['columnname'] . "` TO `mtable_" . $newsuffix . "`;");
 		
 		if ($stmt->execute()) {
 			
@@ -6887,6 +6887,8 @@ function nbt_remove_table_data_column ( $elementid, $columnid ) {
 	$element = nbt_get_form_element_for_elementid ( $elementid );
 	
 	$column = nbt_get_table_column_for_columnid ( $columnid );
+	
+	echo "ALTER TABLE `tabledata_" . $element['columnname'] . "` DROP COLUMN " . $column['dbname'] . ";";
 	
 	// tabledata
 	
@@ -7142,7 +7144,7 @@ function nbt_update_table_data_column_db ( $columnid, $newcolumnname ) {
 		
 	}
 	
-	if ( $itworked == 1 ) {
+	if ( $itworked == 2 ) {
 	
 		// then change the form element table to match
 		
@@ -7175,7 +7177,7 @@ function nbt_update_table_data_column_db ( $columnid, $newcolumnname ) {
 	
 	}
 	
-	if ( $itworked == 2 ) {
+	if ( $itworked == 3 ) {
 		
 		echo "Changes saved";
 		
@@ -7758,7 +7760,7 @@ function nbt_change_citation_selector_suffix ( $elementid, $newsuffix ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("RENAME TABLE `mcite_" . $element['columnname'] . "` TO `citations_" . $newsuffix . "`;");
+		$stmt = $dbh->prepare ("RENAME TABLE `mcite_" . $element['columnname'] . "` TO `mcite_" . $newsuffix . "`;");
 		
 		if ($stmt->execute()) {
 			
@@ -8999,7 +9001,7 @@ function nbt_change_sub_extraction_suffix ( $elementid, $newsuffix ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("RENAME TABLE `msub_" . $element['columnname'] . "` TO `sub_" . $newsuffix . "`;");
+		$stmt = $dbh->prepare ("RENAME TABLE `msub_" . $element['columnname'] . "` TO `msub_" . $newsuffix . "`;");
 		
 		if ($stmt->execute()) {
 			
