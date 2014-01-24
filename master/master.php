@@ -373,7 +373,7 @@ if ( $formelements[0]['type'] != "section_heading" ) {
 							
 						}
 						
-						?><p></p>
+						?><p><?php echo $extractions[0][$element['columnname']]; ?></p>
 						
 					</div><?php
 					
@@ -467,15 +467,7 @@ if ( $formelements[0]['type'] != "section_heading" ) {
 			
 			case "sub_extraction":
 				
-				?><div<?php
-				
-				if ( $element['toggle'] != "" ) {
-					
-					?> class="nbtHidden <?php echo $element['toggle']; ?>"<?php
-					
-				}
-				
-				?>><?php
+				?><div><?php
 				
 					nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 					
