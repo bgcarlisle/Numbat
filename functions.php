@@ -6268,7 +6268,7 @@ function nbt_update_sub_multi_select_option_column ( $subelementid, $selectid, $
 	
 	// update the options table
 	
-	if ( $itworked == 1) {
+	if ( $itworked == 2) {
 		
 		try {
 			
