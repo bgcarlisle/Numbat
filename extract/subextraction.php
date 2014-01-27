@@ -12,7 +12,7 @@ foreach ( $subextractions as $subextraction ) {
 		<?php
 	
 		foreach ( $subelements as $subelement ) {
-			
+				
 			switch ( $subelement['type'] ) {
 				
 				case "open_text":
@@ -30,6 +30,12 @@ foreach ( $subextractions as $subextraction ) {
 						nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
 						
 						nbt_echo_subextraction_text_field ($nbtSubExtractionElementID, $subextraction, $subelement['dbname'], 500, FALSE); // Needs fixin'
+					
+					if ( $previous != NULL ) {
+						
+						?><button style="display: block; margin-top: 4px;" onclick="$('#nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>').val('<?php echo $previous[$subelement['dbname']]; ?>'); nbtSaveSubExtractionTextField(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>Feedback');">Copy from previous</button><?php
+						
+					}
 					
 					?></div><?php
 					
@@ -50,6 +56,12 @@ foreach ( $subextractions as $subextraction ) {
 						nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
 						
 						nbt_echo_sub_date_selector ($nbtSubExtractionElementID, $subextraction, $subelement['dbname']);
+					
+					if ( $previous != NULL ) {
+						
+						?><button style="display: block; margin-top: 4px;" onclick="$('#nbtSub<?php echo $subextraction['id']; ?>DateField<?php echo $subelement['dbname']; ?>').val('<?php echo substr ( $previous[$subelement['dbname']], 0, 7); ?>');nbtSaveSubExtractionDateField(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>DateField<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>Feedback');">Copy from previous</button><?php
+						
+					}
 					
 					?></div><?php
 					
@@ -82,6 +94,12 @@ foreach ( $subextractions as $subextraction ) {
 						}
 						
 						nbt_echo_subextraction_single_select ( $nbtSubExtractionElementID, $subextraction, $subelement['dbname'], $answers, $toggles );
+						
+						if ( $previous != NULL ) {
+						
+							?><button style="margin-left: 20px;" onclick="nbtCopySEPreviousSingleSelect(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $previous['id']; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $subelement['dbname']; ?>');">Copy from previous</button><?php
+							
+						}
 					
 					?></div><?php
 					
@@ -114,6 +132,12 @@ foreach ( $subextractions as $subextraction ) {
 						}
 						
 						nbt_echo_subextraction_multi_select ($nbtSubExtractionElementID, $subextraction, $subelement['dbname'], $answers, $toggles );
+						
+						if ( $previous != NULL ) {
+						
+							?><button style="margin-left: 20px;" onclick="nbtCopySEPreviousMultiSelect(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $previous['id']; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $subelement['dbname']; ?>');">Copy from previous</button><?php
+							
+						}
 					
 					?></div><?php
 					
@@ -124,6 +148,8 @@ foreach ( $subextractions as $subextraction ) {
 		}
 	
 	?></div><?php
+	
+	$previous = $subextraction;
 	
 }
 

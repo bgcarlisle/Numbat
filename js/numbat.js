@@ -2364,3 +2364,45 @@ function nbtCopyCitationToMaster ( eid, cid, rsid, ref ) {
 	});
 	
 }
+
+function nbtCopySEPreviousSingleSelect ( eid, previousid, currentid, dbname ) {
+	
+	$('.nbtSub' + previousid + '-' + dbname + '.nbtTextOptionChosen').each ( function () {
+		
+		var previousbuttonid = 'nbtSub' + eid + '-' + previousid + 'Q' + dbname + 'A';
+		
+		var prev = $(this).attr('id');
+		
+		var previousanswer = prev.substring(previousbuttonid.length);
+		
+		var currentbuttonid = 'nbtSub' + eid + '-' + currentid + 'Q' + dbname + 'A' + previousanswer;
+		
+		$('#' + currentbuttonid).click();
+		
+	});
+	
+}
+
+function nbtCopySEPreviousMultiSelect ( eid, previousid, currentid, dbname ) {
+	
+	$('.nbtSub' + currentid + '-' + dbname + '.nbtTextOptionChosen').each ( function () {
+		
+		$(this).click();
+		
+	});
+	
+	$('.nbtSub' + previousid + '-' + dbname + '.nbtTextOptionChosen').each ( function () {
+		
+		var previousbuttonid = 'nbtSub' + eid + '-' + previousid + 'MS';
+		
+		var prev = $(this).attr('id');
+		
+		var previousanswer = prev.substring(previousbuttonid.length);
+		
+		var currentbuttonid = 'nbtSub' + eid + '-' + currentid + 'MS' + previousanswer;
+		
+		$('#' + currentbuttonid).click();
+		
+	});
+	
+}

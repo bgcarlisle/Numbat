@@ -1977,7 +1977,9 @@ function nbt_echo_subextraction_multi_select ($elementid, $subextraction, $quest
 		
 		?><a href="#" class="nbtTextOptionSelect <?php
 		
-			echo "sig" . $question;
+			echo "nbt" . $question;
+			
+			echo " nbtSub" . $subextraction['id'] . "-" . $question;
 			
 			if ( $subextraction[$question . "_" . $dbcolumn] == 1 ) {
 				
@@ -2106,8 +2108,7 @@ function nbt_echo_date_selector ($formid, $extraction, $dbcolumn) {
 
 function nbt_echo_sub_date_selector ($elementid, $subextraction, $dbcolumn) {
 	
-	?><p class="nbtDateSelector">
-		<input type="text" value="<?php
+	?><input type="text" value="<?php
 			
 			if ( substr ($subextraction[$dbcolumn], 0, 7) != "0000-00" ) {
 				
@@ -2116,8 +2117,7 @@ function nbt_echo_sub_date_selector ($elementid, $subextraction, $dbcolumn) {
 			}
 			
 		?>" id="nbtSub<?php echo $subextraction['id']; ?>DateField<?php echo $dbcolumn; ?>" onblur="nbtSaveSubExtractionDateField(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>DateField<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>Feedback');">
-		<span class="nbtInputFeedback" id="nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span>
-	</p><?php
+		<span class="nbtInputFeedback" id="nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span><?php
 	
 }
 
