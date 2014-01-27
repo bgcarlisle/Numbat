@@ -1,15 +1,16 @@
 <?php
 
-$subelements = nbt_get_sub_extraction_elements_for_elementid ( $nbtSubExtractionElementID );
+$subelements = nbt_get_sub_extraction_elements_for_elementid ( $nbtMasterSubExtrID );
 
 $no_of_columns = count ( $subelements );
 
-$subextractions = nbt_get_sub_extractions ( $nbtSubExtractionElementID, $nbtExtractRefSet, $nbtExtractRefID, $nbtExtractUserID );
+$subextractions = nbt_get_master_sub_extractions ( $nbtMasterSubExtrID, $nbtMasterSubExtrRefSet, $nbtMasterSubExtrRefID );
 
 foreach ( $subextractions as $subextraction ) {
 
-	?><div class="nbtSubExtraction" id="nbtSubExtractionInstance<?php echo $nbtSubExtractionElementID; ?>-<?php echo $subextraction['id']; ?>">
-		<button style="float: right;" onclick="nbtCopySubExtraction(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $nbtExtractRefSet; ?>, <?php echo $nbtExtractRefID; ?>, <?php echo $subextraction['id']; ?>);">Copy to master</button><?php
+	?><div class="nbtSubExtraction" id="nbtMasterSubExtractionInstance<?php echo $nbtMasterSubExtrID; ?>-<?php echo $subextraction['id']; ?>">
+		<button style="float: right;" onclick="$(this).fadeOut(0);$('#nbtRemoveSE<?php echo $nbtMasterSubExtrID; ?>-<?php echo $subextraction['id']; ?>').fadeIn();">Delete</button>
+		<button id="nbtRemoveSE<?php echo $nbtMasterSubExtrID; ?>-<?php echo $subextraction['id']; ?>" class="nbtHidden" style="float: right;" onclick="nbtDeleteMasterSubExtraction(<?php echo $nbtMasterSubExtrID; ?>, <?php echo $subextraction['id']; ?>);">For real</button><?php
 		
 		foreach ( $subelements as $subelement ) {
 			

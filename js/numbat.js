@@ -2239,6 +2239,26 @@ function nbtCopyTableDataRow ( eid, rsid, refid, rid ) {
 	
 }
 
+function nbtCopySubExtraction ( eid, rsid, refid, oid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'master/copysubextraction.php',
+		type: 'post',
+		data: {
+			elementid: eid,
+			refset: rsid,
+			ref: refid,
+			original: oid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtMasterSubExtraction' + eid).html(html);
+		
+	});
+	
+}
+
 function nbtDeleteMasterTableRow ( eid, rid ) {
 	
 	$.ajax ({
@@ -2252,6 +2272,24 @@ function nbtDeleteMasterTableRow ( eid, rid ) {
 	}).done ( function (html) {
 		
 		$('#nbtMasterTD' + eid + 'RowID' + rid).slideUp();
+		
+	});
+	
+}
+
+function nbtDeleteMasterSubExtraction ( eid, oid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'master/deletemastersubextraction.php',
+		type: 'post',
+		data: {
+			elementid: eid,
+			original: oid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtMasterSubExtractionInstance' + eid + '-' + oid).slideUp();
 		
 	});
 	

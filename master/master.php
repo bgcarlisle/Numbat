@@ -9,7 +9,7 @@ $extractions = nbt_get_extractions_for_refset_ref_and_form ( $_GET['refset'], $_
 $master = nbt_get_master ( $_GET['form'], $_GET['refset'], $_GET['ref'] );
 
 ?>
-<div class="nbtContentPanel">
+<div class="nbtContentPanel" style="width: 940px;">
 	<h2><?php echo $ref['title']; ?></h2>
 	<p><?php echo $ref['authors']; ?></p>
 	<?php
@@ -22,7 +22,7 @@ $master = nbt_get_master ( $_GET['form'], $_GET['refset'], $_GET['ref'] );
 	
 	?>
 </div>
-<div class="nbtContentPanel">
+<div class="nbtContentPanel" style="width: 940px;">
 	<h3>Abstract</h3>
 	<p class="nbtFinePrint"><a href="#" onclick="event.preventDefault();$('#nbtAbstract').slideToggle(200);">Show / hide abstract</a></p>
 	<p id="nbtAbstract"><?php
@@ -43,7 +43,7 @@ $master = nbt_get_master ( $_GET['form'], $_GET['refset'], $_GET['ref'] );
 
 if ( $formelements[0]['type'] != "section_heading" ) {
 	
-	?><div class="nbtContentPanel"><?php
+	?><div class="nbtContentPanel" style="width: 940px;"><?php
 	
 }
 
@@ -471,16 +471,32 @@ if ( $formelements[0]['type'] != "section_heading" ) {
 				
 					nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 					
-					?><div class="nbtSubExtraction" id="nbtSubExtraction<?php echo $element['id']; ?>"><?php
+					foreach ( $extractions as $extraction ) {
 					
-					$nbtSubExtractionElementID = $element['id'];
-					$nbtExtractRefSet = $_GET['refset'];
-					$nbtExtractRefID = $_GET['ref'];
+						?><p style="margin-bottom: 5px;"><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span></p>
+						
+						<?php
+						
+						$nbtSubExtractionElementID = $element['id'];
+						$nbtExtractRefSet = $_GET['refset'];
+						$nbtExtractRefID = $_GET['ref'];
+						$nbtExtractUserID = $extraction['userid'];
+						
+						include ('./subextraction.php');
+						
+					}
 					
-					include ('./subextraction.php');
+					?><p style="margin-bottom: 5px;"><span class="nbtExtractionName">Master sub-extraction</span></p>
+					<div id="nbtMasterSubExtraction<?php echo $element['id']; ?>"><?php
+					
+					$nbtMasterSubExtrID = $element['id'];
+					$nbtMasterSubExtrRefSet = $_GET['refset'];
+					$nbtMasterSubExtrRefID = $_GET['ref'];
+					
+					include ('./mastersubextraction.php');
 					
 					?></div>
-				
+					
 				</div><?php
 				
 			break;

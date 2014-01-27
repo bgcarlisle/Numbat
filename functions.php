@@ -10249,6 +10249,39 @@ function nbt_get_sub_extractions ( $elementid, $refsetid, $refid, $userid ) {
 	
 }
 
+function nbt_get_master_sub_extractions ( $elementid, $refsetid, $refid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `msub_" . $element['columnname'] . "` WHERE refsetid = :refset AND referenceid = :ref ORDER BY id ASC;");
+		
+		$stmt->bindParam(':refset', $rsid);
+		$stmt->bindParam(':ref', $ref);
+		
+		$rsid = $refsetid;
+		$ref = $refid;
+		
+		$stmt->execute();
+	
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		return $result;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
 function nbt_add_new_sub_extraction ($elementid, $refsetid, $refid, $userid) {
 	
 	$element = nbt_get_form_element_for_elementid ( $elementid );
@@ -10656,6 +10689,181 @@ function nbtAddAdvancedAssignment ( $userid, $formid, $refsetid, $query ) {
 	}
 	
 	echo $counter . " assignments added";
+	
+}
+
+function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $originalid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
+		
+		$stmt->bindParam(':id', $oid);
+		
+		$oid = $originalid;
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetchAll();
+		
+		foreach ( $result as $row ) {
+			
+			$original = $row;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// Make a new row, get the id
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO `msub_" . $element['columnname'] . "` (refsetid, referenceid) VALUES (:refset, :ref);");
+		
+		$stmt->bindParam(':refset', $rsid);
+		$stmt->bindParam(':ref', $rid);
+		
+		$rsid = $refsetid;
+		$rid = $refid;
+		
+		$stmt->execute();
+		
+		$stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+		
+		$stmt2->execute();
+		
+		$result = $stmt2->fetchAll();
+	
+		$dbh = null;
+		
+		foreach ( $result as $row ) {
+			
+			$newid = $row['newid'];
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// copy the data over
+	
+	$subelements = nbt_get_sub_extraction_elements_for_elementid ( $elementid );
+	
+	foreach ( $subelements as $subelement ) {
+		
+		if ( $subelement['type'] != "multi_select" ) {
+			
+			try {
+				
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("UPDATE `msub_" . $element['columnname'] . "` SET `" . $subelement['dbname'] . "` = :value WHERE id = :id LIMIT 1;");
+				
+				$stmt->bindParam(':id', $nid);
+				$stmt->bindParam(':value', $val);
+				
+				$nid = $newid;
+				$val = $original[$subelement['dbname']];
+				
+				$stmt->execute();
+				
+				$result = $stmt->fetchAll();
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+		
+		} else {
+			
+			$options = nbt_get_all_select_options_for_sub_element ( $subelement['id'] );
+			
+			foreach ( $options as $option ) {
+				
+				try {
+				
+					$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+					$stmt = $dbh->prepare("UPDATE `msub_" . $element['columnname'] . "` SET `" . $subelement['dbname'] . "_" . $option['dbname'] . "` = :value WHERE id = :id LIMIT 1;");
+					
+					$stmt->bindParam(':id', $nid);
+					$stmt->bindParam(':value', $val);
+					
+					$nid = $newid;
+					$val = $original[$subelement['dbname'] . "_" . $option['dbname']];
+					
+					$stmt->execute();
+					
+					$result = $stmt->fetchAll();
+					
+				}
+				
+				catch (PDOException $e) {
+					
+					echo $e->getMessage();
+					
+				}
+				
+			}
+			
+		}
+		
+	}
+	
+}
+
+function nbt_remove_master_sub_extraction ( $elementid, $originalid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("DELETE FROM `msub_" . $element['columnname'] . "` WHERE id = :original;");
+		
+		$stmt->bindParam(':original', $oid);
+		
+		$oid = $originalid;
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+			return TRUE;
+			
+		} else {
+			
+			$dbh = null;
+			
+			return FALSE;
+			
+		}
+		
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
 	
 }
 
