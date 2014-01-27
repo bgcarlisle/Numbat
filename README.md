@@ -1,7 +1,7 @@
-Numbat v. 0.6
+Numbat v. 0.7
 ======
 
-Numbat Academic Meta-Analysis Extraction Manager: "Getting closer!"
+Numbat Academic Meta-Analysis Extraction Manager: "Sub-extractions work now!"
 
 ## Overview
 
