@@ -326,7 +326,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 					
 						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 						
-						?><div class="nbtSubExtraction" id="nbtSubExtraction<?php echo $element['id']; ?>"><?php
+						?><div class="nbtSubExtraction" id="nbtSubExtraction<?php echo $element['id']; ?>-<?php echo $_SESSION['nbt_userid'] ?>"><?php
 						
 						$nbtSubExtractionElementID = $element['id'];
 						$nbtExtractRefSet = $_GET['refset'];

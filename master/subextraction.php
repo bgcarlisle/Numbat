@@ -2,14 +2,14 @@
 
 $subelements = nbt_get_sub_extraction_elements_for_elementid ( $nbtSubExtractionElementID );
 
-$no_of_columns = count ( $subelements );
-
 $subextractions = nbt_get_sub_extractions ( $nbtSubExtractionElementID, $nbtExtractRefSet, $nbtExtractRefID, $nbtExtractUserID );
 
 foreach ( $subextractions as $subextraction ) {
 
 	?><div class="nbtSubExtraction" id="nbtSubExtractionInstance<?php echo $nbtSubExtractionElementID; ?>-<?php echo $subextraction['id']; ?>">
-		<button style="float: right;" onclick="nbtCopySubExtraction(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $nbtExtractRefSet; ?>, <?php echo $nbtExtractRefID; ?>, <?php echo $subextraction['id']; ?>);">Copy to master</button><?php
+		<button style="float: right;" onclick="nbtCopySubExtraction(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $nbtExtractRefSet; ?>, <?php echo $nbtExtractRefID; ?>, <?php echo $subextraction['id']; ?>);">Copy to master</button>
+		<button style="float: right;" onclick="nbtMasterMoveSubExtraction(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $subextraction['id']; ?>, -1, <?php echo $nbtExtractRefSet; ?>, <?php echo $nbtExtractRefID; ?>, <?php echo $subextraction['userid']; ?>);">&#8595;</button>
+		<button style="float: right;" onclick="nbtMasterMoveSubExtraction(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $subextraction['id']; ?>, 1, <?php echo $nbtExtractRefSet; ?>, <?php echo $nbtExtractRefID; ?>, <?php echo $subextraction['userid']; ?>);">&#8593;</button><?php
 		
 		foreach ( $subelements as $subelement ) {
 			

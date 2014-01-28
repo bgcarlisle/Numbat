@@ -435,6 +435,50 @@ function nbtMoveMultiSelectOption ( eid, sid, dir ) {
 	
 }
 
+function nbtMoveSubExtraction ( eid, seid, dir, rsid, rid, uid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'extract/movesubextraction.php',
+		type: 'post',
+		data: {
+			element: eid,
+			subextraction: seid,
+			direction: dir,
+			refset: rsid,
+			ref: rid,
+			userid: uid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSubExtraction' + eid + '-' + uid).html(html);
+		
+	});
+	
+}
+
+function nbtMasterMoveSubExtraction ( eid, seid, dir, rsid, rid, uid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'master/movesubextraction.php',
+		type: 'post',
+		data: {
+			element: eid,
+			subextraction: seid,
+			direction: dir,
+			refset: rsid,
+			ref: rid,
+			userid: uid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtSubExtraction' + eid + '-' + uid).html(html);
+		
+	});
+	
+}
+
 function nbtAddSingleSelectOption ( eid ) {
 	
 	$.ajax ({
@@ -2043,7 +2087,7 @@ function nbtAddNewSubDateSelector ( eid ) {
 	
 }
 
-function nbtNewSubExtraction (eid, rsid, rid) {
+function nbtNewSubExtraction (eid, rsid, rid, uid) {
 	
 	$.ajax ({
 		url: numbaturl + 'extract/addsubextraction.php',
@@ -2051,12 +2095,13 @@ function nbtNewSubExtraction (eid, rsid, rid) {
 		data: {
 			elementid: eid,
 			refset: rsid,
-			ref: rid
+			ref: rid,
+			userid: uid
 		},
 		dataType: 'html'
 	}).done ( function (html) {
 		
-		$('#nbtSubExtraction' + eid).html(html);
+		$('#nbtSubExtraction' + eid + '-' + uid).html(html);
 		
 	});
 	

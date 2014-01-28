@@ -4820,6 +4820,66 @@ function nbt_switch_selects_sortorder ( $select1id, $select2id ) {
 	
 }
 
+function nbt_switch_subextraction_sortorder ( $elementid, $sub1id, $sub2id ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// get the original values
+	
+	$sub1 = nbt_get_sub_extraction_for_element_and_id ( $elementid, $sub1id );
+	
+	$sub2 = nbt_get_sub_extraction_for_element_and_id ( $elementid, $sub2id );
+	
+	// then switch them
+	
+	try {
+			
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `sub_" . $element['columnname'] . "` SET `sortorder` = :sort WHERE `id` = :seid");
+		
+		$stmt->bindParam(':seid', $seid);
+		$stmt->bindParam(':sort', $sort);
+		
+		$seid = $sub1id;
+		$sort = $sub2['sortorder'];
+		
+		$stmt->execute();
+		
+		$dbh = null;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	try {
+			
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `sub_" . $element['columnname'] . "` SET `sortorder` = :sort WHERE `id` = :seid");
+		
+		$stmt->bindParam(':seid', $seid);
+		$stmt->bindParam(':sort', $sort);
+		
+		$seid = $sub2id;
+		$sort = $sub1['sortorder'];
+		
+		$stmt->execute();
+		
+		$dbh = null;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
 function nbt_switch_tablecolumn_sortorder ( $column1id, $column2id ) {
 	
 	// get the original values
@@ -5083,6 +5143,122 @@ function nbt_move_select_option ( $selectid, $direction ) {
 		if ( $movedown ) {
 			
 			nbt_switch_selects_sortorder ( $selectid, $movedown );
+			
+		}
+		
+	}
+	
+}
+
+function nbt_move_sub_extraction ( $elementid, $refsetid, $refid, $subextractionid, $direction, $userid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	$subextraction = nbt_get_sub_extraction_for_element_and_id ( $elementid, $subextractionid ); // ***
+	
+	if ( $direction == 1 ) { // moving "up"
+		
+		// first, see if there are any elements above it
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE `refsetid` = :refset AND `referenceid` = :ref AND `userid` = :user AND `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
+			
+			$stmt->bindParam(':refset', $rsid);
+			$stmt->bindParam(':ref', $rid);
+			$stmt->bindParam(':user', $uid);
+			$stmt->bindParam(':sort', $sort);
+			
+			$rsid = $refsetid;
+			$rid = $refid;
+			$uid = $userid;
+			$sort = $subextraction['sortorder'];
+			
+			$stmt->execute();
+			
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$moveup = FALSE;
+				
+			} else { // there are elements higher than this one
+				
+				foreach ( $result as $row ) {
+					
+					$moveup = $row['id'];
+					
+				}
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		// move the element up, if necessary
+		
+		if ( $moveup ) {
+			
+			nbt_switch_subextraction_sortorder ( $elementid, $subextractionid, $moveup );
+			
+		}
+		
+	} else { // moving "down"
+		
+		// first, see if there are any elements below it
+		
+		try {
+		
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE `refsetid` = :refset AND `referenceid` = :ref AND `userid` = :user AND `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
+			
+			$stmt->bindParam(':refset', $rsid);
+			$stmt->bindParam(':ref', $rid);
+			$stmt->bindParam(':user', $uid);
+			$stmt->bindParam(':sort', $sort);
+			
+			$rsid = $refsetid;
+			$rid = $refid;
+			$uid = $userid;
+			$sort = $subextraction['sortorder'];
+			
+			$stmt->execute();
+			
+			$result = $stmt->fetchAll();
+			
+			if ( count ( $result ) == 0 ) {
+				
+				$movedown = FALSE;
+				
+			} else { // there are elements higher than this one
+				
+				foreach ( $result as $row ) {
+					
+					$movedown = $row['id'];
+					
+				}
+				
+			}
+			
+		}
+		
+		catch (PDOException $e) {
+			
+			echo $e->getMessage();
+			
+		}
+		
+		// move the element down, if necessary
+		
+		if ( $movedown ) {
+			
+			nbt_switch_subextraction_sortorder ( $elementid, $subextractionid, $movedown );
 			
 		}
 		
@@ -8581,7 +8757,7 @@ function nbt_add_sub_extraction ( $formid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("CREATE TABLE `sub_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		$stmt = $dbh->prepare("CREATE TABLE `sub_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `sortorder` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 		
 		if ($stmt->execute()) {
 			
@@ -10221,7 +10397,7 @@ function nbt_get_sub_extractions ( $elementid, $refsetid, $refid, $userid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE refsetid = :refset AND referenceid = :ref AND userid = :user ORDER BY id ASC;");
+		$stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE refsetid = :refset AND referenceid = :ref AND userid = :user ORDER BY `sortorder` ASC;");
 		
 		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':ref', $ref);
@@ -10286,10 +10462,12 @@ function nbt_add_new_sub_extraction ($elementid, $refsetid, $refid, $userid) {
 	
 	$element = nbt_get_form_element_for_elementid ( $elementid );
 	
+	// first get the highest existing sortorder
+	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("INSERT INTO `sub_" . $element['columnname'] . "` (refsetid, referenceid, userid) VALUES (:refset, :refid, :userid);");
+		$stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE `refsetid` = :refset AND `referenceid` = :refid AND `userid` = :userid ORDER BY `sortorder` DESC LIMIT 1;");
 		
 		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':refid', $rid);
@@ -10298,6 +10476,50 @@ function nbt_add_new_sub_extraction ($elementid, $refsetid, $refid, $userid) {
 		$rsid = $refsetid;
 		$rid = $refid;
 		$uid = $userid;
+		
+		if ($stmt->execute()) {
+			
+			$result = $stmt->fetchAll();
+			
+			$dbh = null;
+			
+			foreach ( $result as $row ) {
+				
+				$highestsortorder = $row['sortorder'];
+				
+			}
+		
+		} else {
+			
+			echo "MySQL fail";
+			
+		}
+		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// then add the new row
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO `sub_" . $element['columnname'] . "` (refsetid, referenceid, userid, sortorder) VALUES (:refset, :refid, :userid, :newsort);");
+		
+		$stmt->bindParam(':refset', $rsid);
+		$stmt->bindParam(':refid', $rid);
+		$stmt->bindParam(':userid', $uid);
+		$stmt->bindParam(':newsort', $nso);
+		
+		$rsid = $refsetid;
+		$rid = $refid;
+		$uid = $userid;
+		$nso = $highestsortorder + 1;
 		
 		if ($stmt->execute()) {
 			
@@ -10856,6 +11078,41 @@ function nbt_remove_master_sub_extraction ( $elementid, $originalid ) {
 		}
 		
 		
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_get_sub_extraction_for_element_and_id ( $elementid, $subextractionid ) {
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE `id` = :id LIMIT 1;");
+		
+		$stmt->bindParam(':id', $seid);
+		
+		$seid = $subextractionid;
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		foreach ($result as $row) {
+			
+			return $row;
+			
+		}
 		
 	}
 	

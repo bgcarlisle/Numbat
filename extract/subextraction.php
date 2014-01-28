@@ -9,6 +9,8 @@ foreach ( $subextractions as $subextraction ) {
 	?><div class="nbtSubExtraction" id="nbtSubExtractionInstance<?php echo $nbtSubExtractionElementID; ?>-<?php echo $subextraction['id']; ?>">
 		<button style="float: right;" onclick="$(this).fadeOut(0);$('#nbtSubRemoveExtraction<?php echo $nbtSubExtractionElementID; ?>-<?php echo $subextraction['id']; ?>').fadeIn();">Delete</button>
 		<button class="nbtHidden" id="nbtSubRemoveExtraction<?php echo $nbtSubExtractionElementID; ?>-<?php echo $subextraction['id']; ?>" style="float: right;" onclick="nbtDeleteSubExtraction(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $subextraction['id']; ?>);">For real</button>
+		<button style="float: right;" onclick="nbtMoveSubExtraction(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $subextraction['id']; ?>, -1, <?php echo $nbtExtractRefSet; ?>, <?php echo $nbtExtractRefID; ?>, <?php echo $_SESSION['nbt_userid']; ?>);">&#8595;</button>
+		<button style="float: right;" onclick="nbtMoveSubExtraction(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $subextraction['id']; ?>, 1, <?php echo $nbtExtractRefSet; ?>, <?php echo $nbtExtractRefID; ?>, <?php echo $_SESSION['nbt_userid']; ?>);">&#8593;</button>
 		<?php
 	
 		foreach ( $subelements as $subelement ) {
@@ -33,7 +35,7 @@ foreach ( $subextractions as $subextraction ) {
 					
 					if ( $previous != NULL ) {
 						
-						?><button style="display: block; margin-top: 4px;" onclick="$('#nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>').val('<?php echo $previous[$subelement['dbname']]; ?>'); nbtSaveSubExtractionTextField(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>Feedback');">Copy from previous</button><?php
+						?><button style="display: block; margin-top: 4px;" onclick="$('#nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>').val( $('#nbtSub<?php echo $previous['id']; ?>TextField<?php echo $subelement['dbname']; ?>').val() ); nbtSaveSubExtractionTextField(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>Feedback');">Copy from previous</button><?php
 						
 					}
 					
@@ -153,4 +155,4 @@ foreach ( $subextractions as $subextraction ) {
 	
 }
 
-?><button onclick="nbtNewSubExtraction ( <?php echo $nbtSubExtractionElementID; ?>, <?php echo $nbtExtractRefSet; ?>, <?php echo $nbtExtractRefID; ?> );">Add new sub-extraction</button>
+?><button onclick="nbtNewSubExtraction ( <?php echo $nbtSubExtractionElementID; ?>, <?php echo $nbtExtractRefSet; ?>, <?php echo $nbtExtractRefID; ?>, <?php echo $_SESSION['nbt_userid']; ?> );">Add new sub-extraction</button>

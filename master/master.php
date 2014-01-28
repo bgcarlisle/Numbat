@@ -471,20 +471,39 @@ if ( $formelements[0]['type'] != "section_heading" ) {
 				
 					nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 					
-					foreach ( $extractions as $extraction ) {
+					?><table class="nbtTabledData">
+						<tr><?php
+							
+							foreach ( $extractions as $extraction ) {
+								
+								?><td><p style="margin-bottom: 5px;"><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span></td><?php
+								
+							}
+							
+						?></tr>
+						<tr><?php
 					
-						?><p style="margin-bottom: 5px;"><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span></p>
+							foreach ( $extractions as $extraction ) {
+							
+								?><td>
+									</p>
+									
+									<div class="nbtSubExtraction" id="nbtSubExtraction<?php echo $element['id']; ?>-<?php echo $extraction['userid']; ?>"><?php
+									
+									$nbtSubExtractionElementID = $element['id'];
+									$nbtExtractRefSet = $_GET['refset'];
+									$nbtExtractRefID = $_GET['ref'];
+									$nbtExtractUserID = $extraction['userid'];
+									
+									include (ABS_PATH . 'master/subextraction.php');
+								
+									?></div>
+								</td><?php
+								
+							}
 						
-						<?php
-						
-						$nbtSubExtractionElementID = $element['id'];
-						$nbtExtractRefSet = $_GET['refset'];
-						$nbtExtractRefID = $_GET['ref'];
-						$nbtExtractUserID = $extraction['userid'];
-						
-						include ('./subextraction.php');
-						
-					}
+						?></tr>
+					</table><?php
 					
 					?><p style="margin-bottom: 5px;"><span class="nbtExtractionName">Master sub-extraction</span></p>
 					<div id="nbtMasterSubExtraction<?php echo $element['id']; ?>"><?php
