@@ -1,7 +1,7 @@
-Numbat v. 0.7
+Numbat v. 0.8
 ======
 
-Numbat Academic Meta-Analysis Extraction Manager: "Sub-extractions work now!"
+Numbat Academic Meta-Analysis Extraction Manager: "With extra buttons!"
 
 ## Overview
 
