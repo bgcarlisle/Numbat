@@ -4,7 +4,13 @@ include_once ('../config.php');
 
 if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) >= 2 ) {
 
-	if ( nbt_update_extraction_table_data ( $_POST['tid'], $_POST['row'], $_POST['column'], $_POST['newvalue']) ) {
+	if ( $_POST['answer'] == "NULL" ) {
+		
+		$_POST['answer'] = NULL;
+		
+	}
+	
+	if ( nbt_update_msub_extraction ( $_POST['eid'], $_POST['id'], $_POST['question'], $_POST['answer'] ) ) {
 		
 		echo "Changes saved";
 		
@@ -13,7 +19,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) >= 2 ) {
 		echo "Something went wrong—changes not saved";
 		
 	}
-
+	
 }
 
 ?>

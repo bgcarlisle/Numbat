@@ -19,46 +19,50 @@ foreach ( $subextractions as $subextraction ) {
 			switch ( $subelement['type'] ) {
 						
 				case "open_text":
-					
-					echo $subextraction[$subelement['dbname']];
+				
+					nbt_echo_msubextraction_text_field ($nbtMasterSubExtrID, $subextraction, $subelement['dbname'], 500, FALSE);
 					
 				break;
 				
 				case "date_selector":
 					
-					echo substr ( $subextraction[$subelement['dbname']], 0, 7 );
+					nbt_echo_msub_date_selector ($nbtMasterSubExtrID, $subextraction, $subelement['dbname']);
 					
 				break;
 				
 				case "single_select":
 					
-					$options = nbt_get_all_select_options_for_sub_element ( $subelement['id'] );
+					$answers = array ();
+					$toggles = array ();
 					
-					foreach ( $options as $option ) {
+					$selectoptions = nbt_get_all_select_options_for_sub_element ( $subelement['id'] );
+					
+					foreach ( $selectoptions as $option ) {
 						
-						if ( $option['dbname'] == $subextraction[$subelement['dbname']] ) {
-							
-							echo $option['displayname'];
-							
-						}
+						$answers[$option['dbname']] = $option['displayname'];
+						$toggles[$option['dbname']] = $option['toggle'];
 						
 					}
+					
+					nbt_echo_msubextraction_single_select ( $nbtMasterSubExtrID, $subextraction, $subelement['dbname'], $answers, $toggles );
 					
 				break;
 				
 				case "multi_select":
 					
-					$options = nbt_get_all_select_options_for_sub_element ( $subelement['id'] );
+					$answers = array ();
+					$toggles = array ();
 					
-					foreach ( $options as $option ) {
+					$selectoptions = nbt_get_all_select_options_for_sub_element ( $subelement['id'] );
+					
+					foreach ( $selectoptions as $option ) {
 						
-						if ( $subextraction[$subelement['dbname'] . "_" . $option['dbname']] == 1 ) {
-							
-							?><span class="nbtDoubleMultiAnswers"><?php echo $option['displayname']; ?></span><?php
-							
-						}
+						$answers[$option['dbname']] = $option['displayname'];
+						$toggles[$option['dbname']] = $option['toggle'];
 						
 					}
+					
+					nbt_echo_msubextraction_multi_select ($nbtSubExtractionElementID, $subextraction, $subelement['dbname'], $answers, $toggles );
 					
 				break;
 				

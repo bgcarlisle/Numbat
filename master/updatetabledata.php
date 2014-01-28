@@ -4,7 +4,7 @@ include_once ('../config.php');
 
 if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) >= 2 ) {
 
-	if ( nbt_update_extraction_table_data ( $_POST['tid'], $_POST['row'], $_POST['column'], $_POST['newvalue']) ) {
+	if ( nbt_update_extraction_mtable_data ( $_POST['tid'], $_POST['row'], $_POST['column'], $_POST['newvalue']) ) {
 		
 		echo "Changes saved";
 		

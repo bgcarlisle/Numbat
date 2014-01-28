@@ -29,7 +29,7 @@ $no_of_columns = count ( $columns );
 			
 			foreach ( $columns as $column ) {
 				
-				?><td><?php echo $row[$column['dbname']]; ?></td><?php
+				?><td><input type="text" id="nbtTable<?php echo $nbtExtractTableDataID; ?>-<?php echo $column['id']; ?>-<?php echo $row['id']; ?>" value="<?php echo $row[$column['dbname']]; ?>" onblur="nbtUpdateMasterExtractionTableData(<?php echo $nbtExtractTableDataID; ?>, <?php echo $row['id']; ?>, '<?php echo $column['dbname']; ?>', 'nbtTable<?php echo $nbtExtractTableDataID; ?>-<?php echo $column['id']; ?>-<?php echo $row['id']; ?>');"></td><?php
 				
 			}
 			
@@ -42,3 +42,4 @@ $no_of_columns = count ( $columns );
 	
 	?>
 </table>
+<p class="nbtFinePrint" id="nbtTable<?php echo $nbtMasterTableID; ?>Feedback">&nbsp;</p>
