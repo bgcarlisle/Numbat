@@ -4535,93 +4535,132 @@ function nbt_delete_form_element ( $elementid ) {
 	
 	$columnname = $element['columnname'];
 	
-	// then remove the element from the formelement table
-	
-	try {
-		
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("DELETE FROM `formelements` WHERE id = :id LIMIT 1;");
-		
-		$stmt->bindParam(':id', $eid);
-		
-		$eid = $elementid;
-		
-		if ($stmt->execute()) {
-			
-			$dbh = null;
-			
-		}
-		
-	}
-	
-	catch (PDOException $e) {
-		
-		echo $e->getMessage();
-		
-	}
-	
-	// then remove the column from the extractions table
-	
-	try {
-		
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
-		
-		$stmt->execute();
-		
-	}
-	
-	catch (PDOException $e) {
-		
-		echo $e->getMessage();
-		
-	}
-	
-	// then remove it from the master table
-	
-	try {
-		
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
-		
-		$stmt->execute();
-		
-	}
-	
-	catch (PDOException $e) {
-		
-		echo $e->getMessage();
-		
-	}
-	
-	// then remove all the options from the select options table
-	
-	try {
-		
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("DELETE FROM `selectoptions` WHERE elementid = :id LIMIT 1;");
-		
-		$stmt->bindParam(':id', $eid);
-		
-		$eid = $elementid;
-		
-		if ($stmt->execute()) {
-			
-			$dbh = null;
-			
-		}
-		
-	}
-	
-	catch (PDOException $e) {
-		
-		echo $e->getMessage();
-		
-	}
-	
 	switch ( $element['type'] ) {
 		
+		case "section_heading":
+			
+			// Nothing to do (element is removed from form elements table below)
+			
+		break;
+		
+		case "open_text":
+			
+			// remove the column from the extractions table
+			
+			try {
+				
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
+				
+				$stmt->execute();
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+			
+			// remove it from the master table
+			
+			try {
+				
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
+				
+				$stmt->execute();
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+			
+		break;
+		
+		case "single_select":
+			
+			// remove the column from the extractions table
+			
+			try {
+				
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
+				
+				$stmt->execute();
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+			
+			// remove it from the master table
+			
+			try {
+				
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
+				
+				$stmt->execute();
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+			
+			// the options are removed from the selectoptions table below
+			
+		break;
+		
+		case "multi_select":
+			
+			// remove all the columns from the table
+			
+			$options = nbt_get_all_select_options_for_element ( $element['id'] );
+			
+			foreach ( $options as $option ) {
+				
+				nbt_remove_multi_select_option ( $elementid, $option['id'] );
+				
+			}
+			
+		break;
+		
 		case "table_data":
+			
+			// remove all the columns from the table data columns table
+	
+			try {
+				
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("DELETE FROM `tabledatacolumns` WHERE elementid = :id;");
+				
+				$stmt->bindParam(':id', $eid);
+				
+				$eid = $elementid;
+				
+				if ($stmt->execute()) {
+					
+					$dbh = null;
+					
+				}
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
 			
 			// delete the table
 			
@@ -4644,16 +4683,12 @@ function nbt_delete_form_element ( $elementid ) {
 				
 			}
 			
-			// then remove all the columns from the table data columns table
-	
+			// delete the master table
+			
 			try {
-				
+		
 				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-				$stmt = $dbh->prepare("DELETE FROM `tabledatacolumns` WHERE elementid = :id;");
-				
-				$stmt->bindParam(':id', $eid);
-				
-				$eid = $elementid;
+				$stmt = $dbh->prepare("DROP TABLE `mtable_" . $element['columnname'] . "`;");
 				
 				if ($stmt->execute()) {
 					
@@ -4679,6 +4714,27 @@ function nbt_delete_form_element ( $elementid ) {
 		
 				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 				$stmt = $dbh->prepare("DROP TABLE `citations_" . $element['columnname'] . "`;");
+				
+				if ($stmt->execute()) {
+					
+					$dbh = null;
+					
+				}
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+			
+			// delete the master table
+			
+			try {
+		
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("DROP TABLE `mcite_" . $element['columnname'] . "`;");
 				
 				if ($stmt->execute()) {
 					
@@ -4720,6 +4776,188 @@ function nbt_delete_form_element ( $elementid ) {
 			}
 		
 		break;
+		
+		case "country_selector":
+			
+			// remove the column from the extractions table
+			
+			try {
+				
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
+				
+				$stmt->execute();
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+			
+			// remove it from the master table
+			
+			try {
+				
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
+				
+				$stmt->execute();
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+			
+		break;
+		
+		case "date_selector":
+			
+			// remove the column from the extractions table
+			
+			try {
+				
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
+				
+				$stmt->execute();
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+			
+			// remove it from the master table
+			
+			try {
+				
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
+				
+				$stmt->execute();
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+			
+		break;
+		
+		case "sub_extraction":
+			
+			// delete the table
+			
+			try {
+		
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("DROP TABLE `sub_" . $element['columnname'] . "`;");
+				
+				if ($stmt->execute()) {
+					
+					$dbh = null;
+					
+				}
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+			
+			// delete the master table
+			
+			try {
+		
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("DROP TABLE `msub_" . $element['columnname'] . "`;");
+				
+				if ($stmt->execute()) {
+					
+					$dbh = null;
+					
+				}
+				
+			}
+			
+			catch (PDOException $e) {
+				
+				echo $e->getMessage();
+				
+			}
+			
+			// then remove all the sub extraction elements
+			
+			$subelements = nbt_get_sub_extraction_elements_for_elementid ( $elementid );
+			
+			foreach ( $subelements as $subelement ) {
+				
+				nbt_delete_sub_element ( $subelement['id'] );
+				
+			}
+			
+		break;
+		
+	}
+	
+	// then remove all the options from the select options table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("DELETE FROM `selectoptions` WHERE elementid = :id LIMIT 1;");
+		
+		$stmt->bindParam(':id', $eid);
+		
+		$eid = $elementid;
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+	// then remove the element from the formelement table
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("DELETE FROM `formelements` WHERE id = :id LIMIT 1;");
+		
+		$stmt->bindParam(':id', $eid);
+		
+		$eid = $elementid;
+		
+		if ($stmt->execute()) {
+			
+			$dbh = null;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
 		
 	}
 	
@@ -6189,7 +6427,7 @@ function nbt_increase_element_sortorder ( $elementid ) {
 
 function nbt_add_section_heading ( $formid, $elementid ) {
 	
-	// this element is the one immediately before where we want to insert a new element ***
+	// this element is the one immediately before where we want to insert a new element
 	
 	$element = nbt_get_form_element_for_elementid ( $elementid );
 	
@@ -6615,7 +6853,7 @@ function nbt_add_table_data ( $formid, $elementid ) {
 		try {
 		
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SHOW TABLES LIKE `tabledata_" . $counter . "';");
+			$stmt = $dbh->prepare("SHOW TABLES LIKE 'tabledata_" . $counter . "';");
 			
 			$stmt->execute();
 		
@@ -7735,7 +7973,7 @@ function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
 
 function nbt_add_citation_selector ( $formid, $elementid ) {
 	
-	// this element is the one immediately before where we want to insert a new element ***
+	// this element is the one immediately before where we want to insert a new element
 	
 	$element = nbt_get_form_element_for_elementid ( $elementid );
 	
@@ -7790,10 +8028,10 @@ function nbt_add_citation_selector ( $formid, $elementid ) {
 		try {
 		
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SHOW TABLES LIKE `citations_" . $counter . "';");
+			$stmt = $dbh->prepare("SHOW TABLES LIKE 'citations_" . $counter . "';");
 			
 			$stmt->execute();
-		
+			
 			$result = $stmt->fetchAll();
 			
 			if ( count ( $result ) == 0 ) {
@@ -8987,7 +9225,7 @@ function nbt_echo_display_name_and_codebook ( $displayname, $codebook ) {
 
 function nbt_add_sub_extraction ( $formid, $elementid ) {
 	
-	// this element is the one immediately before where we want to insert a new element ***
+	// this element is the one immediately before where we want to insert a new element
 	
 	$element = nbt_get_form_element_for_elementid ( $elementid );
 	
@@ -9042,7 +9280,7 @@ function nbt_add_sub_extraction ( $formid, $elementid ) {
 		try {
 		
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SHOW TABLES LIKE `sub_" . $counter . "';");
+			$stmt = $dbh->prepare("SHOW TABLES LIKE 'sub_" . $counter . "';");
 			
 			$stmt->execute();
 		
@@ -9492,7 +9730,7 @@ function nbt_delete_sub_element ( $subelementid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("DELETE FROM `selectoptions` WHERE `subelementid` = :id LIMIT 1;");
+		$stmt = $dbh->prepare("DELETE FROM `selectoptions` WHERE `subelementid` = :id;");
 		
 		$stmt->bindParam(':id', $seid);
 		
