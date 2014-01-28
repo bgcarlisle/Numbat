@@ -62,7 +62,7 @@ foreach ( $subextractions as $subextraction ) {
 						
 					}
 					
-					nbt_echo_msubextraction_multi_select ($nbtSubExtractionElementID, $subextraction, $subelement['dbname'], $answers, $toggles );
+					nbt_echo_msubextraction_multi_select ($nbtMasterSubExtrID, $subextraction, $subelement['dbname'], $answers, $toggles );
 					
 				break;
 				
