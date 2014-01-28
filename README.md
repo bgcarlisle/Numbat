@@ -1,7 +1,7 @@
-Numbat v. 0.8
+Numbat v. 0.9
 ======
 
-Numbat Academic Meta-Analysis Extraction Manager: "With extra buttons!"
+Numbat Academic Meta-Analysis Extraction Manager: "With many of the bugs fixed!"
 
 ## Overview
 
