@@ -4054,6 +4054,18 @@ function nbt_new_extraction_form () {
 
 function nbt_delete_extraction_form ( $formid ) {
 	
+	// first delete the elements within the form
+	
+	$elements = nbt_get_elements_for_formid ( $formid );
+	
+	foreach ( $elements as $element ) {
+		
+		nbt_delete_form_element ( $element['id'] );
+		
+	}
+	
+	// then remove the form from the list
+	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
