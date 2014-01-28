@@ -2631,3 +2631,22 @@ function nbtCopySEPreviousMultiSelect ( eid, previousid, currentid, dbname ) {
 	});
 	
 }
+
+function nbtChangePassword ( user, code ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forgot/changepass.php',
+		type: 'post',
+		data: {
+			username: user,
+			changecode: code,
+			newpassword: $('#nbtSignUpPassword1').val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('div#nbtChangePass').html('<h2>Password change ' + html + '</h2><p>You may <a href="' + numbaturl + '">log in</a> normally.</p>');
+	
+	});
+	
+}

@@ -402,9 +402,7 @@ function nbt_send_password_recovery_email ( $username ) {
 	
 	$message = $message . "\n\n" . "Enjoy! :)";
 	
-	$message = $message . "\n\nBenjamin Carlisle MA\nwww.bgcarlisle.com";
-	
-	mail ($email, "Numbat password reset", $message, "From: Benjamin Carlisle MA <murph@bgcarlisle.com>");
+	mail ($email, "Numbat password reset", $message, "From: Numbat <murph@bgcarlisle.com>");
 	
 }
 
