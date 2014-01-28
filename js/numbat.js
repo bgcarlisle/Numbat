@@ -190,13 +190,14 @@ function nbtSaveFormDescription ( fid ) {
 	
 }
 
-function nbtAddNewOpenText ( fid ) {
+function nbtAddNewOpenText ( fid, eid ) {
 	
 	$.ajax ({
 		url: numbaturl + 'forms/addopentext.php',
 		type: 'post',
 		data: {
-			formid: fid
+			formid: fid,
+			elementid: eid
 		},
 		dataType: 'html'
 	}).done ( function (html) {
@@ -207,13 +208,14 @@ function nbtAddNewOpenText ( fid ) {
 	
 }
 
-function nbtAddNewSingleSelect ( fid ) {
+function nbtAddNewSingleSelect ( fid, eid ) {
 	
 	$.ajax ({
 		url: numbaturl + 'forms/addsingleselect.php',
 		type: 'post',
 		data: {
-			formid: fid
+			formid: fid,
+			elementid: eid
 		},
 		dataType: 'html'
 	}).done ( function (html) {
@@ -224,13 +226,14 @@ function nbtAddNewSingleSelect ( fid ) {
 	
 }
 
-function nbtAddNewSectionHeading ( fid ) {
+function nbtAddNewSectionHeading ( fid, eid ) {
 	
 	$.ajax ({
 		url: numbaturl + 'forms/addsectionheading.php',
 		type: 'post',
 		data: {
-			formid: fid
+			formid: fid,
+			elementid: eid
 		},
 		dataType: 'html'
 	}).done ( function (html) {
@@ -679,13 +682,14 @@ function nbtUpdateSubSelect ( seid, sid, dbcolumn ) {
 	
 }
 
-function nbtAddNewMultiSelect ( fid ) {
+function nbtAddNewMultiSelect ( fid, eid ) {
 	
 	$.ajax ({
 		url: numbaturl + 'forms/addmultiselect.php',
 		type: 'post',
 		data: {
-			formid: fid
+			formid: fid,
+			elementid: eid
 		},
 		dataType: 'html'
 	}).done ( function (html) {
@@ -696,13 +700,14 @@ function nbtAddNewMultiSelect ( fid ) {
 	
 }
 
-function nbtAddNewTableData ( fid ) {
+function nbtAddNewTableData ( fid, eid ) {
 	
 	$.ajax ({
 		url: numbaturl + 'forms/addtabledata.php',
 		type: 'post',
 		data: {
-			formid: fid
+			formid: fid,
+			elementid: eid
 		},
 		dataType: 'html'
 	}).done ( function (html) {
@@ -895,13 +900,14 @@ function nbtMoveTableDataColumn ( eid, cid, dir ) {
 	
 }
 
-function nbtAddNewCountrySelector ( fid ) {
+function nbtAddNewCountrySelector ( fid, eid ) {
 	
 	$.ajax ({
 		url: numbaturl + 'forms/addcountryselector.php',
 		type: 'post',
 		data: {
-			formid: fid
+			formid: fid,
+			elementid: eid
 		},
 		dataType: 'html'
 	}).done ( function (html) {
@@ -912,13 +918,14 @@ function nbtAddNewCountrySelector ( fid ) {
 	
 }
 
-function nbtAddNewDateSelector ( fid ) {
+function nbtAddNewDateSelector ( fid, eid ) {
 	
 	$.ajax ({
 		url: numbaturl + 'forms/adddateselector.php',
 		type: 'post',
 		data: {
-			formid: fid
+			formid: fid,
+			elementid: eid
 		},
 		dataType: 'html'
 	}).done ( function (html) {
@@ -945,13 +952,14 @@ function nbtNewDumpFile () {
 	
 }
 
-function nbtAddNewCitationSelector ( fid ) {
+function nbtAddNewCitationSelector ( fid, eid ) {
 	
 	$.ajax ({
 		url: numbaturl + 'forms/addcitationselector.php',
 		type: 'post',
 		data: {
-			formid: fid
+			formid: fid,
+			elementid: eid
 		},
 		dataType: 'html'
 	}).done ( function (html) {
@@ -1730,13 +1738,14 @@ function nbtDeleteAssignment ( aid ) {
 	
 }
 
-function nbtAddNewSubExtraction ( fid ) {
+function nbtAddNewSubExtraction ( fid, eid ) {
 	
 	$.ajax ({
 		url: numbaturl + 'forms/addsubextraction.php',
 		type: 'post',
 		data: {
-			formid: fid
+			formid: fid,
+			elementid: eid
 		},
 		dataType: 'html'
 	}).done ( function (html) {

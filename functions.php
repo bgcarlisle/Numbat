@@ -4181,18 +4181,24 @@ function nbt_get_column_for_columnid ( $columnid ) {
 	
 }
 
-function nbt_add_open_text_field ( $formid ) {
+function nbt_add_open_text_field ( $formid, $elementid ) {
 	
-	// get the highest sortorder value
+	// this element is the one immediately before where we want to insert a new element
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// get all the elements after this one and increase their sortorder value by 1
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder` DESC LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 		
 		$stmt->bindParam(':fid', $fid);
+		$stmt->bindParam(':sort', $sort);
 		
 		$fid = $formid;
+		$sort = $element['sortorder'];
 		
 		if ($stmt->execute()) {
 			
@@ -4202,7 +4208,7 @@ function nbt_add_open_text_field ( $formid ) {
 			
 			foreach ( $result as $row ) {
 				
-				$highestsortorder = $row['sortorder'];
+				nbt_increase_element_sortorder ( $row['id'] );
 				
 			}
 		
@@ -4271,7 +4277,7 @@ function nbt_add_open_text_field ( $formid ) {
 		$stmt->bindParam(':column', $col);
 		
 		$fid = $formid;
-		$sort = $highestsortorder + 1;
+		$sort = $element['sortorder'] + 1;
 		$type = "open_text";
 		$col = $columnname;
 		
@@ -5154,7 +5160,7 @@ function nbt_move_sub_extraction ( $elementid, $refsetid, $refid, $subextraction
 	
 	$element = nbt_get_form_element_for_elementid ( $elementid );
 	
-	$subextraction = nbt_get_sub_extraction_for_element_and_id ( $elementid, $subextractionid ); // ***
+	$subextraction = nbt_get_sub_extraction_for_element_and_id ( $elementid, $subextractionid );
 	
 	if ( $direction == 1 ) { // moving "up"
 		
@@ -5266,18 +5272,24 @@ function nbt_move_sub_extraction ( $elementid, $refsetid, $refid, $subextraction
 	
 }
 
-function nbt_add_single_select ( $formid ) {
+function nbt_add_single_select ( $formid, $elementid ) {
 	
-	// get the highest sortorder value
+	// this element is the one immediately before where we want to insert a new element
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// get all the elements after this one and increase their sortorder value by 1
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder` DESC LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 		
 		$stmt->bindParam(':fid', $fid);
+		$stmt->bindParam(':sort', $sort);
 		
 		$fid = $formid;
+		$sort = $element['sortorder'];
 		
 		if ($stmt->execute()) {
 			
@@ -5287,7 +5299,7 @@ function nbt_add_single_select ( $formid ) {
 			
 			foreach ( $result as $row ) {
 				
-				$highestsortorder = $row['sortorder'];
+				nbt_increase_element_sortorder ( $row['id'] );
 				
 			}
 		
@@ -5356,7 +5368,7 @@ function nbt_add_single_select ( $formid ) {
 		$stmt->bindParam(':column', $col);
 		
 		$fid = $formid;
-		$sort = $highestsortorder + 1;
+		$sort = $element['sortorder'] + 1;
 		$type = "single_select";
 		$col = $columnname;
 		
@@ -5500,7 +5512,7 @@ function nbt_add_single_select_option ( $elementid ) {
 
 function nbt_add_multi_select_option ( $elementid ) {
 	
-	// get the highest sortorder
+	// get the highest sortorder 
 	
 	try {
 		
@@ -5877,19 +5889,24 @@ function nbt_update_single_select ( $selectid, $column, $newvalue ) {
 	
 }
 
-function nbt_add_multi_select ( $formid ) {
+function nbt_add_multi_select ( $formid, $elementid ) {
 	
+	// this element is the one immediately before where we want to insert a new element
 	
-	// get the highest sortorder value
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// get all the elements after this one and increase their sortorder value by 1
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder` DESC LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 		
 		$stmt->bindParam(':fid', $fid);
+		$stmt->bindParam(':sort', $sort);
 		
 		$fid = $formid;
+		$sort = $element['sortorder'];
 		
 		if ($stmt->execute()) {
 			
@@ -5899,7 +5916,7 @@ function nbt_add_multi_select ( $formid ) {
 			
 			foreach ( $result as $row ) {
 				
-				$highestsortorder = $row['sortorder'];
+				nbt_increase_element_sortorder ( $row['id'] );
 				
 			}
 		
@@ -5929,7 +5946,7 @@ function nbt_add_multi_select ( $formid ) {
 		$stmt->bindParam(':column', $col);
 		
 		$fid = $formid;
-		$sort = $highestsortorder + 1;
+		$sort = $element['sortorder'] + 1;
 		$type = "multi_select";
 		$col = "multi_select";
 		
@@ -5945,19 +5962,51 @@ function nbt_add_multi_select ( $formid ) {
 	
 }
 
-function nbt_add_section_heading ( $formid ) {
+function nbt_increase_element_sortorder ( $elementid ) {
 	
-	
-	// get the highest sortorder value
+	$element = nbt_get_form_element_for_elementid ( $elementid );
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder` DESC LIMIT 1;");
+		$stmt = $dbh->prepare("UPDATE `formelements` SET `sortorder` = :sort WHERE `id` = :id LIMIT 1;");
+		
+		$stmt->bindParam(':sort', $sort);
+		$stmt->bindParam(':id', $eid);
+		
+		$sort = $element['sortorder'] + 1;
+		$eid = $element['id'];
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_add_section_heading ( $formid, $elementid ) {
+	
+	// this element is the one immediately before where we want to insert a new element ***
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// get all the elements after this one and increase their sortorder value by 1
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 		
 		$stmt->bindParam(':fid', $fid);
+		$stmt->bindParam(':sort', $sort);
 		
 		$fid = $formid;
+		$sort = $element['sortorder'];
 		
 		if ($stmt->execute()) {
 			
@@ -5967,7 +6016,7 @@ function nbt_add_section_heading ( $formid ) {
 			
 			foreach ( $result as $row ) {
 				
-				$highestsortorder = $row['sortorder'];
+				nbt_increase_element_sortorder ( $row['id'] );
 				
 			}
 		
@@ -5998,7 +6047,7 @@ function nbt_add_section_heading ( $formid ) {
 		$stmt->bindParam(':type', $type);
 		
 		$fid = $formid;
-		$sort = $highestsortorder + 1;
+		$sort = $element['sortorder'] + 1;
 		$type = "section_heading";
 		
 		$stmt->execute();
@@ -6311,18 +6360,24 @@ function nbt_change_multi_select_column_prefix ( $elementid, $newcolumn ) {
 	
 }
 
-function nbt_add_table_data ( $formid ) {
+function nbt_add_table_data ( $formid, $elementid ) {
 	
-	// get the highest sortorder value
+	// this element is the one immediately before where we want to insert a new element
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// get all the elements after this one and increase their sortorder value by 1
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder` DESC LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 		
 		$stmt->bindParam(':fid', $fid);
+		$stmt->bindParam(':sort', $sort);
 		
 		$fid = $formid;
+		$sort = $element['sortorder'];
 		
 		if ($stmt->execute()) {
 			
@@ -6332,7 +6387,7 @@ function nbt_add_table_data ( $formid ) {
 			
 			foreach ( $result as $row ) {
 				
-				$highestsortorder = $row['sortorder'];
+				nbt_increase_element_sortorder ( $row['id'] );
 				
 			}
 		
@@ -6445,7 +6500,7 @@ function nbt_add_table_data ( $formid ) {
 		$stmt->bindParam(':column', $col);
 		
 		$fid = $formid;
-		$sort = $highestsortorder + 1;
+		$sort = $element['sortorder'] + 1;
 		$type = "table_data";
 		$col = $counter;
 		
@@ -7083,18 +7138,24 @@ function nbt_update_table_data_column_db ( $columnid, $newcolumnname ) {
 	
 }
 
-function nbt_add_country_selector ( $formid ) {
+function nbt_add_country_selector ( $formid, $elementid ) {
 	
-	// get the highest sortorder value
+	// this element is the one immediately before where we want to insert a new element
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// get all the elements after this one and increase their sortorder value by 1
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder` DESC LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 		
 		$stmt->bindParam(':fid', $fid);
+		$stmt->bindParam(':sort', $sort);
 		
 		$fid = $formid;
+		$sort = $element['sortorder'];
 		
 		if ($stmt->execute()) {
 			
@@ -7104,7 +7165,7 @@ function nbt_add_country_selector ( $formid ) {
 			
 			foreach ( $result as $row ) {
 				
-				$highestsortorder = $row['sortorder'];
+				nbt_increase_element_sortorder ( $row['id'] );
 				
 			}
 		
@@ -7173,7 +7234,7 @@ function nbt_add_country_selector ( $formid ) {
 		$stmt->bindParam(':column', $col);
 		
 		$fid = $formid;
-		$sort = $highestsortorder + 1;
+		$sort = $element['sortorder'] + 1;
 		$type = "country_selector";
 		$col = $columnname;
 		
@@ -7231,18 +7292,24 @@ function nbt_new_dump_file () {
 	
 }
 
-function nbt_add_date_selector ( $formid ) {
+function nbt_add_date_selector ( $formid, $elementid ) {
 	
-	// get the highest sortorder value
+	// this element is the one immediately before where we want to insert a new element
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// get all the elements after this one and increase their sortorder value by 1
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder` DESC LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 		
 		$stmt->bindParam(':fid', $fid);
+		$stmt->bindParam(':sort', $sort);
 		
 		$fid = $formid;
+		$sort = $element['sortorder'];
 		
 		if ($stmt->execute()) {
 			
@@ -7252,7 +7319,7 @@ function nbt_add_date_selector ( $formid ) {
 			
 			foreach ( $result as $row ) {
 				
-				$highestsortorder = $row['sortorder'];
+				nbt_increase_element_sortorder ( $row['id'] );
 				
 			}
 		
@@ -7321,7 +7388,7 @@ function nbt_add_date_selector ( $formid ) {
 		$stmt->bindParam(':column', $col);
 		
 		$fid = $formid;
-		$sort = $highestsortorder + 1;
+		$sort = $element['sortorder'] + 1;
 		$type = "date_selector";
 		$col = $columnname;
 		
@@ -7468,18 +7535,24 @@ function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
 	
 }
 
-function nbt_add_citation_selector ( $formid ) {
+function nbt_add_citation_selector ( $formid, $elementid ) {
 	
-	// get the highest sortorder value
+	// this element is the one immediately before where we want to insert a new element ***
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// get all the elements after this one and increase their sortorder value by 1
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder` DESC LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 		
 		$stmt->bindParam(':fid', $fid);
+		$stmt->bindParam(':sort', $sort);
 		
 		$fid = $formid;
+		$sort = $element['sortorder'];
 		
 		if ($stmt->execute()) {
 			
@@ -7489,7 +7562,7 @@ function nbt_add_citation_selector ( $formid ) {
 			
 			foreach ( $result as $row ) {
 				
-				$highestsortorder = $row['sortorder'];
+				nbt_increase_element_sortorder ( $row['id'] );
 				
 			}
 		
@@ -7602,7 +7675,7 @@ function nbt_add_citation_selector ( $formid ) {
 		$stmt->bindParam(':column', $col);
 		
 		$fid = $formid;
-		$sort = $highestsortorder + 1;
+		$sort = $element['sortorder'] + 1;
 		$type = "citations";
 		$col = $counter;
 		
@@ -8673,18 +8746,24 @@ function nbt_echo_display_name_and_codebook ( $displayname, $codebook ) {
 
 }
 
-function nbt_add_sub_extraction ( $formid ) {
+function nbt_add_sub_extraction ( $formid, $elementid ) {
 	
-	// get the highest sortorder value
+	// this element is the one immediately before where we want to insert a new element ***
+	
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+	
+	// get all the elements after this one and increase their sortorder value by 1
 	
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder` DESC LIMIT 1;");
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 		
 		$stmt->bindParam(':fid', $fid);
+		$stmt->bindParam(':sort', $sort);
 		
 		$fid = $formid;
+		$sort = $element['sortorder'];
 		
 		if ($stmt->execute()) {
 			
@@ -8694,7 +8773,7 @@ function nbt_add_sub_extraction ( $formid ) {
 			
 			foreach ( $result as $row ) {
 				
-				$highestsortorder = $row['sortorder'];
+				nbt_increase_element_sortorder ( $row['id'] );
 				
 			}
 		
@@ -8807,7 +8886,7 @@ function nbt_add_sub_extraction ( $formid ) {
 		$stmt->bindParam(':column', $col);
 		
 		$fid = $formid;
-		$sort = $highestsortorder + 1;
+		$sort = $element['sortorder'] + 1;
 		$type = "sub_extraction";
 		$col = $counter;
 		

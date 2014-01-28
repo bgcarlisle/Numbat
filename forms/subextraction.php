@@ -85,9 +85,9 @@ foreach ( $subelements as $subelement ) {
 }
 
 ?>
-<button onclick="$(this).fadeOut(0);$('#nbtNewElementSelector<?php echo $subelementid; ?>').fadeIn();">Add new sub-extraction element</button>
+<button onclick="$(this).fadeOut(0);$('#nbtNewSubElementSelector<?php echo $subelementid; ?>').fadeIn();">Add new sub-extraction element</button>
 
-<div id="nbtNewElementSelector<?php echo $subelementid; ?>" class="nbtHidden">
+<div id="nbtNewSubElementSelector<?php echo $subelementid; ?>" class="nbtHidden">
 	<h3>Add new sub-extraction element</h3>
 	<button onclick="nbtAddNewSubOpenText(<?php echo $subelementid; ?>);">Open text</button>
 	<button onclick="nbtAddNewSubDateSelector(<?php echo $subelementid; ?>);">Date selector</button>

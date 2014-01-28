@@ -4,7 +4,7 @@ include_once ("../config.php");
 
 if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
 	
-	nbt_add_sub_extraction ( $_POST['formid'] );
+	nbt_add_sub_extraction ( $_POST['formid'], $_POST['elementid'] );
 	
 }
 
