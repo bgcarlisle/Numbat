@@ -14,18 +14,28 @@
 			if ( count ( $assignments ) > 0 ) {
 				
 				?><h3><?php echo $refset['name']; ?></h3>
+				<button onclick="$('.nbtHiddenAssignment').fadeToggle();">Toggle hidden</button>
 				<table class="nbtTabledData">
 					<tr class="nbtTableHeaders">
 						<td>When assigned</td>
 						<td>Assignment</td>
 						<td>Reference set / form</td>
 						<td>Extract</td>
+						<td>Hide</td>
 					</tr>
 						<?php
 						
 						foreach ( $assignments as $assignment ) {
 							
-							?><tr>
+							?><tr<?php
+							
+							if ( $assignment['hidden'] == 1 ) {
+								
+								?> class="nbtHiddenAssignment"<?php
+								
+							}
+							
+							?> id="nbtAssignment<?php echo $assignment['id']; ?>">
 								<td><?php echo substr ($assignment['whenassigned'], 0, 10); ?></td>
 								<td>
 									<h4><?php echo $assignment['title']; ?></h4>
@@ -51,6 +61,9 @@
 								?></td>
 								<td>
 									<button onclick="window.open('<?php echo SITE_URL; ?>extract/?action=extract&form=<?php echo $assignment['formid'] ?>&refset=<?php echo $assignment['refsetid']; ?>&ref=<?php echo $assignment['referenceid']; ?>','_self');">Extract</button>
+								</td>
+								<td>
+									<button onclick="nbtHideAssignment( <?php echo $assignment['id']; ?> );">Hide</button>
 								</td>
 							</tr><?php
 							

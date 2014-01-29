@@ -407,6 +407,9 @@ span.nbtDoubleMultiAnswers {
 .nbtHidden {
 	display: none;
 }
+.nbtHiddenAssignment {
+	display: none;
+}
 table.nbtAssignments {
 	border-bottom: 2px solid #999;
 }

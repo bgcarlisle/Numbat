@@ -2706,3 +2706,20 @@ function nbtChangePassword ( user, code ) {
 	});
 	
 }
+
+function nbtHideAssignment ( aid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'assignments/hide.php',
+		type: 'post',
+		data: {
+			assignmentid: aid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtAssignment' + aid).fadeOut();
+	
+	});
+	
+}

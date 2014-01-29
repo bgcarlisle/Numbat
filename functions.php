@@ -11790,4 +11790,27 @@ function nbt_add_assignment_editor ( $formid, $elementid ) {
 	
 }
 
+function nbtHideAssignment ( $assignmentid ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("UPDATE `assignments` SET `hidden` = 1 WHERE `id` = :id;");
+		
+		$stmt->bindParam(':id', $aid);
+		
+		$aid = $assignmentid;
+		
+		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
 ?>
