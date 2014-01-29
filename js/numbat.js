@@ -244,6 +244,24 @@ function nbtAddNewSectionHeading ( fid, eid ) {
 	
 }
 
+function nbtAddNewAssignmentEditor ( fid, eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'forms/addassignmenteditor.php',
+		type: 'post',
+		data: {
+			formid: fid,
+			elementid: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		$('#nbtFormElements').html(html);
+		
+	});
+	
+}
+
 function nbtDeleteFormElement ( eid ) {
 	
 	$.ajax ({
@@ -1883,6 +1901,44 @@ function nbtAddAssignment ( uid, fid, rsid, rid ) {
 		}
 		
 		$('#nbtAddAssignmentFeedback' + rid).html(html);
+		
+	});
+	
+}
+
+function nbtAddAssignmentInExtraction ( rsid, rid, eid ) {
+	
+	$.ajax ({
+		url: numbaturl + 'assignments/addassignment.php',
+		type: 'post',
+		data: {
+			userid: $('#nbtAssignUser').val(),
+			formid: $('#nbtAssignForm').val(),
+			refset: rsid,
+			ref: rid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+		
+		if ( html == 'Assignment added' ) {
+			
+			$('#nbtAddAssignmentFeedback' + eid).removeClass('nbtFeedbackBad').addClass('nbtFeedback').addClass('nbtFeedbackGood').addClass('nbtFinePrint');
+			
+		} else {
+			
+			$('#nbtAddAssignmentFeedback' + eid).removeClass('nbtFeedbackGood').addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint');
+			
+		}
+		
+		$('#nbtAddAssignmentFeedback' + eid).html(html).slideDown(500, function () {
+			
+			setTimeout ( function () {
+				
+				$('#nbtAddAssignmentFeedback' + eid).slideUp();
+				
+			}, 3000);
+			
+		});
 		
 	});
 	

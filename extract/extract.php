@@ -340,6 +340,55 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 					
 				break;
 				
+				case "assignment_editor":
+					
+					?><div<?php
+					
+					if ( $element['toggle'] != "" ) {
+						
+						?> class="nbtHidden <?php echo $element['toggle']; ?>"<?php
+						
+					}
+					
+					?>><?php
+						
+						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+						
+						?><select id="nbtAssignUser">
+							<option value="NULL">Choose a user to assign</option>
+							<?php
+							
+							$users = nbt_get_all_users ();
+							
+							foreach ( $users as $user ) {
+								
+								?><option value="<?php echo $user['id']; ?>"><?php echo $user['username']; ?></option><?php
+								
+							}
+							
+							?>
+						</select>
+						<select id="nbtAssignForm">
+							<option value="NULL">Choose a form to use</option>
+							<?php
+							
+							$forms = nbt_get_all_extraction_forms ();
+							
+							foreach ( $forms as $form ) {
+								
+								?><option value="<?php echo $form['id']; ?>"><?php echo $form['name']; ?></option><?php
+								
+							}
+							
+							?>
+						</select>
+						<button onclick="nbtAddAssignmentInExtraction( <?php echo $_GET['refset']; ?>, <?php echo $_GET['ref']; ?>, <?php echo $element['id']; ?> );">Assign this reference</button>
+						<p class="nbtFinePrint nbtHidden" id="nbtAddAssignmentFeedback<?php echo $element['id']; ?>">&nbsp;</p><?php
+						
+					?></div><?php
+					
+				break;
+				
 			}
 			
 		}

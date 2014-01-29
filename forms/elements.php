@@ -147,6 +147,14 @@ if ( count ( $elements ) > 0 ) {
 						
 					break;
 					
+					case "assignment_editor":
+						
+						?><h4>Assignment editor</h4>
+						<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
+						<p class="nbtFinePrint">This element will allow an extractor to assign the reference being extracted to herself or another user, using this or a different form.</p><?php
+						
+					break;
+					
 				}
 			
 				?>
@@ -171,6 +179,7 @@ if ( count ( $elements ) > 0 ) {
 				<button onclick="nbtAddNewCountrySelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Country selector</button>
 				<button onclick="nbtAddNewCitationSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Citations</button>
 				<button onclick="nbtAddNewSubExtraction(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Sub-extraction</button>
+				<button onclick="nbtAddNewAssignmentEditor(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Assignment editor</button>
 			</div>
 		</div><?php
 		
