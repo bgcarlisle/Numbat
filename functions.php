@@ -307,8 +307,6 @@ function nbt_save_new_user ($username, $email, $password) {
 		
 		$message = $message . "\n\n" . "Enjoy! :)";
 		
-		$message = $message . "\n\nBenjamin Carlisle MA\nwww.bgcarlisle.com";
-		
 		mail ($email, "Confirm your email address for Numbat", $message, "From: Numbat <murph@bgcarlisle.com>");
 			
 		return TRUE;

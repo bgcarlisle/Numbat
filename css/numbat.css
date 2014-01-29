@@ -10,15 +10,19 @@ h2 {
 }
 h3 {
 	font-size: 20px;
+	margin-top: 7px;
 }
 h4 {
 	font-size: 19px;
+	margin-top: 5px;
 }
 h5 {
 	font-size: 18px;
+	margin-top: 5px;
 }
 h6 {
 	font-size: 16px;
+	margin-top: 5px;
 }
 body {
 	background: #fff;
@@ -101,6 +105,7 @@ span#nbtTopBannerRight {
 }
 input[type=text] {
 	width: 200px;
+	margin-bottom: 4px;
 }
 input[type=password] {
 	width: 200px;
