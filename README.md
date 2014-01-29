@@ -1,4 +1,4 @@
-Numbat v. 1.0
+Numbat v. 1.1
 ======
 
 Numbat Academic Meta-Analysis Extraction Manager
