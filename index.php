@@ -1,8 +1,8 @@
 <?php
 
-include_once ('./config.php');
-
 if ( ! file_exists ( __DIR__ . "/install/" ) ) {
+	
+	include_once ('./config.php');
 	
 	if ( nbt_user_is_logged_in () ) { // User is logged in
 		
@@ -39,13 +39,13 @@ if ( ! file_exists ( __DIR__ . "/install/" ) ) {
 		}
 		
 	}
+	
+	include ( ABS_PATH . "footer.php" );
 
 } else {
 	
 	include ( "./install/install.php" );
 	
 }
-
-include ( ABS_PATH . "footer.php" );
 
 ?>

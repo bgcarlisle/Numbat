@@ -159,3 +159,5 @@ if ($_SERVER["HTTPS"] == "on") {
 	</div>
 	<button onclick="nbtWriteConfig();">Install Numbat</button>
 </div>
+</body>
+</html>

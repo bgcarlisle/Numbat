@@ -42,7 +42,7 @@ array_push ( $configjs, "var numbaturl = '" . $_POST['site_url'] . "';" );
 
 if ( file_put_contents ( $_POST['abs_path'] . "config.php", $configphp ) && file_put_contents ( $_POST['abs_path'] . "/js/config.js", $configjs ) ) {
 	
-	?><p>Configuration files written</p><?php
+	?><p>Configuration files written &#x2713;</p><?php
 	
 }
 
@@ -55,7 +55,7 @@ try { // assignments table
 	
 	if ( $stmt->execute() ) {
 		
-		?><p>Assignments table created</p><?php
+		?><p>Assignments table created &#x2713;</p><?php
 		
 	} else {
 		
@@ -80,7 +80,7 @@ try { // citations columns table
 	
 	if ( $stmt->execute() ) {
 		
-		?><p>Citations metadata table created</p><?php
+		?><p>Citations metadata table created &#x2713;</p><?php
 		
 	} else {
 		
@@ -105,7 +105,7 @@ try { // form elements table
 	
 	if ( $stmt->execute() ) {
 		
-		?><p>Form elements table created</p><?php
+		?><p>Form elements table created &#x2713;</p><?php
 		
 	} else {
 		
@@ -130,7 +130,7 @@ try { // forms table
 	
 	if ( $stmt->execute() ) {
 		
-		?><p>Forms table created</p><?php
+		?><p>Forms table created &#x2713;</p><?php
 		
 	} else {
 		
@@ -155,7 +155,7 @@ try { // reference sets table
 	
 	if ( $stmt->execute() ) {
 		
-		?><p>Reference sets table created</p><?php
+		?><p>Reference sets table created &#x2713;</p><?php
 		
 	} else {
 		
@@ -180,7 +180,7 @@ try { // selection options table
 	
 	if ( $stmt->execute() ) {
 		
-		?><p>Selection options table created</p><?php
+		?><p>Selection options table created &#x2713;</p><?php
 		
 	} else {
 		
@@ -205,7 +205,7 @@ try { // settings table
 	
 	if ( $stmt->execute() ) {
 		
-		?><p>Numbat settings table created</p><?php
+		?><p>Numbat settings table created &#x2713;</p><?php
 		
 	} else {
 		
@@ -230,7 +230,7 @@ try { // sub elements table
 	
 	if ( $stmt->execute() ) {
 		
-		?><p>Sub extraction elements table created</p><?php
+		?><p>Sub extraction elements table created &#x2713;</p><?php
 		
 	} else {
 		
@@ -255,7 +255,7 @@ try { // tabledata columns table
 	
 	if ( $stmt->execute() ) {
 		
-		?><p>Tabled data columns table created</p><?php
+		?><p>Tabled data columns table created &#x2713;</p><?php
 		
 	} else {
 		
@@ -280,7 +280,7 @@ try { // users table
 	
 	if ( $stmt->execute() ) {
 		
-		?><p>Users table created</p><?php
+		?><p>Users table created &#x2713;</p><?php
 		
 	} else {
 		
@@ -304,7 +304,7 @@ catch (PDOException $e) {
 try {
 		
 	$dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("INSERT INTO `users` (`username`, `password`, `salt`, `email`, `emailverify`, `privileges`) VALUES (:username, :password, :salt, :email, :verification, :privileges)");
+	$stmt = $dbh->prepare("INSERT INTO `users` (`username`, `password`, `salt`, `email`, `emailverify`, `privileges`) VALUES (:username, :password, :salt, :email, :verification, :privileges);");
 	
 	$stmt->bindParam(':username', $theuser);
 	$stmt->bindParam(':password', $thepass);
@@ -328,7 +328,7 @@ try {
 	
 	if ( $stmt->execute() ) {
 		
-		?><p>Admin user created</p><?php
+		?><p>Admin user created &#x2713;</p><?php
 		
 	} else {
 		
@@ -350,6 +350,52 @@ catch (PDOException $e) {
 
 // add numbat settings (project name and admin email)
 
+try {
+		
+	$dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("INSERT INTO `settings` (`key`, `value`) VALUES (:key, :value);");
+	
+	$stmt->bindParam(':key', $key);
+	$stmt->bindParam(':value', $val);
+	
+	$key = "project_name";
+	$val = $_POST['nbt_projname'];
+	
+	$stmt->execute();
+	
+	$dbh = null;
+	
+}
+
+catch (PDOException $e) {
+	
+	echo $e->getMessage();
+	
+}
+
+try {
+		
+	$dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("INSERT INTO `settings` (`key`, `value`) VALUES (:key, :value);");
+	
+	$stmt->bindParam(':key', $key);
+	$stmt->bindParam(':value', $val);
+	
+	$key = "admin_email";
+	$val = $_POST['nbt_email'];
+	
+	$stmt->execute();
+	
+	$dbh = null;
+	
+}
+
+catch (PDOException $e) {
+	
+	echo $e->getMessage();
+	
+}
+
 // delete the installer files and directory
 
 unlink ( $_POST['abs_path'] . "install/install.php");
@@ -358,7 +404,7 @@ unlink ( $_POST['abs_path'] . "install/writeconfig.php");
 
 if ( rmdir ( $_POST['abs_path'] . "install/") ) {
 	
-	?><p>Installation directory deleted</p><?php
+	?><p>Installation directory deleted &#x2713;</p><?php
 	
 }
 

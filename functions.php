@@ -303,11 +303,9 @@ function nbt_save_new_user ($username, $email, $password) {
 		
 		$message = $message . "\n\n" . SITE_URL . "signup/?username=" . $username . "&code=" . $verification;
 		
-		$message = $message . "\n\n" . "If you have any questions or if you find any bugs, you can contact me at murph@bgcarlisle.com.";
-		
 		$message = $message . "\n\n" . "Enjoy! :)";
 		
-		mail ($email, "Confirm your email address for Numbat", $message, "From: Numbat <murph@bgcarlisle.com>");
+		mail ($email, "Confirm your email address for Numbat", $message, "From: Numbat <" . nbt_get_setting ( "admin_email" ) . ">");
 			
 		return TRUE;
 		
@@ -396,11 +394,9 @@ function nbt_send_password_recovery_email ( $username ) {
 	
 	$message = $message . "\n\n" . SITE_URL . "forgot/?username=" . $username . "&code=" . $passwordchangecode;
 	
-	$message = $message . "\n\n" . "If you have any questions or if you find any bugs, you can contact me at murph@bgcarlisle.com.";
-	
 	$message = $message . "\n\n" . "Enjoy! :)";
 	
-	mail ($email, "Numbat password reset", $message, "From: Numbat <murph@bgcarlisle.com>");
+	mail ($email, "Numbat password reset", $message, "From: Numbat <" . nbt_get_setting ( "admin_email" ) . ">");
 	
 }
 
@@ -11675,6 +11671,39 @@ function nbt_get_sub_extraction_for_element_and_id ( $elementid, $subextractioni
 		foreach ($result as $row) {
 			
 			return $row;
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_get_setting ( $key ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `settings` WHERE `key` = :key LIMIT 1;");
+		
+		$stmt->bindParam(':key', $ke);
+		
+		$ke = $key;
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		foreach ($result as $row) {
+			
+			return $row['value'];
 			
 		}
 		
