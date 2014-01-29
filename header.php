@@ -3,7 +3,7 @@
 
 <head>
 
-	<title>Numbat</title>
+	<title>Numbat: <?php echo nbt_get_setting ( "project_name" ); ?></title>
 	
 	<!-- jQuery -->
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js">
@@ -37,11 +37,11 @@
 	
 	if ( nbt_user_is_logged_in () ) {
 		
-		?><a href="#" onclick="event.preventDefault();$('nav').slideToggle();"><h1>Numbat</h1></a><?php
+		?><a href="#" onclick="event.preventDefault();$('nav').slideToggle();"><h1>Numbat: <?php echo nbt_get_setting ( "project_name" ); ?></h1></a><?php
 		
 	} else {
 		
-		?><a href="<?php echo SITE_URL; ?>"><h1>Numbat</h1></a><?php
+		?><a href="<?php echo SITE_URL; ?>"><h1>Numbat: <?php echo nbt_get_setting ( "project_name" ); ?></h1></a><?php
 		
 	}
 	
