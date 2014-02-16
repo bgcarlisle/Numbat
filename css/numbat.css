@@ -407,7 +407,7 @@ span.nbtDoubleMultiAnswers {
 .nbtHidden {
 	display: none;
 }
-.nbtHiddenAssignment {
+.nbtCompleteAssignment {
 	display: none;
 }
 table.nbtAssignments {

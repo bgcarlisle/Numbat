@@ -3,6 +3,10 @@
 		<img src="<?php echo SITE_URL; ?>images/extract.png" class="nbtTitleImage">
 		Your extractions
 	</h2>
+	<button onclick="$('.nbtCompleteAssignment').fadeToggle();">Show / hide complete</button>
+	<button onclick="$('.nbtInProgressAssignment').fadeToggle();">Show / hide in progress</button>
+	<button onclick="$('.nbtNotStartedAssignment').fadeToggle();">Show / hide not yet started</button>
+	<p class="nbtFinePrint">Complete assignments are hidden automatically. Click the button above to show them.</p>
 		<?php
 		
 		$referencesets = nbt_get_all_ref_sets ();
@@ -14,24 +18,41 @@
 			if ( count ( $assignments ) > 0 ) {
 				
 				?><h3><?php echo $refset['name']; ?></h3>
-				<button onclick="$('.nbtHiddenAssignment').fadeToggle();">Toggle hidden</button>
 				<table class="nbtTabledData">
 					<tr class="nbtTableHeaders">
 						<td>When assigned</td>
 						<td>Assignment</td>
 						<td>Reference set / form</td>
+						<td>Status</td>
 						<td>Extract</td>
-						<td>Hide</td>
 					</tr>
 						<?php
 						
 						foreach ( $assignments as $assignment ) {
 							
+							$assignment_status = nbt_get_status_for_assignment ( $assignment );
+							
 							?><tr<?php
 							
-							if ( $assignment['hidden'] == 1 ) {
+							switch ( $assignment_status ) {
 								
-								?> class="nbtHiddenAssignment"<?php
+								case 0:
+									
+									?> class="nbtNotStartedAssignment"<?php
+								
+								break;
+								
+								case 1:
+									
+									?> class="nbtInProgressAssignment"<?php
+								
+								break;
+								
+								case 2:
+									
+									?> class="nbtCompleteAssignment"<?php
+								
+								break;
 								
 							}
 							
@@ -60,10 +81,34 @@
 									
 								?></td>
 								<td>
-									<button onclick="window.open('<?php echo SITE_URL; ?>extract/?action=extract&form=<?php echo $assignment['formid'] ?>&refset=<?php echo $assignment['refsetid']; ?>&ref=<?php echo $assignment['referenceid']; ?>','_self');">Extract</button>
+									<?php
+									
+									switch ( $assignment_status ) {
+								
+										case 0:
+											
+											?>Not yet started<?php
+										
+										break;
+										
+										case 1:
+											
+											?>In progress<?php
+										
+										break;
+										
+										case 2:
+											
+											?>Complete<?php
+										
+										break;
+										
+									}
+									
+									?>
 								</td>
 								<td>
-									<button onclick="nbtHideAssignment( <?php echo $assignment['id']; ?> );">Hide</button>
+									<button onclick="window.open('<?php echo SITE_URL; ?>extract/?action=extract&form=<?php echo $assignment['formid'] ?>&refset=<?php echo $assignment['refsetid']; ?>&ref=<?php echo $assignment['referenceid']; ?>','_self');">Extract</button>
 								</td>
 							</tr><?php
 							

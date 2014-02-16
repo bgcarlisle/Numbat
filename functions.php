@@ -3554,6 +3554,36 @@ function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid ) {
 	
 }
 
+function nbt_get_status_for_assignment ( $assignment ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("SELECT `status` FROM `extractions_" . $assignment['formid'] . "` WHERE `referenceid` = " . $assignment['referenceid'] . " AND `userid` = " . $assignment['userid'] . " LIMIT 1;");
+		
+		$stmt->execute();
+		
+		$result = $stmt->fetchAll();
+		
+		foreach ( $result as $row ) {
+			
+			$dbh = null;
+			
+			return $row['status'];
+			
+			
+		}
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
 function nbt_toggle_assignment_hide ( $assignid ) {
 	
 	try {
