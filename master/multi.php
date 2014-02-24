@@ -11,7 +11,10 @@ if ( count ( $refsets ) > 0 ) {
 		$refs = nbt_get_all_references_for_refset ( $refset['id'] );
 		
 		?><div class="nbtContentPanel nbtGreyGradient">
-			<h2><?php echo $refset['name']; ?></h2><?php
+			<h2><?php echo $refset['name']; ?></h2>
+			<button onclick="$('.nbtMasterNotYetStarted<?php echo $refset['id']; ?>').fadeToggle();">Show / hide not yet started </button>
+			<button onclick="$('.nbtMasterInProgress<?php echo $refset['id']; ?>').fadeToggle();">Show / hide in progress</button>
+			<button onclick="$('.nbtMasterCompleted<?php echo $refset['id']; ?>').fadeToggle();">Show / hide complete</button><?php
 			
 			foreach ( $forms as $form ) {
 				
@@ -24,13 +27,40 @@ if ( count ( $refsets ) > 0 ) {
 						<tr class="nbtTableHeaders">
 							<td>Reference</td>
 							<td>Extractors</td>
+							<td>Status</td>
 							<td>Reconcile</td>
 						</tr>
 						<?php
 						
 						foreach ( $extractedrefs as $extractedref ) {
 							
-							?><tr>
+							$master = nbt_get_master ( $form['id'], $refset['id'], $extractedref['id'] );
+							
+							?><tr<?php
+									
+								switch ( $master['status'] ) {
+									
+									case 0:
+										
+										?> class="nbtMasterNotYetStarted<?php echo $refset['id']; ?>"<?php
+										
+									break;
+									
+									case 1:
+										
+										?> class="nbtMasterInProgress<?php echo $refset['id']; ?>"<?php
+										
+									break;
+									
+									case 2:
+										
+										?> class="nbtMasterCompleted<?php echo $refset['id']; ?> nbtHidden"<?php
+										
+									break;
+									
+								}
+								
+								?>>
 								<td>
 									<h4><?php echo $extractedref['title']; ?></h4>
 									<p><?php echo $extractedref['authors']; ?>, <em><?php echo $extractedref['journal']; ?></em>: <?php echo $extractedref['year']; ?></p></td>
@@ -42,6 +72,33 @@ if ( count ( $refsets ) > 0 ) {
 									foreach ( $extractions as $extraction ) {
 										
 										?><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span><?php
+										
+									}
+									
+									?>
+								</td>
+								<td>
+									<?php
+									
+									switch ( $master['status'] ) {
+										
+										case 0:
+											
+											?>Not yet started<?php
+											
+										break;
+										
+										case 1:
+											
+											?>In progress<?php
+											
+										break;
+										
+										case 2:
+											
+											?>Completed<?php
+											
+										break;
 										
 									}
 									

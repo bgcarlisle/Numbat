@@ -2724,3 +2724,40 @@ function nbtHideAssignment ( aid ) {
 	});
 	
 }
+
+function nbtSetMasterStatus ( fid, mid, newstatus, buttonid, classid ) {
+	
+	if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // IF it's already selected
+		
+		$.ajax ({
+			url: numbaturl + 'master/changemasterstatus.php',
+			type: 'post',
+			data: {
+				formid: fid,
+				masterid: mid,
+				masterstatus: newstatus
+			},
+			dataType: 'html'
+		}).done ( function (html) {
+			$('.' + classid).removeClass('nbtTextOptionChosen');
+		});
+		
+	} else { // It's not already selected
+		
+		$.ajax ({
+			url: numbaturl + 'master/changemasterstatus.php',
+			type: 'post',
+			data: {
+				formid: fid,
+				masterid: mid,
+				masterstatus: newstatus
+			},
+			dataType: 'html'
+		}).done ( function (html) {
+			$('.' + classid).removeClass('nbtTextOptionChosen');
+			$('#' + buttonid).addClass('nbtTextOptionChosen');
+		});
+	
+	}
+	
+}

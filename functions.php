@@ -4054,7 +4054,7 @@ function nbt_new_extraction_form () {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("CREATE TABLE `m_extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		$stmt = $dbh->prepare("CREATE TABLE `m_extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `status` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 		
 		if ($stmt->execute()) {
 			
@@ -11809,6 +11809,33 @@ function nbt_add_assignment_editor ( $formid, $elementid ) {
 		$type = "assignment_editor";
 		
 		$stmt->execute();
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
+	}
+	
+}
+
+function nbt_set_master_status ( $formid, $masterid, $newstatus ) {
+	
+	try {
+		
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("UPDATE `m_extractions_" . $formid . "` SET `status` = :value WHERE `id` = :mid LIMIT 1;");
+		
+		$stmt->bindParam(':mid', $mid);
+		$stmt->bindParam(':value', $new);
+		
+		$mid = $masterid;
+		$new = $newstatus;
+		
+		$stmt->execute();
+		
+		$dbh = null;
 		
 	}
 	

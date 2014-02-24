@@ -8,8 +8,7 @@ $extractions = nbt_get_extractions_for_refset_ref_and_form ( $_GET['refset'], $_
 
 $master = nbt_get_master ( $_GET['form'], $_GET['refset'], $_GET['ref'] );
 
-?>
-<div class="nbtContentPanel" style="width: 940px;">
+?><div class="nbtContentPanel" style="width: 940px;">
 	<h2><?php echo $ref['title']; ?></h2>
 	<p><?php echo $ref['authors']; ?></p>
 	<?php
@@ -38,6 +37,40 @@ $master = nbt_get_master ( $_GET['form'], $_GET['refset'], $_GET['ref'] );
 	}
 	
 	?></p>
+</div>
+<div class="nbtContentPanel" style="width: 940px;">
+	<h3>Status of extraction</h3>
+	<?php
+	
+	$answers = array (
+		0 => "Not yet started",
+		1 => "In progress",
+		2 => "Completed"
+	);
+	
+	foreach ( $answers as $dbanswer => $ptanswer ) {
+		
+		?><a href="#" class="nbtTextOptionSelect<?php
+		
+		echo " nbtstatus";
+		
+		if ( ! is_null ( $master['status'] ) ) { // This is because PHP will say that 0 and NULL are the same
+			
+			if ( $master['status'] . " " == $dbanswer . " " ) { // This is because PHP has a hard time testing for equality between strings and integers
+			
+				?> nbtTextOptionChosen<?php
+				
+			}
+			
+		}
+		
+		$buttonid = "nbtQstatusA" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
+		
+		?>" id="<?php echo $buttonid; ?>" onclick="event.preventDefault();nbtSetMasterStatus(<?php echo $_GET['form']; ?>, <?php echo $master['id']; ?>, <?php echo $dbanswer; ?>, '<?php echo $buttonid; ?>', 'nbtstatus');"><?php echo $ptanswer; ?></a><?php
+		
+	}
+	
+	?>
 </div>
 <?php
 
