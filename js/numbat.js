@@ -279,14 +279,15 @@ function nbtDeleteFormElement ( eid ) {
 	
 }
 
-function nbtChangeColumnName ( eid ) {
+function nbtChangeColumnName ( eid, size ) {
 	
 	$.ajax ({
 		url: numbaturl + 'forms/changecolumnname.php',
 		type: 'post',
 		data: {
 			element: eid,
-			newcolumnname: $('#nbtElementColumnName' + eid).val()
+			newcolumnname: $('#nbtElementColumnName' + eid).val(),
+			dbsize: size
 		},
 		dataType: 'html'
 	}).done ( function (html) {

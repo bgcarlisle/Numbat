@@ -27,7 +27,7 @@ if ( count ( $elements ) > 0 ) {
 						?><h4>Open text field</h4>
 						<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
-						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);"></p>
+						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 200);"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
 						
 					break;
@@ -37,7 +37,7 @@ if ( count ( $elements ) > 0 ) {
 						?><h4>Single select</h4>
 						<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
-						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);"></p>
+						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 50);"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
 						<p>Options</p>
 						<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet; Other form elements marked with this toggle class will appear only if this element is selected</p>
@@ -113,7 +113,7 @@ if ( count ( $elements ) > 0 ) {
 						?><h4>Country selector</h4>
 						<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
-						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);"></p>
+						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 50);"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
 					
 					break;

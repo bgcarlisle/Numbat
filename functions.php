@@ -4033,7 +4033,7 @@ function nbt_new_extraction_form () {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("CREATE TABLE `extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `status` int(11) NOT NULL, `notes` varchar(1500) DEFAULT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`,`userid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+		$stmt = $dbh->prepare("CREATE TABLE `extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `status` int(11) NOT NULL, `notes` varchar(500) DEFAULT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`,`userid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 		
 		if ($stmt->execute()) {
 			
@@ -4528,7 +4528,7 @@ function nbt_add_open_text_field ( $formid, $elementid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
 		
 		$stmt->execute();
 		
@@ -4545,7 +4545,7 @@ function nbt_add_open_text_field ( $formid, $elementid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
 		
 		$stmt->execute();
 		
@@ -4997,7 +4997,7 @@ function nbt_delete_form_element ( $elementid ) {
 	
 }
 
-function nbt_change_column_name ( $elementid, $newcolumnname ) {
+function nbt_change_column_name ( $elementid, $newcolumnname, $dbsize = 200 ) {
 	
 	// get the old column name and the form id
 	
@@ -5012,7 +5012,7 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " varchar(" . $dbsize . ") DEFAULT NULL;");
 		
 		if ($stmt->execute()) {
 			
@@ -5033,7 +5033,7 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " varchar(" . $dbsize . ") DEFAULT NULL;");
 		
 		if ($stmt->execute()) {
 			
@@ -5857,7 +5857,7 @@ function nbt_add_single_select ( $formid, $elementid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(50) DEFAULT NULL;");
 		
 		$stmt->execute();
 		
@@ -5874,7 +5874,7 @@ function nbt_add_single_select ( $formid, $elementid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(50) DEFAULT NULL;");
 		
 		$stmt->execute();
 		
@@ -7230,7 +7230,7 @@ function nbt_add_table_data_column ( $elementid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `tabledata_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " VARCHAR(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `tabledata_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " VARCHAR(200) DEFAULT NULL;");
 		
 		$stmt->execute();
 		
@@ -7247,7 +7247,7 @@ function nbt_add_table_data_column ( $elementid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `mtable_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " VARCHAR(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `mtable_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " VARCHAR(200) DEFAULT NULL;");
 		
 		$stmt->execute();
 		
@@ -7526,7 +7526,7 @@ function nbt_update_table_data_column_db ( $columnid, $newcolumnname ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `tabledata_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `tabledata_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " varchar(200) DEFAULT NULL;");
 		
 		if ($stmt->execute()) {
 			
@@ -7547,7 +7547,7 @@ function nbt_update_table_data_column_db ( $columnid, $newcolumnname ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `mtable_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `mtable_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " varchar(200) DEFAULT NULL;");
 		
 		if ($stmt->execute()) {
 			
@@ -7723,7 +7723,7 @@ function nbt_add_country_selector ( $formid, $elementid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(50) DEFAULT NULL;");
 		
 		$stmt->execute();
 		
@@ -7740,7 +7740,7 @@ function nbt_add_country_selector ( $formid, $elementid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(50) DEFAULT NULL;");
 		
 		$stmt->execute();
 		
@@ -8488,7 +8488,7 @@ function nbt_update_citation_property_db ( $columnid, $newcolumnname ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `citations_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `citations_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " varchar(200) DEFAULT NULL;");
 		
 		if ($stmt->execute()) {
 			
@@ -8509,7 +8509,7 @@ function nbt_update_citation_property_db ( $columnid, $newcolumnname ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `mcite_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `mcite_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " varchar(200) DEFAULT NULL;");
 		
 		if ($stmt->execute()) {
 			
@@ -9657,7 +9657,7 @@ function nbt_add_sub_open_text_field ( $elementid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
 		
 		$stmt->execute();
 		
@@ -9674,7 +9674,7 @@ function nbt_add_sub_open_text_field ( $elementid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
 		
 		$stmt->execute();
 		
@@ -9848,7 +9848,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . " " . $newcolumnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . " " . $newcolumnname . " varchar(200) DEFAULT NULL;");
 		
 		if ($stmt->execute()) {
 			
@@ -9869,7 +9869,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . " " . $newcolumnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . " " . $newcolumnname . " varchar(200) DEFAULT NULL;");
 		
 		if ($stmt->execute()) {
 			
@@ -10291,7 +10291,7 @@ function nbt_add_sub_single_select ( $elementid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(50) DEFAULT NULL;");
 		
 		$stmt->execute();
 		
@@ -10308,7 +10308,7 @@ function nbt_add_sub_single_select ( $elementid ) {
 	try {
 		
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(500) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(50) DEFAULT NULL;");
 		
 		$stmt->execute();
 		
@@ -11807,29 +11807,6 @@ function nbt_add_assignment_editor ( $formid, $elementid ) {
 		$fid = $formid;
 		$sort = $element['sortorder'] + 1;
 		$type = "assignment_editor";
-		
-		$stmt->execute();
-		
-	}
-	
-	catch (PDOException $e) {
-		
-		echo $e->getMessage();
-		
-	}
-	
-}
-
-function nbtHideAssignment ( $assignmentid ) {
-	
-	try {
-		
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("UPDATE `assignments` SET `hidden` = 1 WHERE `id` = :id;");
-		
-		$stmt->bindParam(':id', $aid);
-		
-		$aid = $assignmentid;
 		
 		$stmt->execute();
 		
