@@ -68,7 +68,6 @@ I cannot guarantee that I will be able to help you with your problems. Depending
 
 * Email: <benjamin.carlisle@mcgill.ca>
 * Twitter: @numbatextractor
-* Bitmessage: BM-2DBF2CD9Dq25NnESpf4gZ69r5UqoCAbVZV
 * Post: Room 304, 3647 rue Peel, Montréal QC H1M 2N9
 
 Best,
