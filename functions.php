@@ -965,98 +965,36 @@ function nbt_get_reference_for_refsetid_and_refid ( $refsetid, $refid ) {
 }
 
 function nbt_return_references_for_refset_and_query ( $citationsid, $refsetid, $refid, $query ) {
+	
+	$altquery = str_replace ("- ", "", $query);
 
 	$element = nbt_get_form_element_for_elementid ( $citationsid );
 		
-	if ( is_numeric ( $query ) ) {
+	try {
+			
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `title` LIKE :query OR `title` LIKE :altquery OR `authors` LIKE :query LIMIT 6;");
 		
-		try { // Search citations for a particular number
-			
-			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SELECT * FROM `citations_" . $element['columnname'] . "` WHERE userid = :user AND refsetid = :refset AND referenceid = :refid AND cite_no = :cite LIMIT 6;");
-			
-			$stmt->bindParam(':refset', $rsid);
-			$stmt->bindParam(':refid', $rid);
-			$stmt->bindParam(':cite', $cid);
-			$stmt->bindParam(':user', $uid);
-			
-			$cid = $query;
-			$did = $drugid;
-			$rid = $refid;
-			$uid = $_SESSION['nbt_userid'];
-			
-			$stmt->execute();
+		$stmt->bindParam(':query', $quer);
+		$stmt->bindParam(':altquery', $altquer);
 		
-			$result = $stmt->fetchAll();
-			
-			foreach ( $result as $row ) {
-				
-				$citationid = $row['citationid'];
-				
-			}
-			
-			$dbh = null;
-			
-			try {
-			
-				$dbh2 = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-				$stmt2 = $dbh2->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE id = :citationid LIMIT 1;");
-				
-				$stmt2->bindParam(':citationid', $citid);
-				
-				$citid = $citationid;
-				
-				$stmt2->execute();
-			
-				$result = $stmt2->fetchAll();
-				
-				$dbh2 = null;
-				
-				return $result;
-				
-			}
-			
-			catch (PDOException $e) {
-				
-				echo $e->getMessage();
-				
-			}
-			
-		}
+		$quer = "%" . $query . "%";
+		$altquer = "%" . $altquery . "%";
 		
-		catch (PDOException $e) {
-			
-			echo $e->getMessage();
-			
-		}
-		
-	} else { // Search the references
-		
-		try {
-			
-			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE title LIKE :query OR authors LIKE :query LIMIT 6;");
-			
-			$stmt->bindParam(':query', $quer);
-			
-			$quer = "%" . $query . "%";
-			
-			$stmt->execute();
-		
-			$result = $stmt->fetchAll();
-			
-			$dbh = null;
-			
-			return $result;
-			
-		}
-		
-		catch (PDOException $e) {
-			
-			echo $e->getMessage();
-			
-		}
+		$stmt->execute();
 	
+		$result = $stmt->fetchAll();
+		
+		$dbh = null;
+		
+		return $result;
+		
+	}
+	
+	catch (PDOException $e) {
+		
+		echo $e->getMessage();
+		
 	}
 	
 }
