@@ -966,7 +966,7 @@ function nbt_get_reference_for_refsetid_and_refid ( $refsetid, $refid ) {
 
 function nbt_return_references_for_refset_and_query ( $citationsid, $refsetid, $refid, $query ) {
 	
-	$altquery = str_replace ("- ", "", $query);
+	$altquery = str_replace ("- ", "%", $query);
 
 	$element = nbt_get_form_element_for_elementid ( $citationsid );
 		
