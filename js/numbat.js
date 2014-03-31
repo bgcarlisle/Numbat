@@ -1,57 +1,57 @@
 function nbtClearText (id, originalText) { // This clears the "user name" field when it's clicked on.
-	
+
 	if (id.value == originalText) {
-		
+
 		id.value='';
-		
+
 	}
-	
+
 }
 
 function nbtRestoreText (id, originalText) { // This restores "user name" to the "user name" field when it's unclicked, if the field is empty.
-	
+
 	if (id.value.length == 0) {
-		
+
 		id.value=originalText;
-		
+
 	}
-	
+
 }
 
 function nbtSignupCheckEmail (id) {
-	
+
 	if (id.value.length > 0) {
-	
+
 		// var emailregex=/[A-Za-z0-9._%+\-]\.[A-Za-z0-9.\-]\.[A-Za-z]{2,4}+$/; //^[a-zA-z]+$/
 		var emailregex = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-		
+
 		if ( ! emailregex.test (id.value) ) { // If it's not a well-formed email
-			
+
 			document.getElementById("nbtSignupEmailFeedback").innerHTML = 'Enter a valid email address';
 			$("#sigSignupEmailFeedback").removeClass('sigFeedbackGood');
 			$("#sigSignupEmailFeedback").addClass('sigFeedbackBad');
 			$("#sigSignupEmailFeedback").fadeIn(100);
-		
+
 		} else { // Email is well-formed
-					
+
 			// Check that the email isn't already in use on another account
-			
+
 			var xmlhttp;
-			
+
 			if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
-		
+
 				xmlhttp = new XMLHttpRequest();
-				
+
 			} else { // Code for IE5, IE6
-			
+
 				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-			
+
 			}
-			
+
 			xmlhttp.onreadystatechange = function () {
 				if (xmlhttp.readyState==4 && xmlhttp.status==200) {
 					document.getElementById("sigSignupEmailFeedback").innerHTML=xmlhttp.responseText;
-					
+
 					if (xmlhttp.responseText == 'Email is already in use :(') {
 						$("#sigSignupEmailFeedback").removeClass('sigFeedbackGood');
 						$("#sigSignupEmailFeedback").addClass('sigFeedbackBad');
@@ -61,32 +61,32 @@ function nbtSignupCheckEmail (id) {
 						$("#sigSignupEmailFeedback").addClass('sigFeedbackGood');
 						$("#sigSignupEmailFeedback").fadeIn(100);
 					}
-					
+
 				} else if (xmlhttp.readyState > 0 && xmlhttp.readyState < 4) {
 					document.getElementById("sigSignupEmailFeedback").innerHTML='think think think ...';
 				}
 			}
-			
+
 			xmlhttp.open ("POST","http://www.bgcarlisle.com/signals/signup/checkemail.php",true);
 			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-			
+
 			xmlhttp.send ("email=" + id.value);
-		
+
 		}
-	
+
 	} else {
-		
+
 		document.getElementById("sigSignupEmailFeedback").innerHTML='';
 			$("#sigSignupEmailFeedback").removeClass('sigFeedbackGood');
 			$("#sigSignupEmailFeedback").removeClass('sigFeedbackBad');
 			$("#sigSignupEmailFeedback").fadeOut(100);
-		
+
 	}
-	
+
 }
 
 function nbtChangeUserPrivileges ( userid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'users/changeprivileges.php',
 		type: 'post',
@@ -96,21 +96,21 @@ function nbtChangeUserPrivileges ( userid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtPrivilegeFeedback').html(html);
-		
+
 		$('#nbtPrivilegeFeedback').fadeIn(500, function () {
-			
+
 			$('#nbtPrivilegeFeedback').fadeOut(3000);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtNewExtractionForm () {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/newform.php',
 		type: 'post',
@@ -118,15 +118,15 @@ function nbtNewExtractionForm () {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormsTable').html(html);
-		
+
 	});
-	
+
 }
 
 function nbtDeleteForm ( fid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/deleteform.php',
 		type: 'post',
@@ -135,15 +135,15 @@ function nbtDeleteForm ( fid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormsTable').html(html);
-		
+
 	});
-	
+
 }
 
 function nbtSaveFormName ( fid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changeformname.php',
 		type: 'post',
@@ -153,21 +153,21 @@ function nbtSaveFormName ( fid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormNameFeedback').html(html);
-		
+
 		$('#nbtFormNameFeedback').fadeIn(500, function () {
-			
+
 			$('#nbtFormNameFeedback').fadeOut(500);
-			
+
 		})
-		
+
 	});
-	
+
 }
 
 function nbtSaveFormDescription ( fid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changeformdescription.php',
 		type: 'post',
@@ -177,21 +177,21 @@ function nbtSaveFormDescription ( fid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormDescriptionFeedback').html(html);
-		
+
 		$('#nbtFormDescriptionFeedback').fadeIn(500, function () {
-			
+
 			$('#nbtFormDescriptionFeedback').fadeOut(500);
-			
+
 		})
-		
+
 	});
-	
+
 }
 
 function nbtAddNewOpenText ( fid, eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addopentext.php',
 		type: 'post',
@@ -201,15 +201,15 @@ function nbtAddNewOpenText ( fid, eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElements').html(html);
-		
+
 	});
-	
+
 }
 
 function nbtAddNewSingleSelect ( fid, eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addsingleselect.php',
 		type: 'post',
@@ -219,15 +219,15 @@ function nbtAddNewSingleSelect ( fid, eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElements').html(html);
-		
+
 	});
-	
+
 }
 
 function nbtAddNewSectionHeading ( fid, eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addsectionheading.php',
 		type: 'post',
@@ -237,15 +237,15 @@ function nbtAddNewSectionHeading ( fid, eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElements').html(html);
-		
+
 	});
-	
+
 }
 
 function nbtAddNewAssignmentEditor ( fid, eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addassignmenteditor.php',
 		type: 'post',
@@ -255,15 +255,15 @@ function nbtAddNewAssignmentEditor ( fid, eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElements').html(html);
-		
+
 	});
-	
+
 }
 
 function nbtDeleteFormElement ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/deleteformelement.php',
 		type: 'post',
@@ -272,15 +272,15 @@ function nbtDeleteFormElement ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElement' + eid).slideUp(1000);
-		
+
 	});
-	
+
 }
 
 function nbtChangeColumnName ( eid, size ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changecolumnname.php',
 		type: 'post',
@@ -291,21 +291,21 @@ function nbtChangeColumnName ( eid, size ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElementFeedback' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtChangeDateColumnName ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changedatecolumnname.php',
 		type: 'post',
@@ -315,21 +315,21 @@ function nbtChangeDateColumnName ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElementFeedback' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtChangeMultiSelectColumnPrefix ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changemultiselectcolumnprefix.php',
 		type: 'post',
@@ -339,21 +339,21 @@ function nbtChangeMultiSelectColumnPrefix ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElementFeedback' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtChangeDisplayName ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changedisplayname.php',
 		type: 'post',
@@ -363,21 +363,21 @@ function nbtChangeDisplayName ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElementFeedback' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtChangeElementCodebook ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changeelementcodebook.php',
 		type: 'post',
@@ -387,21 +387,21 @@ function nbtChangeElementCodebook ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElementFeedback' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtMoveFeedElement ( fid, eid, dir ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/moveelement.php',
 		type: 'post',
@@ -412,15 +412,15 @@ function nbtMoveFeedElement ( fid, eid, dir ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElements').html(html);
-		
+
 	});
-	
+
 }
 
 function nbtMoveSelectOption ( eid, sid, dir ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/moveselectoption.php',
 		type: 'post',
@@ -431,15 +431,15 @@ function nbtMoveSelectOption ( eid, sid, dir ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSingleSelectOptionsTable' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtMoveMultiSelectOption ( eid, sid, dir ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/movemultiselectoption.php',
 		type: 'post',
@@ -450,15 +450,15 @@ function nbtMoveMultiSelectOption ( eid, sid, dir ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtMultiSelectOptionsTable' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtMoveSubExtraction ( eid, seid, dir, rsid, rid, uid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/movesubextraction.php',
 		type: 'post',
@@ -472,15 +472,15 @@ function nbtMoveSubExtraction ( eid, seid, dir, rsid, rid, uid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubExtraction' + eid + '-' + uid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtMasterMoveSubExtraction ( eid, seid, dir, rsid, rid, uid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'master/movesubextraction.php',
 		type: 'post',
@@ -494,15 +494,15 @@ function nbtMasterMoveSubExtraction ( eid, seid, dir, rsid, rid, uid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubExtraction' + eid + '-' + uid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtAddSingleSelectOption ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addsingleselectoption.php',
 		type: 'post',
@@ -511,15 +511,15 @@ function nbtAddSingleSelectOption ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSingleSelectOptionsTable' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtAddMultiSelectOption ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addmultiselectoption.php',
 		type: 'post',
@@ -528,15 +528,15 @@ function nbtAddMultiSelectOption ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtMultiSelectOptionsTable' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtRemoveSingleSelectOption ( eid, sid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/removesingleselectoption.php',
 		type: 'post',
@@ -546,15 +546,15 @@ function nbtRemoveSingleSelectOption ( eid, sid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSingleSelectOptionsTable' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtRemoveSubSingleSelectOption ( eid, sid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/removesubsingleselectoption.php',
 		type: 'post',
@@ -564,15 +564,15 @@ function nbtRemoveSubSingleSelectOption ( eid, sid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubSingleSelectOptionsTable' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtRemoveSubMultiSelectOption ( seid, sid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/removesubmultiselectoption.php',
 		type: 'post',
@@ -582,15 +582,15 @@ function nbtRemoveSubMultiSelectOption ( seid, sid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubMultiSelectOptionsTable' + seid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtRemoveMultiSelectOption ( eid, sid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/removemultiselectoption.php',
 		type: 'post',
@@ -600,35 +600,35 @@ function nbtRemoveMultiSelectOption ( eid, sid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtMultiSelectOptionsTable' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtChangeElementToggle ( eid ) {
-	
+
 	if ( $('#nbtElementToggle' + eid).val() != '' ) {
-		
+
 		var regex=/^[0-9A-Za-z.\-_]+$/; //^[a-zA-z]+$/
-		
+
 		if ( ! regex.test ( $('#nbtElementToggle' + eid).val() ) ) {
-			
+
 			$('#nbtElementToggle' + eid).addClass('nbtBadField');
-			
+
 		} else {
-			
+
 			$('#nbtElementToggle' + eid).removeClass('nbtBadField');
-			
+
 		}
-		
+
 	} else {
-		
+
 		$('#nbtElementToggle' + eid).removeClass('nbtBadField');
-		
+
 	}
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changeelementtoggle.php',
 		type: 'post',
@@ -638,21 +638,21 @@ function nbtChangeElementToggle ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElementFeedback' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtUpdateSingleSelect ( eid, sid, dbcolumn ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/updatesingleselect.php',
 		type: 'post',
@@ -663,21 +663,21 @@ function nbtUpdateSingleSelect ( eid, sid, dbcolumn ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElementFeedback' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtUpdateSubSelect ( seid, sid, dbcolumn ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/updatesingleselect.php',
 		type: 'post',
@@ -688,21 +688,21 @@ function nbtUpdateSubSelect ( seid, sid, dbcolumn ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubElementFeedback' + seid).html(html);
-		
+
 		$('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
-			
+
 			$('#nbtSubElementFeedback' + seid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtAddNewMultiSelect ( fid, eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addmultiselect.php',
 		type: 'post',
@@ -712,15 +712,15 @@ function nbtAddNewMultiSelect ( fid, eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElements').html(html);
-		
+
 	});
-	
+
 }
 
 function nbtAddNewTableData ( fid, eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addtabledata.php',
 		type: 'post',
@@ -730,15 +730,15 @@ function nbtAddNewTableData ( fid, eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElements').html(html);
-		
+
 	});
-	
+
 }
 
 function nbtUpdateMultiSelectOptionColumn ( eid, sid, oldcolumn ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/updatemultiselectoptioncolumn.php',
 		type: 'post',
@@ -750,23 +750,23 @@ function nbtUpdateMultiSelectOptionColumn ( eid, sid, oldcolumn ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtMultiSelectOptionsTable' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).html('Changes saved');
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtUpdateSubMultiSelectOptionColumn ( seid, sid, oldcolumn ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/updatesubmultiselectoptioncolumn.php',
 		type: 'post',
@@ -778,23 +778,23 @@ function nbtUpdateSubMultiSelectOptionColumn ( seid, sid, oldcolumn ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubMultiSelectOptionsTable' + seid).html(html);
-		
+
 		$('#nbtSubElementFeedback' + seid).html('Changes saved');
-		
+
 		$('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
-			
+
 			$('#nbtSubElementFeedback' + seid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtChangeTableSuffix ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changetablesuffix.php',
 		type: 'post',
@@ -804,21 +804,21 @@ function nbtChangeTableSuffix ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElementFeedback' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtAddTableDataColumn ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addtabledatacolumn.php',
 		type: 'post',
@@ -827,15 +827,15 @@ function nbtAddTableDataColumn ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtTableDataColumnsTable' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtRemoveTableDataColumn ( eid, cid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/removetabledatacolumn.php',
 		type: 'post',
@@ -845,15 +845,15 @@ function nbtRemoveTableDataColumn ( eid, cid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtTableDataColumnsTable' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtUpdateTableDataColumnDisplay ( eid, cid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/updatetabledatacolumndisplay.php',
 		type: 'post',
@@ -863,21 +863,21 @@ function nbtUpdateTableDataColumnDisplay ( eid, cid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElementFeedback' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtUpdateTableDataColumnDB ( eid, cid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/updatetabledatacolumndb.php',
 		type: 'post',
@@ -887,21 +887,21 @@ function nbtUpdateTableDataColumnDB ( eid, cid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElementFeedback' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtMoveTableDataColumn ( eid, cid, dir ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/movetabledatacolumn.php',
 		type: 'post',
@@ -912,15 +912,15 @@ function nbtMoveTableDataColumn ( eid, cid, dir ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtTableDataColumnsTable' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtAddNewCountrySelector ( fid, eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addcountryselector.php',
 		type: 'post',
@@ -930,15 +930,15 @@ function nbtAddNewCountrySelector ( fid, eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElements').html(html);
-		
+
 	});
-	
+
 }
 
 function nbtAddNewDateSelector ( fid, eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/adddateselector.php',
 		type: 'post',
@@ -948,15 +948,15 @@ function nbtAddNewDateSelector ( fid, eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElements').html(html);
-		
+
 	});
-	
+
 }
 
 function nbtNewDumpFile () {
-	
+
 	$.ajax ({
 		url: numbaturl + 'backup/newdumpfile.php',
 		type: 'post',
@@ -964,15 +964,15 @@ function nbtNewDumpFile () {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtListOfDumpFiles').html(html);
-		
+
 	});
-	
+
 }
 
 function nbtAddNewCitationSelector ( fid, eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addcitationselector.php',
 		type: 'post',
@@ -982,15 +982,15 @@ function nbtAddNewCitationSelector ( fid, eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElements').html(html);
-		
+
 	});
-	
+
 }
 
 function nbtChangeCitationSelectorSuffix ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changecitationselectorsuffix.php',
 		type: 'post',
@@ -1000,21 +1000,21 @@ function nbtChangeCitationSelectorSuffix ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElementFeedback' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtAddCitationProperty ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addcitationproperty.php',
 		type: 'post',
@@ -1023,15 +1023,15 @@ function nbtAddCitationProperty ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtCitationSelectorTable' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtUpdateCitationPropertyDisplay ( eid, cid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/updatecitationpropertydisplay.php',
 		type: 'post',
@@ -1041,21 +1041,21 @@ function nbtUpdateCitationPropertyDisplay ( eid, cid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElementFeedback' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtUpdateCitationPropertyDB ( eid, cid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/updatecitationpropertydb.php',
 		type: 'post',
@@ -1065,21 +1065,21 @@ function nbtUpdateCitationPropertyDB ( eid, cid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElementFeedback' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtMoveCitationProperty ( eid, cid, dir ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/movecitationproperty.php',
 		type: 'post',
@@ -1090,15 +1090,15 @@ function nbtMoveCitationProperty ( eid, cid, dir ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtCitationSelectorTable' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtSaveTextField (formid, extractionid, questionid, textfieldid, feedbackid) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/updateextraction.php',
 		type: 'post',
@@ -1110,25 +1110,25 @@ function nbtSaveTextField (formid, extractionid, questionid, textfieldid, feedba
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#' + feedbackid).html(html);
-		
+
 		$('#' + feedbackid).fadeIn(50, function () {
-			
+
 			setTimeout ( function () {
-				
+
 				$('#' + feedbackid).fadeOut(1000);
-				
+
 			}, 2000);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtSaveSubExtractionTextField (elementid, extractionid, questionid, textfieldid, feedbackid) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/updatesubextraction.php',
 		type: 'post',
@@ -1140,25 +1140,25 @@ function nbtSaveSubExtractionTextField (elementid, extractionid, questionid, tex
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#' + feedbackid).html(html);
-		
+
 		$('#' + feedbackid).fadeIn(50, function () {
-			
+
 			setTimeout ( function () {
-				
+
 				$('#' + feedbackid).fadeOut(1000);
-				
+
 			}, 2000);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtSaveMasterSubExtractionTextField (elementid, extractionid, questionid, textfieldid, feedbackid) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'master/updatesubextraction.php',
 		type: 'post',
@@ -1170,25 +1170,25 @@ function nbtSaveMasterSubExtractionTextField (elementid, extractionid, questioni
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#' + feedbackid).html(html);
-		
+
 		$('#' + feedbackid).fadeIn(50, function () {
-			
+
 			setTimeout ( function () {
-				
+
 				$('#' + feedbackid).fadeOut(1000);
-				
+
 			}, 2000);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtSaveCitationTextField (sectionid, citationid, questionid, textfieldid, feedbackid) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/updatecitationproperty.php',
 		type: 'post',
@@ -1200,25 +1200,25 @@ function nbtSaveCitationTextField (sectionid, citationid, questionid, textfieldi
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#' + feedbackid).html(html);
-		
+
 		$('#' + feedbackid).fadeIn(50, function () {
-			
+
 			setTimeout ( function () {
-				
+
 				$('#' + feedbackid).fadeOut(1000);
-				
+
 			}, 2000);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtSaveDateField (formid, extractionid, questionid, textfieldid, feedbackid) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/formatdate.php',
 		type: 'post',
@@ -1227,9 +1227,9 @@ function nbtSaveDateField (formid, extractionid, questionid, textfieldid, feedba
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#' + textfieldid).val(html);
-		
+
 		$.ajax ({
 			url: numbaturl + 'extract/updateextraction.php',
 			type: 'post',
@@ -1241,27 +1241,27 @@ function nbtSaveDateField (formid, extractionid, questionid, textfieldid, feedba
 			},
 			dataType: 'html'
 		}).done ( function (html2) {
-			
+
 			$('#' + feedbackid).html(html2);
-			
+
 			$('#' + feedbackid).fadeIn(50, function () {
-				
+
 				setTimeout ( function () {
-					
+
 					$('#' + feedbackid).fadeOut(1000);
-					
+
 				}, 2000);
-				
+
 			})
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtSaveSubExtractionDateField (elementid, subextractionid, questionid, textfieldid, feedbackid) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/formatdate.php',
 		type: 'post',
@@ -1270,9 +1270,9 @@ function nbtSaveSubExtractionDateField (elementid, subextractionid, questionid, 
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#' + textfieldid).val(html);
-		
+
 		$.ajax ({
 			url: numbaturl + 'extract/updatesubextraction.php',
 			type: 'post',
@@ -1284,27 +1284,27 @@ function nbtSaveSubExtractionDateField (elementid, subextractionid, questionid, 
 			},
 			dataType: 'html'
 		}).done ( function (html2) {
-			
+
 			$('#' + feedbackid).html(html2);
-			
+
 			$('#' + feedbackid).fadeIn(50, function () {
-				
+
 				setTimeout ( function () {
-					
+
 					$('#' + feedbackid).fadeOut(1000);
-					
+
 				}, 2000);
-				
+
 			})
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtSaveMasterSubExtractionDateField (elementid, subextractionid, questionid, textfieldid, feedbackid) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/formatdate.php',
 		type: 'post',
@@ -1313,9 +1313,9 @@ function nbtSaveMasterSubExtractionDateField (elementid, subextractionid, questi
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#' + textfieldid).val(html);
-		
+
 		$.ajax ({
 			url: numbaturl + 'master/updatesubextraction.php',
 			type: 'post',
@@ -1327,29 +1327,29 @@ function nbtSaveMasterSubExtractionDateField (elementid, subextractionid, questi
 			},
 			dataType: 'html'
 		}).done ( function (html2) {
-			
+
 			$('#' + feedbackid).html(html2);
-			
+
 			$('#' + feedbackid).fadeIn(50, function () {
-				
+
 				setTimeout ( function () {
-					
+
 					$('#' + feedbackid).fadeOut(1000);
-					
+
 				}, 2000);
-				
+
 			})
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtSaveSingleSelect (formid, extractionid, questionlabel, response, buttonid, classid) {
-	
+
 	if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // IF it's already selected
-		
+
 		$.ajax ({
 			url: numbaturl + 'extract/updateextraction.php',
 			type: 'post',
@@ -1361,15 +1361,15 @@ function nbtSaveSingleSelect (formid, extractionid, questionlabel, response, but
 			},
 			dataType: 'html'
 		}).done ( function (html) {
-			
+
 			$('.' + classid).removeClass('nbtTextOptionChosen');
-			
+
 			nbtUpdateConditionalDisplays ();
-			
+
 		});
-		
+
 	} else { // It's not already selected
-		
+
 		$.ajax ({
 			url: numbaturl + 'extract/updateextraction.php',
 			type: 'post',
@@ -1381,22 +1381,22 @@ function nbtSaveSingleSelect (formid, extractionid, questionlabel, response, but
 			},
 			dataType: 'html'
 		}).done ( function (html) {
-			
+
 			$('.' + classid).removeClass('nbtTextOptionChosen');
 			$('#' + buttonid).addClass('nbtTextOptionChosen');
-			
+
 			nbtUpdateConditionalDisplays ();
-			
+
 		});
-	
+
 	}
-	
+
 }
 
 function nbtSaveSubExtractionSingleSelect (elementid, subextractionid, questionlabel, response, buttonid, classid) {
-	
+
 	if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // IF it's already selected
-		
+
 		$.ajax ({
 			url: numbaturl + 'extract/updatesubextraction.php',
 			type: 'post',
@@ -1408,15 +1408,15 @@ function nbtSaveSubExtractionSingleSelect (elementid, subextractionid, questionl
 			},
 			dataType: 'html'
 		}).done ( function (html) {
-			
+
 			$('.' + classid).removeClass('nbtTextOptionChosen');
-			
+
 			nbtUpdateConditionalDisplays ();
-			
+
 		});
-		
+
 	} else { // It's not already selected
-		
+
 		$.ajax ({
 			url: numbaturl + 'extract/updatesubextraction.php',
 			type: 'post',
@@ -1428,22 +1428,22 @@ function nbtSaveSubExtractionSingleSelect (elementid, subextractionid, questionl
 			},
 			dataType: 'html'
 		}).done ( function (html) {
-			
+
 			$('.' + classid).removeClass('nbtTextOptionChosen');
 			$('#' + buttonid).addClass('nbtTextOptionChosen');
-			
+
 			nbtUpdateConditionalDisplays ();
-			
+
 		});
-	
+
 	}
-	
+
 }
 
 function nbtSaveMasterSubExtractionSingleSelect (elementid, subextractionid, questionlabel, response, buttonid, classid) {
-	
+
 	if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // IF it's already selected
-		
+
 		$.ajax ({
 			url: numbaturl + 'master/updatesubextraction.php',
 			type: 'post',
@@ -1455,15 +1455,15 @@ function nbtSaveMasterSubExtractionSingleSelect (elementid, subextractionid, que
 			},
 			dataType: 'html'
 		}).done ( function (html) {
-			
+
 			$('.' + classid).removeClass('nbtTextOptionChosen');
-			
+
 			nbtUpdateConditionalDisplays ();
-			
+
 		});
-		
+
 	} else { // It's not already selected
-		
+
 		$.ajax ({
 			url: numbaturl + 'master/updatesubextraction.php',
 			type: 'post',
@@ -1475,20 +1475,20 @@ function nbtSaveMasterSubExtractionSingleSelect (elementid, subextractionid, que
 			},
 			dataType: 'html'
 		}).done ( function (html) {
-			
+
 			$('.' + classid).removeClass('nbtTextOptionChosen');
 			$('#' + buttonid).addClass('nbtTextOptionChosen');
-			
+
 			nbtUpdateConditionalDisplays ();
-			
+
 		});
-	
+
 	}
-	
+
 }
 
 function nbtSaveMultiSelect (formid, extractionid, questionlabel, buttonid) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/togglefield.php',
 		type: 'post',
@@ -1499,17 +1499,17 @@ function nbtSaveMultiSelect (formid, extractionid, questionlabel, buttonid) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#' + buttonid).toggleClass('nbtTextOptionChosen');
-		
+
 		nbtUpdateConditionalDisplays ();
-		
+
 	});
-	
+
 }
 
 function nbtSaveSubExtractionMultiSelect (elementid, subextractionid, questionlabel, buttonid) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/subtogglefield.php',
 		type: 'post',
@@ -1520,17 +1520,17 @@ function nbtSaveSubExtractionMultiSelect (elementid, subextractionid, questionla
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#' + buttonid).toggleClass('nbtTextOptionChosen');
-		
+
 		nbtUpdateConditionalDisplays ();
-		
+
 	});
-	
+
 }
 
 function nbtSaveMasterSubExtractionMultiSelect (elementid, subextractionid, questionlabel, buttonid) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'master/subtogglefield.php',
 		type: 'post',
@@ -1541,17 +1541,17 @@ function nbtSaveMasterSubExtractionMultiSelect (elementid, subextractionid, ques
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#' + buttonid).toggleClass('nbtTextOptionChosen');
-		
+
 		nbtUpdateConditionalDisplays ();
-		
+
 	});
-	
+
 }
 
 function nbtUpdateExtractionTableData ( tableid, rowid, columnid, inputid) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/updatetabledata.php',
 		type: 'post',
@@ -1563,25 +1563,25 @@ function nbtUpdateExtractionTableData ( tableid, rowid, columnid, inputid) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtTable' + tableid + 'Feedback').html(html);
-		
+
 		$('#nbtTable' + tableid + 'Feedback').slideDown(50, function () {
-			
+
 			setTimeout ( function () {
-				
+
 				$('#nbtTable' + tableid + 'Feedback').slideUp(1000);
-				
+
 			}, 2000);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtUpdateMasterExtractionTableData ( tableid, rowid, columnid, inputid) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'master/updatetabledata.php',
 		type: 'post',
@@ -1593,25 +1593,25 @@ function nbtUpdateMasterExtractionTableData ( tableid, rowid, columnid, inputid)
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtTable' + tableid + 'Feedback').html(html);
-		
+
 		$('#nbtTable' + tableid + 'Feedback').slideDown(50, function () {
-			
+
 			setTimeout ( function () {
-				
+
 				$('#nbtTable' + tableid + 'Feedback').slideUp(1000);
-				
+
 			}, 2000);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtAddExtractionTableDataRow (tableid, refsetid, refid) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/addtabledatarow.php',
 		type: 'post',
@@ -1622,15 +1622,15 @@ function nbtAddExtractionTableDataRow (tableid, refsetid, refid) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtTableExtraction' + tableid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtRemoveExtractionTableDataRow ( tableid, rowid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/removetabledatarow.php',
 		type: 'post',
@@ -1640,25 +1640,25 @@ function nbtRemoveExtractionTableDataRow ( tableid, rowid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtTDRowID' + rowid).fadeOut(200).removeClass('nbtTDRow' + tableid);
-		
+
 	});
-	
+
 }
 
 function nbtFindCitation (eid, suffix, targetid, cid, rsid, refid) {
-	
+
 	if ( $('#nbtCitationFinder' + eid).val() == '' ) {
-		
+
 		$('#' + targetid).fadeOut(100);
-		
+
 		$('#' + targetid).html('');
-		
+
 	} else {
-		
+
 		$('#nbtCitationSuggestions' + eid).fadeIn(100);
-		
+
 		$.ajax ({
 			url: numbaturl + 'extract/citationfinder.php',
 			type: 'post',
@@ -1671,40 +1671,40 @@ function nbtFindCitation (eid, suffix, targetid, cid, rsid, refid) {
 			},
 			dataType: 'html'
 		}).done ( function (html) {
-			
+
 			$('#' + targetid).html(html);
-			
+
 		});
-	
+
 	}
-	
+
 }
 
 function nbtAddCitation (cid, csuffix, rsid, origrefid, citid, user) {
-	
+
 	// citation section id
 	// rsid => refset id
 	// origrefid => id of the reference being extracted
 	// citid => id of the citation in the paper being extracted
 	// user => user id
-	
+
 	if ( $('.nbtCitOrigRef' + cid + '-' + citid).length ) {
-		
+
 		$('.nbtCitOrigRef' + cid + '-' + citid).removeClass('nbtGreyGradient').addClass('nbtAlreadyAdded');
-		
+
 		$('#nbtDoubleCitationFeedback' + cid).fadeIn();
-		
+
 		setTimeout ( function () {
-			
+
 			$('.nbtCitOrigRef' + cid + '-' + citid).addClass('nbtGreyGradient').removeClass('nbtAlreadyAdded');
-			
+
 			$('#nbtDoubleCitationFeedback' + cid).fadeOut();
-			
-			
+
+
 		}, 1700);
-	
+
 	} else {
-	
+
 		$.ajax ({
 			url: numbaturl + 'extract/addcitation.php',
 			type: 'post',
@@ -1718,17 +1718,17 @@ function nbtAddCitation (cid, csuffix, rsid, origrefid, citid, user) {
 			},
 			dataType: 'html'
 		}).done ( function (html) {
-			
+
 			$('#nbtCitationList' + cid).html(html);
-			
+
 		});
-	
+
 	}
-	
+
 }
 
 function nbtRemoveCitation ( sectionid, citationid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/removecitation.php',
 		type: 'post',
@@ -1738,15 +1738,15 @@ function nbtRemoveCitation ( sectionid, citationid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtCitation' + sectionid + '-' + citationid).slideUp();
-		
+
 	});
-	
+
 }
 
 function nbtRemoveMasterCitation ( sectionid, citationid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'master/removecitation.php',
 		type: 'post',
@@ -1756,15 +1756,15 @@ function nbtRemoveMasterCitation ( sectionid, citationid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtCitation' + sectionid + '-' + citationid).slideUp();
-		
+
 	});
-	
+
 }
 
 function nbtUpdateCiteNo ( section, citid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/updateciteno.php',
 		type: 'post',
@@ -1775,82 +1775,82 @@ function nbtUpdateCiteNo ( section, citid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtCiteNoFeedback' + section + '-' + citid).html(html);
-		
+
 		$('#nbtCiteNoFeedback' + section + '-' + citid).fadeIn(50, function () {
-			
+
 			setTimeout ( function () {
-				
+
 				$('#nbtCiteNoFeedback' + section + '-' + citid).fadeOut(1000);
-				
+
 			}, 2000);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtUpdateConditionalDisplays () {
-	
+
 	$('a.nbtTextOptionSelect').each( function () {
-		
+
 		if ( $(this).hasClass('nbtTextOptionChosen') ) {
-			
+
 			if ( $(this).attr('conditionalid') != '') {
-				
+
 				$('.' + $(this).attr('conditionalid')).slideDown(50);
-				
+
 			}
-			
+
 		} else {
-			
+
 			if ( $(this).attr('conditionalid') != '') {
-			
+
 				$('.' + $(this).attr('conditionalid')).slideUp(50);
-			
+
 			}
-			
+
 		}
-		
+
 	});
-	
+
 }
 
 function nbtFindReferenceToAssign () {
-	
+
 	if ( $('#nbtAssignUser').val() == 'NULL' ) {
-		
+
 		$('#nbtFoundReferencesForAssigment').addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint').removeClass('nbtCitationSuggestions').html('Choose a user to be assigned');
-		
+
 	} else {
-		
+
 		if ( $('#nbtAssignForm').val() == 'NULL' ) {
-			
+
 			$('#nbtFoundReferencesForAssigment').addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint').removeClass('nbtCitationSuggestions').html('Choose a form');
-			
+
 		} else {
-			
+
 			if ( $('#nbtAssignRefSet').val() == 'NULL' ) {
-				
+
 				$('#nbtFoundReferencesForAssigment').addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint').removeClass('nbtCitationSuggestions').html('Choose a reference set');
 
 
 			} else {
-				
+
 				$('#nbtFoundReferencesForAssigment').removeClass('nbtFeedback').removeClass('nbtFeedbackBad').removeClass('nbtFinePrint').addClass('nbtCitationSuggestions');
-				
+
 				if ( $('#nbtReferenceFinder').val() == '' ) {
-		
+
 					$('#nbtFoundReferencesForAssigment').fadeOut(100);
-					
+
 					$('#nbtFoundReferencesForAssigment').html('');
-					
+
 				} else {
-					
+
 					$('#nbtFoundReferencesForAssigment').fadeIn(100);
-					
+
 					$.ajax ({
 						url: numbaturl + 'assignments/referencefinder.php',
 						type: 'post',
@@ -1862,23 +1862,23 @@ function nbtFindReferenceToAssign () {
 						},
 						dataType: 'html'
 					}).done ( function (html) {
-						
+
 						$('#nbtFoundReferencesForAssigment').html(html);
-						
+
 					});
-				
+
 				}
-				
+
 			}
-			
+
 		}
-		
+
 	}
-	
+
 }
 
 function nbtAddAssignment ( uid, fid, rsid, rid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'assignments/addassignment.php',
 		type: 'post',
@@ -1890,25 +1890,25 @@ function nbtAddAssignment ( uid, fid, rsid, rid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		if ( html == 'Assignment added' ) {
-			
+
 			$('#nbtAddAssignmentFeedback' + rid).addClass('nbtFeedback').addClass('nbtFeedbackGood').addClass('nbtFinePrint');
-			
+
 		} else {
-			
+
 			$('#nbtAddAssignmentFeedback' + rid).addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint');
-			
+
 		}
-		
+
 		$('#nbtAddAssignmentFeedback' + rid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtAddAssignmentInExtraction ( rsid, rid, eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'assignments/addassignment.php',
 		type: 'post',
@@ -1920,33 +1920,33 @@ function nbtAddAssignmentInExtraction ( rsid, rid, eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		if ( html == 'Assignment added' ) {
-			
+
 			$('#nbtAddAssignmentFeedback' + eid).removeClass('nbtFeedbackBad').addClass('nbtFeedback').addClass('nbtFeedbackGood').addClass('nbtFinePrint');
-			
+
 		} else {
-			
+
 			$('#nbtAddAssignmentFeedback' + eid).removeClass('nbtFeedbackGood').addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint');
-			
+
 		}
-		
+
 		$('#nbtAddAssignmentFeedback' + eid).html(html).slideDown(500, function () {
-			
+
 			setTimeout ( function () {
-				
+
 				$('#nbtAddAssignmentFeedback' + eid).slideUp();
-				
+
 			}, 3000);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtDeleteAssignment ( aid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'assignments/deleteassignment.php',
 		type: 'post',
@@ -1955,19 +1955,19 @@ function nbtDeleteAssignment ( aid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		if ( html == 'deleted' ) {
-			
+
 			$('#nbtAssignmentTableRow' + aid).fadeOut();
-			
+
 		}
-		
+
 	});
-	
+
 }
 
 function nbtAddNewSubExtraction ( fid, eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addsubextraction.php',
 		type: 'post',
@@ -1977,15 +1977,15 @@ function nbtAddNewSubExtraction ( fid, eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElements').html(html);
-		
+
 	});
-	
+
 }
 
 function nbtChangeSubExtractionSuffix ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changesubextractionsuffix.php',
 		type: 'post',
@@ -1995,21 +1995,21 @@ function nbtChangeSubExtractionSuffix ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtFormElementFeedback' + eid).html(html);
-		
+
 		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
-			
+
 			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtAddNewSubOpenText ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addsubopentext.php',
 		type: 'post',
@@ -2018,15 +2018,15 @@ function nbtAddNewSubOpenText ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubExtractionElements' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtDeleteSubElement ( seid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/deletesubelement.php',
 		type: 'post',
@@ -2035,15 +2035,15 @@ function nbtDeleteSubElement ( seid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubElement' + seid).slideUp(1000);
-		
+
 	});
-	
+
 }
 
 function nbtChangeSubDisplayName ( seid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changesubdisplayname.php',
 		type: 'post',
@@ -2053,21 +2053,21 @@ function nbtChangeSubDisplayName ( seid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubElementFeedback' + seid).html(html);
-		
+
 		$('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
-			
+
 			$('#nbtSubElementFeedback' + seid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtChangeSubColumnName ( seid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changesubcolumnname.php',
 		type: 'post',
@@ -2077,21 +2077,21 @@ function nbtChangeSubColumnName ( seid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubElementFeedback' + seid).html(html);
-		
+
 		$('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
-			
+
 			$('#nbtSubElementFeedback' + seid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtChangeSubElementCodebook ( seid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changesubelementcodebook.php',
 		type: 'post',
@@ -2101,41 +2101,41 @@ function nbtChangeSubElementCodebook ( seid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubElementFeedback' + seid).html(html);
-		
+
 		$('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
-			
+
 			$('#nbtSubElementFeedback' + seid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtChangeSubElementToggle ( seid ) {
-	
+
 	if ( $('#nbtSubElementToggle' + seid).val() != '' ) {
-		
+
 		var regex=/^[0-9A-Za-z.\-_]+$/; //^[a-zA-z]+$/
-		
+
 		if ( ! regex.test ( $('#nbtSubElementToggle' + seid).val() ) ) {
-			
+
 			$('#nbtSubElementToggle' + seid).addClass('nbtBadField');
-			
+
 		} else {
-			
+
 			$('#nbtSubElementToggle' + seid).removeClass('nbtBadField');
-			
+
 		}
-		
+
 	} else {
-		
+
 		$('#nbtSubElementToggle' + seid).removeClass('nbtBadField');
-		
+
 	}
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changesubelementtoggle.php',
 		type: 'post',
@@ -2145,21 +2145,21 @@ function nbtChangeSubElementToggle ( seid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubElementFeedback' + seid).html(html);
-		
+
 		$('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
-			
+
 			$('#nbtSubElementFeedback' + seid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtMoveSubElement ( eid, seid, dir ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/movesubelement.php',
 		type: 'post',
@@ -2170,15 +2170,15 @@ function nbtMoveSubElement ( eid, seid, dir ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubExtractionElements' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtAddNewSubSingleSelect ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addsubsingleselect.php',
 		type: 'post',
@@ -2187,15 +2187,15 @@ function nbtAddNewSubSingleSelect ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubExtractionElements' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtAddSubSingleSelectOption ( seid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addsubsingleselectoption.php',
 		type: 'post',
@@ -2204,15 +2204,15 @@ function nbtAddSubSingleSelectOption ( seid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubSingleSelectOptionsTable' + seid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtMoveSubSelectOption ( seid, sid, dir ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/movesubselectoption.php',
 		type: 'post',
@@ -2223,15 +2223,15 @@ function nbtMoveSubSelectOption ( seid, sid, dir ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubSingleSelectOptionsTable' + seid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtAddNewSubMultiSelect ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addsubmultiselect.php',
 		type: 'post',
@@ -2240,15 +2240,15 @@ function nbtAddNewSubMultiSelect ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubExtractionElements' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtChangeSubMultiSelectColumnPrefix ( seid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/changesubmultiselectcolumnprefix.php',
 		type: 'post',
@@ -2258,21 +2258,21 @@ function nbtChangeSubMultiSelectColumnPrefix ( seid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubElementFeedback' + seid).html(html);
-		
+
 		$('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
-			
+
 			$('#nbtSubElementFeedback' + seid).fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtAddSubMultiSelectOption ( seid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addsubmultiselectoption.php',
 		type: 'post',
@@ -2281,15 +2281,15 @@ function nbtAddSubMultiSelectOption ( seid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubMultiSelectOptionsTable' + seid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtMoveSubMultiSelectOption ( seid, sid, dir ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/movesubmultiselectoption.php',
 		type: 'post',
@@ -2300,15 +2300,15 @@ function nbtMoveSubMultiSelectOption ( seid, sid, dir ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubMultiSelectOptionsTable' + seid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtAddNewSubDateSelector ( eid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forms/addsubdateselector.php',
 		type: 'post',
@@ -2317,15 +2317,15 @@ function nbtAddNewSubDateSelector ( eid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubExtractionElements' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtNewSubExtraction (eid, rsid, rid, uid) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/addsubextraction.php',
 		type: 'post',
@@ -2337,15 +2337,15 @@ function nbtNewSubExtraction (eid, rsid, rid, uid) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubExtraction' + eid + '-' + uid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtDeleteSubExtraction ( eid, seid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/removesubextraction.php',
 		type: 'post',
@@ -2355,15 +2355,15 @@ function nbtDeleteSubExtraction ( eid, seid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtSubExtractionInstance' + eid + '-' + seid).slideUp();
-		
+
 	});
-	
+
 }
 
 function nbtChangeRefSetName ( rsid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'references/changename.php',
 		type: 'post',
@@ -2373,21 +2373,21 @@ function nbtChangeRefSetName ( rsid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtNewRefSetNameFeedback').html(html);
-		
+
 		$('#nbtNewRefSetNameFeedback').fadeIn(500, function () {
-			
+
 			$('#nbtNewRefSetNameFeedback').fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtDeleteRefSet ( rsid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'references/deleterefset.php',
 		type: 'post',
@@ -2396,15 +2396,15 @@ function nbtDeleteRefSet ( rsid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtRefSetRow' + rsid).fadeOut();
-		
+
 	});
-	
+
 }
 
 function nbtAddAdvancedAssignment () {
-	
+
 	$.ajax ({
 		url: numbaturl + 'assignments/addadvassignment.php',
 		type: 'post',
@@ -2416,21 +2416,21 @@ function nbtAddAdvancedAssignment () {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtAdvancedAssignmentFeedback').html(html);
-		
+
 		$('#nbtAdvancedAssignmentFeedback').fadeIn(500, function () {
-			
+
 			$('#nbtAdvancedAssignmentFeedback').fadeOut(1500);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtAddNewReferenceToRefSet ( rsid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/addnewreference.php',
 		type: 'post',
@@ -2439,18 +2439,18 @@ function nbtAddNewReferenceToRefSet ( rsid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtManualRefs').html(html);
-		
+
 	});
-	
+
 	$('#nbtManualRefs').fadeIn(500);
 	$('#nbtManualRefsCoverup').fadeIn(500);
-	
+
 }
 
 function nbtUpdateManualReference ( rsid, refid, columnid, textfieldid, feedbackid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/updatemanref.php',
 		type: 'post',
@@ -2462,25 +2462,25 @@ function nbtUpdateManualReference ( rsid, refid, columnid, textfieldid, feedback
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#' + feedbackid).html(html);
-		
+
 		$('#' + feedbackid).fadeIn(50, function () {
-			
+
 			setTimeout ( function () {
-				
+
 				$('#' + feedbackid).fadeOut(1000);
-				
+
 			}, 2000);
-			
+
 		});
-		
+
 	});
-	
+
 }
 
 function nbtRemoveManualReference ( rsid, refid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'extract/removemanual.php',
 		type: 'post',
@@ -2490,19 +2490,19 @@ function nbtRemoveManualReference ( rsid, refid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtManRef' + rsid + '-' + refid).slideUp(200);
-		
+
 		$('#nbtManualRefsCoverup').fadeOut(500);
-		
+
 		$('#nbtManualRefs').fadeOut(500);
-		
+
 	});
-	
+
 }
 
 function nbtCopyTableDataRow ( eid, rsid, refid, rid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'master/copytabledatarow.php',
 		type: 'post',
@@ -2514,15 +2514,15 @@ function nbtCopyTableDataRow ( eid, rsid, refid, rid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtMasterTable' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtCopySubExtraction ( eid, rsid, refid, oid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'master/copysubextraction.php',
 		type: 'post',
@@ -2534,15 +2534,15 @@ function nbtCopySubExtraction ( eid, rsid, refid, oid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtMasterSubExtraction' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtDeleteMasterTableRow ( eid, rid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'master/deletemastertabledatarow.php',
 		type: 'post',
@@ -2552,15 +2552,15 @@ function nbtDeleteMasterTableRow ( eid, rid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtMasterTD' + eid + 'RowID' + rid).slideUp();
-		
+
 	});
-	
+
 }
 
 function nbtDeleteMasterSubExtraction ( eid, oid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'master/deletemastersubextraction.php',
 		type: 'post',
@@ -2570,15 +2570,15 @@ function nbtDeleteMasterSubExtraction ( eid, oid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtMasterSubExtractionInstance' + eid + '-' + oid).slideUp();
-		
+
 	});
-	
+
 }
 
 function nbtCopyToMaster ( fid, rsid, refid, rowid, exid, eid, uid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'master/copytomaster.php',
 		type: 'post',
@@ -2591,19 +2591,19 @@ function nbtCopyToMaster ( fid, rsid, refid, rowid, exid, eid, uid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtExtractedElement' + eid).removeClass('nbtFeedbackBad').addClass('nbtFeedbackGood');
-		
+
 		$('.nbtElement' + eid + 'Check').fadeOut(0);
-		
+
 		$('#nbtExtractedElement' + eid + '-' + uid).fadeIn();
-		
+
 	});
-	
+
 }
 
 function nbtCopyMultiSelectToMaster ( fid, rsid, refid, exid, eid, uid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'master/copymstomaster.php',
 		type: 'post',
@@ -2616,19 +2616,19 @@ function nbtCopyMultiSelectToMaster ( fid, rsid, refid, exid, eid, uid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtExtractedElement' + eid).removeClass('nbtFeedbackBad').addClass('nbtFeedbackGood');
-		
+
 		$('.nbtElement' + eid + 'Check').fadeOut(0);
-		
+
 		$('#nbtExtractedElement' + eid + '-' + uid).fadeIn();
-		
+
 	});
-	
+
 }
 
 function nbtCopyCitationToMaster ( eid, cid, rsid, ref ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'master/copycitetomaster.php',
 		type: 'post',
@@ -2640,57 +2640,57 @@ function nbtCopyCitationToMaster ( eid, cid, rsid, ref ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtMasterCitations' + eid).html(html);
-		
+
 	});
-	
+
 }
 
 function nbtCopySEPreviousSingleSelect ( eid, previousid, currentid, dbname ) {
-	
+
 	$('.nbtSub' + previousid + '-' + dbname + '.nbtTextOptionChosen').each ( function () {
-		
+
 		var previousbuttonid = 'nbtSub' + eid + '-' + previousid + 'Q' + dbname + 'A';
-		
+
 		var prev = $(this).attr('id');
-		
+
 		var previousanswer = prev.substring(previousbuttonid.length);
-		
+
 		var currentbuttonid = 'nbtSub' + eid + '-' + currentid + 'Q' + dbname + 'A' + previousanswer;
-		
+
 		$('#' + currentbuttonid).click();
-		
+
 	});
-	
+
 }
 
 function nbtCopySEPreviousMultiSelect ( eid, previousid, currentid, dbname ) {
-	
+
 	$('.nbtSub' + currentid + '-' + dbname + '.nbtTextOptionChosen').each ( function () {
-		
+
 		$(this).click();
-		
+
 	});
-	
+
 	$('.nbtSub' + previousid + '-' + dbname + '.nbtTextOptionChosen').each ( function () {
-		
+
 		var previousbuttonid = 'nbtSub' + eid + '-' + previousid + 'MS';
-		
+
 		var prev = $(this).attr('id');
-		
+
 		var previousanswer = prev.substring(previousbuttonid.length);
-		
+
 		var currentbuttonid = 'nbtSub' + eid + '-' + currentid + 'MS' + previousanswer;
-		
+
 		$('#' + currentbuttonid).click();
-		
+
 	});
-	
+
 }
 
 function nbtChangePassword ( user, code ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'forgot/changepass.php',
 		type: 'post',
@@ -2701,15 +2701,15 @@ function nbtChangePassword ( user, code ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('div#nbtChangePass').html('<h2>Password change ' + html + '</h2><p>You may <a href="' + numbaturl + '">log in</a> normally.</p>');
-	
+
 	});
-	
+
 }
 
 function nbtHideAssignment ( aid ) {
-	
+
 	$.ajax ({
 		url: numbaturl + 'assignments/hide.php',
 		type: 'post',
@@ -2718,17 +2718,17 @@ function nbtHideAssignment ( aid ) {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
-		
+
 		$('#nbtAssignment' + aid).fadeOut();
-	
+
 	});
-	
+
 }
 
 function nbtSetMasterStatus ( fid, mid, newstatus, buttonid, classid ) {
-	
+
 	if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // IF it's already selected
-		
+
 		$.ajax ({
 			url: numbaturl + 'master/changemasterstatus.php',
 			type: 'post',
@@ -2741,9 +2741,9 @@ function nbtSetMasterStatus ( fid, mid, newstatus, buttonid, classid ) {
 		}).done ( function (html) {
 			$('.' + classid).removeClass('nbtTextOptionChosen');
 		});
-		
+
 	} else { // It's not already selected
-		
+
 		$.ajax ({
 			url: numbaturl + 'master/changemasterstatus.php',
 			type: 'post',
@@ -2757,7 +2757,34 @@ function nbtSetMasterStatus ( fid, mid, newstatus, buttonid, classid ) {
 			$('.' + classid).removeClass('nbtTextOptionChosen');
 			$('#' + buttonid).addClass('nbtTextOptionChosen');
 		});
-	
+
 	}
-	
+
+}
+
+function nbtCheckLogin () {
+
+	$.ajax ({
+		url: numbaturl + 'timeout.php',
+		type: 'post'
+		dataType: 'html'
+	}).done ( function (response) {
+
+		if ( response == 1 ) {
+
+			setTimeout ( function () {
+
+				nbtCheckLogin ();
+
+			}, 60000 * 5);
+
+		} else {
+
+			alert ('Your session timed out. Log in again to continue working.');
+			window.open(numbaturl);
+
+		}
+
+	});
+
 }

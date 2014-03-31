@@ -4,28 +4,28 @@
 <head>
 
 	<title>Numbat: <?php echo nbt_get_setting ( "project_name" ); ?></title>
-	
+
 	<!-- jQuery -->
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js">
 	</script>
 	<!-- / jQuery -->
-	
+
 	<!-- Google Fonts -->
 	<link href='http://fonts.googleapis.com/css?family=Fenix|Oxygen' rel='stylesheet' type='text/css'>
 	<!-- / Google Fonts -->
-	
+
 	<!-- Numbat JS -->
 	<script type="text/javascript" src="<?php echo SITE_URL; ?>js/config.js">
 	</script>
 	<script type="text/javascript" src="<?php echo SITE_URL; ?>js/numbat.js">
 	</script>
 	<!-- / Signals JS -->
-	
+
 	<!-- CSS -->
 	<link rel="stylesheet" href="<?php echo SITE_URL; ?>css/reset.css" />
 	<link rel="stylesheet" href="<?php echo SITE_URL; ?>css/numbat.css" />
 	<!-- / CSS -->
-	
+
 	<link rel="SHORTCUT ICON" href="<?php echo SITE_URL; ?>images/favicon.ico"/>
 
 </head>
@@ -34,31 +34,31 @@
 
 <div id="nbtTopBanner">
 	<?php
-	
+
 	if ( nbt_user_is_logged_in () ) {
-		
+
 		?><a href="#" onclick="event.preventDefault();$('nav').slideToggle();"><h1>Numbat: <?php echo nbt_get_setting ( "project_name" ); ?></h1></a><?php
-		
+
 	} else {
-		
+
 		?><a href="<?php echo SITE_URL; ?>"><h1>Numbat: <?php echo nbt_get_setting ( "project_name" ); ?></h1></a><?php
-		
+
 	}
-	
+
 	if ( nbt_user_is_logged_in () ) {
-		
+
 		?><a href="<?php echo SITE_URL . "signout/"; ?>">
 			<span id="nbtTopBannerRight">Sign out (<?php echo $_SESSION['nbt_username']; ?>)</span>
 		</a><?php
-		
+
 	}
-	
+
 	?>
 </div>
 <?php
 
 if ( nbt_user_is_logged_in () ) {
-	
+
 	?><nav>
 		<ul>
 			<li>
@@ -105,7 +105,7 @@ if ( nbt_user_is_logged_in () ) {
 			</li>
 		</ul>
 	</nav><?php
-	
+
 }
-	
+
 ?>
