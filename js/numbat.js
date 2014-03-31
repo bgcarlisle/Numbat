@@ -2766,7 +2766,7 @@ function nbtCheckLogin () {
 
 	$.ajax ({
 		url: numbaturl + 'timeout.php',
-		type: 'post'
+		type: 'post',
 		dataType: 'html'
 	}).done ( function (response) {
 
@@ -2776,7 +2776,7 @@ function nbtCheckLogin () {
 
 				nbtCheckLogin ();
 
-			}, 60000 * 5);
+			}, 30000);
 
 		} else {
 
