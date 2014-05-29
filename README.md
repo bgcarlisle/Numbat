@@ -28,7 +28,7 @@ The following are the intended uses of Numbat.
 ### What Numbat doesn't do
 
 * Statistical analysis of results
-* Calculating Kohen's kappa
+* Calculating Cohen's kappa
 * Semantic analysis of papers to extract (you have to read the papers yourself)
 * Magic
 
