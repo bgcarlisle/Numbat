@@ -133,7 +133,7 @@ if ($_SERVER["HTTPS"] == "on") {
 		<h3>Site details</h3>
 		<p class="nbtFinePrint">Should auto-detect correctly; change only if you know what you're doing.</p>
 		<p>Absolute path to installation</p>
-		<p class="nbtFinePrint">Include trailing slash; e.g. "/home/webspace/numbat/"</p>
+		<p class="nbtFinePrint">Include leading and trailing slashes; e.g. "/home/webspace/numbat/"</p>
 		<input id="nbtAbsPath" type="text" value="<?php
 
 		echo substr (__DIR__, 0, strlen ( __DIR__ ) - 7);
