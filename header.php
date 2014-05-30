@@ -19,7 +19,7 @@
 	</script>
 	<script type="text/javascript" src="<?php echo SITE_URL; ?>js/numbat.js">
 	</script>
-	<!-- / Signals JS -->
+	<!-- / Numbat JS -->
 
 	<!-- CSS -->
 	<link rel="stylesheet" href="<?php echo SITE_URL; ?>css/reset.css" />
