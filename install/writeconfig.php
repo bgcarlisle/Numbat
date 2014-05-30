@@ -44,6 +44,10 @@ if ( file_put_contents ( $_POST['abs_path'] . "config.php", $configphp ) && file
 
 	?><p>Configuration files written &#x2713;</p><?php
 
+} else {
+
+	?><p>Error writing configuration files</p><?php
+
 }
 
 // add new blank numbat database schema
