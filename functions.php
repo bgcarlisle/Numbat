@@ -7401,7 +7401,7 @@ function nbt_move_table_data_column ( $columnid, $direction ) {
 
 		}
 
-	} else { // moving "up"
+	} else { // moving "down"
 
 		// first, see if there are any elements below it
 
