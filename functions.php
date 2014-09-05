@@ -2164,7 +2164,16 @@ function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $maxlength, $allc
 
 }
 
+function nbt_echo_text_area_field ($formid, $extraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
 
+	?><textarea style="width: 100%; height: 150px;" id="nbtTextField<?php echo $dbcolumn; ?>" onblur="nbtSaveTextField(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtTextField<?php echo $dbcolumn; ?>', 'nbtTextField<?php echo $dbcolumn; ?>Feedback');" maxlength="<?php echo $maxlength; ?>"><?php
+
+	echo $extraction[$dbcolumn];
+
+	?></textarea>
+	<p class="nbtInputFeedback" id="nbtTextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span><?php
+
+}
 
 function nbt_echo_subextraction_text_field ($elementid, $subextraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
 
@@ -4504,6 +4513,152 @@ function nbt_add_open_text_field ( $formid, $elementid ) {
 
 }
 
+function nbt_add_text_area_field ( $formid, $elementid ) {
+
+	// this element is the one immediately before where we want to insert a new element
+
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+
+	// get all the elements after this one and increase their sortorder value by 1
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
+
+		$stmt->bindParam(':fid', $fid);
+		$stmt->bindParam(':sort', $sort);
+
+		$fid = $formid;
+		$sort = $element['sortorder'];
+
+		if ($stmt->execute()) {
+
+			$result = $stmt->fetchAll();
+
+			$dbh = null;
+
+			foreach ( $result as $row ) {
+
+				nbt_increase_element_sortorder ( $row['id'] );
+
+			}
+
+		} else {
+
+			echo "MySQL fail";
+
+		}
+
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+	// find a good name for the new column
+
+	$foundgoodcolumn = FALSE;
+
+	$counter = 1;
+
+	while ( $foundgoodcolumn == FALSE ) {
+
+		try {
+
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'text_area" . $counter . "';");
+
+			$stmt->execute();
+
+			$result = $stmt->fetchAll();
+
+			if ( count ( $result ) == 0 ) {
+
+				$columnname = "text_area_" . $counter;
+
+				$foundgoodcolumn = TRUE;
+
+			}
+
+		}
+
+		catch (PDOException $e) {
+
+			echo $e->getMessage();
+
+		}
+
+		$counter ++;
+
+	}
+
+	// then insert a new element into the form elements table
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname) VALUES (:form, :sort, :type, :column);");
+
+		$stmt->bindParam(':form', $fid);
+		$stmt->bindParam(':sort', $sort);
+		$stmt->bindParam(':type', $type);
+		$stmt->bindParam(':column', $col);
+
+		$fid = $formid;
+		$sort = $element['sortorder'] + 1;
+		$type = "text_area";
+		$col = $columnname;
+
+		$stmt->execute();
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+	// then, add a column to the extractions table
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(5000) DEFAULT NULL;");
+
+		$stmt->execute();
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+	// then, add the column to the master table
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(5000) DEFAULT NULL;");
+
+		$stmt->execute();
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
 function nbt_delete_form_element ( $elementid ) {
 
 	// first get the form element to be removed
@@ -4523,6 +4678,44 @@ function nbt_delete_form_element ( $elementid ) {
 		break;
 
 		case "open_text":
+
+			// remove the column from the extractions table
+
+			try {
+
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
+
+				$stmt->execute();
+
+			}
+
+			catch (PDOException $e) {
+
+				echo $e->getMessage();
+
+			}
+
+			// remove it from the master table
+
+			try {
+
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
+
+				$stmt->execute();
+
+			}
+
+			catch (PDOException $e) {
+
+				echo $e->getMessage();
+
+			}
+
+		break;
+
+		case "text_area":
 
 			// remove the column from the extractions table
 

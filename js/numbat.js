@@ -208,6 +208,24 @@ function nbtAddNewOpenText ( fid, eid ) {
 
 }
 
+function nbtAddNewTextArea ( fid, eid ) {
+
+	$.ajax ({
+		url: numbaturl + 'forms/addtextarea.php',
+		type: 'post',
+		data: {
+			formid: fid,
+			elementid: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+
+		$('#nbtFormElements').html(html);
+
+	});
+
+}
+
 function nbtAddNewSingleSelect ( fid, eid ) {
 
 	$.ajax ({
