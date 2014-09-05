@@ -2166,12 +2166,12 @@ function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $maxlength, $allc
 
 function nbt_echo_text_area_field ($formid, $extraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
 
-	?><textarea style="width: 100%; height: 150px;" id="nbtTextField<?php echo $dbcolumn; ?>" onblur="nbtSaveTextField(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtTextField<?php echo $dbcolumn; ?>', 'nbtTextField<?php echo $dbcolumn; ?>Feedback');" maxlength="<?php echo $maxlength; ?>"><?php
+	?><textarea style="width: 100%; height: 150px;" id="nbtTextAreaField<?php echo $dbcolumn; ?>" onkeyup="nbtCheckTextAreaCharacters('nbtTextAreaField<?php echo $dbcolumn; ?>', 5000);" onblur="nbtSaveTextField(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtTextAreaField<?php echo $dbcolumn; ?>', 'nbtTextAreaField<?php echo $dbcolumn; ?>Feedback');" maxlength="<?php echo $maxlength; ?>"><?php
 
 	echo $extraction[$dbcolumn];
 
 	?></textarea>
-	<p class="nbtInputFeedback" id="nbtTextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span><?php
+	<p class="nbtInputFeedback" id="nbtTextAreaField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span><?php
 
 }
 

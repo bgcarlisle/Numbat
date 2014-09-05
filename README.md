@@ -1,4 +1,4 @@
-Numbat v. 1.2
+Numbat v. 1.3
 ======
 
 Numbat Academic Meta-Analysis Extraction Manager
@@ -60,6 +60,10 @@ You may be able to install Numbat on setups different from what is described bel
 * MySQL 5
 
 Copy the entire file to your web server, and navigate to the Numbat directory with your browser. You will need to know your MySQL server, username and password to complete the installation.
+
+## What's new in 1.3
+
+* New "text area" form element for extracting larger blocks of text
 
 
 ## Contact info

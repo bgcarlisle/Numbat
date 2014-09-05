@@ -2806,3 +2806,13 @@ function nbtCheckLogin () {
 	});
 
 }
+
+function nbtCheckTextAreaCharacters ( textareaid, maxlength ) {
+
+	if ( $('#' + textareaid).val().length > maxlength ) {
+
+		$('#' + textareaid).val() = $('#' + textareaid).val().substring ( 0, maxlimit );
+
+	}
+
+}
