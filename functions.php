@@ -4628,7 +4628,7 @@ function nbt_add_text_area_field ( $formid, $elementid ) {
 	try {
 
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(5000) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 		$stmt->execute();
 
@@ -4645,7 +4645,7 @@ function nbt_add_text_area_field ( $formid, $elementid ) {
 	try {
 
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(5000) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 		$stmt->execute();
 
@@ -5145,45 +5145,93 @@ function nbt_change_column_name ( $elementid, $newcolumnname, $dbsize = 200 ) {
 
 	$itworked = 0;
 
-	// then alter the column in the extraction table
+	if ( $element['type'] == "text_area" ) {
 
-	try {
+		// then alter the column in the extraction table
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " varchar(" . $dbsize . ") DEFAULT NULL;");
+		try {
 
-		if ($stmt->execute()) {
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " TEXT DEFAULT NULL;");
 
-			$itworked ++;
+			if ($stmt->execute()) {
 
-		}
+				$itworked ++;
 
-	}
-
-	catch (PDOException $e) {
-
-		echo $e->getMessage();
-
-	}
-
-	// then alter the column in the master table
-
-	try {
-
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " varchar(" . $dbsize . ") DEFAULT NULL;");
-
-		if ($stmt->execute()) {
-
-			$itworked ++;
+			}
 
 		}
 
-	}
+		catch (PDOException $e) {
 
-	catch (PDOException $e) {
+			echo $e->getMessage();
 
-		echo $e->getMessage();
+		}
+
+		// then alter the column in the master table
+
+		try {
+
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " TEXT DEFAULT NULL;");
+
+			if ($stmt->execute()) {
+
+				$itworked ++;
+
+			}
+
+		}
+
+		catch (PDOException $e) {
+
+			echo $e->getMessage();
+
+		}
+
+	} else {
+
+		// then alter the column in the extraction table
+
+		try {
+
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " varchar(" . $dbsize . ") DEFAULT NULL;");
+
+			if ($stmt->execute()) {
+
+				$itworked ++;
+
+			}
+
+		}
+
+		catch (PDOException $e) {
+
+			echo $e->getMessage();
+
+		}
+
+		// then alter the column in the master table
+
+		try {
+
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " varchar(" . $dbsize . ") DEFAULT NULL;");
+
+			if ($stmt->execute()) {
+
+				$itworked ++;
+
+			}
+
+		}
+
+		catch (PDOException $e) {
+
+			echo $e->getMessage();
+
+		}
 
 	}
 
