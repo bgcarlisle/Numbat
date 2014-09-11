@@ -975,6 +975,9 @@ function nbtAddNewDateSelector ( fid, eid ) {
 
 function nbtNewDumpFile () {
 
+	$('#nbtCoverup').fadeIn();
+	$('#nbtThinky').fadeIn();
+
 	$.ajax ({
 		url: numbaturl + 'backup/newdumpfile.php',
 		type: 'post',
@@ -982,6 +985,9 @@ function nbtNewDumpFile () {
 		},
 		dataType: 'html'
 	}).done ( function (html) {
+
+		$('#nbtCoverup').fadeOut();
+		$('#nbtThinky').fadeOut();
 
 		$('#nbtListOfDumpFiles').html(html);
 
