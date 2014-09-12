@@ -45,6 +45,7 @@ div#nbtTopBanner {
 	background-image:-o-linear-gradient(top, #ccf, #669 5%, #336);
 	border-bottom: 1px solid #999;
 	color: #fff;
+	z-index: 1000;
 }
 div#nbtTopBanner a {
 	color: #fff;
