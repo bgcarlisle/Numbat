@@ -41,7 +41,7 @@ if ( count ( $extractions ) >= 2 ) {
 		?></p>
 	</div>
 	<div class="nbtContentPanel" style="width: 940px;">
-		<h3>Status of extraction</h3>
+		<h3>Status of reconciliation</h3>
 		<?php
 
 		$answers = array (
