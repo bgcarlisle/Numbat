@@ -15,7 +15,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
 
 		} else {
 
-			$nbtErrorText = "Upload error";
+			$nbtErrorText = "Upload error: " . $_FILES["file"]["error"];
 
 			include ( ABS_PATH . "header.php" );
 			include ( ABS_PATH . "error.php" );
