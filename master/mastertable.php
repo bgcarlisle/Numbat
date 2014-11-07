@@ -44,4 +44,3 @@ $no_of_columns = count ( $columns );
 
 	?>
 </table>
-<p class="nbtFinePrint" id="nbtTable<?php echo $nbtMasterTableID; ?>Feedback">&nbsp;</p>

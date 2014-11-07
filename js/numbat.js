@@ -1588,17 +1588,27 @@ function nbtUpdateExtractionTableData ( tableid, rowid, columnid, inputid) {
 		dataType: 'html'
 	}).done ( function (html) {
 
-		$('#nbtTable' + tableid + 'Feedback').html(html);
+		if (html == 'Changes saved') {
 
-		$('#nbtTable' + tableid + 'Feedback').slideDown(50, function () {
+			$('#' + inputid).addClass('nbtBackgroundFeedbackGood');
 
 			setTimeout ( function () {
 
-				$('#nbtTable' + tableid + 'Feedback').slideUp(1000);
+				$('#' + inputid).removeClass('nbtBackgroundFeedbackGood');
 
-			}, 2000);
+			}, 500);
 
-		});
+		} else {
+
+			$('#' + inputid).addClass('nbtBackgroundFeedbackBad');
+
+			setTimeout ( function () {
+
+				$('#' + inputid).removeClass('nbtBackgroundFeedbackBad');
+
+			}, 500);
+
+		}
 
 	});
 
@@ -1618,17 +1628,27 @@ function nbtUpdateMasterExtractionTableData ( tableid, rowid, columnid, inputid)
 		dataType: 'html'
 	}).done ( function (html) {
 
-		$('#nbtTable' + tableid + 'Feedback').html(html);
+		if (html == 'Changes saved') {
 
-		$('#nbtTable' + tableid + 'Feedback').slideDown(50, function () {
+			$('#' + inputid).addClass('nbtBackgroundFeedbackGood');
 
 			setTimeout ( function () {
 
-				$('#nbtTable' + tableid + 'Feedback').slideUp(1000);
+				$('#' + inputid).removeClass('nbtBackgroundFeedbackGood');
 
-			}, 2000);
+			}, 500);
 
-		});
+		} else {
+
+			$('#' + inputid).addClass('nbtBackgroundFeedbackBad');
+
+			setTimeout ( function () {
+
+				$('#' + inputid).removeClass('nbtBackgroundFeedbackBad');
+
+			}, 500);
+
+		}
 
 	});
 

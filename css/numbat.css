@@ -117,6 +117,16 @@ input[type=password] {
 	background: #ccffcc;
 	color: #333;
 }
+.nbtBackgroundFeedbackGood {
+	border: 1px solid #669966;
+	background: #ccffcc;
+	color: #333;
+}
+.nbtBackgroundFeedbackBad {
+	border: 1px solid #996666;
+	background: #ffcccc;
+	color: #333;
+}
 .nbtFeedbackBad {
 	border-radius: 3px;
 	border: 1px solid #996666;
