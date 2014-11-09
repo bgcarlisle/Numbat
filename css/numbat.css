@@ -1,8 +1,9 @@
-h1,h2,h3,h4,h5,h6 {
+h2,h3,h4,h5,h6 {
 	font-family: 'Fenix', serif;
 	font-weight: 400;
 }
 h1 {
+	font-weight: 400;
 	font-size: 25px;
 }
 h2 {
@@ -31,7 +32,6 @@ body {
 	padding-top: 50px;
 }
 div#nbtTopBanner {
-	font-family: 'Fenix', serif;
 	font-weight: 400;
 	font-size: 25px;
 	position: fixed;
@@ -39,10 +39,7 @@ div#nbtTopBanner {
 	top: 0px;
 	width: 100%;
 	padding: 3px 20px 3px 20px;
-	background-color:#336;
-	background-image:-webkit-gradient(linear, 0 0, 0 100%, color-stop(0, #ccf), color-stop(0.05, #669), color-stop(1, #336));
-	background-image:-moz-linear-gradient(top, #ccf, #669 5%, #336);
-	background-image:-o-linear-gradient(top, #ccf, #669 5%, #336);
+	background-color: #669;
 	border-bottom: 1px solid #999;
 	color: #fff;
 	z-index: 1000;
@@ -256,6 +253,7 @@ div.nbtConditionalDisplay {
 table.nbtTabledData {
 	width: 100%;
 	font-size: 12px;
+	margin-bottom: 20px;
 }
 table.nbtTabledData td {
 	padding: 2px;

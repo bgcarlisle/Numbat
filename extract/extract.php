@@ -6,12 +6,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 <div class="nbtSidebar">
 	<h3>Extraction notes</h3>
 	<p class="nbtFinePrint">These notes are for your own reference. These will not be included in the final report, and they are not visible to other extractors. <a href="#" onclick="event.preventDefault();$(this).parent().parent().fadeOut(200);$('button#nbtUnhideSidebar').fadeIn(200);">[Hide]</a></p>
-	<textarea id="nbtExtractionNotes" onblur="nbtSaveTextField(<?php echo $_GET['form']; ?>, <?php echo $extraction['id']; ?>, 'notes', 'nbtExtractionNotes', 'nbtNotesFeedback');"><?php
+	<textarea id="nbtExtractionNotes" onblur="nbtSaveTextField(<?php echo $_GET['form']; ?>, <?php echo $extraction['id']; ?>, 'notes', 'nbtExtractionNotes');"><?php
 
 	echo $extraction['notes'];
 
 	?></textarea>
-	<p class="nbtInputFeedback" id="nbtNotesFeedback">&nbsp;</p>
 
 	<h3>Manual citations</h3>
 	<button onclick="nbtAddNewReferenceToRefSet(<?php echo $extraction['refsetid']; ?>);">Add a new reference</button>

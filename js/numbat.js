@@ -1121,7 +1121,9 @@ function nbtMoveCitationProperty ( eid, cid, dir ) {
 
 }
 
-function nbtSaveTextField (formid, extractionid, questionid, textfieldid, feedbackid) {
+function nbtSaveTextField (formid, extractionid, questionid, textfieldid) {
+
+	// ***
 
 	$.ajax ({
 		url: numbaturl + 'extract/updateextraction.php',
@@ -1135,17 +1137,39 @@ function nbtSaveTextField (formid, extractionid, questionid, textfieldid, feedba
 		dataType: 'html'
 	}).done ( function (html) {
 
-		$('#' + feedbackid).html(html);
+		if (html == 'Changes saved') {
 
-		$('#' + feedbackid).fadeIn(50, function () {
+			$('#' + textfieldid).addClass('nbtBackgroundFeedbackGood');
 
 			setTimeout ( function () {
 
-				$('#' + feedbackid).fadeOut(1000);
+				$('#' + textfieldid).removeClass('nbtBackgroundFeedbackGood');
 
-			}, 2000);
+			}, 500);
 
-		});
+		} else {
+
+			$('#' + textfieldid).addClass('nbtBackgroundFeedbackBad');
+
+			setTimeout ( function () {
+
+				$('#' + textfieldid).removeClass('nbtBackgroundFeedbackBad');
+
+			}, 500);
+
+		}
+
+		// $('#' + feedbackid).html(html);
+		//
+		// $('#' + feedbackid).fadeIn(50, function () {
+		//
+		// 	setTimeout ( function () {
+		//
+		// 		$('#' + feedbackid).fadeOut(1000);
+		//
+		// 	}, 2000);
+		//
+		// });
 
 	});
 
