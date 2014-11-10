@@ -107,8 +107,13 @@ input[type=text] {
 	border: 1px solid #999;
 	padding: 2px 4px 2px 4px;
 }
+table input[type=text] {
+	padding: 1px;
+}
 input[type=password] {
 	width: 200px;
+	border: 1px solid #999;
+	padding: 2px 4px 2px 4px;
 }
 .nbtFeedbackGood {
 	border-radius: 3px;
