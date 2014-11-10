@@ -48,8 +48,13 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		}
 
+		if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
+
+			?><button onclick="window.open('<?php echo SITE_URL; ?>attach/?action=new&refset=<?php echo $_GET['refset']; ?>&ref=<?php echo $_GET['ref']; ?>','_self');">Attach a file to this reference</button><?php
+			
+		}
+
 		?>
-		<button onclick="window.open('<?php echo SITE_URL; ?>attach/?action=new&refset=<?php echo $_GET['refset']; ?>&ref=<?php echo $_GET['ref']; ?>','_self');">Attach a file to this reference</button>
 	</div>
 	<div class="nbtContentPanel">
 		<h3>Abstract</h3>

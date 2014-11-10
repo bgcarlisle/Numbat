@@ -24,8 +24,8 @@
             ?></p>
             <form action="<?php echo SITE_URL; ?>attach/upload.php" method="post" enctype="multipart/form-data">
                   <input type="file" name="file" id="file">
-                  <input type="hidden" name="refsetid" value="<?php echo $_POST['refset']; ?>">
-                  <input type="hidden" name="refid" value="<?php echo $suggestion['id']; ?>">
+                  <input type="hidden" name="refsetid" value="<?php echo $_GET['refset']; ?>">
+                  <input type="hidden" name="refid" value="<?php echo $_GET['ref']; ?>">
                   <button>Attach file</button>
             </form><?php
 
