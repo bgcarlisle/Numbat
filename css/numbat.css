@@ -104,6 +104,8 @@ span#nbtTopBannerRight {
 input[type=text] {
 	width: 200px;
 	margin-bottom: 4px;
+	border: 1px solid #999;
+	padding: 2px 4px 2px 4px;
 }
 input[type=password] {
 	width: 200px;

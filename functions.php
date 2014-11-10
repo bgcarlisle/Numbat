@@ -2160,7 +2160,7 @@ function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $maxlength, $allc
 
 	}
 
-	?>><span class="nbtInputFeedback" id="nbtTextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span><?php
+	?>><?php
 
 }
 
@@ -2222,8 +2222,7 @@ function nbt_echo_date_selector ($formid, $extraction, $dbcolumn) {
 
 			}
 
-		?>" id="nbtDateField<?php echo $dbcolumn; ?>" onblur="nbtSaveDateField(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtDateField<?php echo $dbcolumn; ?>', 'nbtTextField<?php echo $dbcolumn; ?>Feedback');">
-		<span class="nbtInputFeedback" id="nbtTextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span>
+		?>" id="nbtDateField<?php echo $dbcolumn; ?>" onblur="nbtSaveDateField(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtDateField<?php echo $dbcolumn; ?>');">
 	</p><?php
 
 }
