@@ -1945,6 +1945,49 @@ function nbtFindReferenceToAssign () {
 
 }
 
+function nbtFindReferenceToAttach () {
+
+	if ( $('#nbtAssignRefSet').val() == 'NULL' ) {
+
+		$('#nbtFoundReferencesForAssigment').addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint').removeClass('nbtCitationSuggestions').html('Choose a reference set');
+
+
+	} else {
+
+		$('#nbtFoundReferencesForAssigment').removeClass('nbtFeedback').removeClass('nbtFeedbackBad').removeClass('nbtFinePrint').addClass('nbtCitationSuggestions');
+
+		if ( $('#nbtReferenceFinder').val() == '' ) {
+
+			$('#nbtFoundReferencesForAssigment').fadeOut(100);
+
+			$('#nbtFoundReferencesForAssigment').html('');
+
+		} else {
+
+			$('#nbtFoundReferencesForAssigment').fadeIn(100);
+
+			$.ajax ({
+				url: numbaturl + 'attach/referencefinder.php',
+				type: 'post',
+				data: {
+					userid: $('#nbtAssignUser').val(),
+					formid: $('#nbtAssignForm').val(),
+					refset: $('#nbtAssignRefSet').val(),
+					query: $('#nbtReferenceFinder').val()
+				},
+				dataType: 'html'
+			}).done ( function (html) {
+
+				$('#nbtFoundReferencesForAssigment').html(html);
+
+			});
+
+		}
+
+	}
+
+}
+
 function nbtAddAssignment ( uid, fid, rsid, rid ) {
 
 	$.ajax ({
@@ -2864,5 +2907,33 @@ function nbtCheckTextAreaCharacters ( textareaid, maxlength ) {
 		$('#' + textareaid).val() = $('#' + textareaid).val().substring ( 0, maxlimit );
 
 	}
+
+}
+
+function nbtDeleteAttachment ( rsid, rid, ext ) {
+
+	$.ajax ({
+		url: numbaturl + 'attach/delete.php',
+		type: 'post',
+		data: {
+			refsetid: rsid,
+			refid: rid,
+			filetype: ext
+		},
+		dataType: 'html'
+	}).done ( function (response) {
+
+		if ( response == 'Deleted' ) {
+
+			$('#nbtAttachmentRow' + rsid + '-' + rid + '-' + ext).css('text-decoration', 'line-through');
+			$('#nbtDeleteAttachment' + rsid + '-' + rid + '-' + ext).fadeOut();
+
+		} else {
+
+			alert ('There was an error deleting this file.');
+
+		}
+
+	});
 
 }

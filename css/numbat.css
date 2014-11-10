@@ -467,3 +467,15 @@ nav img {
 img.nbtTitleImage {
 	margin: 0 5px 10px 0;
 }
+.nbtAttachment {
+	border-radius: 3px;
+	background: #336;
+	color: #fff;
+	padding: 1px 5px 2px 5px;
+	font-size: 12px;
+	margin: 3px 5px 0 0;
+}
+.nbtAttachment a {
+	color: #fff;
+	text-decoration: none;
+}

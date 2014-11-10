@@ -80,6 +80,12 @@ if ( nbt_user_is_logged_in () ) {
 				</a>
 			</li>
 			<li>
+				<a href="<?php echo SITE_URL; ?>attach/">
+					<img src="<?php echo SITE_URL; ?>images/attach.png">
+					Attach files to references
+				</a>
+			</li>
+			<li>
 				<a href="<?php echo SITE_URL; ?>assignments/">
 					<img src="<?php echo SITE_URL; ?>images/assignments.png">
 					Manage extraction assignments

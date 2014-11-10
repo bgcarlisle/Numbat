@@ -1,0 +1,44 @@
+<?php
+
+include_once ("../config.php");
+
+$suggestions = nbt_return_references_for_assignment_search ( $_POST['refset'], $_POST['query'] );
+
+$counter = 0;
+
+foreach ( $suggestions as $suggestion ) {
+
+      if ( $counter < 5 ) {
+
+            ?><div>
+                  <h4><?php echo $suggestion['title']; ?>.</h4>
+                  <p><?php echo $suggestion['authors']; ?>.
+                  <?php
+
+                  if ( $suggestion['journal'] != "" && $suggestion['year'] != "" ) {
+
+                        ?><span class="nbtJournalName"><?php echo $suggestion['journal']; ?></span>: <?php echo $suggestion['year']; ?>.<?php
+
+                  }
+
+                  ?></p>
+                  <form action="<?php echo SITE_URL; ?>attach/upload.php" method="post" enctype="multipart/form-data">
+                        <input type="file" name="file" id="file">
+                        <input type="hidden" name="refsetid" value="<?php echo $_POST['refset']; ?>">
+                        <input type="hidden" name="refid" value="<?php echo $suggestion['id']; ?>">
+                        <button>Attach file</button>
+                  </form>
+            </div><?php
+
+            $counter ++;
+
+      } else {
+
+            ?><div>
+                  <p>There are more than 5 results for the query you entered. You may need to refine your search.</p>
+            </div><?php
+      }
+
+}
+
+?>

@@ -30,6 +30,24 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		}
 
+		$files = scandir ( ABS_PATH . "attach/files/" . $_GET['refset'] . "/");
+
+		foreach ( $files as $file ) {
+
+			if ( substr ($file, 0, 1) != "." ) {
+
+				$file_ref = explode(".", $file);
+
+				if ( $file_ref[0] == $_GET['ref']) {
+
+					?><span class="nbtAttachment"><a href="<?php echo SITE_URL; ?>attach/files/<?php echo $_GET['refset']; ?>/<?php echo $file; ?>">Attached <?php echo $file_ref[1] ?></a></span><?php
+
+				}
+
+			}
+
+		}
+
 		?>
 	</div>
 	<div class="nbtContentPanel">
