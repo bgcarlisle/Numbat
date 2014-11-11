@@ -1123,8 +1123,6 @@ function nbtMoveCitationProperty ( eid, cid, dir ) {
 
 function nbtSaveTextField (formid, extractionid, questionid, textfieldid) {
 
-	// ***
-
 	$.ajax ({
 		url: numbaturl + 'extract/updateextraction.php',
 		type: 'post',
@@ -1254,8 +1252,6 @@ function nbtSaveCitationTextField (sectionid, citationid, questionid, textfieldi
 }
 
 function nbtSaveDateField (formid, extractionid, questionid, textfieldid) {
-
-	// ***
 
 	$.ajax ({
 		url: numbaturl + 'extract/formatdate.php',
@@ -1833,6 +1829,8 @@ function nbtRemoveMasterCitation ( sectionid, citationid ) {
 
 function nbtUpdateCiteNo ( section, citid ) {
 
+	// ***
+
 	$.ajax ({
 		url: numbaturl + 'extract/updateciteno.php',
 		type: 'post',
@@ -1844,17 +1842,27 @@ function nbtUpdateCiteNo ( section, citid ) {
 		dataType: 'html'
 	}).done ( function (html) {
 
-		$('#nbtCiteNoFeedback' + section + '-' + citid).html(html);
+		if (html == '&#10003;') {
 
-		$('#nbtCiteNoFeedback' + section + '-' + citid).fadeIn(50, function () {
+			$('#nbtCiteNo' + section + '-' + citid).addClass('nbtBackgroundFeedbackGood');
 
 			setTimeout ( function () {
 
-				$('#nbtCiteNoFeedback' + section + '-' + citid).fadeOut(1000);
+				$('#nbtCiteNo' + section + '-' + citid).removeClass('nbtBackgroundFeedbackGood');
 
-			}, 2000);
+			}, 500);
 
-		});
+		} else {
+
+			$('#nbtCiteNo' + section + '-' + citid).addClass('nbtBackgroundFeedbackBad');
+
+			setTimeout ( function () {
+
+				$('#nbtCiteNo' + section + '-' + citid).removeClass('nbtBackgroundFeedbackBad');
+
+			}, 500);
+
+		}
 
 	});
 
