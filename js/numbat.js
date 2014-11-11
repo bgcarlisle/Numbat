@@ -1221,7 +1221,7 @@ function nbtSaveMasterSubExtractionTextField (elementid, extractionid, questioni
 
 }
 
-function nbtSaveCitationTextField (sectionid, citationid, questionid, textfieldid, feedbackid) {
+function nbtSaveCitationTextField (sectionid, citationid, questionid, textfieldid) {
 
 	$.ajax ({
 		url: numbaturl + 'extract/updatecitationproperty.php',
@@ -1235,17 +1235,27 @@ function nbtSaveCitationTextField (sectionid, citationid, questionid, textfieldi
 		dataType: 'html'
 	}).done ( function (html) {
 
-		$('#' + feedbackid).html(html);
+		if (html == 'Changes saved') {
 
-		$('#' + feedbackid).fadeIn(50, function () {
+			$('#' + textfieldid).addClass('nbtBackgroundFeedbackGood');
 
 			setTimeout ( function () {
 
-				$('#' + feedbackid).fadeOut(1000);
+				$('#' + textfieldid).removeClass('nbtBackgroundFeedbackGood');
 
-			}, 2000);
+			}, 500);
 
-		});
+		} else {
+
+			$('#' + textfieldid).addClass('nbtBackgroundFeedbackBad');
+
+			setTimeout ( function () {
+
+				$('#' + textfieldid).removeClass('nbtBackgroundFeedbackBad');
+
+			}, 500);
+
+		}
 
 	});
 
@@ -1828,8 +1838,6 @@ function nbtRemoveMasterCitation ( sectionid, citationid ) {
 }
 
 function nbtUpdateCiteNo ( section, citid ) {
-
-	// ***
 
 	$.ajax ({
 		url: numbaturl + 'extract/updateciteno.php',
