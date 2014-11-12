@@ -16,6 +16,34 @@ if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
                         <h4>[<?php echo $suggestion['id']; ?>] <?php echo $suggestion['title']; ?>.</h4>
                         <p><?php echo $suggestion['authors']; ?>. <span class="nbtJournalName"><?php echo $suggestion['journal']; ?></span>: <?php echo $suggestion['year']; ?>.</p>
 
+                        <?php
+
+                        $files = scandir ( ABS_PATH . "attach/files/" . $_POST['refset'] . "/");
+
+                        foreach ( $files as $file ) {
+
+                              if ( substr ($file, 0, 1) != "." ) {
+
+                                    // Get the ref id
+
+                                    $file_ref = explode(".", $file);
+
+                                    $refid = $file_ref[0];
+
+                                    if ( $file_ref[0] == $suggestion['id'] ) {
+
+                                          ?><span class="nbtAttachment">Attached <?php echo $file_ref[1]; ?></span><?php
+
+                                    }
+
+                              }
+
+                        }
+
+                        ?>
+
+                        <h4>Reference details</h4>
+
                         <table class="nbtTabledData">
                               <tr class="nbtTableHeaders">
                                     <td>Assignments</td>
@@ -25,7 +53,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
                               </tr>
                               <tr>
                                     <td>
-                                          <?php
+                                          <ul><?php
 
                                           $assignments = nbt_get_all_assignments_for_refset_and_ref ( $_POST['refset'], $suggestion['id'] );
 
@@ -35,14 +63,17 @@ if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
 
                                                 $assigned_username = nbt_get_username_for_userid ( $assignment['userid'] );
 
-                                                ?><span class="nbtExtractionName"><?php echo $assigned_form['name']; ?> | <?php echo $assigned_username; ?></span><?php
+                                                ?><li>
+                                                      <?php echo $assigned_form['name']; ?>
+                                                      <span class="nbtExtractionName"><?php echo $assigned_username; ?></span>
+                                                </li><?php
 
                                           }
 
-                                          ?>
+                                          ?></ul>
                                     </td>
                                     <td>
-                                          <?php
+                                          <ul><?php
 
                                           $all_forms = nbt_get_all_extraction_forms ();
 
@@ -52,16 +83,19 @@ if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
 
                                                 foreach ( $form_extractions as $extraction ) {
 
-                                                      ?><span class="nbtExtractionName"><?php echo $form['name']; ?> | <?php echo $extraction['username'] ?></span><?php
+                                                      ?><li>
+                                                            <?php echo $form['name']; ?>
+                                                            <span class="nbtExtractionName"><?php echo $extraction['username'] ?></span>
+                                                      </li><?php
 
                                                 }
 
                                           }
 
-                                          ?>
+                                          ?></ul>
                                     </td>
                                     <td>
-                                          <?php
+                                          <ul><?php
 
                                           foreach ( $all_forms as $form ) {
 
@@ -69,16 +103,18 @@ if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
 
                                                 foreach ( $form_masters as $master ) {
 
-                                                      ?><span class="nbtExtractionName"><?php echo $form['name']; ?></span><?php
+                                                      ?><li>
+                                                            <?php echo $form['name']; ?>
+                                                      </li><?php
 
                                                 }
 
                                           }
 
-                                          ?>
+                                          ?></ul>
                                     </td>
                                     <td>
-                                          <?php
+                                          <ul><?php
 
                                           $citation_form_elements = nbt_get_all_citation_form_elements ();
 
@@ -88,13 +124,22 @@ if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
 
                                                 foreach ($citations as $citation ) {
 
-                                                      ?><span class="nbtExtractionName"><?php echo $citation['username']; ?> [<?php echo $citation['referenceid']; ?>] #<?php echo $citation['cite_no']; ?></span><?php
+                                                      ?><li>
+                                                            <?php echo $citation['referenceid'];
+
+                                                            if ( ! is_null ($citation['cite_no']) ) {
+                                                                  ?> [#<?php echo $citation['cite_no']; ?>]<?php
+                                                            }
+
+                                                            ?> &rarr; <?php echo $citation['citationid']; ?>
+                                                            <span class="nbtExtractionName"><?php echo $citation['username']; ?></span>
+                                                      </li><?php
 
                                                 }
 
                                           }
 
-                                          ?>
+                                          ?></ul>
                                     </td>
                               </tr>
                               <tr>
