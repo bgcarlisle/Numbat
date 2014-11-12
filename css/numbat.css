@@ -115,6 +115,9 @@ input[type=password] {
 	border: 1px solid #999;
 	padding: 2px 4px 2px 4px;
 }
+select {
+	border: 1px solid #999;
+}
 .nbtFeedbackGood {
 	border-radius: 3px;
 	border: 1px solid #669966;
