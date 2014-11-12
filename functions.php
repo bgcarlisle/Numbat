@@ -775,18 +775,20 @@ function nbt_get_all_extracted_references_for_refset_and_form ( $refsetid, $form
 
 }
 
-function nbt_get_extractions_for_refset_ref_and_form ( $refsetid, $refid, $formid ) {
+function nbt_get_extractions_for_refset_ref_and_form ( $refsetid, $refid, $formid, $minstatus = 2 ) {
 
 	try {
 
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT *, (SELECT `username` FROM `users` WHERE `users`.`id` = `extractions_" . $formid . "`.`userid`) as `username` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `referenceid` = :ref AND `status` = 2 ORDER BY id ASC;");
+		$stmt = $dbh->prepare("SELECT *, (SELECT `username` FROM `users` WHERE `users`.`id` = `extractions_" . $formid . "`.`userid`) as `username` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `referenceid` = :ref AND `status` >= :status ORDER BY id ASC;");
 
 		$stmt->bindParam(':refset', $rsid);
 		$stmt->bindParam(':ref', $rid);
+		$stmt->bindParam(':status', $stat);
 
 		$rsid = $refsetid;
 		$rid = $refid;
+		$stat = $minstatus;
 
 		$stmt->execute();
 
@@ -2531,7 +2533,7 @@ function nbt_update_manual_reference ( $refsetid, $column, $refid, $newvalue ) {
 
 }
 
-function nbt_remove_manual_reference ( $refsetid, $refid) {
+function nbt_remove_manual_reference ( $refsetid, $refid ) {
 
 	try {
 
@@ -12027,6 +12029,424 @@ function nbt_set_master_status ( $formid, $masterid, $newstatus ) {
 	catch (PDOException $e) {
 
 		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_search_multiples ( $refsetid, $query ) {
+
+	$altquery = str_replace ("- ", "%", $query);
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `title` LIKE :query OR `title` LIKE :altquery OR `authors` LIKE :query LIMIT 6;");
+
+		$stmt->bindParam(':query', $quer);
+		$stmt->bindParam(':altquery', $altquer);
+
+		$quer = "%" . $query . "%";
+		$altquer = "%" . $altquery . "%";
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		$dbh = null;
+
+		return $result;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_get_all_assignments_for_refset_and_ref ( $refset, $ref ) {
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `assignments` WHERE `refsetid` = :refset AND `referenceid` = :ref;");
+
+		$stmt->bindParam(':refset', $rsid);
+		$stmt->bindParam(':ref', $rid);
+
+		$rsid = $refset;
+		$rid = $ref;
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		$dbh = null;
+
+		return $result;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_get_master_extractions_for_refset_ref_and_form ( $refsetid, $refid, $formid ) {
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :refset AND `referenceid` = :ref ORDER BY id ASC;");
+
+		$stmt->bindParam(':refset', $rsid);
+		$stmt->bindParam(':ref', $rid);
+
+		$rsid = $refsetid;
+		$rid = $refid;
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		$dbh = null;
+
+		return $result;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_get_all_citation_form_elements () {
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `type` = 'citations';");
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		$dbh = null;
+
+		return $result;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_get_all_citations_for_element_and_citationid ( $dbname, $citationid ) {
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT *, (SELECT `username` FROM `users` WHERE `users`.`id` = `citations_" . $dbname . "`.`userid`) as `username` FROM `citations_" . $dbname . "` WHERE `citationid` = :cid;");
+
+		$stmt->bindParam(':cid', $cid);
+
+		$cid = $citationid;
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		$dbh = null;
+
+		return $result;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_move_assignments_for_refset_fromref_toref ( $refset, $from_rid, $to_rid ) {
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `assignments` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
+
+		$stmt->bindParam(':torid', $trid);
+		$stmt->bindParam(':fromrid', $frid);
+		$stmt->bindParam(':refset', $rsid);
+
+		$trid = $to_rid;
+		$frid = $from_rid;
+		$rsid = $refset;
+
+		$stmt->execute();
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_move_citations_for_element_db_fromref_toref ( $dbname, $refset, $from_rid, $to_rid ) {
+
+	// First do the extractions
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `citations_" . $dbname . "` SET `citationid` = :torid WHERE `refsetid` = :refset AND `citationid` = :fromrid;");
+
+		$stmt->bindParam(':torid', $trid);
+		$stmt->bindParam(':fromrid', $frid);
+		$stmt->bindParam(':refset', $rsid);
+
+		$trid = $to_rid;
+		$frid = $from_rid;
+		$rsid = $refset;
+
+		$stmt->execute();
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+	// Then do the master copy
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `mcite_" . $dbname . "` SET `citationid` = :torid WHERE `refsetid` = :refset AND `citationid` = :fromrid;");
+
+		$stmt->bindParam(':torid', $trid);
+		$stmt->bindParam(':fromrid', $frid);
+		$stmt->bindParam(':refset', $rsid);
+
+		$trid = $to_rid;
+		$frid = $from_rid;
+		$rsid = $refset;
+
+		$stmt->execute();
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_move_extractions_for_form_db_refset_fromref_toref ( $formid, $refset, $from_rid, $to_rid ) {
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
+
+		$stmt->bindParam(':torid', $trid);
+		$stmt->bindParam(':fromrid', $frid);
+		$stmt->bindParam(':refset', $rsid);
+
+		$trid = $to_rid;
+		$frid = $from_rid;
+		$rsid = $refset;
+
+		$stmt->execute();
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+	// Then get the elements not kept in the main
+	// extraction table
+
+	$elements = nbt_get_elements_for_formid ( $formid );
+
+	foreach ( $elements as $element ) {
+
+		// Move the tables
+
+		if ( $element['type'] == "table_data" ) {
+
+			try {
+
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("UPDATE `tabledata_" . $element['columnname'] . "` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
+
+				$stmt->bindParam(':torid', $trid);
+				$stmt->bindParam(':fromrid', $frid);
+				$stmt->bindParam(':refset', $rsid);
+
+				$trid = $to_rid;
+				$frid = $from_rid;
+				$rsid = $refset;
+
+				$stmt->execute();
+
+			}
+
+			catch (PDOException $e) {
+
+				echo $e->getMessage();
+
+			}
+
+		}
+
+		// Move the sub-extractions
+
+		if ( $element['type'] == "sub_extraction" ) {
+
+			try {
+
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("UPDATE `sub_" . $element['columnname'] . "` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
+
+				$stmt->bindParam(':torid', $trid);
+				$stmt->bindParam(':fromrid', $frid);
+				$stmt->bindParam(':refset', $rsid);
+
+				$trid = $to_rid;
+				$frid = $from_rid;
+				$rsid = $refset;
+
+				$stmt->execute();
+
+			}
+
+			catch (PDOException $e) {
+
+				echo $e->getMessage();
+
+			}
+
+		}
+
+	}
+
+}
+
+function nbt_move_master_for_form_db_refset_fromref_toref ( $formid, $refset, $from_rid, $to_rid ) {
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
+
+		$stmt->bindParam(':torid', $trid);
+		$stmt->bindParam(':fromrid', $frid);
+		$stmt->bindParam(':refset', $rsid);
+
+		$trid = $to_rid;
+		$frid = $from_rid;
+		$rsid = $refset;
+
+		$stmt->execute();
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+	// Then get the elements not kept in the main
+	// extraction table
+
+	$elements = nbt_get_elements_for_formid ( $formid );
+
+	foreach ( $elements as $element ) {
+
+		// Move the tables
+
+		if ( $element['type'] == "table_data" ) {
+
+			try {
+
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("UPDATE `mtable_" . $element['columnname'] . "` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
+
+				$stmt->bindParam(':torid', $trid);
+				$stmt->bindParam(':fromrid', $frid);
+				$stmt->bindParam(':refset', $rsid);
+
+				$trid = $to_rid;
+				$frid = $from_rid;
+				$rsid = $refset;
+
+				$stmt->execute();
+
+			}
+
+			catch (PDOException $e) {
+
+				echo $e->getMessage();
+
+			}
+
+		}
+
+		// Move the sub-extractions
+
+		if ( $element['type'] == "sub_extraction" ) {
+
+			try {
+
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("UPDATE `msub_" . $element['columnname'] . "` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
+
+				$stmt->bindParam(':torid', $trid);
+				$stmt->bindParam(':fromrid', $frid);
+				$stmt->bindParam(':refset', $rsid);
+
+				$trid = $to_rid;
+				$frid = $from_rid;
+				$rsid = $refset;
+
+				$stmt->execute();
+
+			}
+
+			catch (PDOException $e) {
+
+				echo $e->getMessage();
+
+			}
+
+		}
 
 	}
 

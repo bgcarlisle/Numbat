@@ -2953,3 +2953,123 @@ function nbtDeleteAttachment ( rsid, rid, ext ) {
 	});
 
 }
+
+function nbtSearchForMultiples ( rsid ) {
+
+	$.ajax ({
+		url: numbaturl + 'references/multiple/search.php',
+		type: 'post',
+		data: {
+			refset: rsid,
+			query: $('#nbtSearchMultiples').val()
+		},
+		dataType: 'html'
+	}).done ( function (response) {
+
+		$('#nbtMultipleSearchResponse').html(response);
+
+	});
+
+}
+
+function nbtDeleteMultipleRef ( rsid, rid ) {
+
+	$.ajax ({
+		url: numbaturl + 'references/multiple/delete.php',
+		type: 'post',
+		data: {
+			refset: rsid,
+			ref: rid
+		},
+		dataType: 'html'
+	}).done ( function (response) {
+
+		$('#nbtMultiple' + rid).fadeOut();
+
+	});
+
+}
+
+function nbtMultipleMoveAssignments ( rsid, from_ref ) {
+
+	to_ref = $('#nbtMultiMoveAssignChooser' + from_ref).val();
+
+	$.ajax ({
+		url: numbaturl + 'references/multiple/move_assignments.php',
+		type: 'post',
+		data: {
+			refset: rsid,
+			from_rid: from_ref,
+			to_rid: to_ref
+		},
+		dataType: 'html'
+	}).done ( function (response) {
+
+		nbtSearchForMultiples ( rsid );
+
+	});
+
+}
+
+function nbtMultipleMoveCitations ( rsid, from_ref ) {
+
+	to_ref = $('#nbtMultiMoveCiteChooser' + from_ref).val();
+
+	$.ajax ({
+		url: numbaturl + 'references/multiple/move_citations.php',
+		type: 'post',
+		data: {
+			refset: rsid,
+			from_rid: from_ref,
+			to_rid: to_ref
+		},
+		dataType: 'html'
+	}).done ( function (response) {
+
+		nbtSearchForMultiples ( rsid );
+
+	});
+
+}
+
+function nbtMultipleMoveExtractions ( rsid, from_ref ) {
+
+	to_ref = $('#nbtMultiMoveExtractChooser' + from_ref).val();
+
+	$.ajax ({
+		url: numbaturl + 'references/multiple/move_extractions.php',
+		type: 'post',
+		data: {
+			refset: rsid,
+			from_rid: from_ref,
+			to_rid: to_ref
+		},
+		dataType: 'html'
+	}).done ( function (response) {
+
+		nbtSearchForMultiples ( rsid );
+
+	});
+
+}
+
+function nbtMultipleMoveMaster ( rsid, from_ref ) {
+
+	to_ref = $('#nbtMultiMoveMasterChooser' + from_ref).val();
+
+	$.ajax ({
+		url: numbaturl + 'references/multiple/move_master.php',
+		type: 'post',
+		data: {
+			refset: rsid,
+			from_rid: from_ref,
+			to_rid: to_ref
+		},
+		dataType: 'html'
+	}).done ( function (response) {
+
+		nbtSearchForMultiples ( rsid );
+
+	});
+
+}
