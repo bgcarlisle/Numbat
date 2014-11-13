@@ -279,6 +279,12 @@ table.nbtTabledData input {
 	margin: 0px 1px 0px 0px;
 	width: 90%;
 }
+table.nbtTabledData textarea {
+	border: 1px solid #999;
+	margin: 0px 1px 0px 0px;
+	width: 90%;
+	height: 150px;
+}
 div.nbtSidebar {
 	position: fixed;
 	width: 33%;

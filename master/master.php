@@ -943,6 +943,8 @@ if ( count ( $extractions ) >= 2 ) {
 						$nbtExtractRefID = $_GET['ref'];
 						$nbtExtractUserID = $extraction['userid'];
 
+						$tableformat = "table_data";
+
 						include ('./tabledata.php');
 
 						?></div><?php
@@ -955,6 +957,46 @@ if ( count ( $extractions ) >= 2 ) {
 					$nbtMasterTableID = $element['id'];
 					$nbtMasterRefSet = $_GET['refset'];
 					$nbtMasterRefID = $_GET['ref'];
+
+					$tableformat = "table_data";
+
+					include ('./mastertable.php');
+
+					?></div><?php
+
+				break;
+
+				case "ltable_data":
+
+					nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+
+					foreach ( $extractions as $extraction ) {
+
+						?><p style="margin-bottom: 5px;"><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span></p>
+
+						<div id="nbtTableExtraction<?php echo $element['id']; ?>-<?php $extraction['id'] ?>"><?php
+
+						$nbtExtractTableDataID = $element['id'];
+						$nbtExtractRefSet = $_GET['refset'];
+						$nbtExtractRefID = $_GET['ref'];
+						$nbtExtractUserID = $extraction['userid'];
+
+						$tableformat = "ltable_data";
+
+						include ('./tabledata.php');
+
+						?></div><?php
+
+					}
+
+					?><p style="margin-bottom: 5px;"><span class="nbtExtractionName">Master table</span></p>
+					<div id="nbtMasterTable<?php echo $element['id']; ?>"><?php
+
+					$nbtMasterTableID = $element['id'];
+					$nbtMasterRefSet = $_GET['refset'];
+					$nbtMasterRefID = $_GET['ref'];
+
+					$tableformat = "ltable_data";
 
 					include ('./mastertable.php');
 

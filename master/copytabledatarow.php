@@ -12,6 +12,8 @@ $nbtMasterTableID = $_POST['elementid'];
 $nbtMasterRefSet = $_POST['refset'];
 $nbtMasterRefID = $_POST['ref'];
 
+$tableformat = $_POST['tableformat'];
+
 include ('./mastertable.php');
 
 ?>

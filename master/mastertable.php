@@ -31,7 +31,19 @@ $no_of_columns = count ( $columns );
 
 			foreach ( $columns as $column ) {
 
-				?><td><input type="text" id="nbtTable<?php echo $nbtExtractTableDataID; ?>-<?php echo $column['id']; ?>-<?php echo $row['id']; ?>" value="<?php echo $row[$column['dbname']]; ?>" onblur="nbtUpdateMasterExtractionTableData(<?php echo $nbtExtractTableDataID; ?>, <?php echo $row['id']; ?>, '<?php echo $column['dbname']; ?>', 'nbtTable<?php echo $nbtExtractTableDataID; ?>-<?php echo $column['id']; ?>-<?php echo $row['id']; ?>');"></td><?php
+				?><td><?php
+
+				if ( $tableformat == "table_data" ) {
+
+					?><input type="text" id="nbtTable<?php echo $nbtExtractTableDataID; ?>-<?php echo $column['id']; ?>-<?php echo $row['id']; ?>" value="<?php echo $row[$column['dbname']]; ?>" onblur="nbtUpdateMasterExtractionTableData(<?php echo $nbtExtractTableDataID; ?>, <?php echo $row['id']; ?>, '<?php echo $column['dbname']; ?>', 'nbtTable<?php echo $nbtExtractTableDataID; ?>-<?php echo $column['id']; ?>-<?php echo $row['id']; ?>');"><?php
+
+				} else {
+
+					?><textarea id="nbtTable<?php echo $nbtExtractTableDataID; ?>-<?php echo $column['id']; ?>-<?php echo $row['id']; ?>" onblur="nbtUpdateMasterExtractionTableData(<?php echo $nbtExtractTableDataID; ?>, <?php echo $row['id']; ?>, '<?php echo $column['dbname']; ?>', 'nbtTable<?php echo $nbtExtractTableDataID; ?>-<?php echo $column['id']; ?>-<?php echo $row['id']; ?>');"><?php echo $row[$column['dbname']]; ?></textarea><?php
+
+				}
+
+				?></td><?php
 
 			}
 

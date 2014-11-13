@@ -737,14 +737,15 @@ function nbtAddNewMultiSelect ( fid, eid ) {
 
 }
 
-function nbtAddNewTableData ( fid, eid ) {
+function nbtAddNewTableData ( fid, eid, tform ) {
 
 	$.ajax ({
 		url: numbaturl + 'forms/addtabledata.php',
 		type: 'post',
 		data: {
 			formid: fid,
-			elementid: eid
+			elementid: eid,
+			tableformat: tform
 		},
 		dataType: 'html'
 	}).done ( function (html) {
@@ -835,13 +836,14 @@ function nbtChangeTableSuffix ( eid ) {
 
 }
 
-function nbtAddTableDataColumn ( eid ) {
+function nbtAddTableDataColumn ( eid, tform ) {
 
 	$.ajax ({
 		url: numbaturl + 'forms/addtabledatacolumn.php',
 		type: 'post',
 		data: {
-			element: eid
+			element: eid,
+			tableformat: tform
 		},
 		dataType: 'html'
 	}).done ( function (html) {
@@ -894,13 +896,14 @@ function nbtUpdateTableDataColumnDisplay ( eid, cid ) {
 
 }
 
-function nbtUpdateTableDataColumnDB ( eid, cid ) {
+function nbtUpdateTableDataColumnDB ( eid, tform, cid ) {
 
 	$.ajax ({
 		url: numbaturl + 'forms/updatetabledatacolumndb.php',
 		type: 'post',
 		data: {
 			column: cid,
+			tableformat: tform,
 			newvalue: $('#nbtTableDataColumnDB' + cid).val()
 		},
 		dataType: 'html'
@@ -1684,12 +1687,13 @@ function nbtUpdateMasterExtractionTableData ( tableid, rowid, columnid, inputid)
 
 }
 
-function nbtAddExtractionTableDataRow (tableid, refsetid, refid) {
+function nbtAddExtractionTableDataRow (tform, tableid, refsetid, refid) {
 
 	$.ajax ({
 		url: numbaturl + 'extract/addtabledatarow.php',
 		type: 'post',
 		data: {
+			tableformat: tform,
 			tid: tableid,
 			refset: refsetid,
 			ref: refid
@@ -2628,12 +2632,13 @@ function nbtRemoveManualReference ( rsid, refid ) {
 
 }
 
-function nbtCopyTableDataRow ( eid, rsid, refid, rid ) {
+function nbtCopyTableDataRow ( tform, eid, rsid, refid, rid ) {
 
 	$.ajax ({
 		url: numbaturl + 'master/copytabledatarow.php',
 		type: 'post',
 		data: {
+			tableformat: tform,
 			elementid: eid,
 			refset: rsid,
 			ref: refid,

@@ -7017,7 +7017,11 @@ function nbt_change_multi_select_column_prefix ( $elementid, $newcolumn ) {
 
 }
 
-function nbt_add_table_data ( $formid, $elementid ) {
+function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data" ) {
+
+	// $tableformat can take two values:
+	// "table_data" - normal table where columns are VARCHAR200
+	// "ltable_data" - large format table where columns are TEXT
 
 	// this element is the one immediately before where we want to insert a new element
 
@@ -7158,7 +7162,7 @@ function nbt_add_table_data ( $formid, $elementid ) {
 
 		$fid = $formid;
 		$sort = $element['sortorder'] + 1;
-		$type = "table_data";
+		$type = $tableformat;
 		$col = $counter;
 
 		$stmt->execute();
@@ -7306,7 +7310,7 @@ function nbt_change_table_suffix ( $elementid, $newsuffix ) {
 
 }
 
-function nbt_add_table_data_column ( $elementid ) {
+function nbt_add_table_data_column ( $elementid, $tableformat = "table_data" ) {
 
 	// get the highest sortorder
 
@@ -7412,37 +7416,77 @@ function nbt_add_table_data_column ( $elementid ) {
 
 	}
 
-	// then, add a column to the table
+	if ( $tableformat == "table_data" ) { // Standard table data
 
-	try {
+		// then, add a column to the table
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `tabledata_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " VARCHAR(200) DEFAULT NULL;");
+		try {
 
-		$stmt->execute();
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare ("ALTER TABLE `tabledata_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " VARCHAR(200) DEFAULT NULL;");
 
-	}
+			$stmt->execute();
 
-	catch (PDOException $e) {
+		}
 
-		echo $e->getMessage();
+		catch (PDOException $e) {
 
-	}
+			echo $e->getMessage();
 
-	// then add a column to the master table
+		}
 
-	try {
+		// then add a column to the master table
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `mtable_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " VARCHAR(200) DEFAULT NULL;");
+		try {
 
-		$stmt->execute();
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare ("ALTER TABLE `mtable_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " VARCHAR(200) DEFAULT NULL;");
 
-	}
+			$stmt->execute();
 
-	catch (PDOException $e) {
+		}
 
-		echo $e->getMessage();
+		catch (PDOException $e) {
+
+			echo $e->getMessage();
+
+		}
+
+	} else { // Large table data
+
+		// then, add a column to the table
+
+		try {
+
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare ("ALTER TABLE `tabledata_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
+
+			$stmt->execute();
+
+		}
+
+		catch (PDOException $e) {
+
+			echo $e->getMessage();
+
+		}
+
+		// then add a column to the master table
+
+		try {
+
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare ("ALTER TABLE `mtable_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
+
+			$stmt->execute();
+
+		}
+
+		catch (PDOException $e) {
+
+			echo $e->getMessage();
+
+		}
 
 	}
 
@@ -7493,8 +7537,6 @@ function nbt_remove_table_data_column ( $elementid, $columnid ) {
 	$element = nbt_get_form_element_for_elementid ( $elementid );
 
 	$column = nbt_get_table_column_for_columnid ( $columnid );
-
-	echo "ALTER TABLE `tabledata_" . $element['columnname'] . "` DROP COLUMN " . $column['dbname'] . ";";
 
 	// tabledata
 
@@ -7696,13 +7738,27 @@ function nbt_move_table_data_column ( $columnid, $direction ) {
 
 }
 
-function nbt_update_table_data_column_db ( $columnid, $newcolumnname ) {
+function nbt_update_table_data_column_db ( $columnid, $tableformat, $newcolumnname ) {
 
 	// get the old column name and the form id
 
 	$column = nbt_get_table_column_for_columnid ( $columnid );
 
 	$element = nbt_get_form_element_for_elementid ( $column['elementid'] );
+
+	// Column types depending on table format:
+
+	if ( $tableformat == "table_data" ) {
+
+		$columnformat = "VARCHAR(200)";
+
+	} else {
+
+		$columnformat = "TEXT";
+
+	}
+
+	echo $columnformat;
 
 	// Start a counter to see if everything saved properly
 
@@ -7713,7 +7769,7 @@ function nbt_update_table_data_column_db ( $columnid, $newcolumnname ) {
 	try {
 
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `tabledata_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " varchar(200) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `tabledata_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " " . $columnformat . " DEFAULT NULL;");
 
 		if ($stmt->execute()) {
 
@@ -7734,7 +7790,7 @@ function nbt_update_table_data_column_db ( $columnid, $newcolumnname ) {
 	try {
 
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("ALTER TABLE `mtable_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " varchar(200) DEFAULT NULL;");
+		$stmt = $dbh->prepare ("ALTER TABLE `mtable_" . $element['columnname'] . "` CHANGE " . $column['dbname'] . " " . $newcolumnname . " " . $columnformat . " DEFAULT NULL;");
 
 		if ($stmt->execute()) {
 

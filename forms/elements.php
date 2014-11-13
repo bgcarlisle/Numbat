@@ -85,6 +85,7 @@ if ( count ( $elements ) > 0 ) {
 					case "table_data":
 
 						?><h4>Table data</h4>
+						<p class="nbtFinePrint">Cells in tables of this type may only contain up to 200 characters each. If you need more than 200 characters per cell, use a "large table data" element.</p>
 						<p>Table display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
 						<p>Table suffix: <input type="text" id="nbtTableSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeTableSuffix(<?php echo $element['id']; ?>);" maxlength="25"></p>
@@ -94,6 +95,28 @@ if ( count ( $elements ) > 0 ) {
 						<div id="nbtTableDataColumnsTable<?php echo $element['id']; ?>"><?php
 
 						$tableelementid = $element['id'];
+						$tableformat = "table_data";
+
+						include ('./tabledata.php');
+
+						?></div><?php
+
+					break;
+
+					case "ltable_data":
+
+						?><h4>Large table data</h4>
+						<p class="nbtFinePrint">Cells in tables of this type may contain text more than 200 characters in length.</p>
+						<p>Table display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+						<p class="nbtFinePrint">Will appear on extraction form</p>
+						<p>Table suffix: <input type="text" id="nbtTableSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeTableSuffix(<?php echo $element['id']; ?>);" maxlength="25"></p>
+						<p class="nbtFinePrint">Suffix for table in database</p>
+						<p>Table columns</p>
+						<p class="nbtFinePrint">Display name will appear as a column of the table on extraction form; DB name will appear on exported spreadsheet</p>
+						<div id="nbtTableDataColumnsTable<?php echo $element['id']; ?>"><?php
+
+						$tableelementid = $element['id'];
+						$tableformat = "ltable_data";
 
 						include ('./tabledata.php');
 
@@ -188,7 +211,8 @@ if ( count ( $elements ) > 0 ) {
 				<button onclick="nbtAddNewDateSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Date selector</button>
 				<button onclick="nbtAddNewSingleSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Single select</button>
 				<button onclick="nbtAddNewMultiSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Multi select</button>
-				<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Table data</button>
+				<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>, 'table_data');">Table data</button>
+				<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>, 'ltable_data');">Large table data</button>
 				<button onclick="nbtAddNewCountrySelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Country selector</button>
 				<button onclick="nbtAddNewCitationSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Citations</button>
 				<button onclick="nbtAddNewSubExtraction(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Sub-extraction</button>
@@ -211,7 +235,8 @@ if ( count ( $elements ) > 0 ) {
 		<button onclick="nbtAddNewDateSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Date selector</button>
 		<button onclick="nbtAddNewSingleSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Single select</button>
 		<button onclick="nbtAddNewMultiSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Multi select</button>
-		<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Table data</button>
+		<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>, 'table_data');">Table data</button>
+		<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>, 'ltable_data');">Large table data</button>
 		<button onclick="nbtAddNewCountrySelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Country selector</button>
 		<button onclick="nbtAddNewCitationSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Citations</button>
 		<button onclick="nbtAddNewSubExtraction(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Sub-extraction</button>

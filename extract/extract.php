@@ -315,6 +315,38 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 						$nbtExtractRefSet = $_GET['refset'];
 						$nbtExtractRefID = $_GET['ref'];
 
+						$tableformat = "table_data";
+
+						include ('./tabledata.php');
+
+						?></div>
+
+					</div><?php
+
+				break;
+
+				case "ltable_data":
+
+					?><div<?php
+
+					if ( $element['toggle'] != "" ) {
+
+						?> class="nbtHidden <?php echo $element['toggle']; ?>"<?php
+
+					}
+
+					?>><?php
+
+						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+
+						?><div id="nbtTableExtraction<?php echo $element['id']; ?>"><?php
+
+						$nbtExtractTableDataID = $element['id'];
+						$nbtExtractRefSet = $_GET['refset'];
+						$nbtExtractRefID = $_GET['ref'];
+
+						$tableformat = "ltable_data";
+
 						include ('./tabledata.php');
 
 						?></div>
