@@ -18,21 +18,25 @@ if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
 
                         <?php
 
-                        $files = scandir ( ABS_PATH . "attach/files/" . $_POST['refset'] . "/");
+                        if ( is_dir ( ABS_PATH . "attach/files/" . $_POST['refset'] . "/" ) ) {
 
-                        foreach ( $files as $file ) {
+                              $files = scandir ( ABS_PATH . "attach/files/" . $_POST['refset'] . "/" );
 
-                              if ( substr ($file, 0, 1) != "." ) {
+                              foreach ( $files as $file ) {
 
-                                    // Get the ref id
+                                    if ( substr ($file, 0, 1) != "." ) {
 
-                                    $file_ref = explode(".", $file);
+                                          // Get the ref id
 
-                                    $refid = $file_ref[0];
+                                          $file_ref = explode(".", $file);
 
-                                    if ( $file_ref[0] == $suggestion['id'] ) {
+                                          $refid = $file_ref[0];
 
-                                          ?><span class="nbtAttachment">Attached <?php echo $file_ref[1]; ?></span><?php
+                                          if ( $file_ref[0] == $suggestion['id'] ) {
+
+                                                ?><span class="nbtAttachment">Attached <?php echo $file_ref[1]; ?></span><?php
+
+                                          }
 
                                     }
 

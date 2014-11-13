@@ -16,7 +16,7 @@ $refset = nbt_get_refset_for_id ( $_GET['refset'] );
 
       <button onclick="nbtSearchForMultiples(<?php echo $_GET['refset']; ?>);">Search</button>
 
-      <button onclick="$('#nbtMultipleSearchResponse').html('');">Clear</button>
+      <button onclick="$('#nbtMultipleSearchResponse').html('');$('#nbtSearchMultiples').val('');">Clear</button>
 
       <div id="nbtMultipleSearchResponse" class="nbtCitationSuggestions">&nbsp;</div>
 

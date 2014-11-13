@@ -12296,6 +12296,35 @@ function nbt_move_extractions_for_form_db_refset_fromref_toref ( $formid, $refse
 
 	foreach ( $elements as $element ) {
 
+		// Move the citations
+
+		if ( $element['type'] == "citation" ) {
+
+			try {
+
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("UPDATE `citations_" . $element['columnname'] . "` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
+
+				$stmt->bindParam(':torid', $trid);
+				$stmt->bindParam(':fromrid', $frid);
+				$stmt->bindParam(':refset', $rsid);
+
+				$trid = $to_rid;
+				$frid = $from_rid;
+				$rsid = $refset;
+
+				$stmt->execute();
+
+			}
+
+			catch (PDOException $e) {
+
+				echo $e->getMessage();
+
+			}
+
+		}
+
 		// Move the tables
 
 		if ( $element['type'] == "table_data" ) {
@@ -12389,6 +12418,35 @@ function nbt_move_master_for_form_db_refset_fromref_toref ( $formid, $refset, $f
 	$elements = nbt_get_elements_for_formid ( $formid );
 
 	foreach ( $elements as $element ) {
+
+		// Move the citations
+
+		if ( $element['type'] == "citation" ) {
+
+			try {
+
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("UPDATE `mcite_" . $element['columnname'] . "` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
+
+				$stmt->bindParam(':torid', $trid);
+				$stmt->bindParam(':fromrid', $frid);
+				$stmt->bindParam(':refset', $rsid);
+
+				$trid = $to_rid;
+				$frid = $from_rid;
+				$rsid = $refset;
+
+				$stmt->execute();
+
+			}
+
+			catch (PDOException $e) {
+
+				echo $e->getMessage();
+
+			}
+
+		}
 
 		// Move the tables
 
