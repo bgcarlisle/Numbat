@@ -23,7 +23,7 @@ $no_of_columns = count ( $columns );
 
 	foreach ( $rows as $row ) {
 
-		?><tr class="nbtTDRow<?php echo $nbtExtractTableDataID; ?>" id="nbtTDRowID<?php echo $row['id']; ?>"><?php
+		?><tr class="nbtTDRow<?php echo $nbtExtractTableDataID; ?>" id="nbtTDRowID<?php echo $nbtExtractTableDataID; ?>-<?php echo $row['id']; ?>"><?php
 
 			foreach ( $columns as $column ) {
 
@@ -31,7 +31,7 @@ $no_of_columns = count ( $columns );
 
 			}
 
-			?><td><button id="nbtTableExtractionRowDelete<?php echo $row['id']; ?>" onclick="nbtCopyTableDataRow('<?php echo $tableformat; ?>', <?php echo $nbtExtractTableDataID; ?>, <?php echo $nbtExtractRefSet ?>, <?php echo $nbtExtractRefID ?>, <?php echo $row['id']; ?>);">Copy</button></td>
+			?><td><button id="nbtTableExtractionRowDelete<?php echo $nbtExtractTableDataID; ?>-<?php echo $row['id']; ?>" onclick="nbtCopyTableDataRow('<?php echo $tableformat; ?>', <?php echo $nbtExtractTableDataID; ?>, <?php echo $nbtExtractRefSet ?>, <?php echo $nbtExtractRefID ?>, <?php echo $row['id']; ?>);">Copy</button></td>
 		</tr><?php
 
 	}

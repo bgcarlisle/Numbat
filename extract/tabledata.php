@@ -23,7 +23,7 @@ $no_of_columns = count ( $columns );
 
 	foreach ( $rows as $row ) {
 
-		?><tr class="nbtTDRow<?php echo $nbtExtractTableDataID; ?>" id="nbtTDRowID<?php echo $row['id']; ?>"><?php
+		?><tr class="nbtTDRow<?php echo $nbtExtractTableDataID; ?>" id="nbtTDRowID<?php echo $nbtExtractTableDataID; ?>-<?php echo $row['id']; ?>"><?php
 
 			foreach ( $columns as $column ) {
 
@@ -43,8 +43,8 @@ $no_of_columns = count ( $columns );
 
 			}
 
-			?><td><button onclick="$(this).fadeOut(0);$('button#nbtTableExtractionRowDelete<?php echo $row['id']; ?>').fadeIn();">Delete</button>
-			<button id="nbtTableExtractionRowDelete<?php echo $row['id']; ?>" class="nbtHidden" onclick="nbtRemoveExtractionTableDataRow(<?php echo $nbtExtractTableDataID; ?>, <?php echo $row['id']; ?>);">For real</button></td>
+			?><td><button onclick="$(this).fadeOut(0);$('button#nbtTableExtractionRowDelete<?php echo $nbtExtractTableDataID; ?>-<?php echo $row['id']; ?>').fadeIn();">Delete</button>
+			<button id="nbtTableExtractionRowDelete<?php echo $nbtExtractTableDataID; ?>-<?php echo $row['id']; ?>" class="nbtHidden" onclick="nbtRemoveExtractionTableDataRow(<?php echo $nbtExtractTableDataID; ?>, <?php echo $row['id']; ?>);">For real</button></td>
 		</tr><?php
 
 	}

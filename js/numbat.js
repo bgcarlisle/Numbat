@@ -1719,7 +1719,7 @@ function nbtRemoveExtractionTableDataRow ( tableid, rowid ) {
 		dataType: 'html'
 	}).done ( function (html) {
 
-		$('#nbtTDRowID' + rowid).fadeOut(200).removeClass('nbtTDRow' + tableid);
+		$('#nbtTDRowID' + tableid + '-' + rowid).fadeOut(200).removeClass('nbtTDRow' + tableid);
 
 	});
 

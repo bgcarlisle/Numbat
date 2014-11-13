@@ -48,8 +48,8 @@ $no_of_columns = count ( $columns );
 			}
 
 			?><td>
-				<button onclick="$(this).fadeOut(0);$('#nbtMasterTableExtractionRowDelete<?php echo $row['id']; ?>').fadeIn();">Delete</button>
-				<button class="nbtHidden" id="nbtMasterTableExtractionRowDelete<?php echo $row['id']; ?>" onclick="nbtDeleteMasterTableRow(<?php echo $nbtMasterTableID; ?>, <?php echo $row['id']; ?>);">For real</button></td>
+				<button onclick="$(this).fadeOut(0);$('#nbtMasterTableExtractionRowDelete<?php echo $nbtMasterTableID; ?>-<?php echo $row['id']; ?>').fadeIn();">Delete</button>
+				<button class="nbtHidden" id="nbtMasterTableExtractionRowDelete<?php echo $nbtMasterTableID; ?>-<?php echo $row['id']; ?>" onclick="nbtDeleteMasterTableRow(<?php echo $nbtMasterTableID; ?>, <?php echo $row['id']; ?>);">For real</button></td>
 		</tr><?php
 
 	}
