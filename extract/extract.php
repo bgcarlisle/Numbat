@@ -30,17 +30,21 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		}
 
-		$files = scandir ( ABS_PATH . "attach/files/" . $_GET['refset'] . "/");
+		if ( is_dir ( ABS_PATH . "attach/files/" . $_GET['refset'] . "/" ) ) {
 
-		foreach ( $files as $file ) {
+			$files = scandir ( ABS_PATH . "attach/files/" . $_GET['refset'] . "/" );
 
-			if ( substr ($file, 0, 1) != "." ) {
+			foreach ( $files as $file ) {
 
-				$file_ref = explode(".", $file);
+				if ( substr ($file, 0, 1) != "." ) {
 
-				if ( $file_ref[0] == $_GET['ref']) {
+					$file_ref = explode(".", $file);
 
-					?><span class="nbtAttachment"><a href="<?php echo SITE_URL; ?>attach/files/<?php echo $_GET['refset']; ?>/<?php echo $file; ?>">Attached <?php echo $file_ref[1] ?></a></span><?php
+					if ( $file_ref[0] == $_GET['ref']) {
+
+						?><span class="nbtAttachment"><a href="<?php echo SITE_URL; ?>attach/files/<?php echo $_GET['refset']; ?>/<?php echo $file; ?>">Attached <?php echo $file_ref[1] ?></a></span><?php
+
+					}
 
 				}
 
@@ -51,7 +55,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
 
 			?><button onclick="window.open('<?php echo SITE_URL; ?>attach/?action=new&refset=<?php echo $_GET['refset']; ?>&ref=<?php echo $_GET['ref']; ?>','_self');">Attach a file to this reference</button><?php
-			
+
 		}
 
 		?>

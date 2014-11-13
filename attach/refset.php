@@ -19,58 +19,62 @@
 
       <?php
 
-      $files = scandir ( ABS_PATH . "attach/files/" . $_GET['refset'] . "/");
+      if ( is_dir ( ABS_PATH . "attach/files/" . $_GET['refset'] . "/" ) ) {
 
-      foreach ( $files as $file ) {
+            $files = scandir ( ABS_PATH . "attach/files/" . $_GET['refset'] . "/" );
 
-            if ( substr ($file, 0, 1) != "." ) {
+            foreach ( $files as $file ) {
 
-                  // Get the ref id
+                  if ( substr ($file, 0, 1) != "." ) {
 
-                  $file_ref = explode(".", $file);
+                        // Get the ref id
 
-                  $refid = $file_ref[0];
+                        $file_ref = explode(".", $file);
 
-                  switch ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) ) {
+                        $refid = $file_ref[0];
 
-                        case 4:
+                        switch ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) ) {
 
-                              ?><tr id="nbtAttachmentRow<?php echo $_GET['refset']; ?>-<?php echo $refid; ?>-<?php echo $file_ref[1]; ?>">
-                                    <td>
-                                          <?php
+                              case 4:
 
-                                          $ref = nbt_get_reference_for_refsetid_and_refid( $_GET['refset'], $refid );
+                                    ?><tr id="nbtAttachmentRow<?php echo $_GET['refset']; ?>-<?php echo $refid; ?>-<?php echo $file_ref[1]; ?>">
+                                          <td>
+                                                <?php
 
-                                          ?><h4><?php echo $ref['title']; ?></h4>
-                                          <p><?php echo $ref['authors'] ?></p>
-                                          <p><?php echo $ref['journal'] ?>: <?php echo $ref['year'] ?></p>
-                                    </td>
-                                    <td><a href="<?php echo SITE_URL; ?>attach/files/<?php echo $_GET['refset']; ?>/<?php echo $file; ?>">Attached file</a></td>
-                                    <td>
-                                          <button onclick="$(this).fadeOut(0);$('#nbtDeleteAttachment<?php echo $_GET['refset']; ?>-<?php echo $refid; ?>-<?php echo $file_ref[1]; ?>').fadeIn(500);">Delete</button>
-                                          <button class="nbtHidden" id="nbtDeleteAttachment<?php echo $_GET['refset']; ?>-<?php echo $refid; ?>-<?php echo $file_ref[1]; ?>" onclick="nbtDeleteAttachment(<?php echo $_GET['refset']; ?>, <?php echo $refid; ?>, '<?php echo $file_ref[1]; ?>');">For real</button>
-                                    </td>
-                              </tr><?php
+                                                $ref = nbt_get_reference_for_refsetid_and_refid( $_GET['refset'], $refid );
 
-                        break;
+                                                ?><h4><?php echo $ref['title']; ?></h4>
+                                                <p><?php echo $ref['authors'] ?></p>
+                                                <p><?php echo $ref['journal'] ?>: <?php echo $ref['year'] ?></p>
+                                          </td>
+                                          <td><a href="<?php echo SITE_URL; ?>attach/files/<?php echo $_GET['refset']; ?>/<?php echo $file; ?>">Attached file</a></td>
+                                          <td>
+                                                <button onclick="$(this).fadeOut(0);$('#nbtDeleteAttachment<?php echo $_GET['refset']; ?>-<?php echo $refid; ?>-<?php echo $file_ref[1]; ?>').fadeIn(500);">Delete</button>
+                                                <button class="nbtHidden" id="nbtDeleteAttachment<?php echo $_GET['refset']; ?>-<?php echo $refid; ?>-<?php echo $file_ref[1]; ?>" onclick="nbtDeleteAttachment(<?php echo $_GET['refset']; ?>, <?php echo $refid; ?>, '<?php echo $file_ref[1]; ?>');">For real</button>
+                                          </td>
+                                    </tr><?php
 
-                        case 2:
+                              break;
 
-                              ?><tr>
-                                    <td>
-                                          <?php
+                              case 2:
 
-                                          $ref = nbt_get_reference_for_refsetid_and_refid( $_GET['refset'], $refid );
+                                    ?><tr>
+                                          <td>
+                                                <?php
 
-                                          ?><h4><?php echo $ref['title']; ?></h4>
-                                          <p><?php echo $ref['authors'] ?></p>
-                                          <p><?php echo $ref['journal'] ?>: <?php echo $ref['year'] ?></p>
-                                    </td>
-                                    <td><?php echo $file; ?></td>
-                                    <td>&nbsp;</td>
-                              </tr><?php
+                                                $ref = nbt_get_reference_for_refsetid_and_refid( $_GET['refset'], $refid );
 
-                        break;
+                                                ?><h4><?php echo $ref['title']; ?></h4>
+                                                <p><?php echo $ref['authors'] ?></p>
+                                                <p><?php echo $ref['journal'] ?>: <?php echo $ref['year'] ?></p>
+                                          </td>
+                                          <td><?php echo $file; ?></td>
+                                          <td>&nbsp;</td>
+                                    </tr><?php
+
+                              break;
+
+                        }
 
                   }
 
