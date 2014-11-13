@@ -4879,6 +4879,77 @@ function nbt_delete_form_element ( $elementid ) {
 
 		break;
 
+		case "ltable_data":
+
+			// remove all the columns from the table data columns table
+
+			try {
+
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("DELETE FROM `tabledatacolumns` WHERE elementid = :id;");
+
+				$stmt->bindParam(':id', $eid);
+
+				$eid = $elementid;
+
+				if ($stmt->execute()) {
+
+					$dbh = null;
+
+				}
+
+			}
+
+			catch (PDOException $e) {
+
+				echo $e->getMessage();
+
+			}
+
+			// delete the table
+
+			try {
+
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("DROP TABLE `tabledata_" . $element['columnname'] . "`;");
+
+				if ($stmt->execute()) {
+
+					$dbh = null;
+
+				}
+
+			}
+
+			catch (PDOException $e) {
+
+				echo $e->getMessage();
+
+			}
+
+			// delete the master table
+
+			try {
+
+				$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+				$stmt = $dbh->prepare("DROP TABLE `mtable_" . $element['columnname'] . "`;");
+
+				if ($stmt->execute()) {
+
+					$dbh = null;
+
+				}
+
+			}
+
+			catch (PDOException $e) {
+
+				echo $e->getMessage();
+
+			}
+
+		break;
+
 		case "citations":
 
 			// delete the table
@@ -7757,8 +7828,6 @@ function nbt_update_table_data_column_db ( $columnid, $tableformat, $newcolumnna
 		$columnformat = "TEXT";
 
 	}
-
-	echo $columnformat;
 
 	// Start a counter to see if everything saved properly
 
