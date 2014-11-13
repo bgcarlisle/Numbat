@@ -12154,15 +12154,17 @@ function nbt_get_all_citation_form_elements () {
 
 }
 
-function nbt_get_all_citations_for_element_and_citationid ( $dbname, $citationid ) {
+function nbt_get_all_citations_for_element_and_citationid ( $dbname, $refset, $citationid ) {
 
 	try {
 
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT *, (SELECT `username` FROM `users` WHERE `users`.`id` = `citations_" . $dbname . "`.`userid`) as `username` FROM `citations_" . $dbname . "` WHERE `citationid` = :cid;");
+		$stmt = $dbh->prepare("SELECT *, (SELECT `username` FROM `users` WHERE `users`.`id` = `citations_" . $dbname . "`.`userid`) as `username` FROM `citations_" . $dbname . "` WHERE `citationid` = :cid AND `refsetid` = :rsid;");
 
+		$stmt->bindParam(':rsid', $rsid);
 		$stmt->bindParam(':cid', $cid);
 
+		$rsid = $refset;
 		$cid = $citationid;
 
 		$stmt->execute();

@@ -124,7 +124,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
 
                                           foreach ( $citation_form_elements as $citation_form_element ) {
 
-                                                $citations = nbt_get_all_citations_for_element_and_citationid ( $citation_form_element['columnname'], $suggestion['id'] );
+                                                $citations = nbt_get_all_citations_for_element_and_citationid ( $citation_form_element['columnname'], $_POST['refset'], $suggestion['id'] );
 
                                                 foreach ($citations as $citation ) {
 
