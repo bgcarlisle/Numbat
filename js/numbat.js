@@ -1823,7 +1823,7 @@ function nbtRemoveCitation ( sectionid, citationid ) {
 
 }
 
-function nbtRemoveMasterCitation ( sectionid, citationid ) {
+function nbtRemoveMasterCitation ( sectionid, citationid, cid ) {
 
 	$.ajax ({
 		url: numbaturl + 'master/removecitation.php',
@@ -1835,7 +1835,17 @@ function nbtRemoveMasterCitation ( sectionid, citationid ) {
 		dataType: 'html'
 	}).done ( function (html) {
 
-		$('#nbtCitation' + sectionid + '-' + citationid).slideUp();
+		$('#nbtCitation' + sectionid + '-' + citationid).slideUp(500, function() {
+
+			$('#nbtCitation' + sectionid + '-' + citationid).remove();
+
+		});
+
+		$('.nbtMasterCite' + sectionid + '-' + cid).fadeOut(500, function() {
+
+			$('.nbtMasterCite' + sectionid + '-' + cid).html('');
+
+		});
 
 	});
 
@@ -2759,7 +2769,9 @@ function nbtCopyMultiSelectToMaster ( fid, rsid, refid, exid, eid, uid ) {
 
 }
 
-function nbtCopyCitationToMaster ( eid, cid, rsid, ref ) {
+function nbtCopyCitationToMaster ( eid, cid, rsid, ref, citationid ) {
+
+	// alert ($('.nbtCitOrigRef' + eid + '-' + citationid).length);
 
 	$.ajax ({
 		url: numbaturl + 'master/copycitetomaster.php',
@@ -2773,7 +2785,21 @@ function nbtCopyCitationToMaster ( eid, cid, rsid, ref ) {
 		dataType: 'html'
 	}).done ( function (html) {
 
-		$('#nbtMasterCitations' + eid).html(html);
+		if ( ! $('.nbtCitOrigRef' + eid + '-' + citationid).length ) {
+
+			// alert ('not already cited');
+
+			$('#nbtMasterCiteCopyFeedback' + eid + '-' + cid).html('Copied').fadeIn(500, function () {
+
+				$('#nbtMasterCitations' + eid).html(html);
+
+			});
+
+		} else {
+
+			$('#nbtMasterCiteCopyFeedback' + eid + '-' + cid).html('Not copied').fadeIn();
+
+		}
 
 	});
 
