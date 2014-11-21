@@ -2,7 +2,7 @@
 
 include_once ("../functions.php");
 
-$citations = nbt_get_citations ( $nbtListCitationsCitationDB, $nbtListCitationsRefSetID, $nbtListCitationsReference, $_SESSION['nbt_userid'] );
+$citations = nbt_get_citations ( $nbtListCitationsCitationDB, $nbtListCitationsRefSetID, $nbtListCitationsReference, $_SESSION[INSTALL_HASH . '_nbt_userid'] );
 
 foreach ( $citations as $citation ) {
 

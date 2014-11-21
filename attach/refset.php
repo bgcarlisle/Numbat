@@ -33,7 +33,7 @@
 
                         $refid = $file_ref[0];
 
-                        switch ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) ) {
+                        switch ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) ) {
 
                               case 4:
 

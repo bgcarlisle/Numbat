@@ -1,4 +1,4 @@
-Numbat v. 2.3
+Numbat v. 2.4
 ======
 
 Numbat Academic Meta-Analysis Extraction Manager
@@ -61,7 +61,7 @@ You may be able to install Numbat on setups different from what is described bel
 
 Copy the entire file to your web server, and navigate to the Numbat directory with your browser. You will need to know your MySQL server, username and password to complete the installation.
 
-## What's new in 2.3
+## What's new in 2.4
 
 * Miscellaneous bug fixes
 * Improved visual feedback: elements flash green to indicate that they have been saved
@@ -69,6 +69,7 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 * Attach files to references, so all coders are working from the same PDF
 * Multiple reference manager (under "Manage reference sets")—allows for easy removal of doubled references and automatic checking that doing so won't leave "orphan" citations or extractions
 * New "large table data" element
+* Session variable collision bug fixed—now you can have multiple installations of Numbat on the same domain without them screwing each other up!
 
 
 ## Contact info

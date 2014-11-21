@@ -52,7 +52,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		}
 
-		if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
+		if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) == 4 ) {
 
 			?><button onclick="window.open('<?php echo SITE_URL; ?>attach/?action=new&refset=<?php echo $_GET['refset']; ?>&ref=<?php echo $_GET['ref']; ?>','_self');">Attach a file to this reference</button><?php
 
@@ -405,7 +405,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
-						?><div class="nbtSubExtraction" id="nbtSubExtraction<?php echo $element['id']; ?>-<?php echo $_SESSION['nbt_userid'] ?>"><?php
+						?><div class="nbtSubExtraction" id="nbtSubExtraction<?php echo $element['id']; ?>-<?php echo $_SESSION[INSTALL_HASH . '_nbt_userid'] ?>"><?php
 
 						$nbtSubExtractionElementID = $element['id'];
 						$nbtExtractRefSet = $_GET['refset'];

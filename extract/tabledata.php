@@ -2,7 +2,7 @@
 
 $columns = nbt_get_all_columns_for_table_data ( $nbtExtractTableDataID );
 
-$rows = nbt_get_table_data_rows ( $nbtExtractTableDataID, $nbtExtractRefSet, $nbtExtractRefID, $_SESSION['nbt_userid'] );
+$rows = nbt_get_table_data_rows ( $nbtExtractTableDataID, $nbtExtractRefSet, $nbtExtractRefID, $_SESSION[INSTALL_HASH . '_nbt_userid'] );
 
 $no_of_columns = count ( $columns );
 

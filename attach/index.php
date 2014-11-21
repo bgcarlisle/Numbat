@@ -4,7 +4,7 @@ include_once ('../config.php');
 
 if ( nbt_user_is_logged_in () ) { // User is logged in
 
-      if ( nbt_get_privileges_for_userid ( $_SESSION['nbt_userid'] ) == 4 ) {
+      if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) == 4 ) {
 
             if ( isset ( $_GET['action'] ) ) {
 

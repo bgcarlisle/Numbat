@@ -2,9 +2,11 @@
 
 session_start ();
 
+define('INSTALL_HASH', substr (hash('sha256', SITE_URL), 0, 10));
+
 function nbt_user_is_logged_in () {
 
-	if ( isset ($_SESSION['nbt_valid_login']) && $_SESSION['nbt_valid_login'] == 1 ) {
+	if ( isset ($_SESSION[INSTALL_HASH . '_nbt_valid_login']) && $_SESSION[INSTALL_HASH . '_nbt_valid_login'] == 1 ) {
 
 		return TRUE;
 
@@ -148,9 +150,9 @@ function nbt_get_userid_for_username ($username) { // Returns user id if the use
 
 function nbt_log_user_in ( $username ) {
 
-	$_SESSION['nbt_valid_login'] = 1;
-	$_SESSION['nbt_userid'] = nbt_get_userid_for_username ($username);
-	$_SESSION['nbt_username'] = nbt_get_username_for_userid ( $_SESSION['nbt_userid'] );
+	$_SESSION[INSTALL_HASH . '_nbt_valid_login'] = 1;
+	$_SESSION[INSTALL_HASH . '_nbt_userid'] = nbt_get_userid_for_username ($username);
+	$_SESSION[INSTALL_HASH . '_nbt_username'] = nbt_get_username_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] );
 
 	// Set the "last login" to now
 
@@ -579,8 +581,8 @@ function nbt_log_user_out () {
 
 	$_SESSION = array ();
 	session_destroy();
-	setcookie ("nbt_userid", "", time(), "/");
-	setcookie ("nbt_password", "", time(), "/");
+	setcookie (INSTALL_HASH . "_nbt_userid", "", time(), "/");
+	setcookie (INSTALL_HASH . "_nbt_password", "", time(), "/");
 
 }
 
@@ -593,7 +595,7 @@ function nbt_get_drugs_that_the_current_user_has_access_to () {
 
 		$stmt->bindParam(':userid', $user);
 
-		$user = $_SESSION['nbt_userid'];
+		$user = $_SESSION[INSTALL_HASH . '_nbt_userid'];
 
 		$stmt->execute();
 
@@ -9494,7 +9496,7 @@ function nbtAddAssignment ( $userid, $formid, $refsetid, $refid ) {
 		$stmt->bindParam(':ref', $ref);
 
 		$user = $userid;
-		$assign = $_SESSION['nbt_userid'];
+		$assign = $_SESSION[INSTALL_HASH . '_nbt_userid'];
 		$form = $formid;
 		$rsid = $refsetid;
 		$ref = $refid;
@@ -11789,7 +11791,7 @@ function nbtAddAdvancedAssignment ( $userid, $formid, $refsetid, $query ) {
 			$stmt->bindParam(':ref', $ref);
 
 			$user = $userid;
-			$assign = $_SESSION['nbt_userid'];
+			$assign = $_SESSION[INSTALL_HASH . '_nbt_userid'];
 			$form = $formid;
 			$rsid = $refsetid;
 			$ref = $row['id'];

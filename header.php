@@ -48,7 +48,7 @@
 	if ( nbt_user_is_logged_in () ) {
 
 		?><a href="<?php echo SITE_URL . "signout/"; ?>">
-			<span id="nbtTopBannerRight">Sign out (<?php echo $_SESSION['nbt_username']; ?>)</span>
+			<span id="nbtTopBannerRight">Sign out (<?php echo $_SESSION[INSTALL_HASH . '_nbt_username']; ?>)</span>
 		</a><?php
 
 	}

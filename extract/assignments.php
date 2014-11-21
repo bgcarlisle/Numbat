@@ -13,7 +13,7 @@
 
 		foreach ( $referencesets as $refset ) {
 
-			$assignments = nbt_get_assignments_for_user_and_refset ( $_SESSION['nbt_userid'], $refset['id'] );
+			$assignments = nbt_get_assignments_for_user_and_refset ( $_SESSION[INSTALL_HASH . '_nbt_userid'], $refset['id'] );
 
 			if ( count ( $assignments ) > 0 ) {
 
