@@ -2789,15 +2789,17 @@ function nbtCopyCitationToMaster ( eid, cid, rsid, ref, citationid ) {
 
 			// alert ('not already cited');
 
-			$('#nbtMasterCiteCopyFeedback' + eid + '-' + cid).html('Copied').fadeIn(500, function () {
+			$('#nbtMasterCiteCopyFeedback' + eid + '-' + cid).html('Copied').removeClass('nbtFeedbackGood').removeClass('nbtFeedbackBad').fadeIn(500, function () {
 
 				$('#nbtMasterCitations' + eid).html(html);
+				$('#nbtMasterCiteCopyFeedback' + eid + '-' + cid).addClass('nbtFeedbackGood');
 
 			});
 
 		} else {
 
 			$('#nbtMasterCiteCopyFeedback' + eid + '-' + cid).html('Not copied').fadeIn();
+			$('#nbtMasterCiteCopyFeedback' + eid + '-' + cid).addClass('nbtFeedbackBad');
 
 		}
 

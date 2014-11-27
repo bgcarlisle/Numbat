@@ -56,7 +56,7 @@ $distinctcites = nbt_get_distinct_citations_for_element_refset_and_ref ( $nbtLis
 							}
 
 							?><button style="margin: 5px 0 10px 0;" onclick="nbtCopyCitationToMaster(<?php echo $nbtListCitationsCitationID; ?>, <?php echo $cite['id']; ?>, <?php echo $nbtListCitationsRefSetID; ?>, <?php echo $nbtListCitationsReference; ?>, <?php echo $cite['citationid']; ?>);">Copy to master</button>
-							<span class="nbtHidden nbtMasterCite<?php echo $nbtListCitationsCitationID; ?>-<?php echo $cite['citationid']; ?>" id="nbtMasterCiteCopyFeedback<?php echo $nbtListCitationsCitationID; ?>-<?php echo $cite['id']; ?>"></span><?php
+							<span class="nbtHidden nbtMasterCite<?php echo $nbtListCitationsCitationID; ?>-<?php echo $cite['citationid']; ?>" id="nbtMasterCiteCopyFeedback<?php echo $nbtListCitationsCitationID; ?>-<?php echo $cite['id']; ?>" style="padding: 1px 4px;"></span><?php
 
 						}
 
