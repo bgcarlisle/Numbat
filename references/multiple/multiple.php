@@ -4,7 +4,7 @@ include_once ('../../config.php');
 
 $refset = nbt_get_refset_for_id ( $_GET['refset'] );
 
-?><div class="nbtContentPanel">
+?><div class="nbtGreyGradient nbtContentPanel">
 
       <h2>Manage multiple references</h2>
 
