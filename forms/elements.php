@@ -132,7 +132,7 @@ if ( count ( $elements ) > 0 ) {
 						<p>Table suffix: <input type="text" id="nbtCitationSelectorSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeCitationSelectorSuffix(<?php echo $element['id']; ?>);" maxlength="25"></p>
 						<p class="nbtFinePrint">Suffix for citations table in database</p>
 						<p>Citation properties</p>
-						<p class="nbtFinePrint">You can add properties to be collected regarding each citation. Display name will appear as an open text field for each citation added on the extraction form; DB name will appear on exported spreadsheet.</p>
+						<p class="nbtFinePrint">You can add properties to be collected regarding each citation. Display name will appear as an open text field for each citation added on the extraction form; DB name will appear on exported spreadsheet. For elements with "reminder" selected, the previously chosen values for that user and reference ID within the same reference set will be displayed when a reference is selected.</p>
 						<div id="nbtCitationSelectorTable<?php echo $element['id']; ?>"><?php
 
 						$citationelementid = $element['id'];

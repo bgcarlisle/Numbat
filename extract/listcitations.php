@@ -42,6 +42,26 @@ foreach ( $citations as $citation ) {
 				?>" id="nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>" onblur="nbtSaveCitationTextField(<?php echo $nbtListCitationsCitationID; ?>, <?php echo $citation['id']; ?>, '<?php echo $column['dbname']; ?>', 'nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>');" maxlength="500">
 				<span class="nbtInputFeedback" id="nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>Feedback">&nbsp;</span></p><?php
 
+				if ( $column['remind'] == 1 ) {
+
+					$reminders = nbtGetCitationPropertyReminders ( $nbtListCitationsCitationDB, $nbtListCitationsRefSetID, $citation['citationid'], $column['dbname'] );
+
+					if ( count ($reminders) > 0 ) {
+
+						?><p class="nbtFinePrint">In previous extractions, you have provided the following response(s): <?php
+
+						foreach ( $reminders as $reminder ) {
+
+							?><span class="nbtExtractionName"><?php echo $reminder[$column['dbname']]; ?></span><?php
+
+						}
+
+						?></p><?php
+
+					}
+
+				}
+
 			}
 
 		}

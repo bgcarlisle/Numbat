@@ -1105,6 +1105,32 @@ function nbtUpdateCitationPropertyDB ( eid, cid ) {
 
 }
 
+function nbtCitationPropertyRemindToggle ( cid ) {
+
+	$.ajax ({
+		url: numbaturl + 'forms/togglecitepropertyremind.php',
+		type: 'post',
+		data: {
+			column: cid,
+			newvalue: $('#nbtCitationPropertyDB' + cid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+
+		if ( html.substring(0,1) == '0' ) {
+
+			$('#nbtCitationPropertyRemind' + cid).removeClass('nbtTextOptionChosen');
+
+		} else {
+
+			$('#nbtCitationPropertyRemind' + cid).addClass('nbtTextOptionChosen');
+
+		}
+
+	});
+
+}
+
 function nbtMoveCitationProperty ( eid, cid, dir ) {
 
 	$.ajax ({

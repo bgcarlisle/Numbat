@@ -8884,6 +8884,52 @@ function nbt_update_citation_property_db ( $columnid, $newcolumnname ) {
 
 }
 
+function nbt_toggle_citation_property_remind ( $columnid ) {
+
+	// get the old column name and the form id
+
+	$column = nbt_get_citation_property_for_propertyid ( $columnid );
+
+	$element = nbt_get_form_element_for_elementid ( $column['elementid'] );
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `citationscolumns` SET `remind`=:remind WHERE `id` = :cid");
+
+		$stmt->bindParam(':cid', $cid);
+		$stmt->bindParam(':remind', $rem);
+
+		$cid = $columnid;
+
+		if ( $column['remind'] == 0 ) {
+
+			$rem = 1;
+
+		} else {
+
+			$rem = 0;
+
+		}
+
+		if ($stmt->execute()) {
+
+			return $rem;
+
+		}
+
+		$dbh = null;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
 function nbt_get_citation_property_for_propertyid ( $propertyid ) {
 
 	try {
@@ -12634,6 +12680,41 @@ function nbt_move_master_for_form_db_refset_fromref_toref ( $formid, $refset, $f
 			}
 
 		}
+
+	}
+
+}
+
+function nbtGetCitationPropertyReminders ( $citations, $refset, $citationid, $columnname ) {
+
+	$userid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `citations_" . $citations . "` WHERE `refsetid` = :rsid AND `citationid` = :cid AND `userid` = :uid AND `" . $columnname . "` != '' GROUP BY `" . $columnname . "`");
+
+		$stmt->bindParam(':rsid', $rsid);
+		$stmt->bindParam(':cid', $cid);
+		$stmt->bindParam(':uid', $uid);
+
+		$rsid = $refset;
+		$cid = $citationid;
+		$uid = $userid;
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		$dbh = null;
+
+		return $result;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
 
 	}
 
