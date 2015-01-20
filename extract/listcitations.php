@@ -44,7 +44,7 @@ foreach ( $citations as $citation ) {
 
 				if ( $column['remind'] == 1 ) {
 
-					$reminders = nbtGetCitationPropertyReminders ( $nbtListCitationsCitationDB, $nbtListCitationsRefSetID, $citation['citationid'], $column['dbname'] );
+					$reminders = nbtGetCitationPropertyReminders ( $nbtListCitationsCitationDB, $nbtListCitationsRefSetID, $nbtListCitationsReference, $citation['citationid'], $column['dbname'] );
 
 					if ( count ($reminders) > 0 ) {
 
