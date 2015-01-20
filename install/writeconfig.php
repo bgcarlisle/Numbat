@@ -80,7 +80,7 @@ catch (PDOException $e) {
 try { // citations columns table
 
 	$dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("DROP TABLE IF EXISTS `citationscolumns`; CREATE TABLE `citationscolumns` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `elementid` int(11) DEFAULT NULL, `displayname` varchar(200) DEFAULT NULL, `dbname` varchar(50) DEFAULT NULL, `sortorder` int(11) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+	$stmt = $dbh->prepare("DROP TABLE IF EXISTS `citationscolumns`; CREATE TABLE `citationscolumns` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `elementid` int(11) DEFAULT NULL, `displayname` varchar(200) DEFAULT NULL, `dbname` varchar(50) DEFAULT NULL, `remind` int(11) DEFAULT '0', `sortorder` int(11) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
 	if ( $stmt->execute() ) {
 
