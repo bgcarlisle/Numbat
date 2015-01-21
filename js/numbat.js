@@ -1844,7 +1844,11 @@ function nbtRemoveCitation ( sectionid, citationid ) {
 		dataType: 'html'
 	}).done ( function (html) {
 
-		$('#nbtCitation' + sectionid + '-' + citationid).slideUp();
+		$('#nbtCitation' + sectionid + '-' + citationid).slideUp(500, function() {
+
+			$('#nbtCitation' + sectionid + '-' + citationid).remove();
+
+		});
 
 	});
 
