@@ -1767,6 +1767,7 @@ function nbtFindCitation (eid, suffix, targetid, cid, rsid, refid) {
 			url: numbaturl + 'extract/citationfinder.php',
 			type: 'post',
 			data: {
+				elementid: eid,
 				citationsid: cid,
 				citationsuffix: suffix,
 				refset: rsid,
@@ -3130,5 +3131,17 @@ function nbtMultipleMoveMaster ( rsid, from_ref ) {
 		nbtSearchForMultiples ( rsid );
 
 	});
+
+}
+
+function nbtCiteClearField ( eid ) {
+
+	$('#nbtCitationSuggestions' + eid).slideUp(500, function () {
+
+		$('#nbtCitationSuggestions' + eid).html('&nbsp;');
+		$('#nbtCitationSuggestions' + eid).slideDown();
+
+	});
+	$('#nbtCitationFinder' + eid).val('');
 
 }

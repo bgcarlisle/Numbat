@@ -13,7 +13,7 @@ foreach ( $suggestions as $suggestion ) {
 		?><div>
 			<h4><?php echo $suggestion['title']; ?>.</h4>
 			<p><?php echo $suggestion['authors']; ?>. <span class="nbtJournalName"><?php echo $suggestion['journal']; ?></span>: <?php echo $suggestion['year']; ?>.</p>
-			<button onclick="nbtAddCitation(<?php echo $_POST['citationsid']; ?>, '<?php echo $_POST['citationsuffix']; ?>', <?php echo $_POST['refset']; ?>, <?php echo $_POST['reference']; ?>, <?php echo $suggestion['id']; ?>, <?php echo $_SESSION[INSTALL_HASH . '_nbt_userid']; ?>);">Add citation</button>
+			<button onclick="nbtAddCitation(<?php echo $_POST['citationsid']; ?>, '<?php echo $_POST['citationsuffix']; ?>', <?php echo $_POST['refset']; ?>, <?php echo $_POST['reference']; ?>, <?php echo $suggestion['id']; ?>, <?php echo $_SESSION[INSTALL_HASH . '_nbt_userid']; ?>);nbtCiteClearField(<?php echo $_POST['elementid']; ?>);">Add citation</button>
 		</div><?php
 
 		$counter ++;
