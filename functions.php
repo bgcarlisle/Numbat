@@ -2414,8 +2414,7 @@ function nbt_echo_manual_ref ( $ref, $refsetid ) {
 
 				echo $ref['title'];
 
-			?>" id="nbtManRefTextField<?php echo $ref['id']; ?>Title" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'title', 'nbtManRefTextField<?php echo $ref['id']; ?>Title', 'nbtManRefTextField<?php echo $ref['id']; ?>TitleFeedback');">
-			<span class="nbtInputFeedback" id="nbtManRefTextField<?php echo $ref['id']; ?>TitleFeedback">&nbsp;</span>
+			?>" id="nbtManRefTextField<?php echo $ref['id']; ?>Title" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'title', 'nbtManRefTextField<?php echo $ref['id']; ?>Title');">
 		</p>
 		<p class="nbtInlineTextField">
 			<span class="nbtInputLabel">Authors</span>
@@ -2423,8 +2422,7 @@ function nbt_echo_manual_ref ( $ref, $refsetid ) {
 
 				echo $ref['authors'];
 
-			?>" id="nbtManRefTextField<?php echo $ref['id']; ?>Authors" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'authors', 'nbtManRefTextField<?php echo $ref['id']; ?>Authors', 'nbtManRefTextField<?php echo $ref['id']; ?>AuthorsFeedback');">
-			<span class="nbtInputFeedback" id="nbtManRefTextField<?php echo $ref['id']; ?>AuthorsFeedback">&nbsp;</span>
+			?>" id="nbtManRefTextField<?php echo $ref['id']; ?>Authors" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'authors', 'nbtManRefTextField<?php echo $ref['id']; ?>Authors');">
 		</p>
 		<p class="nbtInlineTextField">
 			<span class="nbtInputLabel">Year</span>
@@ -2432,8 +2430,7 @@ function nbt_echo_manual_ref ( $ref, $refsetid ) {
 
 				echo $ref['year'];
 
-			?>" id="nbtManRefTextField<?php echo $ref['id']; ?>Year" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'year', 'nbtManRefTextField<?php echo $ref['id']; ?>Year', 'nbtManRefTextField<?php echo $ref['id']; ?>YearFeedback');">
-			<span class="nbtInputFeedback" id="nbtManRefTextField<?php echo $ref['id']; ?>YearFeedback">&nbsp;</span>
+			?>" id="nbtManRefTextField<?php echo $ref['id']; ?>Year" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'year', 'nbtManRefTextField<?php echo $ref['id']; ?>Year');">
 		</p>
 		<p class="nbtInlineTextField">
 			<span class="nbtInputLabel">Journal</span>
@@ -2441,16 +2438,14 @@ function nbt_echo_manual_ref ( $ref, $refsetid ) {
 
 				echo $ref['journal'];
 
-			?>" id="nbtManRefTextField<?php echo $ref['id']; ?>Journal" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'journal', 'nbtManRefTextField<?php echo $ref['id']; ?>Journal', 'nbtManRefTextField<?php echo $ref['id']; ?>JournalFeedback');">
-			<span class="nbtInputFeedback" id="nbtManRefTextField<?php echo $ref['id']; ?>JournalFeedback">&nbsp;</span>
+			?>" id="nbtManRefTextField<?php echo $ref['id']; ?>Journal" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'journal', 'nbtManRefTextField<?php echo $ref['id']; ?>Journal');">
 		</p>
 		<p class="nbtInputLabel">Abstract</p>
-		<textarea id="nbtManRefTextField<?php echo $ref['id']; ?>Abstract" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'abstract', 'nbtManRefTextField<?php echo $ref['id']; ?>Abstract', 'nbtManRefTextField<?php echo $ref['id']; ?>AbstractFeedback');" style="width: 90%;"><?php
+		<textarea id="nbtManRefTextField<?php echo $ref['id']; ?>Abstract" onblur="nbtUpdateManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>, 'abstract', 'nbtManRefTextField<?php echo $ref['id']; ?>Abstract');" style="width: 90%;"><?php
 
 			echo $ref['abstract'];
 
 		?></textarea>
-		<span class="nbtInputFeedback" id="nbtManRefTextField<?php echo $ref['id']; ?>AbstractFeedback">&nbsp;</span>
 		<button onclick="$(this).fadeOut(0);$('#nbtRemoveReference<?php echo $ref['id']; ?>').fadeIn()">Remove this reference</button>
 		<button id="nbtRemoveReference<?php echo $ref['id']; ?>" onclick="nbtRemoveManualReference(<?php echo $refsetid; ?>, <?php echo $ref['id']; ?>);" class="nbtHidden">For real</button>
 	</div><?php

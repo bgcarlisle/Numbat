@@ -2621,7 +2621,7 @@ function nbtAddNewReferenceToRefSet ( rsid ) {
 
 }
 
-function nbtUpdateManualReference ( rsid, refid, columnid, textfieldid, feedbackid ) {
+function nbtUpdateManualReference ( rsid, refid, columnid, textfieldid ) {
 
 	$.ajax ({
 		url: numbaturl + 'extract/updatemanref.php',
@@ -2635,17 +2635,17 @@ function nbtUpdateManualReference ( rsid, refid, columnid, textfieldid, feedback
 		dataType: 'html'
 	}).done ( function (html) {
 
-		$('#' + feedbackid).html(html);
+		if ( html == "Changes saved" ) {
 
-		$('#' + feedbackid).fadeIn(50, function () {
+			$('#' + textfieldid).addClass('nbtBackgroundFeedbackGood');
 
 			setTimeout ( function () {
 
-				$('#' + feedbackid).fadeOut(1000);
+				$('#' + textfieldid).removeClass('nbtBackgroundFeedbackGood');
 
-			}, 2000);
+			}, 500);
 
-		});
+		}
 
 	});
 
