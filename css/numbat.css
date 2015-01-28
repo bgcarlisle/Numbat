@@ -286,7 +286,8 @@ table.nbtTabledData textarea {
 div.nbtSidebar {
 	position: fixed;
 	width: 33%;
-	min-width: 320px;
+	min-width: 360px;
+	height: 260px;
 	background: #eee;
 	border-radius: 5px;
 	padding: 5px 5px 5px 7px;

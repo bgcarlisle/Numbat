@@ -483,10 +483,9 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 	nbtCheckLogin();
 
-	$('.nbtSidebar textarea').css('height', $('.nbtSidebar').height() - 120)
-
 	$('.nbtSidebar').draggable().resizable({
 		minWidth: 360,
+		minHeight: 250,
 		alsoResize: ".nbtSidebar textarea"
 	});
 
