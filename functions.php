@@ -8925,6 +8925,52 @@ function nbt_toggle_citation_property_remind ( $columnid ) {
 
 }
 
+function nbt_toggle_citation_property_forcecaps ( $columnid ) {
+
+	// get the old column name and the form id
+
+	$column = nbt_get_citation_property_for_propertyid ( $columnid );
+
+	$element = nbt_get_form_element_for_elementid ( $column['elementid'] );
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `citationscolumns` SET `caps`=:caps WHERE `id` = :cid");
+
+		$stmt->bindParam(':cid', $cid);
+		$stmt->bindParam(':caps', $cap);
+
+		$cid = $columnid;
+
+		if ( $column['caps'] == 0 ) {
+
+			$cap = 1;
+
+		} else {
+
+			$cap = 0;
+
+		}
+
+		if ($stmt->execute()) {
+
+			return $cap;
+
+		}
+
+		$dbh = null;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
 function nbt_get_citation_property_for_propertyid ( $propertyid ) {
 
 	try {

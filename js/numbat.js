@@ -1111,8 +1111,7 @@ function nbtCitationPropertyRemindToggle ( cid ) {
 		url: numbaturl + 'forms/togglecitepropertyremind.php',
 		type: 'post',
 		data: {
-			column: cid,
-			newvalue: $('#nbtCitationPropertyDB' + cid).val()
+			column: cid
 		},
 		dataType: 'html'
 	}).done ( function (html) {
@@ -1124,6 +1123,31 @@ function nbtCitationPropertyRemindToggle ( cid ) {
 		} else {
 
 			$('#nbtCitationPropertyRemind' + cid).addClass('nbtTextOptionChosen');
+
+		}
+
+	});
+
+}
+
+function nbtCitationPropertyForceCapsToggle ( cid ) {
+
+	$.ajax ({
+		url: numbaturl + 'forms/togglecitepropertyforcecaps.php',
+		type: 'post',
+		data: {
+			column: cid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+
+		if ( html.substring(0,1) == '0' ) {
+
+			$('#nbtCitationPropertyForceCaps' + cid).removeClass('nbtTextOptionChosen');
+
+		} else {
+
+			$('#nbtCitationPropertyForceCaps' + cid).addClass('nbtTextOptionChosen');
 
 		}
 

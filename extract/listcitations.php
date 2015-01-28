@@ -39,7 +39,15 @@ foreach ( $citations as $citation ) {
 
 				echo $citation[$column['dbname']];
 
-				?>" id="nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>" onblur="nbtSaveCitationTextField(<?php echo $nbtListCitationsCitationID; ?>, <?php echo $citation['id']; ?>, '<?php echo $column['dbname']; ?>', 'nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>');" maxlength="500">
+				?>" id="nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>" onblur="<?php
+
+				if ( $column['caps'] == 1 ) {
+
+					?>$(this).val($(this).val().toUpperCase());<?php
+
+				}
+
+				?>nbtSaveCitationTextField(<?php echo $nbtListCitationsCitationID; ?>, <?php echo $citation['id']; ?>, '<?php echo $column['dbname']; ?>', 'nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>');" maxlength="500">
 				<span class="nbtInputFeedback" id="nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>Feedback">&nbsp;</span></p><?php
 
 				if ( $column['remind'] == 1 ) {

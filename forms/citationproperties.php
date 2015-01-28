@@ -3,6 +3,7 @@
 		<td>Display name</td>
 		<td>DB name</td>
 		<td>Reminder</td>
+		<td>Caps</td>
 		<td style="width: 80px;">Move</td>
 		<td style="width: 80px;">Delete</td>
 	</tr>
@@ -24,6 +25,15 @@
 			}
 
 			?>">Remind</a></td>
+			<td><a href="#" id="nbtCitationPropertyForceCaps<?php echo $column['id']; ?>" onclick="event.preventDefault();nbtCitationPropertyForceCapsToggle(<?php echo $column['id']; ?>);" class="nbtTextOptionSelect<?php
+
+			if ( $column['caps'] == 1 ) {
+
+				?> nbtTextOptionChosen<?php
+
+			}
+
+			?>">Force caps</a></td>
 			<td><button onclick="nbtMoveCitationProperty(<?php echo $citationelementid; ?>, <?php echo $column['id']; ?>, 1);">&#8593;</button> <button onclick="nbtMoveCitationProperty(<?php echo $citationelementid; ?>, <?php echo $column['id']; ?>, -1);">&#8595;</button></td>
 			<td>
 				<button onclick="$(this).fadeOut(0);$('#nbtColumnDelete<?php echo $column['id']; ?>').fadeIn();">Delete</button>
@@ -34,6 +44,6 @@
 	}
 
 	?><tr>
-		<td colspan="4"><button onclick="nbtAddCitationProperty(<?php echo $citationelementid; ?>);">Add new citation property</button></td>
+		<td colspan="6"><button onclick="nbtAddCitationProperty(<?php echo $citationelementid; ?>);">Add new citation property</button></td>
 	</tr>
 </table>
