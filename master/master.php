@@ -94,7 +94,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 					}
 
-					?><div class="nbtContentPanel">
+					?><div class="nbtContentPanel" style="width: 940px;">
 						<h3><?php echo $element['displayname']; ?><?php
 
 						if ( $element['codebook'] != "" ) {
