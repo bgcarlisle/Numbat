@@ -3173,3 +3173,69 @@ function nbtCiteClearField ( eid ) {
 	$('#nbtCitationFinder' + eid).val('');
 
 }
+
+jQuery.fn.reverse = function() {
+
+	return this.pushStack(this.get().reverse(), arguments);
+
+}
+
+function nbtExtractionTableDataKeyHandle ( event, input_element, eid, cid, rsid, rid ) {
+
+	if (event.keyCode == 40) { // Down arrow key pressed
+
+		found_focus = 0;
+
+		row_counter = 0;
+
+		num_of_rows = $('.nbtTable' + eid + '-' + cid).length;
+
+		$('.nbtTable' + eid + '-' + cid).each( function () {
+
+			row_counter ++;
+
+			if ( found_focus == 1 ) {
+
+				$(this).focus();
+
+			}
+
+			if ( $(this).is(':focus') ) {
+
+				found_focus ++;
+
+				if ( row_counter == num_of_rows && found_focus == 1 ) {
+
+					nbtAddExtractionTableDataRow ('table_data', eid, rsid, rid);
+
+				}
+
+			}
+
+		});
+
+	}
+
+	if (event.keyCode == 38) { // Up arrow key pressed
+
+		found_focus = 0;
+
+		$('.nbtTable' + eid + '-' + cid).reverse().each( function () {
+
+			if ( found_focus == 1 ) {
+
+				$(this).focus();
+
+			}
+
+			if ( $(this).is(':focus') ) {
+
+				found_focus ++;
+
+			}
+
+		});
+
+	}
+
+}
