@@ -3239,3 +3239,57 @@ function nbtExtractionTableDataKeyHandle ( event, input_element, eid, cid, rsid,
 	}
 
 }
+
+function nbtMasterTableDataKeyHandle ( event, input_element, eid, cid ) {
+
+	if (event.keyCode == 40) { // Down arrow key pressed
+
+		found_focus = 0;
+
+		row_counter = 0;
+
+		num_of_rows = $('.nbtTable' + eid + '-' + cid).length;
+
+		$('.nbtTable' + eid + '-' + cid).each( function () {
+
+			row_counter ++;
+
+			if ( found_focus == 1 ) {
+
+				$(this).focus();
+
+			}
+
+			if ( $(this).is(':focus') ) {
+
+				found_focus ++;
+
+			}
+
+		});
+
+	}
+
+	if (event.keyCode == 38) { // Up arrow key pressed
+
+		found_focus = 0;
+
+		$('.nbtTable' + eid + '-' + cid).reverse().each( function () {
+
+			if ( found_focus == 1 ) {
+
+				$(this).focus();
+
+			}
+
+			if ( $(this).is(':focus') ) {
+
+				found_focus ++;
+
+			}
+
+		});
+
+	}
+
+}
