@@ -1849,6 +1849,7 @@ function nbtAddCitation (cid, csuffix, rsid, origrefid, citid, user) {
 		}).done ( function (html) {
 
 			$('#nbtCitationList' + cid).html(html);
+			$('div#nbtCitationList' + cid + ' input').first().focus();
 
 		});
 
