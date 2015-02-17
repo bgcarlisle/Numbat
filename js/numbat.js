@@ -1775,35 +1775,43 @@ function nbtRemoveExtractionTableDataRow ( tableid, rowid ) {
 
 }
 
-function nbtFindCitation (eid, suffix, targetid, cid, rsid, refid) {
+function nbtFindCitation (event, eid, suffix, targetid, cid, rsid, refid) {
 
-	if ( $('#nbtCitationFinder' + eid).val() == '' ) {
+	if (event.keyCode == 13){ // Enter key pressed and only one result
 
-		$('#' + targetid).fadeOut(100);
-
-		$('#' + targetid).html('');
+		$('div#nbtCitationSuggestions' + eid + ' div button').first().click();
 
 	} else {
 
-		$('#nbtCitationSuggestions' + eid).fadeIn(100);
+		if ( $('#nbtCitationFinder' + eid).val() == '' ) {
 
-		$.ajax ({
-			url: numbaturl + 'extract/citationfinder.php',
-			type: 'post',
-			data: {
-				elementid: eid,
-				citationsid: cid,
-				citationsuffix: suffix,
-				refset: rsid,
-				query: $('#nbtCitationFinder' + eid).val(),
-				reference: refid
-			},
-			dataType: 'html'
-		}).done ( function (html) {
+			$('#' + targetid).fadeOut(100);
 
-			$('#' + targetid).html(html);
+			$('#' + targetid).html('');
 
-		});
+		} else {
+
+			$('#nbtCitationSuggestions' + eid).fadeIn(100);
+
+			$.ajax ({
+				url: numbaturl + 'extract/citationfinder.php',
+				type: 'post',
+				data: {
+					elementid: eid,
+					citationsid: cid,
+					citationsuffix: suffix,
+					refset: rsid,
+					query: $('#nbtCitationFinder' + eid).val(),
+					reference: refid
+				},
+				dataType: 'html'
+			}).done ( function (html) {
+
+				$('#' + targetid).html(html);
+
+			});
+
+		}
 
 	}
 
