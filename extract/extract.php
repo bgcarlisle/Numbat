@@ -2,7 +2,7 @@
 
 $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
-?><button onclick="$('.nbtSidebar').fadeIn(200);$(this).fadeOut(0);" id="nbtUnhideSidebar" style="position: fixed; right: 20px; top: 60px;">Show notes</button>
+?><button onclick="$('.nbtSidebar').fadeIn(200);$(this).fadeOut(0);$('#nbtExtractionNotes').focus();" id="nbtUnhideSidebar" style="position: fixed; right: 20px; top: 60px;">Show notes</button>
 <div class="nbtSidebar" style="display: none;">
 	<h3>Extraction notes</h3>
 	<p class="nbtFinePrint">These notes are for your own reference. These will not be included in the final report, and they are not visible to other extractors. <a href="#" onclick="event.preventDefault();$(this).parent().parent().fadeOut(200);$('button#nbtUnhideSidebar').fadeIn(200);">[Hide]</a></p>
