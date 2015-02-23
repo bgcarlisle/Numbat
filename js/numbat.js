@@ -3215,6 +3215,8 @@ function nbtExtractionTableDataKeyHandle ( event, input_element, eid, cid, rsid,
 
 				if ( row_counter == num_of_rows && found_focus == 1 ) {
 
+					$(input_element).blur();
+
 					nbtAddExtractionTableDataRow ('table_data', eid, rsid, rid);
 
 				}
