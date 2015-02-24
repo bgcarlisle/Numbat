@@ -3217,7 +3217,17 @@ function nbtExtractionTableDataKeyHandle ( event, input_element, eid, cid, rsid,
 
 					$(input_element).blur();
 
-					nbtAddExtractionTableDataRow ('table_data', eid, rsid, rid);
+					setTimeout ( function () {
+
+						nbtAddExtractionTableDataRow ('table_data', eid, rsid, rid);
+
+						setTimeout ( function () {
+
+							$('.nbtTable' + eid + '-' + cid).last().focus();
+
+						}, 500);
+
+					}, 50);
 
 				}
 
