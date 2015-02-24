@@ -60,7 +60,7 @@ foreach ( $citations as $citation ) {
 
 						foreach ( $reminders as $reminder ) {
 
-							?><span class="nbtExtractionName" onclick="$('#nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>').val('<?php echo $reminder[$column['dbname']]; ?>');"><?php echo $reminder[$column['dbname']]; ?></span><?php
+							?><span class="nbtExtractionName" onclick="$('#nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>').val('<?php echo $reminder[$column['dbname']]; ?>').focus().blur();"><?php echo $reminder[$column['dbname']]; ?></span><?php
 
 						}
 
