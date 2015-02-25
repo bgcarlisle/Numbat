@@ -1753,6 +1753,12 @@ function nbtAddExtractionTableDataRow (tform, tableid, refsetid, refid) {
 
 		$('#nbtTableExtraction' + tableid).html(html);
 
+		setTimeout ( function () {
+
+			$('#nbtTableExtraction' + tableid + ' table.nbtTabledData tr.nbtTDRow' + tableid + ':last td:first input').focus();
+
+		}, 50);
+
 	});
 
 }
@@ -3220,12 +3226,6 @@ function nbtExtractionTableDataKeyHandle ( event, input_element, eid, cid, rsid,
 					setTimeout ( function () {
 
 						nbtAddExtractionTableDataRow ('table_data', eid, rsid, rid);
-
-						setTimeout ( function () {
-
-							$('.nbtTable' + eid + '-' + cid).last().focus();
-
-						}, 500);
 
 					}, 50);
 
