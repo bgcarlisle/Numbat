@@ -42,17 +42,20 @@ foreach ( $citations as $citation ) {
 
 				?><p><?php echo $column['displayname']; ?><span class="nbtFeedback"><?php
 
-				if ( $citation[$column['dbname']] != "" ) {
+				?><input type="text" value="<?php
 
-					echo $citation[$column['dbname']];
+				echo $citation[$column['dbname']];
 
-				} else {
+				?>" id="nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>" onblur="<?php
 
-					echo "[Left blank]";
+				if ( $column['caps'] == 1 ) {
+
+					?>$(this).val($(this).val().toUpperCase());<?php
 
 				}
 
-				?></span></p><?php
+				?>nbtSaveMasterCitationTextField(<?php echo $nbtListCitationsCitationID; ?>, <?php echo $citation['id']; ?>, '<?php echo $column['dbname']; ?>', 'nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>');" maxlength="500">
+				<span class="nbtInputFeedback" id="nbtCitationTextField<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?><?php echo $column['dbname']; ?>Feedback">&nbsp;</span></p><?php
 
 			}
 

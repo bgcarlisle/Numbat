@@ -1314,6 +1314,46 @@ function nbtSaveCitationTextField (sectionid, citationid, questionid, textfieldi
 
 }
 
+function nbtSaveMasterCitationTextField (sectionid, citationid, questionid, textfieldid) {
+
+	$.ajax ({
+		url: numbaturl + 'master/updatecitationproperty.php',
+		type: 'post',
+		data: {
+			section: sectionid,
+			cid: citationid,
+			question: questionid,
+			answer: $('#' + textfieldid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+
+		if (html == 'Changes saved') {
+
+			$('#' + textfieldid).addClass('nbtBackgroundFeedbackGood');
+
+			setTimeout ( function () {
+
+				$('#' + textfieldid).removeClass('nbtBackgroundFeedbackGood');
+
+			}, 500);
+
+		} else {
+
+			$('#' + textfieldid).addClass('nbtBackgroundFeedbackBad');
+
+			setTimeout ( function () {
+
+				$('#' + textfieldid).removeClass('nbtBackgroundFeedbackBad');
+
+			}, 500);
+
+		}
+
+	});
+
+}
+
 function nbtSaveDateField (formid, extractionid, questionid, textfieldid) {
 
 	$.ajax ({

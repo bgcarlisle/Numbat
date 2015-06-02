@@ -9540,6 +9540,46 @@ function nbt_update_citation_property ( $section, $cid, $column, $value ) {
 
 }
 
+function nbt_update_master_citation_property ( $section, $cid, $column, $value ) {
+
+	$element = nbt_get_form_element_for_elementid ( $section );
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `mcite_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
+
+		$stmt->bindParam(':id', $id);
+		$stmt->bindParam(':value', $val);
+
+		$id = $cid;
+		$val = $value;
+
+		if ( $stmt->execute() ) {
+
+			$dbh = null;
+
+			return TRUE;
+
+		} else {
+
+			$dbh = null;
+
+			return FALSE;
+
+		}
+
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
 function nbt_get_all_assignments_for_refset ( $refsetid ) {
 
 	try {
