@@ -263,6 +263,12 @@ table.nbtTabledData {
 	font-size: 12px;
 	margin-bottom: 20px;
 }
+table.nbtTabledData tr:nth-child(odd) {
+	background: #fff;
+}
+table.nbtTabledData tr:nth-child(even) {
+	background: #ddd;
+}
 table.nbtTabledData td {
 	padding: 2px;
 }
