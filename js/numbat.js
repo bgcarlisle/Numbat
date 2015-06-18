@@ -3354,3 +3354,25 @@ function nbtMasterTableDataKeyHandle ( event, input_element, eid, cid ) {
 	}
 
 }
+
+function nbtExportData ( etype, rsid, fid, m_or_e ) {
+
+	$.ajax ({
+		url: numbaturl + 'export/save_dataset.php',
+		type: 'post',
+		data: {
+			export_type: etype,
+			refsetid: rsid,
+			formid: fid,
+			master: m_or_e
+		},
+		dataType: 'html'
+	}).done ( function (response) {
+
+		$('#nbtCoverup').fadeIn();
+		$('#nbtThinky').fadeIn();
+
+
+	});
+
+}

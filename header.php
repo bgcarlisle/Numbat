@@ -109,6 +109,11 @@ if ( nbt_user_is_logged_in () ) {
 				</a>
 			</li>
 			<li>
+				<a href="<?php echo SITE_URL; ?>export/">
+					Export data
+				</a>
+			</li>
+			<li>
 				<a href="<?php echo SITE_URL; ?>backup/">
 					<img src="<?php echo SITE_URL; ?>images/backup.png">
 					Backup data

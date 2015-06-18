@@ -2296,6 +2296,130 @@ function nbt_get_table_data_rows ( $elementid, $refsetid, $refid, $userid ) {
 
 }
 
+function nbt_get_all_table_data_rows_for_refset ( $elementid, $refsetid ) {
+
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `tabledata_" . $element['columnname'] . "` WHERE refsetid = :refset ORDER BY id ASC;");
+
+		$stmt->bindParam(':refset', $rsid);
+
+		$rsid = $refsetid;
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		$dbh = null;
+
+		return $result;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_get_all_sub_extraction_rows_for_refset ( $elementid, $refsetid ) {
+
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE refsetid = :refset ORDER BY id ASC;");
+
+		$stmt->bindParam(':refset', $rsid);
+
+		$rsid = $refsetid;
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		$dbh = null;
+
+		return $result;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_get_all_reconciled_table_data_rows_for_refset ( $elementid, $refsetid ) {
+
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `mtable_" . $element['columnname'] . "` WHERE refsetid = :refset ORDER BY id ASC;");
+
+		$stmt->bindParam(':refset', $rsid);
+
+		$rsid = $refsetid;
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		$dbh = null;
+
+		return $result;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_get_all_reconciled_sub_extraction_rows_for_refset ( $elementid, $refsetid ) {
+
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `mtable_" . $element['columnname'] . "` WHERE refsetid = :refset ORDER BY id ASC;");
+
+		$stmt->bindParam(':refset', $rsid);
+
+		$rsid = $refsetid;
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		$dbh = null;
+
+		return $result;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
 function nbt_add_new_extraction_table_data_row ($tableid, $refsetid, $refid, $userid) {
 
 	$element = nbt_get_form_element_for_elementid ( $tableid );
@@ -12784,6 +12908,97 @@ function nbtGetCitationPropertyReminders ( $citations, $refset, $referenceid, $c
 		$rid = $referenceid;
 		$cid = $citationid;
 		$uid = $userid;
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		$dbh = null;
+
+		return $result;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_get_all_reconciled_references_for_refset_and_form ( $refsetid, $formid ) {
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `id` IN (SELECT `referenceid` FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :refset AND `status` = 2) ORDER BY id ASC;");
+
+		$stmt->bindParam(':refset', $rsid);
+
+		$rsid = $refsetid;
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		$dbh = null;
+
+		return $result;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_get_all_citations_for_refset ( $elementid, $refsetid ) {
+
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `citations_" . $element['columnname'] . "` WHERE refsetid = :refset ORDER BY id ASC;");
+
+		$stmt->bindParam(':refset', $rsid);
+
+		$rsid = $refsetid;
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		$dbh = null;
+
+		return $result;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_get_all_reconciled_citations_for_refset ( $elementid, $refsetid ) {
+
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `mcite_" . $element['columnname'] . "` WHERE refsetid = :refset ORDER BY id ASC;");
+
+		$stmt->bindParam(':refset', $rsid);
+
+		$rsid = $refsetid;
 
 		$stmt->execute();
 
