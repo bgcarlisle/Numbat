@@ -1,38 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Numbat : Numbat Meta-Analysis Extraction Manager">
+    <title>Numbat by bgcarlisle</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Numbat</title>
   </head>
-
   <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/bgcarlisle/Numbat">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/bgcarlisle/Numbat/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/bgcarlisle/Numbat/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/bgcarlisle/Numbat">View on GitHub</a>
+    <div class="wrapper">
 
-          <h1 id="project_title">Numbat</h1>
-          <h2 id="project_tagline">Numbat Meta-Analysis Extraction Manager</h2>
+      <section>
+        <div id="title">
+          <h1>Numbat</h1>
+          <p>Numbat Meta-Analysis Extraction Manager</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/bgcarlisle">bgcarlisle</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
+        </div>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/bgcarlisle/Numbat/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/bgcarlisle/Numbat/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
         <h1>
-<a id="numbat-v-25" class="anchor" href="#numbat-v-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>Numbat v. 2.5</h1>
+<a id="numbat-v-26" class="anchor" href="#numbat-v-26" aria-hidden="true"><span class="octicon octicon-link"></span></a>Numbat v. 2.6</h1>
 
 <p>Numbat Academic Meta-Analysis Extraction Manager</p>
 
@@ -108,17 +115,11 @@
 <p>Copy the entire file to your web server, and navigate to the Numbat directory with your browser. You will need to know your MySQL server, username and password to complete the installation.</p>
 
 <h2>
-<a id="whats-new-in-25" class="anchor" href="#whats-new-in-25" aria-hidden="true"><span class="octicon octicon-link"></span></a>What's new in 2.5</h2>
+<a id="whats-new-in-26" class="anchor" href="#whats-new-in-26" aria-hidden="true"><span class="octicon octicon-link"></span></a>What's new in 2.6</h2>
 
 <ul>
-<li>Miscellaneous bug fixes</li>
-<li>Improved visual feedback: elements flash green to indicate that they have been saved</li>
-<li>Reconciliation tool now "remembers" partly-finished reconciliations</li>
-<li>Attach files to references, so all coders are working from the same PDF</li>
-<li>Multiple reference manager (under "Manage reference sets")—allows for easy removal of doubled references and automatic checking that doing so won't leave "orphan" citations or extractions</li>
-<li>New "large table data" element</li>
-<li>Session variable collision bug fixed—now you can have multiple installations of Numbat on the same domain without them screwing each other up!</li>
-<li>Optional "reminders" for previously-entered values for citations</li>
+<li>New automatic export to CSV for extractions, sub-extractions, tabled data and citations</li>
+<li>Fixed sub-extractions bug</li>
 </ul>
 
 <h2>
@@ -130,7 +131,7 @@
 <li>Email: <a href="mailto:benjamin.carlisle@mcgill.ca">benjamin.carlisle@mcgill.ca</a>
 </li>
 <li>Twitter: @numbatextractor</li>
-<li>Post: Room 304, 3647 rue Peel, Montréal QC H1M 2N9</li>
+<li>Post: Room 304, 3647 rue Peel, Montréal QC H3A 1X1</li>
 </ul>
 
 <p>Best,</p>
@@ -138,16 +139,9 @@
 <p>Benjamin Carlisle<br>
 Murph E.</p>
       </section>
-    </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Numbat maintained by <a href="https://github.com/bgcarlisle">bgcarlisle</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
     </div>
-
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -158,7 +152,6 @@ Murph E.</p>
             pageTracker._trackPageview();
             } catch(err) {}
           </script>
-
 
   </body>
 </html>
