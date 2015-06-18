@@ -22,8 +22,8 @@
             }
 
             ?>
-            <tr colspan="2">
-                  <td><button onclick="window.open('<?php echo SITE_URL; ?>attach/?action=new','_self');">Add new attachments</button></td>
+            <tr>
+                  <td colspan="2"><button onclick="window.open('<?php echo SITE_URL; ?>attach/?action=new','_self');">Add new attachments</button></td>
             </tr>
       </table>
 

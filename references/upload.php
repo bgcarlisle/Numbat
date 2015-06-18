@@ -66,7 +66,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 				$lines = array();
 
-				foreach ( explode ( "\r", $filecontent ) as $line ) {
+				foreach ( explode ( "\n", $filecontent ) as $line ) {
 
 					$lines[$counter] = $line;
 

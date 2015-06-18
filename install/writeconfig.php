@@ -412,5 +412,21 @@ if ( rmdir ( $_POST['abs_path'] . "install/") ) {
 
 }
 
+// make a place to save backup mysql dumps
+
+if ( ! file_exists ( $_POST['abs_path'] . "backup/dumpfiles/" ) ) {
+
+	if ( mkdir ( $_POST['abs_path'] . "backup/dumpfiles/" ) ) {
+
+		?><p>Backup directory created &#x2713;</p><?php
+
+	} else {
+
+		?><p>Error creating backup directory</p><?php
+
+	}
+
+}
+
 ?></div>
 <p>Numbat has been installed! You may now <a href="<?php echo $_POST['site_url']; ?>">log in</a>.</p>

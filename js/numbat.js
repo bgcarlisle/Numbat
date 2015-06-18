@@ -3369,6 +3369,8 @@ function nbtExportData ( etype, rsid, fid, m_or_e ) {
 		dataType: 'html'
 	}).done ( function (response) {
 
+		$('#nbtThinkyLinky').attr('href', numbaturl + 'export/' + response + '.csv')
+
 		$('#nbtCoverup').fadeIn();
 		$('#nbtThinky').fadeIn();
 

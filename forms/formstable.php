@@ -6,11 +6,11 @@
 		<td style="width: 100px;">Delete</td>
 	</tr>
 	<?php
-	
+
 	$allforms = nbt_get_all_extraction_forms ();
-	
+
 	foreach ( $allforms as $form ) {
-		
+
 		?><tr>
 			<td><h3><?php echo $form['name']; ?></h3>
 			<p><?php echo $form['description']; ?></p></td>
@@ -20,11 +20,11 @@
 			<p class="nbtHidden" id="nbtConfirmDeleteForm<?php echo $form['id']; ?>">Are you sure? This can't be undone.</p>
 			<button class="nbtHidden" id="nbtDeleteForm<?php echo $form['id']; ?>" onclick="nbtDeleteForm(<?php echo $form['id']; ?>);">For real</button></td>
 		</tr><?php
-		
+
 	}
-	
+
 	?>
 	<tr>
-		<td colspan=3><button onclick="nbtNewExtractionForm();">Add extraction form</button></td>
+		<td colspan=4><button onclick="nbtNewExtractionForm();">Add extraction form</button></td>
 	</tr>
 </table>

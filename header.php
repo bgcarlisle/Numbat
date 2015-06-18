@@ -68,43 +68,36 @@ if ( nbt_user_is_logged_in () ) {
 		<ul>
 			<li>
 				<a href="<?php echo SITE_URL; ?>users/">
-					<img src="<?php echo SITE_URL; ?>images/useradmin.png">
 					User administration
 				</a>
 			</li>
 			<li>
 				<a href="<?php echo SITE_URL; ?>references/">
-					<img src="<?php echo SITE_URL; ?>images/managerefsets.png">
 					Manage reference sets
 				</a>
 			</li>
 			<li>
 				<a href="<?php echo SITE_URL; ?>forms/">
-					<img src="<?php echo SITE_URL; ?>images/editforms.png">
 					Edit extraction forms
 				</a>
 			</li>
 			<li>
 				<a href="<?php echo SITE_URL; ?>attach/">
-					<img src="<?php echo SITE_URL; ?>images/attach.png">
 					Attach files to references
 				</a>
 			</li>
 			<li>
 				<a href="<?php echo SITE_URL; ?>assignments/">
-					<img src="<?php echo SITE_URL; ?>images/assignments.png">
 					Manage extraction assignments
 				</a>
 			</li>
 			<li>
 				<a href="<?php echo SITE_URL; ?>extract/">
-					<img src="<?php echo SITE_URL; ?>images/extract.png">
 					Do extractions
 				</a>
 			</li>
 			<li>
 				<a href="<?php echo SITE_URL; ?>master/">
-					<img src="<?php echo SITE_URL; ?>images/reconcile.png">
 					Reconcile finished extractions
 				</a>
 			</li>
@@ -115,7 +108,6 @@ if ( nbt_user_is_logged_in () ) {
 			</li>
 			<li>
 				<a href="<?php echo SITE_URL; ?>backup/">
-					<img src="<?php echo SITE_URL; ?>images/backup.png">
 					Backup data
 				</a>
 			</li>

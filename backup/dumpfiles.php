@@ -9,7 +9,7 @@ $files = scandir ( ABS_PATH . "backup/dumpfiles/");
 
 	if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) == 4 ) {
 
-		?><td>Restore from backup</td><?php
+		?><!--<td>Restore from backup</td>--><?php
 
 	}
 
@@ -27,7 +27,7 @@ foreach ( $files as $file ) {
 
 				?><tr>
 					<td><a href="<?php echo SITE_URL; ?>backup/dumpfiles/<?php echo $file; ?>"><?php echo $file; ?></a></td>
-					<td><button>Restore</button></td>
+					<!--<td><button>Restore</button></td>-->
 				</tr><?php
 
 			break;

@@ -1,4 +1,4 @@
-Numbat v. 2.6
+Numbat v. 2.6.1
 ======
 
 Numbat Academic Meta-Analysis Extraction Manager
@@ -65,6 +65,7 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 
 * New automatic export to CSV for extractions, sub-extractions, tabled data and citations
 * Fixed sub-extractions bug
+* In 2.6.1: all manner of bug fixes
 
 ## Contact info
 
