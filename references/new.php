@@ -41,7 +41,17 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 					$lines = array();
 
-					foreach ( explode ( "\n", $filecontent ) as $line ) {
+					if ( count ( explode ( "\n", $filecontent ) ) > count ( explode ( "\r", $filecontent ) ) ) {
+
+					   $line_demarcation = "\n";
+
+					} else {
+
+					   $line_demarcation = "\r";
+
+					}
+
+					foreach ( explode ( $line_demarcation, $filecontent ) as $line ) {
 
 						$lines[$counter] = $line;
 

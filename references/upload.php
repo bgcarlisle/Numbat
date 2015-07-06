@@ -66,7 +66,17 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 				$lines = array();
 
-				foreach ( explode ( "\n", $filecontent ) as $line ) {
+				if ( count ( explode ( "\n", $filecontent ) ) > count ( explode ( "\r", $filecontent ) ) ) {
+
+				   $line_demarcation = "\n";
+
+				} else {
+
+				   $line_demarcation = "\r";
+
+				}
+
+				foreach ( explode ( $line_demarcation, $filecontent ) as $line ) {
 
 					$lines[$counter] = $line;
 
