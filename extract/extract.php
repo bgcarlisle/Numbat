@@ -11,10 +11,6 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 	echo $extraction['notes'];
 
 	?></textarea>
-
-	<h3>Manual citations</h3>
-	<button onclick="nbtAddNewReferenceToRefSet(<?php echo $extraction['refsetid']; ?>);">Add a new reference</button>
-	<button onclick="window.open('<?php echo SITE_URL . "references/manual/?refset=" . $extraction['refsetid']; ?>');">View manually added references</button>
 </div>
 <div class="nbtCoverup" id="nbtManualRefsCoverup">&nbsp;</div>
 <div id="nbtManualRefs" class="nbtInlineManualNewRef">&nbsp;</div>
@@ -370,10 +366,12 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
 						?><p>
-							Add a new citation:
-							<a href="#" onclick="event.preventDefault();nbtCiteClearField(<?php echo $element['id']; ?>);" id="nbtCiteClearField<?php echo $element['id']; ?>">(Clear field)</a>
+							Start typing in the field below to add a new citation to this extraction
 							<span class="nbtDoubleCitationFeedback nbtHidden" id="nbtDoubleCitationFeedback<?php echo $element['id']; ?>">You have already cited this reference here!</span>
 						</p>
+						<button onclick="event.preventDefault();nbtCiteClearField(<?php echo $element['id']; ?>);" id="nbtCiteClearField<?php echo $element['id']; ?>">Clear field</button>
+						<button onclick="nbtAddNewReferenceToRefSet(<?php echo $extraction['refsetid']; ?>);">Add a new reference</button>
+						<button onclick="window.open('<?php echo SITE_URL . "references/manual/?refset=" . $extraction['refsetid']; ?>');">View manually added references</button>
 						<input type="text" class="nbtCitationFinder" id="nbtCitationFinder<?php echo $element['id']; ?>" onkeyup="nbtFindCitation(event, <?php echo $element['id']; ?>, '<?php echo $element['columnname']; ?>', 'nbtCitationSuggestions<?php echo $element['id']; ?>', <?php echo $element['id']; ?>, <?php echo $_GET['refset']; ?>, <?php echo $_GET['ref']; ?>);">
 						<div class="nbtCitationSuggestions" id="nbtCitationSuggestions<?php echo $element['id']; ?>">&nbsp;</div>
 						<div class="nbtCitationList" id="nbtCitationList<?php echo $element['id']; ?>"><?php
