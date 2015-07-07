@@ -365,9 +365,9 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
-						?><p>
-							Start typing in the field below to add a new citation to this extraction
-							<span class="nbtDoubleCitationFeedback nbtHidden" id="nbtDoubleCitationFeedback<?php echo $element['id']; ?>">You have already cited this reference here!</span>
+						?><p class="nbtFinePrint">
+							<span>Start typing in the field below to add a new citation to this extraction</span>
+							<span class="nbtDoubleCitationFeedback nbtFeedbackBad nbtHidden" id="nbtDoubleCitationFeedback<?php echo $element['id']; ?>">You have already cited this reference here!</span>
 						</p>
 						<button onclick="event.preventDefault();nbtCiteClearField(<?php echo $element['id']; ?>);" id="nbtCiteClearField<?php echo $element['id']; ?>">Clear field</button>
 						<button onclick="nbtAddNewReferenceToRefSet(<?php echo $extraction['refsetid']; ?>);">Add a new reference</button>
