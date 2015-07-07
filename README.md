@@ -1,4 +1,4 @@
-Numbat v. 2.6.1
+Numbat v. 2.6.2
 ======
 
 Numbat Academic Meta-Analysis Extraction Manager
@@ -61,11 +61,13 @@ You may be able to install Numbat on setups different from what is described bel
 
 Copy the entire file to your web server, and navigate to the Numbat directory with your browser. You will need to know your MySQL server, username and password to complete the installation.
 
-## What's new in 2.6
+## What's new in 2.6.2
 
-* New automatic export to CSV for extractions, sub-extractions, tabled data and citations
-* Fixed sub-extractions bug
-* In 2.6.1: all manner of bug fixes
+* In 2.6: New automatic export to CSV for extractions, sub-extractions, tabled data and citations
+* Moved "Add new reference" button
+* Re-wrote some database queries for efficiency
+* Minor formatting changes
+* Fixed bug in Excel import
 
 ## Contact info
 
