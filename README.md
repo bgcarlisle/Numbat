@@ -73,7 +73,7 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 
 I cannot guarantee that I will be able to help you with your problems. Depending on the nature and scope of your problems, you may be better off calling 911 or admitting yourself to the nearest hospital. That said, if you have found bugs, or if you have ideas for future directions for the software, here are some reasonably reliable ways to contact me.
 
-* Email: <benjamin.carlisle@mcgill.ca>
+* Email: <benjamin.carlisle@mail.mcgill.ca>
 * Twitter: @numbatextractor
 * Post: Room 304, 3647 rue Peel, Montréal QC H3A 1X1
 
