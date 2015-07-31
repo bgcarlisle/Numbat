@@ -1,7 +1,7 @@
 Numbat v. 2.6.2
 ======
 
-Numbat Academic Meta-Analysis Extraction Manager
+Numbat Meta-Analysis Extraction Manager
 
 ## Overview
 
@@ -69,6 +69,22 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 * Minor formatting changes
 * Fixed bug in Excel import
 
+## How to cite Numbat
+
+Here is a BibTeX entry you can use to cite Numbat in your papers:
+
+```
+@Manual{numbat2-6carlisle,
+  Title          = {Numbat {M}eta-{A}nalysis {E}xtraction {M}anager},
+  Author         = {{Benjamin Gregory Carlisle}},
+  Organization   = {Studies of Ethics, Translation and Medicine (STREAM),
+                   Biomedical Ethics Unit, McGill University},
+  Address        = {Montreal, Canada},
+  url            = {http://bgcarlisle.github.io/Numbat/},
+  year           = 2015
+}
+```
+
 ## Contact info
 
 I cannot guarantee that I will be able to help you with your problems. Depending on the nature and scope of your problems, you may be better off calling 911 or admitting yourself to the nearest hospital. That said, if you have found bugs, or if you have ideas for future directions for the software, here are some reasonably reliable ways to contact me.
@@ -76,6 +92,7 @@ I cannot guarantee that I will be able to help you with your problems. Depending
 * Email: <benjamin.carlisle@mail.mcgill.ca>
 * Twitter: @numbatextractor
 * Post: Room 304, 3647 rue Peel, Montréal QC H3A 1X1
+
 
 Best,
 
