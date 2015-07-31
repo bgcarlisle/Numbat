@@ -76,7 +76,7 @@ Here is a BibTeX entry you can use to cite Numbat in your papers:
 ```
 @Manual{numbat2-6carlisle,
   Title          = {Numbat {M}eta-{A}nalysis {E}xtraction {M}anager},
-  Author         = {{Benjamin Gregory Carlisle}},
+  Author         = {Benjamin Gregory Carlisle},
   Organization   = {Studies of Ethics, Translation and Medicine (STREAM),
                    Biomedical Ethics Unit, McGill University},
   Address        = {Montreal, Canada},
