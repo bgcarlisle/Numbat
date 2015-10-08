@@ -3921,6 +3921,37 @@ function nbt_copy_table_row_to_master ( $elementid, $refsetid, $refid, $original
 
 }
 
+function nbt_add_empty_table_row_to_master ( $elementid, $refsetid, $refid ) {
+
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+
+	// Make a new row, get the id
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO `mtable_" . $element['columnname'] . "` (refsetid, referenceid) VALUES (:refset, :ref);");
+
+		$stmt->bindParam(':refset', $rsid);
+		$stmt->bindParam(':ref', $rid);
+
+		$rsid = $refsetid;
+		$rid = $refid;
+
+		$stmt->execute();
+
+		$dbh = null;
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
 function nbt_get_privileges_for_userid ( $userid ) {
 
 	try {

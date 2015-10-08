@@ -2773,6 +2773,26 @@ function nbtCopyTableDataRow ( tform, eid, rsid, refid, rid ) {
 
 }
 
+function nbtAddTableDataRowToMaster ( tform, eid, rsid, refid ) {
+
+	$.ajax ({
+		url: numbaturl + 'master/addtabledatarowtomaster.php',
+		type: 'post',
+		data: {
+			tableformat: tform,
+			elementid: eid,
+			refset: rsid,
+			ref: refid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+
+		$('#nbtMasterTable' + eid).html(html);
+
+	});
+
+}
+
 function nbtCopySubExtraction ( eid, rsid, refid, oid ) {
 
 	$.ajax ({

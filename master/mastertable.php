@@ -54,5 +54,11 @@ $no_of_columns = count ( $columns );
 
 	}
 
-	?>
+	?><tr>
+		<td colspan="<?php
+
+		echo count ($columns) + 1;
+
+		?>"><button onclick="nbtAddTableDataRowToMaster('<?php echo $tableformat; ?>', <?php echo $nbtMasterTableID; ?>, <?php echo $nbtMasterRefSet; ?>, <?php echo $nbtMasterRefID; ?>);">Add new row to master</button></td>
+	</tr>
 </table>
