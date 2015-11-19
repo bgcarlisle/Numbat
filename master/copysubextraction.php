@@ -9,8 +9,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 }
 
 $nbtMasterSubExtrID = $_POST['elementid'];
-$nbtMasterSubExtrRefSet = $_POST['refset'];
-$nbtMasterSubExtrRefID = $_POST['ref'];
+$nbtMasterRefSet = $_POST['refset'];
+$nbtMasterRefID = $_POST['ref'];
 
 include ('./mastersubextraction.php');
 

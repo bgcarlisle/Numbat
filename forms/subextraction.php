@@ -3,26 +3,26 @@
 $subelements = nbt_get_sub_extraction_elements_for_elementid ( $subelementid );
 
 foreach ( $subelements as $subelement ) {
-	
+
 	?><div style="border: 1px solid #999; border-radius: 3px; padding: 10px; margin: 5px 0 20px 0; background: #ddd;" id="nbtSubElement<?php echo $subelement['id']; ?>">
 		<button style="float: right;" onclick="$(this).fadeOut(0);$('#nbtDeleteSubElement<?php echo $subelement['id']; ?>').fadeIn();">Delete</button>
 		<button class="nbtHidden" id="nbtDeleteSubElement<?php echo $subelement['id']; ?>" style="float: right;" onclick="nbtDeleteSubElement(<?php echo $subelement['id']; ?>);">For real</button>
 		<?php
-	
+
 		switch ( $subelement['type'] ) {
-			
+
 			case "open_text":
-				
+
 				?><h4>Open text field</h4>
 				<p>Display name: <input type="text" id="nbtSubElementDisplayName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['displayname']; ?>" onblur="nbtChangeSubDisplayName(<?php echo $subelement['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on extraction form</p>
 				<p>Column name: <input type="text" id="nbtSubElementColumnName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubColumnName(<?php echo $subelement['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
-				
+
 			break;
-			
+
 			case "single_select":
-				
+
 				?><h4>Single select</h4>
 				<p>Display name: <input type="text" id="nbtSubElementDisplayName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['displayname']; ?>" onblur="nbtChangeSubDisplayName(<?php echo $subelement['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on extraction form</p>
@@ -31,17 +31,17 @@ foreach ( $subelements as $subelement ) {
 				<p>Options</p>
 				<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet; Other form elements marked with this toggle class will appear only if this element is selected</p>
 				<div id="nbtSubSingleSelectOptionsTable<?php echo $subelement['id']; ?>"><?php
-				
+
 				$tablesubelementid = $subelement['id'];
-				
+
 				include ('./subsingleselectoptionstable.php');
-				
+
 				?></div><?php
-				
+
 			break;
-			
+
 			case "multi_select":
-			
+
 				?><h4>Multi select</h4>
 				<p>Display name: <input type="text" id="nbtSubElementDisplayName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['displayname']; ?>" onblur="nbtChangeSubDisplayName(<?php echo $subelement['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on extraction form</p>
@@ -50,27 +50,47 @@ foreach ( $subelements as $subelement ) {
 				<p>Options</p>
 				<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet; Other form elements marked with this toggle class will appear only if this element is selected</p>
 				<div id="nbtSubMultiSelectOptionsTable<?php echo $subelement['id']; ?>"><?php
-				
+
 				$tablesubelementid = $subelement['id'];
-				
+
 				include ('./submultiselectoptionstable.php');
-				
+
 				?></div><?php
-				
+
 			break;
-			
+
 			case "date_selector":
-				
+
 				?><h4>Date selector</h4>
 				<p>Display name: <input type="text" id="nbtSubElementDisplayName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['displayname']; ?>" onblur="nbtChangeSubDisplayName(<?php echo $subelement['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on extraction form</p>
 				<p>Column name: <input type="text" id="nbtSubElementColumnName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubColumnName(<?php echo $subelement['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
-			
+
 			break;
-			
+
+			case "table_data":
+
+				?><h4>Table data</h4>
+				<p class="nbtFinePrint">Cells in tables of this type may only contain up to 200 characters each.</p>
+				<p>Table display name: <input type="text" id="nbtSubElementDisplayName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['displayname']; ?>" onblur="nbtChangeSubDisplayName(<?php echo $subelement['id']; ?>);" maxlength="200"></p>
+				<p class="nbtFinePrint">Will appear on extraction form</p>
+				<p>Table suffix: <input type="text" id="nbtSubTableSuffix<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubTableSuffix(<?php echo $subelement['id']; ?>);" maxlength="25"></p>
+				<p class="nbtFinePrint">Suffix for table in database</p>
+				<p>Table columns</p>
+				<p class="nbtFinePrint">Display name will appear as a column of the table on extraction form; DB name will appear on exported spreadsheet</p>
+				<div id="nbtSubTableDataColumnsTable<?php echo $subelement['id']; ?>"><?php
+
+				$tableelementid = $subelement['id'];
+
+				include ('./subtabledata.php');
+
+				?></div><?php
+
+			break;
+
 		}
-	
+
 		?>
 		<p>Codebook</p>
 		<p class="nbtFinePrint">Will appear on extraction sheet when (?) is clicked</p>
@@ -81,7 +101,7 @@ foreach ( $subelements as $subelement ) {
 		<button onclick="nbtMoveSubElement(<?php echo $subelementid; ?>, <?php echo $subelement['id']; ?>, -1);">Move down</button>
 	<p id="nbtSubElementFeedback<?php echo $subelement['id']; ?>" class="nbtHidden nbtFinePrint">&nbsp;</p>
 	</div><?php
-	
+
 }
 
 ?>
@@ -93,4 +113,5 @@ foreach ( $subelements as $subelement ) {
 	<button onclick="nbtAddNewSubDateSelector(<?php echo $subelementid; ?>);">Date selector</button>
 	<button onclick="nbtAddNewSubSingleSelect(<?php echo $subelementid; ?>);">Single select</button>
 	<button onclick="nbtAddNewSubMultiSelect(<?php echo $subelementid; ?>);">Multi select</button>
+	<button onclick="nbtAddNewSubTable(<?php echo $subelementid; ?>);">Table data</button>
 </div>

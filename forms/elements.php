@@ -1,3 +1,5 @@
+<button onclick="collapseAllFormElements();">Collapse all form elements</button>
+<button onclick="expandAllFormElements();">Expand all form elements</button>
 <?php
 
 $elements = nbt_get_elements_for_formid ($_GET['id']);
@@ -16,17 +18,17 @@ if ( count ( $elements ) > 0 ) {
 
 					case "section_heading":
 
-						?><h4>Section heading</h4>
-						<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+						?><h4>Section heading <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
+						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form. This form element is purely aesthetic, and will not appear on the exported spreadsheet.</p><?php
 
 					break;
 
 					case "open_text":
 
-						?><h4>Open text field</h4>
+						?><h4>Open text field <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
 						<p class="nbtFinePrint">Maximum entry length: 200 characters</p>
-						<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
 						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 200);" maxlength="50"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
@@ -35,9 +37,9 @@ if ( count ( $elements ) > 0 ) {
 
 					case "text_area":
 
-						?><h4>Text area field</h4>
+						?><h4>Text area field <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
 						<p class="nbtFinePrint">Maximum entry length: 5000 characters</p>
-						<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
 						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 5000);" maxlength="50"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
@@ -46,8 +48,8 @@ if ( count ( $elements ) > 0 ) {
 
 					case "single_select":
 
-						?><h4>Single select</h4>
-						<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+						?><h4>Single select <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
+						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
 						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 50);" maxlength="50"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
@@ -65,8 +67,8 @@ if ( count ( $elements ) > 0 ) {
 
 					case "multi_select":
 
-						?><h4>Multi select</h4>
-						<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+						?><h4>Multi select <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
+						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
 						<p>Column prefix: <input type="text" id="nbtElementColumnPrefix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeMultiSelectColumnPrefix(<?php echo $element['id']; ?>);" maxlength="25"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
@@ -84,9 +86,9 @@ if ( count ( $elements ) > 0 ) {
 
 					case "table_data":
 
-						?><h4>Table data</h4>
+						?><h4>Table data <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
 						<p class="nbtFinePrint">Cells in tables of this type may only contain up to 200 characters each. If you need more than 200 characters per cell, use a "large table data" element.</p>
-						<p>Table display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+						<p>Table display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
 						<p>Table suffix: <input type="text" id="nbtTableSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeTableSuffix(<?php echo $element['id']; ?>);" maxlength="25"></p>
 						<p class="nbtFinePrint">Suffix for table in database</p>
@@ -105,9 +107,9 @@ if ( count ( $elements ) > 0 ) {
 
 					case "ltable_data":
 
-						?><h4>Large table data</h4>
+						?><h4>Large table data <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
 						<p class="nbtFinePrint">Cells in tables of this type may contain text more than 200 characters in length.</p>
-						<p>Table display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+						<p>Table display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
 						<p>Table suffix: <input type="text" id="nbtTableSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeTableSuffix(<?php echo $element['id']; ?>);" maxlength="25"></p>
 						<p class="nbtFinePrint">Suffix for table in database</p>
@@ -126,8 +128,8 @@ if ( count ( $elements ) > 0 ) {
 
 					case "citations":
 
-						?><h4>Citation selector</h4>
-						<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+						?><h4>Citation selector <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
+						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
 						<p>Table suffix: <input type="text" id="nbtCitationSelectorSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeCitationSelectorSuffix(<?php echo $element['id']; ?>);" maxlength="25"></p>
 						<p class="nbtFinePrint">Suffix for citations table in database</p>
@@ -145,8 +147,8 @@ if ( count ( $elements ) > 0 ) {
 
 					case "country_selector":
 
-						?><h4>Country selector</h4>
-						<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+						?><h4>Country selector <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
+						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
 						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 50);" maxlength="50"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
@@ -155,8 +157,8 @@ if ( count ( $elements ) > 0 ) {
 
 					case "date_selector":
 
-						?><h4>Date selector</h4>
-						<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+						?><h4>Date selector <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
+						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
 						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeDateColumnName(<?php echo $element['id']; ?>);" maxlength="50"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
@@ -165,9 +167,9 @@ if ( count ( $elements ) > 0 ) {
 
 					case "sub_extraction":
 
-						?><h4>Sub-extraction</h4>
+						?><h4>Sub-extraction <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
 						<p class="nbtFinePrint">A sub-extraction is a form element that contains other form elements and can be repeated by the extractor as many times as necessary within an extraction. E.g. if you were extracting a set of papers that each contained a different number of experiments to be extracted, you could make an "experiment" sub-extraction that the extractor could repeat as many times as she needs.</p>
-						<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
 						<p>Table suffix: <input type="text" id="nbtTableSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeSubExtractionSuffix(<?php echo $element['id']; ?>);" maxlength="25"></p>
 						<p class="nbtFinePrint">Suffix for table in database</p>
@@ -184,8 +186,8 @@ if ( count ( $elements ) > 0 ) {
 
 					case "assignment_editor":
 
-						?><h4>Assignment editor</h4>
-						<p>Display name: <input type="text" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+						?><h4>Assignment editor <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
+						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">This element will allow an extractor to assign the reference being extracted to herself or another user, using this or a different form.</p><?php
 
 					break;
@@ -244,4 +246,18 @@ if ( count ( $elements ) > 0 ) {
 
 }
 
-?>
+?><script>
+$('div#nbtFormElements h4').on('click', function() {
+      $(this).parent().children().not(this).not('button').slideToggle();
+	$(this).children('.nbtDisplayNameHidden').html('(' + $(this).parent().find('.nbtDisplayName').val() + ')');
+	$(this).children('.nbtDisplayNameHidden').fadeToggle();
+});
+
+function collapseAllFormElements () {
+	$('div#nbtFormElements h4').children('.nbtDisplayNameHidden').not(':visible').parent().click();
+}
+
+function expandAllFormElements () {
+      $('div#nbtFormElements h4').children('.nbtDisplayNameHidden:visible').parent().click();
+}
+</script>

@@ -25,6 +25,6 @@
 
 	?>
 	<tr>
-		<td colspan=4><button onclick="nbtNewExtractionForm();">Add extraction form</button></td>
+		<td colspan=5><button onclick="nbtNewExtractionForm();">Add extraction form</button></td>
 	</tr>
 </table>

@@ -145,6 +145,48 @@ foreach ( $subextractions as $subextraction ) {
 
 				break;
 
+				case "table_data":
+
+					?><div<?php
+
+					if ( $subelement['toggle'] != "" ) {
+
+						?> class="nbtHidden <?php echo $subelement['toggle']; ?>"<?php
+
+					}
+
+					?>><?php
+
+						nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
+
+						?><div id="nbtSubTableExtraction<?php echo $subelement['id']; ?>-<?php echo $subextraction['id']; ?>"><?php
+
+						$nbtExtractTableDataID = $subelement['id'];
+
+						if ( ! isset ( $nbtExtractRefSet ) ) {
+
+							$nbtExtractRefSet = $_GET['refset'];
+
+						}
+
+						if ( ! isset ( $nbtExtractRefID ) ) {
+
+							$nbtExtractRefID = $_GET['ref'];
+
+						}
+
+
+						$tableformat = "table_data";
+						$nbtSubTableSubextractionID = $subextraction['id'];
+
+						include ('./subtabledata.php');
+
+						?></div>
+
+					</div><?php
+
+				break;
+
 			}
 
 		}

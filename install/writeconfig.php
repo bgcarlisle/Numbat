@@ -9,14 +9,6 @@ if ( file_exists ( $_POST['abs_path'] . "config.php" ) ) {
 
 }
 
-// delete config.js
-
-if ( file_exists ( $_POST['abs_path'] . "js/config.js" ) ) {
-
-	unlink ( $_POST['abs_path'] . "js/config.js" );
-
-}
-
 // write new config.php
 
 $configphp = array ();
@@ -34,19 +26,13 @@ array_push ( $configphp, "include_once (ABS_PATH . \"functions.php\");\n" );
 array_push ( $configphp, "\n" );
 array_push ( $configphp, "?>" );
 
-// write new config.js
+if ( file_put_contents ( $_POST['abs_path'] . "config.php", $configphp ) ) {
 
-$configjs = array ();
-
-array_push ( $configjs, "var numbaturl = '" . $_POST['site_url'] . "';" );
-
-if ( file_put_contents ( $_POST['abs_path'] . "config.php", $configphp ) && file_put_contents ( $_POST['abs_path'] . "/js/config.js", $configjs ) ) {
-
-	?><p>Configuration files written &#x2713;</p><?php
+	?><p>Configuration file written &#x2713;</p><?php
 
 } else {
 
-	?><p>Error writing configuration files</p><?php
+	?><p>Error writing configuration file</p><?php
 
 }
 
@@ -255,7 +241,7 @@ catch (PDOException $e) {
 try { // tabledata columns table
 
 	$dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("DROP TABLE IF EXISTS `tabledatacolumns`; CREATE TABLE `tabledatacolumns` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `elementid` int(11) DEFAULT NULL, `displayname` varchar(200) DEFAULT NULL, `dbname` varchar(50) DEFAULT NULL, `sortorder` int(11) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+	$stmt = $dbh->prepare("DROP TABLE IF EXISTS `tabledatacolumns`; CREATE TABLE `tabledatacolumns` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `elementid` int(11) DEFAULT NULL, `subelementid` int(11) DEFAULT NULL, `displayname` varchar(200) DEFAULT NULL, `dbname` varchar(50) DEFAULT NULL, `sortorder` int(11) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
 	if ( $stmt->execute() ) {
 
