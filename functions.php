@@ -9996,7 +9996,7 @@ function nbt_remove_table_data_row ( $tableid, $rowid, $sub_table = FALSE ) {
 
 }
 
-function nbt_update_extraction_table_data ($tableid, $rowid, $column, $newvalue, $sub_table) {
+function nbt_update_extraction_table_data ($tableid, $rowid, $column, $newvalue, $sub_table = FALSE) {
 
 	if ( $sub_table ) {
 
