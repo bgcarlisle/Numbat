@@ -1910,6 +1910,46 @@ function nbtUpdateSubTableData ( tableid, rowid, columnid, inputid ) {
 function nbtUpdateMasterExtractionTableData ( tableid, rowid, columnid, inputid) {
 
 	$.ajax ({
+		url: numbaturl + 'master/updatetabledata.php',
+		type: 'post',
+		data: {
+			tid: tableid,
+			row: rowid,
+			column: columnid,
+			newvalue: $('#' + inputid).val()
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+
+		if (html == 'Changes saved') {
+
+			$('#' + inputid).addClass('nbtBackgroundFeedbackGood');
+
+			setTimeout ( function () {
+
+				$('#' + inputid).removeClass('nbtBackgroundFeedbackGood');
+
+			}, 500);
+
+		} else {
+
+			$('#' + inputid).addClass('nbtBackgroundFeedbackBad');
+
+			setTimeout ( function () {
+
+				$('#' + inputid).removeClass('nbtBackgroundFeedbackBad');
+
+			}, 500);
+
+		}
+
+	});
+
+}
+
+function nbtUpdateMasterSubTableData ( tableid, rowid, columnid, inputid) {
+
+	$.ajax ({
 		url: numbaturl + 'master/updatesubtabledata.php',
 		type: 'post',
 		data: {
