@@ -61,10 +61,11 @@ You may be able to install Numbat on setups different from what is described bel
 
 Copy the entire file to your web server, and navigate to the Numbat directory with your browser. You will need to know your MySQL server, username and password to complete the installation.
 
-## What's new in 2.7
+## What's new in 2.7.1
 
 * Streamlined installation (less that can go wrong)
 * Table data elements available in sub-extractions
+* Misc bug fixes
 
 ## How to cite Numbat
 
