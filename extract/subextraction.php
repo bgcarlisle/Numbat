@@ -23,7 +23,7 @@ foreach ( $subextractions as $subextraction ) {
 
 					if ( $subelement['toggle'] != "" ) {
 
-						?> class="nbtHidden <?php echo $subelement['toggle']; ?>"<?php
+						?> class="nbtHidden <?php echo $subelement['toggle']; ?>_sub<?php echo $subextraction['id']; ?>"<?php
 
 					}
 
@@ -49,7 +49,7 @@ foreach ( $subextractions as $subextraction ) {
 
 					if ( $subelement['toggle'] != "" ) {
 
-						?> class="nbtHidden <?php echo $subelement['toggle']; ?>"<?php
+						?> class="nbtHidden <?php echo $subelement['toggle']; ?>_sub<?php echo $subextraction['id']; ?>"<?php
 
 					}
 
@@ -75,7 +75,7 @@ foreach ( $subextractions as $subextraction ) {
 
 					if ( $subelement['toggle'] != "" ) {
 
-						?> class="nbtHidden <?php echo $subelement['toggle']; ?>"<?php
+						?> class="nbtHidden <?php echo $subelement['toggle']; ?>_sub<?php echo $subextraction['id']; ?>"<?php
 
 					}
 
@@ -113,7 +113,7 @@ foreach ( $subextractions as $subextraction ) {
 
 					if ( $subelement['toggle'] != "" ) {
 
-						?> class="nbtHidden <?php echo $subelement['toggle']; ?>"<?php
+						?> class="nbtHidden <?php echo $subelement['toggle']; ?>_sub<?php echo $subextraction['id']; ?>"<?php
 
 					}
 
@@ -151,7 +151,7 @@ foreach ( $subextractions as $subextraction ) {
 
 					if ( $subelement['toggle'] != "" ) {
 
-						?> class="nbtHidden <?php echo $subelement['toggle']; ?>"<?php
+						?> class="nbtHidden <?php echo $subelement['toggle']; ?>_sub<?php echo $subextraction['id']; ?>"<?php
 
 					}
 

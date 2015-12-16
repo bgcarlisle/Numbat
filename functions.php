@@ -2115,7 +2115,7 @@ function nbt_echo_subextraction_single_select ($elementid, $subextraction, $ques
 
 		$buttonid = "nbtSub" . $elementid . "-" . $subextraction['id'] . "Q" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
 
-		?>" id="<?php echo $buttonid; ?>" onclick="event.preventDefault();nbtSaveSubExtractionSingleSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbtSub<?php echo $subextraction['id'] . "-" . $question; ?>');" conditionalid="<?php echo $toggles[$dbanswer]; ?>"><?php echo $ptanswer; ?></a><?php
+		?>" id="<?php echo $buttonid; ?>" onclick="event.preventDefault();nbtSaveSubExtractionSingleSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbtSub<?php echo $subextraction['id'] . "-" . $question; ?>');" conditionalid="<?php echo $toggles[$dbanswer]; ?>_sub<?php echo $subextraction['id']; ?>"><?php echo $ptanswer; ?></a><?php
 
 	}
 
@@ -10296,7 +10296,7 @@ function nbtDeleteAssignment ( $assignmentid ) {
 
 function nbt_echo_display_name_and_codebook ( $displayname, $codebook ) {
 
-	?><p><?php echo $displayname; ?><?php
+	?><p style="font-weight: 800;"><?php echo $displayname; ?><?php
 
 	if ( $codebook != "" ) {
 
