@@ -2033,7 +2033,7 @@ function nbt_echo_subextraction_multi_select ($elementid, $subextraction, $quest
 
 			}
 
-		?>" id="nbtSub<?php echo $elementid ?>-<?php echo $subextraction['id']; ?>MS<?php echo $dbcolumn; ?>" onclick="event.preventDefault();nbtSaveSubExtractionMultiSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question . "_" . $dbcolumn; ?>', 'nbtSub<?php echo $elementid ?>-<?php echo $subextraction['id']; ?>MS<?php echo $dbcolumn; ?>');"  conditionalid="<?php echo $toggles[$dbcolumn]; ?>"><?php echo $plaintext; ?></a><?php
+		?>" id="nbtSub<?php echo $elementid ?>-<?php echo $subextraction['id']; ?>MS<?php echo $dbcolumn; ?>" onclick="event.preventDefault();nbtSaveSubExtractionMultiSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question . "_" . $dbcolumn; ?>', 'nbtSub<?php echo $elementid ?>-<?php echo $subextraction['id']; ?>MS<?php echo $dbcolumn; ?>');"  conditionalid="<?php echo $toggles[$dbcolumn]; ?>_sub<?php echo $subextraction['id']; ?>"><?php echo $plaintext; ?></a><?php
 
 	}
 

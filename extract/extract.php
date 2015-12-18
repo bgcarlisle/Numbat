@@ -475,16 +475,4 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 	<div style="height: 200px;">&nbsp;</div>
 </div>
-<script type="text/javascript">
-
-	nbtUpdateConditionalDisplays ();
-
-	nbtCheckLogin();
-
-	$('.nbtSidebar').draggable().resizable({
-		minWidth: 360,
-		minHeight: 250,
-		alsoResize: ".nbtSidebar textarea"
-	});
-
-</script>
+<input type="hidden" id="nbtExtractionInProgress" value="1">

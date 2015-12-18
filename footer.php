@@ -3773,6 +3773,21 @@ function nbtExportData ( etype, rsid, fid, m_or_e ) {
 	});
 
 }
+
+if ( $('#nbtExtractionInProgress').val() == 1 ) {
+
+	nbtUpdateConditionalDisplays ();
+
+	nbtCheckLogin();
+
+	$('.nbtSidebar').draggable().resizable({
+		minWidth: 360,
+		minHeight: 250,
+		alsoResize: ".nbtSidebar textarea"
+	});
+
+}
+
 </script>
 </body>
 </html>
