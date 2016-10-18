@@ -8,7 +8,15 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		date_default_timezone_set ('America/Montreal');
 
-		echo date ("Y-m", strtotime ( $_POST['datestring'] ) );
+		if ( strtotime ( $_POST['datestring'] ) ) {
+
+			echo date ("Y-m", strtotime ( $_POST['datestring'] ) );
+
+		} else {
+
+			echo "Bad date format";
+
+		}
 
 	}
 

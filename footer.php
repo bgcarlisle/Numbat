@@ -1497,41 +1497,56 @@ function nbtSaveDateField (formid, extractionid, questionid, textfieldid) {
 
 		$('#' + textfieldid).val(html);
 
-		$.ajax ({
-			url: numbaturl + 'extract/updateextraction.php',
-			type: 'post',
-			data: {
-				fid: formid,
-				id: extractionid,
-				question: questionid,
-				answer: html + '-01'
-			},
-			dataType: 'html'
-		}).done ( function (html2) {
+		if ( html != 'Bad date format' ) {
 
-			if (html2 == 'Changes saved') {
+			$.ajax ({
+				url: numbaturl + 'extract/updateextraction.php',
+				type: 'post',
+				data: {
+					fid: formid,
+					id: extractionid,
+					question: questionid,
+					answer: html + '-01'
+				},
+				dataType: 'html'
+			}).done ( function (html2) {
 
-				$('#' + textfieldid).addClass('nbtBackgroundFeedbackGood');
+				if (html2 == 'Changes saved') {
 
-				setTimeout ( function () {
+					$('#' + textfieldid).addClass('nbtBackgroundFeedbackGood');
 
-					$('#' + textfieldid).removeClass('nbtBackgroundFeedbackGood');
+					setTimeout ( function () {
 
-				}, 500);
+						$('#' + textfieldid).removeClass('nbtBackgroundFeedbackGood');
 
-			} else {
+					}, 500);
 
-				$('#' + textfieldid).addClass('nbtBackgroundFeedbackBad');
+				} else {
 
-				setTimeout ( function () {
+					$('#' + textfieldid).addClass('nbtBackgroundFeedbackBad');
 
-					$('#' + textfieldid).removeClass('nbtBackgroundFeedbackBad');
+					setTimeout ( function () {
 
-				}, 500);
+						$('#' + textfieldid).removeClass('nbtBackgroundFeedbackBad');
 
-			}
+					}, 500);
 
-		});
+				}
+
+			});
+
+		} else {
+
+			$('#' + textfieldid).addClass('nbtBackgroundFeedbackBad');
+
+			setTimeout ( function () {
+
+				$('#' + textfieldid).removeClass('nbtBackgroundFeedbackBad');
+				$('#' + textfieldid).val('');
+
+			}, 1500);
+
+		}
 
 	});
 
