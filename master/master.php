@@ -1088,6 +1088,28 @@ if ( count ( $extractions ) >= 2 ) {
 
 					break;
 
+					case "reference_data":
+
+						?><div class="nbtContentPanel">
+							<h3><?php echo $element['displayname']; ?><?php
+
+							if ( $element['codebook'] != "" ) {
+
+								$element['codebook'] = str_replace ("\n", "<br>", $element['codebook']);
+
+								?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></h3>
+								<div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
+
+							} else {
+
+								?></h3><?php
+
+							}
+
+							?><p><?php echo $ref[$element['columnname']]; ?></p><?php
+
+					break;
+
 				}
 
 			}
