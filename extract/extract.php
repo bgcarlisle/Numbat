@@ -466,6 +466,26 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 				break;
 
+				case "reference_data":
+
+					?><div<?php
+
+					if ( $element['toggle'] != "" ) {
+
+						?> class="nbtHidden <?php echo $element['toggle']; ?>"<?php
+
+					}
+
+					?>><?php
+
+						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+
+						?><p><?php echo $ref[$element['columnname']]; ?></p><?php
+
+					?></div><?php
+
+				break;
+
 			}
 
 		}
