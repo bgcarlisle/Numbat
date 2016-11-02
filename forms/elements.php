@@ -192,6 +192,17 @@ if ( count ( $elements ) > 0 ) {
 
 					break;
 
+					case "reference_data":
+
+						?><h4>Reference data prompt <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
+						<p class="nbtFinePrint">A "reference data prompt" does not accept input from the extractor and will not appear on the extraction export. Rather, it displays data about the reference being extracted that is populated from the selected column in the reference set table. For example, if the "year" column from the reference set were chosen in the field below, the year of the reference being extracted would appear at this point in the extraction.</p>
+						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+						<p class="nbtFinePrint">Will appear on extraction form</p>
+						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeRefdataColumnName(<?php echo $element['id']; ?>);" maxlength="50"></p>
+						<p class="nbtFinePrint">Enter the column from the reference set that you wish to use to prompt the extractor.</p><?php
+
+					break;
+
 				}
 
 				?>
@@ -219,6 +230,7 @@ if ( count ( $elements ) > 0 ) {
 				<button onclick="nbtAddNewCitationSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Citations</button>
 				<button onclick="nbtAddNewSubExtraction(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Sub-extraction</button>
 				<button onclick="nbtAddNewAssignmentEditor(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Assignment editor</button>
+				<button onclick="nbtAddNewRefdata(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Reference data prompt</button>
 			</div>
 		</div><?php
 
@@ -242,6 +254,8 @@ if ( count ( $elements ) > 0 ) {
 		<button onclick="nbtAddNewCountrySelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Country selector</button>
 		<button onclick="nbtAddNewCitationSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Citations</button>
 		<button onclick="nbtAddNewSubExtraction(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Sub-extraction</button>
+		<button onclick="nbtAddNewAssignmentEditor(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Assignment editor</button>
+		<button onclick="nbtAddNewRefdata(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Reference data prompt</button>
 	</div><?php
 
 }

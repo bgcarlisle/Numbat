@@ -284,6 +284,22 @@ function nbtAddNewAssignmentEditor ( fid, eid ) {
 
 }
 
+function nbtAddNewRefdata ( fid, eid ) {
+	$.ajax ({
+		url: numbaturl + 'forms/addrefdata.php',
+		type: 'post',
+		data: {
+			formid: fid,
+			elementid: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+
+		$('#nbtFormElements').html(html);
+
+	});
+}
+
 function nbtDeleteFormElement ( eid ) {
 
 	$.ajax ({
@@ -310,6 +326,30 @@ function nbtChangeColumnName ( eid, size ) {
 			element: eid,
 			newcolumnname: $('#nbtElementColumnName' + eid).val(),
 			dbsize: size
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+
+		$('#nbtFormElementFeedback' + eid).html(html);
+
+		$('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+
+			$('#nbtFormElementFeedback' + eid).fadeOut(1500);
+
+		});
+
+	});
+
+}
+
+function nbtChangeRefdataColumnName ( eid ) {
+
+	$.ajax ({
+		url: numbaturl + 'forms/changerefdatacolumnname.php',
+		type: 'post',
+		data: {
+			element: eid,
+			newcolumnname: $('#nbtElementColumnName' + eid).val()
 		},
 		dataType: 'html'
 	}).done ( function (html) {
