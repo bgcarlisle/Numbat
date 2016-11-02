@@ -1,41 +1,50 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
   <head>
-    <meta charset="UTF-8">
-    <title>Numbat by bgcarlisle</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">Numbat</h1>
-      <h2 class="project-tagline">Numbat Meta-Analysis Extraction Manager</h2>
-      <a href="https://github.com/bgcarlisle/Numbat" class="btn">View on GitHub</a>
-      <a href="https://github.com/bgcarlisle/Numbat/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/bgcarlisle/Numbat/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
-    <section class="main-content">
-      <h1>
-<a id="numbat-v-27" class="anchor" href="#numbat-v-27" aria-hidden="true"><span class="octicon octicon-link"></span></a>Numbat v. 2.7</h1>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Numbat by bgcarlisle</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Numbat</h1>
+        <h2>Numbat Meta-Analysis Extraction Manager</h2>
+        <a href="https://github.com/bgcarlisle/Numbat" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="numbat-v-28" class="anchor" href="#numbat-v-28" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Numbat v. 2.8</h1>
 
 <p>Numbat Meta-Analysis Extraction Manager</p>
 
 <h2>
-<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h2>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview</h2>
 
 <p>Numbat is free software first developed by PhD student Benjamin Carlisle in 2014 for use by the STREAM research group<a href="http://www.translationalethics.com/">^1</a> in the Biomedical Ethics Unit at McGill University to facilitate meta-analytic work for the <em>Animals, Humans and the Continuity of Evidence</em> grant as well as the <em>Signals, Safety and Success</em> grant. This work was funded by the Canadian Institutes of Health Research (MOP 119574), and it is released as free and open-source under the GNU GPL v 2.</p>
 
 <p>It is named after the numbat, because numbats feed on termites by extracting them from their hiding places with very long and flexible tongues.</p>
 
 <h2>
-<a id="purpose-and-limitations" class="anchor" href="#purpose-and-limitations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Purpose and limitations</h2>
+<a id="purpose-and-limitations" class="anchor" href="#purpose-and-limitations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Purpose and limitations</h2>
 
 <h3>
-<a id="what-numbat-does" class="anchor" href="#what-numbat-does" aria-hidden="true"><span class="octicon octicon-link"></span></a>What Numbat does</h3>
+<a id="what-numbat-does" class="anchor" href="#what-numbat-does" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What Numbat does</h3>
 
 <p>Numbat is a piece of software designed for managing the extraction of large volumes of data from primary sources among multiple users, and then reconciling the differences between them. It is designed for use in meta-analytic projects in an academic context.</p>
 
@@ -50,7 +59,7 @@
 </ul>
 
 <h3>
-<a id="what-numbat-doesnt-do" class="anchor" href="#what-numbat-doesnt-do" aria-hidden="true"><span class="octicon octicon-link"></span></a>What Numbat doesn't do</h3>
+<a id="what-numbat-doesnt-do" class="anchor" href="#what-numbat-doesnt-do" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What Numbat doesn't do</h3>
 
 <ul>
 <li>Statistical analysis of results</li>
@@ -60,7 +69,7 @@
 </ul>
 
 <h3>
-<a id="values-for-the-numbat-project" class="anchor" href="#values-for-the-numbat-project" aria-hidden="true"><span class="octicon octicon-link"></span></a>Values for the Numbat project</h3>
+<a id="values-for-the-numbat-project" class="anchor" href="#values-for-the-numbat-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Values for the Numbat project</h3>
 
 <ul>
 <li>"Easy in, easy out" as a philosophy for data in Numbat—data entered in Numbat should be easily imported and exported, so that users are never trapped</li>
@@ -72,7 +81,7 @@
 </ul>
 
 <h3>
-<a id="why-not-just-use-a-google-form" class="anchor" href="#why-not-just-use-a-google-form" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why not just use a Google Form?</h3>
+<a id="why-not-just-use-a-google-form" class="anchor" href="#why-not-just-use-a-google-form" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why not just use a Google Form?</h3>
 
 <ul>
 <li>Google has a bad record for keeping private data private</li>
@@ -83,7 +92,7 @@
 </ul>
 
 <h2>
-<a id="installation-requirements" class="anchor" href="#installation-requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation requirements</h2>
+<a id="installation-requirements" class="anchor" href="#installation-requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation requirements</h2>
 
 <p>You may be able to install Numbat on setups different from what is described below, but the following is what it was designed for.</p>
 
@@ -96,17 +105,14 @@
 <p>Copy the entire file to your web server, and navigate to the Numbat directory with your browser. You will need to know your MySQL server, username and password to complete the installation.</p>
 
 <h2>
-<a id="whats-new-in-272" class="anchor" href="#whats-new-in-272" aria-hidden="true"><span class="octicon octicon-link"></span></a>What's new in 2.7.2</h2>
+<a id="whats-new-in-28" class="anchor" href="#whats-new-in-28" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What's new in 2.8</h2>
 
 <ul>
-<li>Streamlined installation (less that can go wrong)</li>
-<li>Table data elements available in sub-extractions</li>
-<li>Toggled form elements in sub-extractions behave the way you might expect them to</li>
-<li>Misc bug fixes</li>
+<li>New "reference data prompt" form element to display data from the reference table inline during extraction</li>
 </ul>
 
 <h2>
-<a id="how-to-cite-numbat" class="anchor" href="#how-to-cite-numbat" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to cite Numbat</h2>
+<a id="how-to-cite-numbat" class="anchor" href="#how-to-cite-numbat" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to cite Numbat</h2>
 
 <p>Here is a BibTeX entry you can use to cite Numbat in your papers:</p>
 
@@ -122,7 +128,7 @@
 </code></pre>
 
 <h2>
-<a id="contact-info" class="anchor" href="#contact-info" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contact info</h2>
+<a id="contact-info" class="anchor" href="#contact-info" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contact info</h2>
 
 <p>I cannot guarantee that I will be able to help you with your problems. Depending on the nature and scope of your problems, you may be better off calling 911 or admitting yourself to the nearest hospital. That said, if you have found bugs, or if you have ideas for future directions for the software, here are some reasonably reliable ways to contact me.</p>
 
@@ -137,14 +143,24 @@
 
 <p>Benjamin Carlisle<br>
 Murph E.</p>
+        </section>
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/bgcarlisle/Numbat">Numbat</a> is maintained by <a href="https://github.com/bgcarlisle">bgcarlisle</a>.</span>
+        <aside id="sidebar">
+          <a href="https://github.com/bgcarlisle/Numbat/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/bgcarlisle/Numbat/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
 
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
+          <p class="repo-owner"><a href="https://github.com/bgcarlisle/Numbat"></a> is maintained by <a href="https://github.com/bgcarlisle">bgcarlisle</a>.</p>
 
-    </section>
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
 
             <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
