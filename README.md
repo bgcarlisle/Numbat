@@ -1,4 +1,4 @@
-Numbat v. 2.7
+Numbat v. 2.8
 ======
 
 Numbat Meta-Analysis Extraction Manager
@@ -61,12 +61,9 @@ You may be able to install Numbat on setups different from what is described bel
 
 Copy the entire file to your web server, and navigate to the Numbat directory with your browser. You will need to know your MySQL server, username and password to complete the installation.
 
-## What's new in 2.7.2
+## What's new in 2.8
 
-* Streamlined installation (less that can go wrong)
-* Table data elements available in sub-extractions
-* Toggled form elements in sub-extractions behave the way you might expect them to
-* Misc bug fixes
+* New "reference data prompt" form element to display data from the reference table inline during extraction
 
 ## How to cite Numbat
 
