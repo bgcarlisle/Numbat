@@ -4774,6 +4774,152 @@ function nbt_add_open_text_field ( $formid, $elementid ) {
 
 }
 
+function nbt_add_prev_select ( $formid, $elementid ) {
+
+	// this element is the one immediately before where we want to insert a new element
+
+	$element = nbt_get_form_element_for_elementid ( $elementid );
+
+	// get all the elements after this one and increase their sortorder value by 1
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
+
+		$stmt->bindParam(':fid', $fid);
+		$stmt->bindParam(':sort', $sort);
+
+		$fid = $formid;
+		$sort = $element['sortorder'];
+
+		if ($stmt->execute()) {
+
+			$result = $stmt->fetchAll();
+
+			$dbh = null;
+
+			foreach ( $result as $row ) {
+
+				nbt_increase_element_sortorder ( $row['id'] );
+
+			}
+
+		} else {
+
+			echo "MySQL fail";
+
+		}
+
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+	// find a good name for the new column
+
+	$foundgoodcolumn = FALSE;
+
+	$counter = 1;
+
+	while ( $foundgoodcolumn == FALSE ) {
+
+		try {
+
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'prev_select_" . $counter . "';");
+
+			$stmt->execute();
+
+			$result = $stmt->fetchAll();
+
+			if ( count ( $result ) == 0 ) {
+
+				$columnname = "prev_select_" . $counter;
+
+				$foundgoodcolumn = TRUE;
+
+			}
+
+		}
+
+		catch (PDOException $e) {
+
+			echo $e->getMessage();
+
+		}
+
+		$counter ++;
+
+	}
+
+	// then insert a new element into the form elements table
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname) VALUES (:form, :sort, :type, :column);");
+
+		$stmt->bindParam(':form', $fid);
+		$stmt->bindParam(':sort', $sort);
+		$stmt->bindParam(':type', $type);
+		$stmt->bindParam(':column', $col);
+
+		$fid = $formid;
+		$sort = $element['sortorder'] + 1;
+		$type = "prev_select";
+		$col = $columnname;
+
+		$stmt->execute();
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+	// then, add a column to the extractions table
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
+
+		$stmt->execute();
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+	// then, add the column to the master table
+
+	try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
+
+		$stmt->execute();
+
+	}
+
+	catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	}
+
+}
+
 function nbt_add_text_area_field ( $formid, $elementid ) {
 
 	// this element is the one immediately before where we want to insert a new element
@@ -13972,6 +14118,47 @@ function nbt_get_all_reconciled_citations_for_refset ( $elementid, $refsetid ) {
 	catch (PDOException $e) {
 
 		echo $e->getMessage();
+
+	}
+
+}
+
+function nbt_get_unique_entries_for_prev_select ( $elementid, $refsetid, $extractionid ) {
+
+	if ( is_numeric ( $elementid ) && is_numeric ( $refsetid ) ) {
+
+		$element = nbt_get_form_element_for_elementid ( $elementid );
+
+		$formid = $element['formid'];
+
+		$columnname = $element['columnname'];
+
+		try {
+
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$stmt = $dbh->prepare("SELECT `" . $columnname . "` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `id` != :exid GROUP BY `" . $columnname . "` ORDER BY `" . $columnname . "` ASC;");
+
+			$stmt->bindParam(':refset', $rsid);
+			$stmt->bindParam(':exid', $exid);
+
+			$rsid = $refsetid;
+			$exid = $extractionid;
+
+			$stmt->execute();
+
+			$result = $stmt->fetchAll();
+
+			$dbh = null;
+
+			return $result;
+
+		}
+
+		catch (PDOException $e) {
+
+			echo $e->getMessage();
+
+		}
 
 	}
 

@@ -486,6 +486,62 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 				break;
 
+				case "prev_select":
+
+					?><div<?php
+
+					if ( $element['toggle'] != "" ) {
+
+						?> class="nbtHidden <?php echo $element['toggle']; ?>"<?php
+
+					}
+
+					?>><?php
+
+						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+
+						$unique_previous_entries = nbt_get_unique_entries_for_prev_select ( $element['id'], $extraction['refsetid'], $extraction['id'] );
+
+						if ( count ( $unique_previous_entries ) > 0 ) {
+
+							?><p>Other extractions have provided the following responses:</p>
+							<table class="nbtTabledData">
+								<tr class="nbtTableHeaders">
+		                  <td>Previously extracted entry</td>
+											<td>Action</td>
+		            </tr><?php
+
+								foreach ( $unique_previous_entries as $prev_select ) {
+
+									if ( $prev_select[0] == "" ) {
+
+										?><tr>
+											<td>[Left blank]</td>
+											<td><button onclick="nbtChoosePrevSelect('<?php echo $element['columnname']; ?>', '')">Choose</button></td>
+										</tr><?php
+
+									} else {
+
+										?><tr>
+											<td><?php echo $prev_select[0]; ?></td>
+											<td><button onclick="nbtChoosePrevSelect('<?php echo $element['columnname']; ?>', '<?php echo $prev_select[0]; ?>')">Choose</button></td>
+										</tr><?php
+
+									}
+
+								}
+
+							?></table>
+							<p>If none of the above responses is accurate, you may enter your own below:</p><?php
+
+						}
+
+						nbt_echo_text_field ($_GET['form'], $extraction, $element['columnname'], 200, FALSE);
+
+					?></div><?php
+
+				break;
+
 			}
 
 		}

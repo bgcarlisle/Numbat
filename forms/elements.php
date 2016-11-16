@@ -203,6 +203,17 @@ if ( count ( $elements ) > 0 ) {
 
 					break;
 
+					case "prev_select":
+
+					?><h4>Previously extracted entry selector <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
+					<p class="nbtFinePrint">Maximum entry length: 200 characters; this element acts like an Open text element, except that it also provides a drop-down menu of all the unique entries provided by any extractor from within the same reference set</p>
+					<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+					<p class="nbtFinePrint">Will appear on extraction form</p>
+					<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 200);" maxlength="50"></p>
+					<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
+
+					break;
+
 				}
 
 				?>
@@ -231,6 +242,7 @@ if ( count ( $elements ) > 0 ) {
 				<button onclick="nbtAddNewSubExtraction(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Sub-extraction</button>
 				<button onclick="nbtAddNewAssignmentEditor(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Assignment editor</button>
 				<button onclick="nbtAddNewRefdata(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Reference data prompt</button>
+				<button onclick="nbtAddNewPrevSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Previously extracted entry selector</button>
 			</div>
 		</div><?php
 
@@ -256,6 +268,7 @@ if ( count ( $elements ) > 0 ) {
 		<button onclick="nbtAddNewSubExtraction(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Sub-extraction</button>
 		<button onclick="nbtAddNewAssignmentEditor(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Assignment editor</button>
 		<button onclick="nbtAddNewRefdata(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Reference data prompt</button>
+		<button onclick="nbtAddNewPrevSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Previously extracted entry selector</button>
 	</div><?php
 
 }

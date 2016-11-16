@@ -212,6 +212,24 @@ function nbtAddNewOpenText ( fid, eid ) {
 
 }
 
+function nbtAddNewPrevSelect ( fid, eid ) {
+
+	$.ajax ({
+		url: numbaturl + 'forms/addprevselect.php',
+		type: 'post',
+		data: {
+			formid: fid,
+			elementid: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+
+		$('#nbtFormElements').html(html);
+
+	});
+
+}
+
 function nbtAddNewTextArea ( fid, eid ) {
 
 	$.ajax ({
@@ -3826,6 +3844,12 @@ function nbtExportData ( etype, rsid, fid, m_or_e ) {
 
 
 	});
+
+}
+
+function nbtChoosePrevSelect ( colname, newval ) {
+
+	$('#nbtTextField' + colname).val(newval).blur();
 
 }
 

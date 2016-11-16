@@ -115,6 +115,8 @@ if ( count ( $extractions ) >= 2 ) {
 
 					case "open_text":
 
+					case "prev_select":
+
 						// See if there is a value in the master copy
 
 						if ( ! is_null ($master[$element['columnname']]) ) {
