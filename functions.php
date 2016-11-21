@@ -14136,7 +14136,7 @@ function nbt_get_unique_entries_for_prev_select ( $elementid, $refsetid, $extrac
 		try {
 
 			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("SELECT `" . $columnname . "` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `id` != :exid GROUP BY `" . $columnname . "` ORDER BY `" . $columnname . "` ASC;");
+			$stmt = $dbh->prepare("SELECT `" . $columnname . "` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `id` != :exid AND `" . $columnname . "` IS NOT NULL AND `" . $columnname . "` != '' GROUP BY `" . $columnname . "` ORDER BY `" . $columnname . "` ASC;");
 
 			$stmt->bindParam(':refset', $rsid);
 			$stmt->bindParam(':exid', $exid);

@@ -513,21 +513,10 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 								foreach ( $unique_previous_entries as $prev_select ) {
 
-									if ( $prev_select[0] == "" ) {
-
-										?><tr>
-											<td>[Left blank]</td>
-											<td><button onclick="nbtChoosePrevSelect('<?php echo $element['columnname']; ?>', '')">Choose</button></td>
-										</tr><?php
-
-									} else {
-
-										?><tr>
-											<td><?php echo $prev_select[0]; ?></td>
-											<td><button onclick="nbtChoosePrevSelect('<?php echo $element['columnname']; ?>', '<?php echo $prev_select[0]; ?>')">Choose</button></td>
-										</tr><?php
-
-									}
+									?><tr>
+										<td><?php echo $prev_select[0]; ?></td>
+										<td><button onclick="nbtChoosePrevSelect('<?php echo $element['columnname']; ?>', '<?php echo $prev_select[0]; ?>')">Choose</button></td>
+									</tr><?php
 
 								}
 
