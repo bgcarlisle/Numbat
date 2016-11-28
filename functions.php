@@ -3082,13 +3082,13 @@ function nbt_toggle_ref_inclusion ( $drugid, $refid ) {
 
 }
 
-function nbt_delete_extraction ( $extrid ) {
+function nbt_delete_extraction ( $formid, $extrid ) {
 
 	try {
 
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
-		$stmt = $dbh->prepare("DELETE FROM extractions WHERE id = :extrid LIMIT 1;");
+		$stmt = $dbh->prepare("DELETE FROM `extractions_" . $formid . "` WHERE `id` = :extrid LIMIT 1;");
 
 		$stmt->bindParam(':extrid', $eid);
 
@@ -13764,7 +13764,10 @@ function nbt_move_extractions_for_form_db_refset_fromref_toref ( $formid, $refse
 		$frid = $from_rid;
 		$rsid = $refset;
 
-		$stmt->execute();
+		if ( $stmt->execute() ) {
+			echo "UPDATE `extractions_" . $formid . "` SET `referenceid` = " . $to_rid . " WHERE `refsetid` = " . $refset . " AND `referenceid` = " . $from_rid . ";";
+		}
+
 
 	}
 
@@ -13798,7 +13801,9 @@ function nbt_move_extractions_for_form_db_refset_fromref_toref ( $formid, $refse
 				$frid = $from_rid;
 				$rsid = $refset;
 
-				$stmt->execute();
+				if ($stmt->execute()) {
+					echo "Moved citations";
+				}
 
 			}
 
@@ -13827,7 +13832,9 @@ function nbt_move_extractions_for_form_db_refset_fromref_toref ( $formid, $refse
 				$frid = $from_rid;
 				$rsid = $refset;
 
-				$stmt->execute();
+				if ($stmt->execute()) {
+					echo "Moved table";
+				}
 
 			}
 
@@ -13856,7 +13863,9 @@ function nbt_move_extractions_for_form_db_refset_fromref_toref ( $formid, $refse
 				$frid = $from_rid;
 				$rsid = $refset;
 
-				$stmt->execute();
+				if ($stmt->execute()) {
+					echo "Moved sub extraction";
+				}
 
 			}
 

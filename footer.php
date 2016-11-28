@@ -129,6 +129,24 @@ function nbtNewExtractionForm () {
 
 }
 
+function nbtDeleteExtraction ( fid, eid, rsid ) {
+
+	$.ajax ({
+		url: numbaturl + 'references/multiple/delete_extraction.php',
+		type: 'post',
+		data: {
+			formid: fid,
+			extractionid: eid
+		},
+		dataType: 'html'
+	}).done ( function (html) {
+
+		nbtSearchForMultiples ( rsid );
+
+	});
+
+}
+
 function nbtDeleteForm ( fid ) {
 
 	$.ajax ({

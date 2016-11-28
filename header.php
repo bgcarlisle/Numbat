@@ -19,13 +19,6 @@
 	<link href='http://fonts.googleapis.com/css?family=Fenix|Oxygen' rel='stylesheet' type='text/css'>
 	<!-- / Google Fonts -->
 
-	<!-- Numbat JS -->
-	<script type="text/javascript" src="<?php echo SITE_URL; ?>js/config.js">
-	</script>
-	<script type="text/javascript" src="<?php echo SITE_URL; ?>js/numbat.js">
-	</script>
-	<!-- / Numbat JS -->
-
 	<!-- CSS -->
 	<link rel="stylesheet" href="<?php echo SITE_URL; ?>css/reset.css" />
 	<link rel="stylesheet" href="<?php echo SITE_URL; ?>css/numbat.css" />

@@ -83,14 +83,41 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
                                           foreach ( $all_forms as $form ) {
 
-                                                $form_extractions = nbt_get_extractions_for_refset_ref_and_form ( $_POST['refset'], $suggestion['id'], $form['id'], 1 );
+                                                $form_extractions = nbt_get_extractions_for_refset_ref_and_form ( $_POST['refset'], $suggestion['id'], $form['id'], 0 );
 
                                                 foreach ( $form_extractions as $extraction ) {
 
+                                                  switch ($extraction['status']) {
+
+                                                    case 0:
+
                                                       ?><li>
-                                                            <?php echo $form['name']; ?>
-                                                            <span class="nbtExtractionName"><?php echo $extraction['username'] ?></span>
+                                                        <?php echo $form['name']; ?>
+                                                        <span class="nbtExtractionName"><?php echo $extraction['username'] ?> (Not yet started)</span>
+                                                        <button onclick="nbtDeleteExtraction(<?php echo $form['id']; ?>, <?php echo $extraction['id']; ?>, <?php echo $_POST['refset']; ?>);">Delete extraction</button>
                                                       </li><?php
+
+                                                    break;
+
+                                                    case 1:
+
+                                                      ?><li>
+                                                        <?php echo $form['name']; ?>
+                                                        <span class="nbtExtractionName"><?php echo $extraction['username'] ?> (In progress)</span>
+                                                      </li><?php
+
+                                                    break;
+
+                                                    case 2:
+
+                                                      ?><li>
+                                                        <?php echo $form['name']; ?>
+                                                        <span class="nbtExtractionName"><?php echo $extraction['username'] ?> (Complete)</span>
+                                                      </li><?php
+
+                                                    break;
+
+                                                  }
 
                                                 }
 
