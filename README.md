@@ -1,7 +1,9 @@
-Numbat v. 2.9
+Numbat v. 2.9 IS NO LONGER UNDER ACTIVE DEVELOPMENT; v. 3 is available at the following link
 ======
 
-Numbat Meta-Analysis Extraction Manager
+Numbat Meta-Analysis Extraction Manager (deprecated)
+
+Please visit: https://www.bgcarlisle.com/blog/numbat3/ for the most up-to-date version of Numbat
 
 ## Overview
 
