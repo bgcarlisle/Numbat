@@ -18,12 +18,12 @@ if ($_SERVER["HTTPS"] == "on") {
 	<title>Numbat</title>
 
 	<!-- jQuery -->
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.js">
 	</script>
 	<!-- / jQuery -->
 
 	<!-- Google Fonts -->
-	<link href='http://fonts.googleapis.com/css?family=Fenix|Oxygen' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Fenix|Oxygen' rel='stylesheet' type='text/css'>
 	<!-- / Google Fonts -->
 
 	<!-- Numbat JS -->
@@ -140,7 +140,7 @@ if ($_SERVER["HTTPS"] == "on") {
 
 		?>">
 		<p>Site URL</p>
-		<p class="nbtFinePrint">Include http:// at beginning and trailing slash; e.g. "http://www.website.com/numbat/"</p>
+		<p class="nbtFinePrint">Include https:// at beginning and trailing slash; e.g. "https://www.website.com/numbat/"</p>
 		<input id="nbtSiteURL" type="text" value="<?php echo $numbaturl; ?>">
 	</div>
 	<div class="nbtSubExtraction">
