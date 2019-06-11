@@ -6,7 +6,7 @@
 	<title>Numbat: <?php echo nbt_get_setting ( "project_name" ); ?></title>
 
 	<!-- jQuery -->
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.js">
 	</script>
 	<!-- / jQuery -->
 
@@ -16,7 +16,7 @@
 	<!-- / jQuery UI -->
 
 	<!-- Google Fonts -->
-	<link href='http://fonts.googleapis.com/css?family=Fenix|Oxygen' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Fenix|Oxygen' rel='stylesheet' type='text/css'>
 	<!-- / Google Fonts -->
 
 	<!-- CSS -->
