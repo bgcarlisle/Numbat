@@ -1,9 +1,6 @@
-Numbat v. 2.9 IS NO LONGER UNDER ACTIVE DEVELOPMENT; v. 3 is available at the following link
-======
+# Numbat Meta-Analysis Extraction Manager
 
-Numbat Meta-Analysis Extraction Manager (deprecated)
-
-Please visit: https://www.bgcarlisle.com/blog/numbat3/ for the most up-to-date version of Numbat
+There is an experimental version of Numbat available for Beaker Browser: https://www.bgcarlisle.com/blog/numbat3/
 
 ## Overview
 
@@ -36,7 +33,7 @@ The following are the intended uses of Numbat.
 
 ### Values for the Numbat project
 
-* "Easy in, easy out" as a philosophy for data in Numbat—data entered in Numbat should be easily imported and exported, so that users are never trapped
+* No user lock-in as a philosophy for data in Numbat—data entered in Numbat should be easily imported and exported, so that users are never trapped
 * Adherence to standards
 * Usability
 * Expandability / modularity of software
