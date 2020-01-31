@@ -6,104 +6,104 @@ define('INSTALL_HASH', substr (hash('sha256', SITE_URL), 0, 10));
 
 function nbt_user_is_logged_in () {
 
-	if ( isset ($_SESSION[INSTALL_HASH . '_nbt_valid_login']) && $_SESSION[INSTALL_HASH . '_nbt_valid_login'] == 1 ) {
+    if ( isset ($_SESSION[INSTALL_HASH . '_nbt_valid_login']) && $_SESSION[INSTALL_HASH . '_nbt_valid_login'] == 1 ) {
 
-		return TRUE;
+	return TRUE;
 
-	} else {
+    } else {
 
-		return FALSE;
+	return FALSE;
 
-	}
+    }
 
 }
 
 function nbt_creds_check_out ( $username, $password ) { // Returns TRUE if the username and password work; FALSE otherwise
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT password, salt, emailverify FROM users WHERE username = :username");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT password, salt, emailverify FROM users WHERE username = :username");
 
-		$stmt->bindParam(':username', $user);
+	$stmt->bindParam(':username', $user);
 
-		$user = $username;
+	$user = $username;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ($result as $row) {
+	foreach ($result as $row) {
 
-			if (hash('sha256', $row['salt'] . $password) == $row['password']) {
+	    if (hash('sha256', $row['salt'] . $password) == $row['password']) {
 
-				if ($row['emailverify'] != "0") {
+		if ($row['emailverify'] != "0") {
 
-					return FALSE;
+		    return FALSE;
 
-				} else {
+		} else {
 
-					return TRUE;
-
-				}
-
-			} else {
-
-				return FALSE;
-
-			}
+		    return TRUE;
 
 		}
+
+	    } else {
+
+		return FALSE;
+
+	    }
+
 	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 }
 
 function nbt_get_username_for_userid ($userid) { // Returns username if the userid is taken; FALSE otherwise
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT username FROM users WHERE id = :userid");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT username FROM users WHERE id = :userid");
 
-		$stmt->bindParam(':userid', $user);
+	$stmt->bindParam(':userid', $user);
 
-		$user = $userid;
+	$user = $userid;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ($result as $row) {
+	foreach ($result as $row) {
 
-			return $row['username'];
+	    return $row['username'];
 
-			$founduser = 1;
-
-		}
-
-		if ($founduser != 1) {
-
-			return FALSE;
-
-		}
+	    $founduser = 1;
 
 	}
 
-	catch (PDOException $e) {
+	if ($founduser != 1) {
 
-		echo $e->getMessage();
+	    return FALSE;
 
 	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
 
 }
 
