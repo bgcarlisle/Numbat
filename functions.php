@@ -109,73 +109,73 @@ function nbt_get_username_for_userid ($userid) { // Returns username if the user
 
 function nbt_get_userid_for_username ($username) { // Returns user id if the username is taken; FALSE otherwise
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT id FROM users WHERE username = :username");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT id FROM users WHERE username = :username");
 
-		$stmt->bindParam(':username', $user);
+	$stmt->bindParam(':username', $user);
 
-		$user = $username;
+	$user = $username;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ($result as $row) {
+	foreach ($result as $row) {
 
-			return $row['id'];
+	    return $row['id'];
 
-			$founduser = 1;
-
-		}
-
-		if ($founduser != 1) {
-
-			return FALSE;
-
-		}
+	    $founduser = 1;
 
 	}
 
-	catch (PDOException $e) {
+	if ($founduser != 1) {
 
-		echo $e->getMessage();
+	    return FALSE;
 
 	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_log_user_in ( $username ) {
 
-	$_SESSION[INSTALL_HASH . '_nbt_valid_login'] = 1;
-	$_SESSION[INSTALL_HASH . '_nbt_userid'] = nbt_get_userid_for_username ($username);
-	$_SESSION[INSTALL_HASH . '_nbt_username'] = nbt_get_username_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] );
+    $_SESSION[INSTALL_HASH . '_nbt_valid_login'] = 1;
+    $_SESSION[INSTALL_HASH . '_nbt_userid'] = nbt_get_userid_for_username ($username);
+    $_SESSION[INSTALL_HASH . '_nbt_username'] = nbt_get_username_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] );
 
-	// Set the "last login" to now
+    // Set the "last login" to now
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("UPDATE users SET lastlogin=NOW() WHERE username = :username");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE users SET lastlogin=NOW() WHERE username = :username");
 
-		$stmt->bindParam(':username', $user);
+	$stmt->bindParam(':username', $user);
 
-		$user = $username;
+	$user = $username;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$dbh = null;
+	$dbh = null;
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 }
 
