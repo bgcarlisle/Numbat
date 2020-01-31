@@ -714,15 +714,6 @@ function nbt_get_refset_for_id ( $refsetid ) {
 
 }
 
-function nbt_echo_reference ( $ref, $drugname ) {
-
-	?><div class="sigGreyGradient">
-		<h3><?php echo $ref['authors']; ?>. <?php echo $ref['title']; ?>. <span class="sigJournalName"><?php echo $ref['journal']; ?></span>: <?php echo $ref['year']; ?></h3>
-		<p><a href="<?php echo SITE_URL . "drug/" . $drugname . "/" . $ref['id'] . "/"; ?>">Extract</a></p>
-	</div><?php
-
-}
-
 function nbt_get_all_references_for_refset ( $refsetid ) {
 
 	try {
