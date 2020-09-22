@@ -14,6 +14,6 @@ $nbtMasterRefID = $_POST['ref'];
 
 $tableformat = $_POST['tableformat'];
 
-include ('./mastertable.php');
+include ('./finaltable.php');
 
 ?>

@@ -13,6 +13,6 @@ $nbtMasterRefSet = $_POST['refset'];
 $nbtMasterRefID = $_POST['ref'];
 $nbtSubTableSubextractionID = $_POST['subextractionid'];
 
-include ('./mastersubtable.php');
+include ('./finalsubtable.php');
 
 ?>

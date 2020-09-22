@@ -88,7 +88,7 @@ foreach ( $subextractions as $subextraction ) {
 					$tableformat = "table_data";
 					$nbtSubTableSubextractionID = $subextraction['id'];
 
-					include ('./mastersubtable.php');
+					include ('./finalsubtable.php');
 
 					?></div><?php
 

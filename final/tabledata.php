@@ -17,7 +17,7 @@ $no_of_columns = count ( $columns );
 		}
 
 		?>
-		<td style="width: 70px;">Copy to master</td>
+		<td style="width: 70px;">Copy to final</td>
 	</tr>
 	<?php
 

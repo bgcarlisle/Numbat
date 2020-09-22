@@ -12,6 +12,6 @@ $nbtMasterSubExtrID = $_POST['elementid'];
 $nbtMasterRefSet = $_POST['refset'];
 $nbtMasterRefID = $_POST['ref'];
 
-include ('./mastersubextraction.php');
+include ('./finalsubextraction.php');
 
 ?>

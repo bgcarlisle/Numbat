@@ -963,7 +963,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 						$tableformat = "table_data";
 
-						include ('./mastertable.php');
+						include ('./finaltable.php');
 
 						?></div><?php
 
@@ -1001,7 +1001,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 						$tableformat = "ltable_data";
 
-						include ('./mastertable.php');
+						include ('./finaltable.php');
 
 						?></div><?php
 
@@ -1029,7 +1029,7 @@ if ( count ( $extractions ) >= 2 ) {
 							$nbtListCitationsRefSetID = $_GET['refset'];
 							$nbtListCitationsReference = $_GET['ref'];
 
-							include ("./mastercitations.php");
+							include ("./finalcitations.php");
 
 						?></div><?php
 
@@ -1082,7 +1082,7 @@ if ( count ( $extractions ) >= 2 ) {
 							$nbtMasterRefSet = $_GET['refset'];
 							$nbtMasterRefID = $_GET['ref'];
 
-							include ('./mastersubextraction.php');
+							include ('./finalsubextraction.php');
 
 							?></div>
 

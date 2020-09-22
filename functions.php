@@ -3392,7 +3392,7 @@ function nbt_check_double_citations ($extractions, $drugid, $refid, $section, $t
 
 									}
 
-									?><button onclick="sigCopyCitationToMaster (<?php echo $cite['id']; ?>, <?php echo $cite['drugid']; ?>, <?php echo $cite['referenceid']; ?>, <?php echo $cite['section']; ?>);">Copy to master</button>
+									?><button onclick="sigCopyCitationToMaster (<?php echo $cite['id']; ?>, <?php echo $cite['drugid']; ?>, <?php echo $cite['referenceid']; ?>, <?php echo $cite['section']; ?>);">Copy to final</button>
 									<!--<button onclick="sigDoubleCitationConfirmResponse('<?php echo $cite['id']; ?>');" id="sigConfirmCite<?php echo $cite['id']; ?>">Use this response</button>
 									<button onclick="sigDoubleCitationConfirmRemove('<?php echo $cite['id']; ?>');" id="sigConfirmCiteRemove<?php echo $cite['id']; ?>">Remove this response</button>
 									<button onclick="sigDoubleCitationUseResponse('<?php echo $cite['id']; ?>', <?php echo $cite['drugid']; ?>, <?php echo $cite['id']; ?>, <?php echo $cite['referenceid']; ?>, <?php echo $cite['section']; ?>, <?php echo $cite['citationid']; ?>, '<?php echo $usersstring; ?>');" id="sigUseCite<?php echo $cite['id']; ?>" class="sigHidden">Click to confirm use</button>

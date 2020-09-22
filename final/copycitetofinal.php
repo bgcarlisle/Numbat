@@ -12,6 +12,6 @@ $nbtListCitationsCitationID = $_POST['element'];
 $nbtListCitationsRefSetID = $_POST['refset'];
 $nbtListCitationsReference = $_POST['refid'];
 
-include ('./mastercitations.php');
+include ('./finalcitations.php');
 
 ?>
