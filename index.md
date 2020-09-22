@@ -1,7 +1,7 @@
-Numbat v. 2.9
+Numbat v. 2.10
 ======
 
-Numbat Meta-Analysis Extraction Manager
+# Numbat Meta-Analysis Extraction Manager
 
 ## Overview
 
@@ -34,7 +34,7 @@ The following are the intended uses of Numbat.
 
 ### Values for the Numbat project
 
-* "Easy in, easy out" as a philosophy for data in Numbat—data entered in Numbat should be easily imported and exported, so that users are never trapped
+* No user lock-in as a philosophy for data in Numbat—data entered in Numbat should be easily imported and exported, so that users are never trapped
 * Adherence to standards
 * Usability
 * Expandability / modularity of software
@@ -61,9 +61,9 @@ You may be able to install Numbat on setups different from what is described bel
 
 Copy the entire file to your web server, and navigate to the Numbat directory with your browser. You will need to know your MySQL server, username and password to complete the installation.
 
-## What's new in 2.9
+## What's new in 2.10
 
-* New "previously extracted entry selector" form element to display data from previous extractions inline with an open text field
+* User-facing "master" language has been removed, replaced with "final"
 
 ## How to cite Numbat
 
@@ -83,14 +83,9 @@ Here is a BibTeX entry you can use to cite Numbat in your papers:
 
 ## Contact info
 
-I cannot guarantee that I will be able to help you with your problems. Depending on the nature and scope of your problems, you may be better off calling 911 or admitting yourself to the nearest hospital. That said, if you have found bugs, or if you have ideas for future directions for the software, here are some reasonably reliable ways to contact me.
-
-* Email: <benjamin.carlisle@mail.mcgill.ca>
-* Mastodon: @bgcarlisle@scholar.social
-* Post: Room 304, 3647 rue Peel, Montréal QC H3A 1X1
-
+I cannot guarantee that I will be able to help you with your problems. Depending on the nature and scope of your problems, you may be better off calling 911 or admitting yourself to the nearest hospital. That said, if you have found bugs, or if you have ideas for future directions for the software, please submit an issue to this repo!
 
 Best,
 
-Benjamin Carlisle  
+Benjamin Carlisle
 Murph E.
