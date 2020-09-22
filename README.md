@@ -58,9 +58,9 @@ You may be able to install Numbat on setups different from what is described bel
 
 Copy the entire file to your web server, and navigate to the Numbat directory with your browser. You will need to know your MySQL server, username and password to complete the installation.
 
-## What's new in 2.9
+## What's new in 2.10
 
-* New "previously extracted entry selector" form element to display data from previous extractions inline with an open text field
+* User-facing "master" language has been removed, replaced with "final"
 
 ## How to cite Numbat
 
