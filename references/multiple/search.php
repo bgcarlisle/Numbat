@@ -52,7 +52,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
                               <tr class="nbtTableHeaders">
                                     <td>Assignments</td>
                                     <td>Extractions</td>
-                                    <td>Master copies</td>
+                                    <td>Final copies</td>
                                     <td>Citations</td>
                               </tr>
                               <tr>

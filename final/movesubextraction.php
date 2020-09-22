@@ -13,6 +13,6 @@ $nbtExtractRefSet = $_POST['refset'];
 $nbtExtractRefID = $_POST['ref'];
 $nbtExtractUserID = $_POST['userid'];
 
-include ( ABS_PATH . 'master/subextraction.php');
+include ( ABS_PATH . 'final/subextraction.php');
 
 ?>

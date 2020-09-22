@@ -13,7 +13,7 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 				case "reconcile":
 					
 					include ( ABS_PATH . "header.php" );
-					include ( ABS_PATH . "master/master.php" );
+					include ( ABS_PATH . "final/final.php" );
 				
 				break;
 				
@@ -22,7 +22,7 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 		} else {
 		
 			include ( ABS_PATH . "header.php" );
-			include ( ABS_PATH . "master/multi.php" );
+			include ( ABS_PATH . "final/multi.php" );
 		
 		}
 		

@@ -714,131 +714,122 @@ function nbt_get_refset_for_id ( $refsetid ) {
 
 }
 
-function nbt_echo_reference ( $ref, $drugname ) {
-
-	?><div class="sigGreyGradient">
-		<h3><?php echo $ref['authors']; ?>. <?php echo $ref['title']; ?>. <span class="sigJournalName"><?php echo $ref['journal']; ?></span>: <?php echo $ref['year']; ?></h3>
-		<p><a href="<?php echo SITE_URL . "drug/" . $drugname . "/" . $ref['id'] . "/"; ?>">Extract</a></p>
-	</div><?php
-
-}
-
 function nbt_get_all_references_for_refset ( $refsetid ) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` ORDER BY id ASC;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` ORDER BY id ASC;");
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		return $result;
+	return $result;
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 }
 
 function nbt_get_all_extracted_references_for_refset_and_form ( $refsetid, $formid ) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `id` IN (SELECT `referenceid` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset) ORDER BY id ASC;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `id` IN (SELECT `referenceid` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset) ORDER BY id ASC;");
 
-		$stmt->bindParam(':refset', $rsid);
+	$stmt->bindParam(':refset', $rsid);
 
-		$rsid = $refsetid;
+	$rsid = $refsetid;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		return $result;
+	return $result;
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 }
 
 function nbt_get_extractions_for_refset_ref_and_form ( $refsetid, $refid, $formid, $minstatus = 2 ) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT *, (SELECT `username` FROM `users` WHERE `users`.`id` = `extractions_" . $formid . "`.`userid`) as `username` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `referenceid` = :ref AND `status` >= :status ORDER BY id ASC;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT *, (SELECT `username` FROM `users` WHERE `users`.`id` = `extractions_" . $formid . "`.`userid`) as `username` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `referenceid` = :ref AND `status` >= :status ORDER BY id ASC;");
 
-		$stmt->bindParam(':refset', $rsid);
-		$stmt->bindParam(':ref', $rid);
-		$stmt->bindParam(':status', $stat);
+	$stmt->bindParam(':refset', $rsid);
+	$stmt->bindParam(':ref', $rid);
+	$stmt->bindParam(':status', $stat);
 
-		$rsid = $refsetid;
-		$rid = $refid;
-		$stat = $minstatus;
+	$rsid = $refsetid;
+	$rid = $refid;
+	$stat = $minstatus;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		return $result;
+	return $result;
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 }
 
 function nbt_get_all_unstarted_references_for_drug_id ( $drugid, $start = 0, $range = 25 ) {
 
-	$drugname = nbt_get_name_for_refsetid ($drugid);
+    $drugname = nbt_get_name_for_refsetid ($drugid);
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-//		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " ORDER BY id ASC LIMIT :start, :range;");
-		$stmt = $dbh->prepare("SELECT * FROM `signals_extractions`.`" . $drugname . "` WHERE include = 1 AND id NOT IN ( SELECT referenceid FROM `signals_extractions`.`extractions` WHERE drugid = :drugid ) ORDER BY id ASC;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	//		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " ORDER BY id ASC LIMIT :start, :range;");
+	$stmt = $dbh->prepare("SELECT * FROM `signals_extractions`.`" . $drugname . "` WHERE include = 1 AND id NOT IN ( SELECT referenceid FROM `signals_extractions`.`extractions` WHERE drugid = :drugid ) ORDER BY id ASC;");
 
-		$stmt->bindParam(':drugid', $did);
+	$stmt->bindParam(':drugid', $did);
 
-		$did = $drugid;
+	$did = $drugid;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		return $result;
+	return $result;
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 }
 
@@ -3401,7 +3392,7 @@ function nbt_check_double_citations ($extractions, $drugid, $refid, $section, $t
 
 									}
 
-									?><button onclick="sigCopyCitationToMaster (<?php echo $cite['id']; ?>, <?php echo $cite['drugid']; ?>, <?php echo $cite['referenceid']; ?>, <?php echo $cite['section']; ?>);">Copy to master</button>
+									?><button onclick="sigCopyCitationToMaster (<?php echo $cite['id']; ?>, <?php echo $cite['drugid']; ?>, <?php echo $cite['referenceid']; ?>, <?php echo $cite['section']; ?>);">Copy to final</button>
 									<!--<button onclick="sigDoubleCitationConfirmResponse('<?php echo $cite['id']; ?>');" id="sigConfirmCite<?php echo $cite['id']; ?>">Use this response</button>
 									<button onclick="sigDoubleCitationConfirmRemove('<?php echo $cite['id']; ?>');" id="sigConfirmCiteRemove<?php echo $cite['id']; ?>">Remove this response</button>
 									<button onclick="sigDoubleCitationUseResponse('<?php echo $cite['id']; ?>', <?php echo $cite['drugid']; ?>, <?php echo $cite['id']; ?>, <?php echo $cite['referenceid']; ?>, <?php echo $cite['section']; ?>, <?php echo $cite['citationid']; ?>, '<?php echo $usersstring; ?>');" id="sigUseCite<?php echo $cite['id']; ?>" class="sigHidden">Click to confirm use</button>

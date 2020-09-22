@@ -15,7 +15,7 @@ if ( count ( $refsets ) > 0 ) {
                         <tr class="nbtTableHeaders">
                               <td>Form name</td>
                               <td>Extractions</td>
-                              <td>Master copy</td>
+                              <td>Final copy</td>
                         </tr>
 
                         <?php
@@ -46,7 +46,7 @@ if ( count ( $refsets ) > 0 ) {
 
                                     if ( count ( $reconciledrefs ) > 0 ) {
 
-                                          ?><button onclick="nbtExportData('extraction', <?php echo $refset['id'] ?>, <?php echo $form['id'] ?>, 1);">Export "<?php echo $form['name']; ?>" master</button><?php
+                                          ?><button onclick="nbtExportData('extraction', <?php echo $refset['id'] ?>, <?php echo $form['id'] ?>, 1);">Export "<?php echo $form['name']; ?>" final</button><?php
 
                                     } else {
 
@@ -89,11 +89,11 @@ if ( count ( $refsets ) > 0 ) {
 
                                                       if ( count ( $reconciled_rows ) > 0 ) {
 
-                                                            ?><td><button onclick="nbtExportData('table_data', <?php echo $refset['id']; ?>, '<?php echo $element['columnname']; ?>', 1);">Export "<?php echo $element['displayname']; ?>" master table data</button></td><?php
+                                                            ?><td><button onclick="nbtExportData('table_data', <?php echo $refset['id']; ?>, '<?php echo $element['columnname']; ?>', 1);">Export "<?php echo $element['displayname']; ?>" final table data</button></td><?php
 
                                                       } else {
 
-                                                            ?><td><p>The master copy of table "<?php echo $element['displayname']; ?>" has no reconciled data.</p></td><?php
+                                                            ?><td><p>The final copy of table "<?php echo $element['displayname']; ?>" has no reconciled data.</p></td><?php
 
                                                       }
 
@@ -125,11 +125,11 @@ if ( count ( $refsets ) > 0 ) {
 
                                                       if ( count ( $reconciled_rows ) > 0 ) {
 
-                                                            ?><td><button onclick="nbtExportData('ltable_data', <?php echo $refset['id']; ?>, '<?php echo $element['columnname']; ?>', 1);">Export "<?php echo $element['displayname']; ?>" master table data</button></td><?php
+                                                            ?><td><button onclick="nbtExportData('ltable_data', <?php echo $refset['id']; ?>, '<?php echo $element['columnname']; ?>', 1);">Export "<?php echo $element['displayname']; ?>" final table data</button></td><?php
 
                                                       } else {
 
-                                                            ?><td><p>The master copy of table "<?php echo $element['displayname']; ?>" has no reconciled data.</p></td><?php
+                                                            ?><td><p>The final copy of table "<?php echo $element['displayname']; ?>" has no reconciled data.</p></td><?php
 
                                                       }
 
@@ -161,11 +161,11 @@ if ( count ( $refsets ) > 0 ) {
 
                                                       if ( count ( $reconciled_rows ) > 0 ) {
 
-                                                            ?><td><button onclick="nbtExportData('sub_extraction', <?php echo $refset['id']; ?>, '<?php echo $element['columnname']; ?>', 1);">Export "<?php echo $element['displayname']; ?>" master sub-extraction</button></td><?php
+                                                            ?><td><button onclick="nbtExportData('sub_extraction', <?php echo $refset['id']; ?>, '<?php echo $element['columnname']; ?>', 1);">Export "<?php echo $element['displayname']; ?>" final sub-extraction</button></td><?php
 
                                                       } else {
 
-                                                            ?><td><p>The master copy of sub-extraction "<?php echo $element['displayname']; ?>" has no reconciled data.</p></td><?php
+                                                            ?><td><p>The final copy of sub-extraction "<?php echo $element['displayname']; ?>" has no reconciled data.</p></td><?php
 
                                                       }
 
@@ -197,11 +197,11 @@ if ( count ( $refsets ) > 0 ) {
 
                                                       if ( count ( $reconciled_cites ) > 0 ) {
 
-                                                            ?><td><button onclick="nbtExportData('citations', <?php echo $refset['id'] ?>, '<?php echo $element['columnname']; ?>', 1);">Export "<?php echo $element['displayname']; ?>" master citations</button></td><?php
+                                                            ?><td><button onclick="nbtExportData('citations', <?php echo $refset['id'] ?>, '<?php echo $element['columnname']; ?>', 1);">Export "<?php echo $element['displayname']; ?>" final citations</button></td><?php
 
                                                       } else {
 
-                                                            ?><td><p>The master copy of citation set "<?php echo $element['displayname']; ?>" has no reconciled citations.</p></td><?php
+                                                            ?><td><p>The final copy of citation set "<?php echo $element['displayname']; ?>" has no reconciled citations.</p></td><?php
 
                                                       }
 
