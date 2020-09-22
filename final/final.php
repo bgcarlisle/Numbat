@@ -1065,7 +1065,7 @@ if ( count ( $extractions ) >= 2 ) {
 											$nbtExtractRefID = $_GET['ref'];
 											$nbtExtractUserID = $extraction['userid'];
 
-											include (ABS_PATH . 'master/subextraction.php');
+											include (ABS_PATH . 'final/subextraction.php');
 
 											?></div>
 										</td><?php

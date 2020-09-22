@@ -109,7 +109,7 @@ if ( count ( $refsets ) > 0 ) {
 
 									if ( count ( $extractions ) > 1 ) {
 
-										?><a href="<?php echo SITE_URL; ?>master/?action=reconcile&form=<?php echo $form['id']; ?>&refset=<?php echo $refset['id']; ?>&ref=<?php echo $extractedref['id']; ?>" target="_blank">Reconcile extractions</a><?php
+										?><a href="<?php echo SITE_URL; ?>final/?action=reconcile&form=<?php echo $form['id']; ?>&refset=<?php echo $refset['id']; ?>&ref=<?php echo $extractedref['id']; ?>" target="_blank">Reconcile extractions</a><?php
 
 									} else {
 

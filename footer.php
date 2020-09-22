@@ -580,7 +580,7 @@ function nbtMoveSubExtraction ( eid, seid, dir, rsid, rid, uid ) {
 function nbtMasterMoveSubExtraction ( eid, seid, dir, rsid, rid, uid ) {
 
 	$.ajax ({
-		url: numbaturl + 'master/movesubextraction.php',
+		url: numbaturl + 'final/movesubextraction.php',
 		type: 'post',
 		data: {
 			element: eid,
@@ -1453,7 +1453,7 @@ function nbtSaveSubExtractionTextField (elementid, extractionid, questionid, tex
 function nbtSaveMasterSubExtractionTextField (elementid, extractionid, questionid, textfieldid, feedbackid) {
 
 	$.ajax ({
-		url: numbaturl + 'master/updatesubextraction.php',
+		url: numbaturl + 'final/updatesubextraction.php',
 		type: 'post',
 		data: {
 			eid: elementid,
@@ -1523,7 +1523,7 @@ function nbtSaveCitationTextField (sectionid, citationid, questionid, textfieldi
 function nbtSaveMasterCitationTextField (sectionid, citationid, questionid, textfieldid) {
 
 	$.ajax ({
-		url: numbaturl + 'master/updatecitationproperty.php',
+		url: numbaturl + 'final/updatecitationproperty.php',
 		type: 'post',
 		data: {
 			section: sectionid,
@@ -1685,7 +1685,7 @@ function nbtSaveMasterSubExtractionDateField (elementid, subextractionid, questi
 		$('#' + textfieldid).val(html);
 
 		$.ajax ({
-			url: numbaturl + 'master/updatesubextraction.php',
+			url: numbaturl + 'final/updatesubextraction.php',
 			type: 'post',
 			data: {
 				eid: elementid,
@@ -1813,7 +1813,7 @@ function nbtSaveMasterSubExtractionSingleSelect (elementid, subextractionid, que
 	if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // IF it's already selected
 
 		$.ajax ({
-			url: numbaturl + 'master/updatesubextraction.php',
+			url: numbaturl + 'final/updatesubextraction.php',
 			type: 'post',
 			data: {
 				eid: elementid,
@@ -1833,7 +1833,7 @@ function nbtSaveMasterSubExtractionSingleSelect (elementid, subextractionid, que
 	} else { // It's not already selected
 
 		$.ajax ({
-			url: numbaturl + 'master/updatesubextraction.php',
+			url: numbaturl + 'final/updatesubextraction.php',
 			type: 'post',
 			data: {
 				eid: elementid,
@@ -1900,7 +1900,7 @@ function nbtSaveSubExtractionMultiSelect (elementid, subextractionid, questionla
 function nbtSaveMasterSubExtractionMultiSelect (elementid, subextractionid, questionlabel, buttonid) {
 
 	$.ajax ({
-		url: numbaturl + 'master/subtogglefield.php',
+		url: numbaturl + 'final/subtogglefield.php',
 		type: 'post',
 		data: {
 			eid: elementid,
@@ -2001,7 +2001,7 @@ function nbtUpdateSubTableData ( tableid, rowid, columnid, inputid ) {
 function nbtUpdateMasterExtractionTableData ( tableid, rowid, columnid, inputid) {
 
 	$.ajax ({
-		url: numbaturl + 'master/updatetabledata.php',
+		url: numbaturl + 'final/updatetabledata.php',
 		type: 'post',
 		data: {
 			tid: tableid,
@@ -2041,7 +2041,7 @@ function nbtUpdateMasterExtractionTableData ( tableid, rowid, columnid, inputid)
 function nbtUpdateMasterSubTableData ( tableid, rowid, columnid, inputid) {
 
 	$.ajax ({
-		url: numbaturl + 'master/updatesubtabledata.php',
+		url: numbaturl + 'final/updatesubtabledata.php',
 		type: 'post',
 		data: {
 			tid: tableid,
@@ -2281,7 +2281,7 @@ function nbtRemoveCitation ( sectionid, citationid ) {
 function nbtRemoveMasterCitation ( sectionid, citationid, cid ) {
 
 	$.ajax ({
-		url: numbaturl + 'master/removecitation.php',
+		url: numbaturl + 'final/removecitation.php',
 		type: 'post',
 		data: {
 			section: sectionid,
@@ -3117,7 +3117,7 @@ function nbtRemoveManualReference ( rsid, refid ) {
 function nbtCopyTableDataRow ( tform, eid, rsid, refid, rid ) {
 
 	$.ajax ({
-		url: numbaturl + 'master/copytabledatarow.php',
+		url: numbaturl + 'final/copytabledatarow.php',
 		type: 'post',
 		data: {
 			tableformat: tform,
@@ -3138,7 +3138,7 @@ function nbtCopyTableDataRow ( tform, eid, rsid, refid, rid ) {
 function nbtAddTableDataRowToMaster ( tform, eid, rsid, refid ) {
 
 	$.ajax ({
-		url: numbaturl + 'master/addtabledatarowtomaster.php',
+		url: numbaturl + 'final/addtabledatarowtofinal.php',
 		type: 'post',
 		data: {
 			tableformat: tform,
@@ -3158,7 +3158,7 @@ function nbtAddTableDataRowToMaster ( tform, eid, rsid, refid ) {
 function nbtAddSubTableRowToMaster ( eid, rsid, refid, seid ) {
 
 	$.ajax ({
-		url: numbaturl + 'master/addsubtablerowtomaster.php',
+		url: numbaturl + 'final/addsubtablerowtofinal.php',
 		type: 'post',
 		data: {
 			elementid: eid,
@@ -3178,7 +3178,7 @@ function nbtAddSubTableRowToMaster ( eid, rsid, refid, seid ) {
 function nbtCopySubExtraction ( eid, rsid, refid, oid ) {
 
 	$.ajax ({
-		url: numbaturl + 'master/copysubextraction.php',
+		url: numbaturl + 'final/copysubextraction.php',
 		type: 'post',
 		data: {
 			elementid: eid,
@@ -3198,7 +3198,7 @@ function nbtCopySubExtraction ( eid, rsid, refid, oid ) {
 function nbtDeleteMasterTableRow ( eid, rid ) {
 
 	$.ajax ({
-		url: numbaturl + 'master/deletemastertabledatarow.php',
+		url: numbaturl + 'final/deletefinaltabledatarow.php',
 		type: 'post',
 		data: {
 			elementid: eid,
@@ -3216,7 +3216,7 @@ function nbtDeleteMasterTableRow ( eid, rid ) {
 function nbtDeleteMasterSubTableRow ( eid, rid ) {
 
 	$.ajax ({
-		url: numbaturl + 'master/deletemastersubtablerow.php',
+		url: numbaturl + 'final/deletefinalsubtablerow.php',
 		type: 'post',
 		data: {
 			elementid: eid,
@@ -3234,7 +3234,7 @@ function nbtDeleteMasterSubTableRow ( eid, rid ) {
 function nbtDeleteMasterSubExtraction ( eid, oid ) {
 
 	$.ajax ({
-		url: numbaturl + 'master/deletemastersubextraction.php',
+		url: numbaturl + 'final/deletefinalsubextraction.php',
 		type: 'post',
 		data: {
 			elementid: eid,
@@ -3252,7 +3252,7 @@ function nbtDeleteMasterSubExtraction ( eid, oid ) {
 function nbtCopyToMaster ( fid, rsid, refid, rowid, exid, eid, uid ) {
 
 	$.ajax ({
-		url: numbaturl + 'master/copytomaster.php',
+		url: numbaturl + 'final/copytofinal.php',
 		type: 'post',
 		data: {
 			formid: fid,
@@ -3277,7 +3277,7 @@ function nbtCopyToMaster ( fid, rsid, refid, rowid, exid, eid, uid ) {
 function nbtCopyMultiSelectToMaster ( fid, rsid, refid, exid, eid, uid ) {
 
 	$.ajax ({
-		url: numbaturl + 'master/copymstomaster.php',
+		url: numbaturl + 'final/copymstofinal.php',
 		type: 'post',
 		data: {
 			formid: fid,
@@ -3304,7 +3304,7 @@ function nbtCopyCitationToMaster ( eid, cid, rsid, ref, citationid ) {
 	// alert ($('.nbtCitOrigRef' + eid + '-' + citationid).length);
 
 	$.ajax ({
-		url: numbaturl + 'master/copycitetomaster.php',
+		url: numbaturl + 'final/copycitetofinal.php',
 		type: 'post',
 		data: {
 			element: eid,
@@ -3420,7 +3420,7 @@ function nbtSetMasterStatus ( fid, mid, newstatus, buttonid, classid ) {
 	if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // IF it's already selected
 
 		$.ajax ({
-			url: numbaturl + 'master/changemasterstatus.php',
+			url: numbaturl + 'final/changefinalstatus.php',
 			type: 'post',
 			data: {
 				formid: fid,
@@ -3435,7 +3435,7 @@ function nbtSetMasterStatus ( fid, mid, newstatus, buttonid, classid ) {
 	} else { // It's not already selected
 
 		$.ajax ({
-			url: numbaturl + 'master/changemasterstatus.php',
+			url: numbaturl + 'final/changefinalstatus.php',
 			type: 'post',
 			data: {
 				formid: fid,
@@ -3621,7 +3621,7 @@ function nbtMultipleMoveMaster ( rsid, from_ref ) {
 	to_ref = $('#nbtMultiMoveMasterChooser' + from_ref).val();
 
 	$.ajax ({
-		url: numbaturl + 'references/multiple/move_master.php',
+		url: numbaturl + 'references/multiple/move_final.php',
 		type: 'post',
 		data: {
 			refset: rsid,

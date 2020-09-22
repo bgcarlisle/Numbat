@@ -90,7 +90,7 @@ if ( nbt_user_is_logged_in () ) {
 				</a>
 			</li>
 			<li>
-				<a href="<?php echo SITE_URL; ?>master/">
+				<a href="<?php echo SITE_URL; ?>final/">
 					Reconcile finished extractions
 				</a>
 			</li>
