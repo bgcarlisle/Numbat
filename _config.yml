@@ -1,8 +1,0 @@
-title: Numbat
-description: Numbat Meta-Analysis Extraction Manager
-google_analytics: UA-47234473-1
-show_downloads: true
-theme: jekyll-theme-minimal
-
-gems:
-  - jekyll-mentions
