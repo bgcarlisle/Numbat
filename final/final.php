@@ -1106,9 +1106,28 @@ if ( count ( $extractions ) >= 2 ) {
 
 								?></h3><?php
 
-							}
+								       }
 
-								       ?><p><?php echo $ref[$element['columnname']]; ?></p>
+								       $refdata = $element['columnname'];
+
+								       preg_match_all(
+									   '/\$([A-Za-z0-9_-]+)/',
+									   $element['columnname'],
+									   $cols_to_replace
+								       );
+
+								       foreach ( $cols_to_replace[0] as $col_to_replace ) {
+
+									   $refdata = str_replace (
+									       $col_to_replace,
+									       $ref[substr($col_to_replace, 1)],
+									       $refdata
+									   );
+								       }
+
+								       echo "<p>" . $refdata . "</p>";
+
+								       ?>
 
 						</div><?php
 

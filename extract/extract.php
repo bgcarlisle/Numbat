@@ -478,9 +478,26 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 					?>><?php
 
-						nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+					   nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
-						?><p><?php echo $ref[$element['columnname']]; ?></p><?php
+					   $refdata = $element['columnname'];
+					   
+					   preg_match_all(
+					       '/\$([A-Za-z0-9_-]+)/',
+					       $element['columnname'],
+					       $cols_to_replace
+					   );
+
+					   foreach ( $cols_to_replace[0] as $col_to_replace ) {
+
+					       $refdata = str_replace (
+						   $col_to_replace,
+						   $ref[substr($col_to_replace, 1)],
+						   $refdata
+					       );
+					   }
+
+					   echo "<p>" . $refdata . "</p>";
 
 					?></div><?php
 

@@ -198,14 +198,15 @@ if ( count ( $elements ) > 0 ) {
 						<p class="nbtFinePrint">A "reference data prompt" does not accept input from the extractor and will not appear on the extraction export. Rather, it displays data about the reference being extracted that is populated from the selected column in the reference set table. For example, if the "year" column from the reference set were chosen in the field below, the year of the reference being extracted would appear at this point in the extraction.</p>
 						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
-						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeRefdataColumnName(<?php echo $element['id']; ?>);" maxlength="50"></p>
-						<p class="nbtFinePrint">Enter the column from the reference set that you wish to use to prompt the extractor.</p><?php
+						<p>Reference data:</p>
+						<textarea style="width: 100%; height: 80px;" id="nbtElementColumnName<?php echo $element['id']; ?>" onblur="nbtChangeRefdataColumnName(<?php echo $element['id']; ?>);" maxlength="500"><?php echo $element['columnname']; ?></textarea>
+						<p class="nbtFinePrint">Enter one or more column names from the reference set, preceded by a dollar sign, and they will be replaced with the value of that column for the reference being extracted. E.g. if you have a "phase" column on your reference set and you enter $phase below, it will be replaced by the value of that column for that reference.</p><?php
 
-					break;
+																				 break;
 
-					case "prev_select":
+																				 case "prev_select":
 
-					?><h4>Previously extracted entry selector <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
+																				 ?><h4>Previously extracted entry selector <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
 					<p class="nbtFinePrint">Maximum entry length: 200 characters; this element acts like an Open text element, except that it also provides a drop-down menu of all the unique entries provided by any extractor from within the same reference set</p>
 					<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 					<p class="nbtFinePrint">Will appear on extraction form</p>
