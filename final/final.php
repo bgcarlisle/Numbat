@@ -1108,7 +1108,9 @@ if ( count ( $extractions ) >= 2 ) {
 
 							}
 
-							?><p><?php echo $ref[$element['columnname']]; ?></p><?php
+								       ?><p><?php echo $ref[$element['columnname']]; ?></p>
+
+						</div><?php
 
 					break;
 
