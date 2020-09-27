@@ -181,399 +181,399 @@ function nbt_log_user_in ( $username ) {
 
 function nbt_username_is_taken ( $username ) { // Returns TRUE if the username is already registered; FALSE otherwise
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT id FROM users WHERE username = :username");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT id FROM users WHERE username = :username");
 
-		$stmt->bindParam(':username', $user);
+	$stmt->bindParam(':username', $user);
 
-		$user = $username;
+	$user = $username;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ($result as $row) {
+	foreach ($result as $row) {
 
-			return TRUE;
+	    return TRUE;
 
-			$founduser = 1;
-
-		}
-
-		if ($founduser != 1) {
-
-			return FALSE;
-
-		}
+	    $founduser = 1;
 
 	}
 
-	catch (PDOException $e) {
+	if ($founduser != 1) {
 
-		echo $e->getMessage();
+	    return FALSE;
 
 	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_email_is_in_use ( $email ) { // Returns TRUE if there is an account with that email address already; FALSE otherwise
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT id FROM users WHERE email = :email");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT id FROM users WHERE email = :email");
 
-		$stmt->bindParam(':email', $emailaddress);
+	$stmt->bindParam(':email', $emailaddress);
 
-		$emailaddress = $email;
+	$emailaddress = $email;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ($result as $row) {
+	foreach ($result as $row) {
 
-			return TRUE;
+	    return TRUE;
 
-			$foundemail = 1;
-
-		}
-
-		if ($foundemail != 1) {
-
-			return FALSE;
-
-		}
+	    $foundemail = 1;
 
 	}
 
-	catch (PDOException $e) {
+	if ($foundemail != 1) {
 
-		echo $e->getMessage();
+	    return FALSE;
 
 	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_save_new_user ($username, $email, $password) {
-	// Note that this function does NOT check whether the user exists, the email has already been used, etc.
-	// Returns TRUE if it works properly.
-	// Also sends the verification email.
+    // Note that this function does NOT check whether the user exists, the email has already been used, etc.
+    // Returns TRUE if it works properly.
+    // Also sends the verification email.
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare('INSERT INTO users (username, password, salt, email, emailverify) VALUES (:username, :password, :salt, :email, :verification)');
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare('INSERT INTO users (username, password, salt, email, emailverify) VALUES (:username, :password, :salt, :email, :verification)');
 
-		$stmt->bindParam(':username', $theuser);
-		$stmt->bindParam(':password', $thepass);
-		$stmt->bindParam(':salt', $salt);
-		$stmt->bindParam(':email', $theemail);
-		$stmt->bindParam(':verification', $verification);
+	$stmt->bindParam(':username', $theuser);
+	$stmt->bindParam(':password', $thepass);
+	$stmt->bindParam(':salt', $salt);
+	$stmt->bindParam(':email', $theemail);
+	$stmt->bindParam(':verification', $verification);
 
-		$theuser = $username;
+	$theuser = $username;
 
-		$theemail = $email;
+	$theemail = $email;
 
-		$string = md5(uniqid(rand(), true));
-		$salt = substr($string, 0, 3);
+	$string = md5(uniqid(rand(), true));
+	$salt = substr($string, 0, 3);
 
-		$string = md5(uniqid(rand(), true));
-		$verification = substr($string, 0, 10);
+	$string = md5(uniqid(rand(), true));
+	$verification = substr($string, 0, 10);
 
-		$thepass = hash('sha256', $salt . $password);
+	$thepass = hash('sha256', $salt . $password);
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$dbh = null;
+	$dbh = null;
 
-		$message = "Greetings!";
+	$message = "Greetings!";
 
-		$message = $message . "\n\n" . "You are receiving this message because your email was registered for an account on an installation of Numbat with the following user name:";
+	$message = $message . "\n\n" . "You are receiving this message because your email was registered for an account on an installation of Numbat with the following user name:";
 
-		$message = $message . " " . $username;
+	$message = $message . " " . $username;
 
-		$message = $message . "\n\n" . "If you are receiving this email in error, just ignore it.";
+	$message = $message . "\n\n" . "If you are receiving this email in error, just ignore it.";
 
-		$message = $message . "\n\n" . "To verify your email and activate your account, click the following link.";
+	$message = $message . "\n\n" . "To verify your email and activate your account, click the following link.";
 
-		$message = $message . "\n\n" . SITE_URL . "signup/?username=" . $username . "&code=" . $verification;
+	$message = $message . "\n\n" . SITE_URL . "signup/?username=" . $username . "&code=" . $verification;
 
-		$message = $message . "\n\n" . "Enjoy! :)";
+	$message = $message . "\n\n" . "Enjoy! :)";
 
-		mail ($email, "Confirm your email address for Numbat", $message, "From: Numbat <" . nbt_get_setting ( "admin_email" ) . ">");
+	mail ($email, "Confirm your email address for Numbat", $message, "From: Numbat <" . nbt_get_setting ( "admin_email" ) . ">");
 
-		return TRUE;
+	return TRUE;
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-		return FALSE;
+	return FALSE;
 
-	}
+    }
 
 }
 
 function nbt_send_password_recovery_email ( $username ) {
 
-	// First, generate a 10-character hash
+    // First, generate a 10-character hash
 
-	$string = md5(uniqid(rand(), true));
-	$passwordchangecode = substr($string, 0, 10);
+    $string = md5(uniqid(rand(), true));
+    $passwordchangecode = substr($string, 0, 10);
 
-	// Insert that into the DB for the user
+    // Insert that into the DB for the user
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("UPDATE users SET `passwordchangecode` = :code WHERE username = :username");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE users SET `passwordchangecode` = :code WHERE username = :username");
 
-		$stmt->bindParam(':code', $code);
-		$stmt->bindParam(':username', $user);
+	$stmt->bindParam(':code', $code);
+	$stmt->bindParam(':username', $user);
 
-		$user = $username;
-		$code = $passwordchangecode;
+	$user = $username;
+	$code = $passwordchangecode;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$dbh = null;
+	$dbh = null;
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 	// Get the user's email address
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT email FROM users WHERE username = :username LIMIT 1");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT email FROM users WHERE username = :username LIMIT 1");
 
-		$stmt->bindParam(':username', $un);
+	$stmt->bindParam(':username', $un);
 
-		$un = $username;
+	$un = $username;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ($result as $row) {
+	foreach ($result as $row) {
 
-			$email = $row['email'];
-
-		}
+	    $email = $row['email'];
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
 
-	}
+	echo $e->getMessage();
 
-	// Then, email the user with a link including the hash
+    }
 
-	$message = "Greetings!";
+    // Then, email the user with a link including the hash
 
-	$message = $message . "\n\n" . "You are receiving this message because someone (probably you) requested that your password be reset. If you did not request your password to be reset, just ignore this email.";
+    $message = "Greetings!";
 
-	$message = $message . "\n\n" . "To reset your password, open the following address in your browser.";
+    $message = $message . "\n\n" . "You are receiving this message because someone (probably you) requested that your password be reset. If you did not request your password to be reset, just ignore this email.";
 
-	$message = $message . "\n\n" . SITE_URL . "forgot/?username=" . $username . "&code=" . $passwordchangecode;
+    $message = $message . "\n\n" . "To reset your password, open the following address in your browser.";
 
-	$message = $message . "\n\n" . "Enjoy! :)";
+    $message = $message . "\n\n" . SITE_URL . "forgot/?username=" . $username . "&code=" . $passwordchangecode;
 
-	mail ($email, "Numbat password reset", $message, "From: Numbat <" . nbt_get_setting ( "admin_email" ) . ">");
+    $message = $message . "\n\n" . "Enjoy! :)";
+
+    mail ($email, "Numbat password reset", $message, "From: Numbat <" . nbt_get_setting ( "admin_email" ) . ">");
 
 }
 
 function nbt_password_recovery_code_checks_out ( $username, $code) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT passwordchangecode FROM users WHERE username = :user LIMIT 1");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT passwordchangecode FROM users WHERE username = :user LIMIT 1");
 
-		$stmt->bindParam(':user', $user);
+	$stmt->bindParam(':user', $user);
 
-		$user = $username;
+	$user = $username;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ($result as $row) {
+	foreach ($result as $row) {
 
-			$dbcode = $row['passwordchangecode'];
-
-		}
-
-		if ( $dbcode == $code ) {
-
-			return TRUE;
-
-		} else {
-
-			return FALSE;
-
-		}
+	    $dbcode = $row['passwordchangecode'];
 
 	}
 
-	catch (PDOException $e) {
+	if ( $dbcode == $code ) {
 
-		echo $e->getMessage();
+	    return TRUE;
+
+	} else {
+
+	    return FALSE;
 
 	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_change_password ( $username, $newpass ) {
 
-	$string = md5(uniqid(rand(), true));
-	$salt = substr($string, 0, 3);
+    $string = md5(uniqid(rand(), true));
+    $salt = substr($string, 0, 3);
 
-	$thepass = hash('sha256', $salt . $newpass);
+    $thepass = hash('sha256', $salt . $newpass);
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("UPDATE users SET password = :newpass, salt = :salt, passwordchangecode = NULL WHERE username = :user LIMIT 1");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE users SET password = :newpass, salt = :salt, passwordchangecode = NULL WHERE username = :user LIMIT 1");
 
-		$stmt->bindParam(':user', $user);
-		$stmt->bindParam(':newpass', $pass);
-		$stmt->bindParam(':salt', $sal);
+	$stmt->bindParam(':user', $user);
+	$stmt->bindParam(':newpass', $pass);
+	$stmt->bindParam(':salt', $sal);
 
-		$user = $username;
-		$pass = $thepass;
-		$sal = $salt;
+	$user = $username;
+	$pass = $thepass;
+	$sal = $salt;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$dbh = null;
+	$dbh = null;
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 }
 
 function nbt_get_emailverify_for_userid ($userid) { // Returns user emailverify if the user id is taken; FALSE otherwise
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT emailverify FROM users WHERE id = :userid");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT emailverify FROM users WHERE id = :userid");
 
-		$stmt->bindParam(':userid', $user);
+	$stmt->bindParam(':userid', $user);
 
-		$user = $userid;
+	$user = $userid;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ($result as $row) {
+	foreach ($result as $row) {
 
-			return $row['emailverify'];
+	    return $row['emailverify'];
 
-			$founduser = 1;
-
-		}
-
-		if ($founduser != 1) {
-
-			return FALSE;
-
-		}
+	    $founduser = 1;
 
 	}
 
-	catch (PDOException $e) {
+	if ($founduser != 1) {
 
-		echo $e->getMessage();
+	    return FALSE;
 
 	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_verify_email_address ($username, $code) { // Returns TRUE if the user's email is verified, FALSE otherwise
 
-	$userid = nbt_get_userid_for_username ( $username );
+    $userid = nbt_get_userid_for_username ( $username );
 
-	if ( $userid ) { // if the user exists
+    if ( $userid ) { // if the user exists
 
-		$emailverify = nbt_get_emailverify_for_userid ( $userid );
+	$emailverify = nbt_get_emailverify_for_userid ( $userid );
 
-		if ( $emailverify == "0" ) { // The account has already been verified
+	if ( $emailverify == "0" ) { // The account has already been verified
 
-			return FALSE;
+	    return FALSE;
 
-		} else { // The account has not yet been verified
+	} else { // The account has not yet been verified
 
-			if ( $emailverify == $code ) { // If the code is correct
+	    if ( $emailverify == $code ) { // If the code is correct
 
-				try {
+		try {
 
-					$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-					$stmt = $dbh->prepare("UPDATE users SET emailverify = '0' WHERE id = :userid AND emailverify = :code");
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $stmt = $dbh->prepare("UPDATE users SET emailverify = '0' WHERE id = :userid AND emailverify = :code");
 
-					$stmt->bindParam(':userid', $user);
-					$stmt->bindParam(':code', $emailcode);
+		    $stmt->bindParam(':userid', $user);
+		    $stmt->bindParam(':code', $emailcode);
 
-					$user = $userid;
-					$emailcode = $code;
+		    $user = $userid;
+		    $emailcode = $code;
 
-					$stmt->execute();
+		    $stmt->execute();
 
-					$dbh = null;
+		    $dbh = null;
 
-					return TRUE;
-
-				}
-
-				catch (PDOException $e) {
-
-					echo $e->getMessage();
-
-				}
-
-			} else { // the code is not correct
-
-				return FALSE;
-
-			}
+		    return TRUE;
 
 		}
 
-	} else {
+		catch (PDOException $e) {
+
+		    echo $e->getMessage();
+
+		}
+
+	    } else { // the code is not correct
 
 		return FALSE;
 
+	    }
+
 	}
+
+    } else {
+
+	return FALSE;
+
+    }
 
 }
 
@@ -588,63 +588,63 @@ function nbt_log_user_out () {
 
 function nbt_get_drugs_that_the_current_user_has_access_to () {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM permissions WHERE userid = :userid AND permission > 0;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM permissions WHERE userid = :userid AND permission > 0;");
 
-		$stmt->bindParam(':userid', $user);
+	$stmt->bindParam(':userid', $user);
 
-		$user = $_SESSION[INSTALL_HASH . '_nbt_userid'];
+	$user = $_SESSION[INSTALL_HASH . '_nbt_userid'];
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		return $result;
+	return $result;
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 }
 
 function nbt_get_name_for_refsetid ( $drugid ) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT name FROM referencesets WHERE id = :drugid LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT name FROM referencesets WHERE id = :drugid LIMIT 1;");
 
-		$stmt->bindParam(':drugid', $did);
+	$stmt->bindParam(':drugid', $did);
 
-		$did = $drugid;
+	$did = $drugid;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ( $result as $row ) {
+	foreach ( $result as $row ) {
 
-			return $row['name'];
-
-		}
+	    return $row['name'];
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
 
-	}
+	echo $e->getMessage();
+
+    }
 
 }
 
