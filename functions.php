@@ -12758,6 +12758,8 @@ function nbt_add_column_to_refset_table ( $refsetid, $columnname, $columntype ) 
 
 function nbt_insert_row_into_columns ( $refset, $columns, $row, $separator ) {
 
+    if ( ! ctype_space($row) && $row != '' ) {
+		      
 	$sqlcols = "`" . implode ( "`, `", $columns ) . "`";
 
 	$sqlparams = ":" . implode ( ", :", $columns );
@@ -12807,6 +12809,7 @@ function nbt_insert_row_into_columns ( $refset, $columns, $row, $separator ) {
 
 	}
 
+    }
 }
 
 function nbt_delete_refset ( $refsetid ) {
