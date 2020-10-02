@@ -355,7 +355,7 @@ function nbt_send_password_recovery_email ( $username ) {
 
     }
 
-	// Get the user's email address
+    // Get the user's email address
 
     try {
 
@@ -579,10 +579,10 @@ function nbt_verify_email_address ($username, $code) { // Returns TRUE if the us
 
 function nbt_log_user_out () {
 
-	$_SESSION = array ();
-	session_destroy();
-	setcookie (INSTALL_HASH . "_nbt_userid", "", time(), "/");
-	setcookie (INSTALL_HASH . "_nbt_password", "", time(), "/");
+    $_SESSION = array ();
+    session_destroy();
+    setcookie (INSTALL_HASH . "_nbt_userid", "", time(), "/");
+    setcookie (INSTALL_HASH . "_nbt_password", "", time(), "/");
 
 }
 
@@ -1986,25 +1986,25 @@ function nbt_remove_uncited ($uncid) {
 
 function nbt_echo_multi_select ($formid, $extraction, $question, $options, $toggles = NULL ) {
 
-	// $options must be an array of the names of the column in the db
+    // $options must be an array of the names of the column in the db
 
-	foreach ( $options as $dbcolumn => $plaintext ) {
+    foreach ( $options as $dbcolumn => $plaintext ) {
 
-		?><a href="#" class="nbtTextOptionSelect <?php
+?><a href="#" class="nbtTextOptionSelect <?php
 
-			echo "sig" . $question;
+					 echo "sig" . $question;
 
-			if ( $extraction[$question . "_" . $dbcolumn] == 1 ) {
+					 if ( $extraction[$question . "_" . $dbcolumn] == 1 ) {
 
-				?> nbtTextOptionChosen<?php
+					 ?> nbtTextOptionChosen<?php
 
-			}
+							       }
 
-		?>" id="nbtMS<?php echo $question . "_" . $dbcolumn; ?>" onclick="event.preventDefault();nbtSaveMultiSelect(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $question . "_" . $dbcolumn; ?>', 'nbtMS<?php echo $question . "_" . $dbcolumn; ?>');"  conditionalid="<?php echo $toggles[$dbcolumn]; ?>"><?php echo $plaintext; ?></a><?php
+							       ?>" id="nbtMS<?php echo $question . "_" . $dbcolumn; ?>" onclick="event.preventDefault();nbtSaveMultiSelect(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $question . "_" . $dbcolumn; ?>', 'nbtMS<?php echo $question . "_" . $dbcolumn; ?>');"  conditionalid="<?php echo $toggles[$dbcolumn]; ?>"><?php echo $plaintext; ?></a><?php
 
-	}
+																																																			 }
 
-}
+																																																			 }
 
 function nbt_echo_subextraction_multi_select ($elementid, $subextraction, $question, $options, $toggles = NULL ) {
 
@@ -10368,13 +10368,13 @@ function nbt_get_all_assignments_for_refset ( $refsetid ) {
 	try {
 
 		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT *, (SELECT `username` FROM `users` WHERE `id` LIKE `userid`) as `username`, (SELECT `title` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `title`, (SELECT `authors` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `authors`, (SELECT `journal` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `journal`, (SELECT `year` FROM `referenceset_" . $refsetid . "` WHERE `id` LIKE `referenceid`) as `year`, (SELECT `id` FROM `forms` WHERE `id` LIKE `formid`) as `formid`, (SELECT `name` FROM `forms` WHERE `id` LIKE `formid`) as `formname` FROM `assignments` WHERE `refsetid` = '" . $refsetid . "' ORDER BY `whenassigned` DESC;");
+	      $stmt = $dbh->prepare("SELECT *, `assignments`.`id` AS `aid` FROM `referenceset_" . $refsetid . "`, `assignments`, `users`, `forms` WHERE `referenceset_". $refsetid ."`.`id` = `assignments`.`referenceid` AND `assignments`.`refsetid` = :rsid AND `assignments`.`userid` = `users`.`id` AND `assignments`.`formid` = `forms`.`id`");
 
-		$stmt->bindParam(':username', $user);
+	        $stmt->bindParam(':rsid', $rsid);
 
-		$user = $username;
+  	        $rsid = $refsetid;
 
-		$stmt->execute();
+	        $stmt->execute();
 
 		$result = $stmt->fetchAll();
 

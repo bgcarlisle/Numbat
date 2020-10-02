@@ -1,47 +1,84 @@
-<div class="nbtContentPanel nbtGreyGradient">
-	<h2>Manage extraction assignments</h2>
-	
-	<h3>Currently assigned</h3>
-	<table class="nbtTabledData">
-		<tr class="nbtTableHeaders">
-			<td>When assigned</td>
-			<td>User name</td>
-			<td>Form</td>
-			<td>Reference</td>
-			<td style="width: 80px;">Delete</td>
-		</tr>
-		<?php
+<?php
+
+$forms = nbt_get_all_extraction_forms ();
+
+$users = nbt_get_all_users ();
+
+$refset = nbt_get_refset_for_id ($_GET['refset']);
+
+$allassignments = nbt_get_all_assignments_for_refset ( $_GET['refset'] );
+
+$references = nbt_get_all_references_for_refset($refset['id']);
+
+?><div class="nbtContentPanel nbtGreyGradient">
+    <h2>Assignments for: <?php echo $refset['name']; ?></h2>
+
+    <table class="nbtTabledData">
+	<tr class="nbtTableHeaders">
+	    <td>Reference</td>
+	    <?php
+
+	    foreach ( $forms as $form ) {
+
+		echo "<td>";
+
+		echo $form['name'];
+
+		echo "</td>";
+	    }
+
+	    ?>
+	</tr>
+	<?php
+
+	foreach ( $references as $reference ) {
+
+	    echo "<tr>";
+
+	    echo  "<td>";
+	    
+	    echo "<h4>" . $reference['title'] . "</h4>";
+
+	    echo "<p>" . $reference['authors'] . "</p>";
+
+	    echo "<p>" . $reference['journal'] . ": " . $reference['year'] ."</p>";
+
+	    echo "</td>";
+
+	    foreach ( $forms as $form ) {
 		
-		$allassignments = nbt_get_all_assignments_for_refset ( $_GET['refset'] );
-		
-		foreach ( $allassignments as $assignment ) {
+		echo "<td>";
+
+		foreach ( $users as $user ) {
+
+		    $assignmentfound = FALSE;
+
+		    foreach ( $allassignments as $assign ) {
+
+			if (
+			    $assign['referenceid'] == $reference['id'] &
+			    $assign['formid'] == $form['id'] &
+			    $assign['username'] == $user['username']
+			) {
+			    echo '<span class="nbtAssignmentName nbtAssigned" id="nbtAssignment-' . $reference['id'] . '-' . $form['id'] . '-' . $user['id'] . '" onclick="nbtToggleAssignment(' . $user['id'] . ', ' . $form['id'] . ', ' . $refset['id'] . ', ' . $reference['id'] . ');">' . $user['username'] . ' <span class="nbtAssignCheck">&#x2713;</span><span class="nbtAssignCross">&#x2717;</span></span>';
+			    $assignmentfound = TRUE;
+			}
 			
-			?><tr id="nbtAssignmentTableRow<?php echo $assignment['id']; ?>">
-				<td>
-					<?php echo substr ( $assignment['whenassigned'], 0, 10 ); ?>
-				</td>
-				<td>
-					<?php echo $assignment['username']; ?>
-				</td>
-				<td>
-					<?php echo $assignment['formname']; ?>
-				</td>
-				<td>
-					<h4><?php echo $assignment['title']; ?></h4>
-					<p><?php echo $assignment['authors']; ?></p>
-					<p><?php echo $assignment['journal']; ?>: <?php echo $assignment['year']; ?></p>
-				</td>
-				<td>
-					<button onclick="$(this).fadeOut(0);$('#nbtDeleteAssignment<?php echo $assignment['id']; ?>').fadeIn();">Delete</button>
-					<button class="nbtHidden" id="nbtDeleteAssignment<?php echo $assignment['id']; ?>" onclick="nbtDeleteAssignment(<?php echo $assignment['id']; ?>);">For real</button>
-				</td>
-			</tr><?php
-			
+		    }
+
+		    if ( ! $assignmentfound ) {
+			echo '<span class="nbtAssignmentName nbtNotAssigned" id="nbtAssignment-' . $reference['id'] . '-' . $form['id'] . '-' . $user['id'] . '" onclick="nbtToggleAssignment(' . $user['id'] . ', ' . $form['id'] . ', ' . $refset['id'] . ', ' . $reference['id'] . ');">' . $user['username'] . ' <span class="nbtAssignCheck">&#x2713;</span><span class="nbtAssignCross">&#x2717;</span></span>';
+		    }
+		    
 		}
 		
-		?>
-	</table>
+		echo "</td>";  
+	    }
+
+	    echo "</tr>";
+	}
 	
-	<div class="nbtHidden nbtFeedbackGood nbtFeedback nbtFinePrint" id="nbtPrivilegeFeedback">&nbsp;</div>
-	
+	?>
+    </table>
 </div>
+

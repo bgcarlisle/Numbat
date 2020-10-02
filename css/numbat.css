@@ -415,15 +415,35 @@ img.nbtExtractionPropertiesTip {
 	background-image:-o-linear-gradient(top, #eee, #999 5%, #666);
 }
 .nbtDoubleResult p {
-	margin: 5px 3px 7px 3px;
+    margin: 5px 3px 7px 3px;
+}
+span.nbtAssignmentName {
+    padding: 0px 5px 1px 5px;
+    color: #666;
+    border-radius: 3px;
+    border: none;
+    margin: 0 2px 0 2px;
+    white-space: nowrap;
+}
+span.nbtAssigned {
+    background: #ccffcc;
+}
+span.nbtNotAssigned {
+    background: #ffcccc;
+}
+span.nbtAssigned .nbtAssignCross {
+    display: none;
+}
+span.nbtNotAssigned .nbtAssignCheck {
+    display: none;
 }
 span.nbtExtractionName {
-	padding: 0px 5px 1px 5px;
-	background: #666;
-	color: #fff;
-	border-radius: 3px;
-	border: none;
-	margin: 0 2px 0 2px;
+    padding: 0px 5px 1px 5px;
+    background: #666;
+    color: #fff;
+    border-radius: 3px;
+    border: none;
+    margin: 0 2px 0 2px;
 }
 span.nbtDoubleMultiAnswers {
 	margin: 0 3px 0 3px;
