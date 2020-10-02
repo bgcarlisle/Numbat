@@ -650,67 +650,67 @@ function nbt_get_name_for_refsetid ( $drugid ) {
 
 function nbt_get_refsetid_for_name ( $name ) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT id FROM referencesets WHERE name = :name LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT id FROM referencesets WHERE name = :name LIMIT 1;");
 
-		$stmt->bindParam(':name', $did);
+	$stmt->bindParam(':name', $did);
 
-		$did = $name;
+	$did = $name;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ( $result as $row ) {
+	foreach ( $result as $row ) {
 
-			return $row['id'];
-
-		}
+	    return $row['id'];
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
 
-	}
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_get_refset_for_id ( $refsetid ) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM referencesets WHERE id = :id LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM referencesets WHERE id = :id LIMIT 1;");
 
-		$stmt->bindParam(':id', $rsid);
+	$stmt->bindParam(':id', $rsid);
 
-		$rsid = $refsetid;
+	$rsid = $refsetid;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ( $result as $row ) {
+	foreach ( $result as $row ) {
 
-			return $row;
-
-		}
+	    return $row;
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
 
-	}
+	echo $e->getMessage();
+
+    }
 
 }
 
@@ -835,227 +835,227 @@ function nbt_get_all_unstarted_references_for_drug_id ( $drugid, $start = 0, $ra
 
 function nbt_count_all_references_for_drug_id ( $drugid ) {
 
-	$drugname = nbt_get_name_for_refsetid ($drugid);
+    $drugname = nbt_get_name_for_refsetid ($drugid);
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . ";");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM " . $drugname . ";");
 
-		$dname = $drugname;
+	$dname = $drugname;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		return count ( $result );
+	return count ( $result );
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 }
 
 function nbt_get_all_extractions_for_drug_id ( $drugid, $start, $range ) {
 
-	$drugname = nbt_get_name_for_refsetid ($drugid);
+    $drugname = nbt_get_name_for_refsetid ($drugid);
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-//		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " WHERE `include` = 1 ORDER BY id ASC LIMIT :start, :range;");
-		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " WHERE `include` = 1 ORDER BY id ASC;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	//		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " WHERE `include` = 1 ORDER BY id ASC LIMIT :start, :range;");
+	$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " WHERE `include` = 1 ORDER BY id ASC;");
 
-		$stmt->bindParam(':start', $sta);
-		$stmt->bindParam(':range', $ran);
+	$stmt->bindParam(':start', $sta);
+	$stmt->bindParam(':range', $ran);
 
-		$dname = $drugname;
-		$sta = $start;
-		$ran = $range;
+	$dname = $drugname;
+	$sta = $start;
+	$ran = $range;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		return $result;
+	return $result;
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 }
 
 function nbt_count_all_extractions_for_drug_id ( $drugid ) {
 
-	$drugname = nbt_get_name_for_refsetid ($drugid);
+    $drugname = nbt_get_name_for_refsetid ($drugid);
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " WHERE `include` = 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " WHERE `include` = 1;");
 
-		$dname = $drugname;
+	$dname = $drugname;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		return count ( $result );
+	return count ( $result );
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 }
 
 function nbt_get_reference_for_refsetid_and_refid ( $refsetid, $refid ) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE id = :refid LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE id = :refid LIMIT 1;");
 
-		$stmt->bindParam(':refid', $rid);
+	$stmt->bindParam(':refid', $rid);
 
-		$rid = $refid;
+	$rid = $refid;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ( $result as $row ) {
+	foreach ( $result as $row ) {
 
-			return $row;
-
-		}
+	    return $row;
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
 
-	}
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_return_references_for_refset_and_query ( $citationsid, $refsetid, $refid, $query ) {
 
-	$altquery = str_replace ("- ", "%", $query);
+    $altquery = str_replace ("- ", "%", $query);
 
-	$element = nbt_get_form_element_for_elementid ( $citationsid );
+    $element = nbt_get_form_element_for_elementid ( $citationsid );
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `title` LIKE :query OR `title` LIKE :altquery OR `authors` LIKE :query LIMIT 6;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `title` LIKE :query OR `title` LIKE :altquery OR `authors` LIKE :query LIMIT 6;");
 
-		$stmt->bindParam(':query', $quer);
-		$stmt->bindParam(':altquery', $altquer);
+	$stmt->bindParam(':query', $quer);
+	$stmt->bindParam(':altquery', $altquer);
 
-		$quer = "%" . $query . "%";
-		$altquer = "%" . $altquery . "%";
+	$quer = "%" . $query . "%";
+	$altquer = "%" . $altquery . "%";
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		return $result;
+	return $result;
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 }
 
 function nbt_return_references_for_assignment_search ( $refsetid, $query ) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE title LIKE :query OR authors LIKE :query LIMIT 6;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE title LIKE :query OR authors LIKE :query LIMIT 6;");
 
-		$stmt->bindParam(':query', $quer);
+	$stmt->bindParam(':query', $quer);
 
-		$quer = "%" . $query . "%";
+	$quer = "%" . $query . "%";
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		return $result;
+	return $result;
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 }
 
 function nbt_add_citation ( $citationsection, $refsetid, $reference, $userid, $citation ) {
 
-	$element = nbt_get_form_element_for_elementid ( $citationsection );
+    $element = nbt_get_form_element_for_elementid ( $citationsection );
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("INSERT INTO `citations_" . $element['columnname'] . "` (refsetid, referenceid, userid, citationid) VALUES (:refset, :ref, :user, :cit)");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("INSERT INTO `citations_" . $element['columnname'] . "` (refsetid, referenceid, userid, citationid) VALUES (:refset, :ref, :user, :cit)");
 
-		$stmt->bindParam(':refset', $rsid);
-		$stmt->bindParam(':ref', $ref);
-		$stmt->bindParam(':user', $user);
-		$stmt->bindParam(':cit', $cit);
+	$stmt->bindParam(':refset', $rsid);
+	$stmt->bindParam(':ref', $ref);
+	$stmt->bindParam(':user', $user);
+	$stmt->bindParam(':cit', $cit);
 
-		$rsid = $refsetid;
-		$ref = $reference;
-		$user = $userid;
-		$cit = $citation;
+	$rsid = $refsetid;
+	$ref = $reference;
+	$user = $userid;
+	$cit = $citation;
 
-		if ($stmt->execute()) {
+	if ($stmt->execute()) {
 
-			$dbh = null;
-			return TRUE;
-
-		}
+	    $dbh = null;
+	    return TRUE;
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
 
-	}
+	echo $e->getMessage();
+
+    }
 
 }
 
