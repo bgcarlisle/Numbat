@@ -1061,927 +1061,927 @@ function nbt_add_citation ( $citationsection, $refsetid, $reference, $userid, $c
 
 function nbt_get_citations ( $citations, $refsetid, $reference, $userid, $orderbycitation = FALSE ) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
-		if ( $orderbycitation ) {
+	if ( $orderbycitation ) {
 
-			$stmt = $dbh->prepare("SELECT * FROM `citations_" . $citations . "` WHERE refsetid = :refset AND referenceid = :ref AND userid = :user ORDER by citationid;");
+	    $stmt = $dbh->prepare("SELECT * FROM `citations_" . $citations . "` WHERE refsetid = :refset AND referenceid = :ref AND userid = :user ORDER by citationid;");
 
-		} else {
+	} else {
 
-			$stmt = $dbh->prepare("SELECT * FROM `citations_" . $citations . "` WHERE refsetid = :refset AND referenceid = :ref AND userid = :user ORDER by id DESC;");
-
-		}
-
-		$stmt->bindParam(':refset', $rsid);
-		$stmt->bindParam(':ref', $ref);
-		$stmt->bindParam(':user', $user);
-
-		$rsid = $refsetid;
-		$ref = $reference;
-		$user = $userid;
-
-		$stmt->execute();
-
-		$result = $stmt->fetchAll();
-
-		$dbh = null;
-
-		return $result;
+	    $stmt = $dbh->prepare("SELECT * FROM `citations_" . $citations . "` WHERE refsetid = :refset AND referenceid = :ref AND userid = :user ORDER by id DESC;");
 
 	}
 
-	catch (PDOException $e) {
+	$stmt->bindParam(':refset', $rsid);
+	$stmt->bindParam(':ref', $ref);
+	$stmt->bindParam(':user', $user);
 
-		echo $e->getMessage();
+	$rsid = $refsetid;
+	$ref = $reference;
+	$user = $userid;
 
-	}
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	return $result;
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_copy_citation_to_master ( $elementid, $originalid ) {
 
-	$element = nbt_get_form_element_for_elementid ( $elementid );
+    $element = nbt_get_form_element_for_elementid ( $elementid );
 
-	$columns = nbt_get_all_columns_for_citation_selector ( $elementid );
+    $columns = nbt_get_all_columns_for_citation_selector ( $elementid );
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `citations_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
+
+	$stmt->bindParam(':id', $oid);
+
+	$oid = $originalid;
+
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    foreach ( $result as $row ) {
+
+	$cite = $row;
+
+    }
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("INSERT INTO `mcite_" . $element['columnname'] . "` (refsetid, referenceid, cite_no, citationid) VALUES (:refset, :refid, :cite, :citid);");
+
+	$stmt->bindParam(':refset', $rsid);
+	$stmt->bindParam(':refid', $rid);
+	$stmt->bindParam(':cite', $cit);
+	$stmt->bindParam(':citid', $cid);
+
+	$rsid = $cite['refsetid'];
+	$rid = $cite['referenceid'];
+	$cit = $cite['cite_no'];
+	$cid = $cite['citationid'];
+
+	if ( $stmt->execute() ) {
+
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+	    $stmt2->execute();
+
+	    $result = $stmt2->fetchAll();
+
+	    $dbh = null;
+
+	    foreach ( $result as $row ) {
+
+		$newid = $row['newid']; // This is the auto_increment-generated ID for the new compare
+
+	    }
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    foreach ( $columns as $column ) {
 
 	try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM `citations_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE `mcite_" . $element['columnname'] . "` SET `" . $column['dbname'] . "` = :newvalue WHERE `id` = :id;");
 
-		$stmt->bindParam(':id', $oid);
+	    $stmt->bindParam(':newvalue', $new);
+	    $stmt->bindParam(':id', $cid);
 
-		$oid = $originalid;
+	    $new = $cite[$column['dbname']];
+	    $cid = $newid;
 
-		$stmt->execute();
-
-		$result = $stmt->fetchAll();
+	    $stmt->execute();
 
 	}
 
 	catch (PDOException $e) {
 
-		echo $e->getMessage();
+	    echo $e->getMessage();
 
 	}
 
-	foreach ( $result as $row ) {
-
-		$cite = $row;
-
-	}
-
-	try {
-
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("INSERT INTO `mcite_" . $element['columnname'] . "` (refsetid, referenceid, cite_no, citationid) VALUES (:refset, :refid, :cite, :citid);");
-
-		$stmt->bindParam(':refset', $rsid);
-		$stmt->bindParam(':refid', $rid);
-		$stmt->bindParam(':cite', $cit);
-		$stmt->bindParam(':citid', $cid);
-
-		$rsid = $cite['refsetid'];
-		$rid = $cite['referenceid'];
-		$cit = $cite['cite_no'];
-		$cid = $cite['citationid'];
-
-		if ( $stmt->execute() ) {
-
-			$stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
-			$stmt2->execute();
-
-			$result = $stmt2->fetchAll();
-
-			$dbh = null;
-
-			foreach ( $result as $row ) {
-
-				$newid = $row['newid']; // This is the auto_increment-generated ID for the new compare
-
-			}
-
-		}
-
-	}
-
-	catch (PDOException $e) {
-
-		echo $e->getMessage();
-
-	}
-
-	foreach ( $columns as $column ) {
-
-		try {
-
-			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("UPDATE `mcite_" . $element['columnname'] . "` SET `" . $column['dbname'] . "` = :newvalue WHERE `id` = :id;");
-
-			$stmt->bindParam(':newvalue', $new);
-			$stmt->bindParam(':id', $cid);
-
-			$new = $cite[$column['dbname']];
-			$cid = $newid;
-
-			$stmt->execute();
-
-		}
-
-		catch (PDOException $e) {
-
-			echo $e->getMessage();
-
-		}
-
-	}
+    }
 
 }
 
 function nbt_get_master_citations ( $elementid, $refsetid, $reference, $orderbycitation = FALSE ) {
 
-	$element = nbt_get_form_element_for_elementid ( $elementid );
+    $element = nbt_get_form_element_for_elementid ( $elementid );
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
-		if ( $orderbycitation ) {
+	if ( $orderbycitation ) {
 
-			$stmt = $dbh->prepare("SELECT * FROM `mcite_" . $element['columnname'] . "` WHERE `refsetid` = :refset AND `referenceid` = :ref ORDER by `citationid`;");
+	    $stmt = $dbh->prepare("SELECT * FROM `mcite_" . $element['columnname'] . "` WHERE `refsetid` = :refset AND `referenceid` = :ref ORDER by `citationid`;");
 
-		} else {
+	} else {
 
-			$stmt = $dbh->prepare("SELECT * FROM `mcite_" . $element['columnname'] . "` WHERE `refsetid` = :refset AND `referenceid` = :ref ORDER by `id`;");
-
-		}
-
-
-
-		$stmt->bindParam(':refset', $rsid);
-		$stmt->bindParam(':ref', $ref);
-
-		$rsid = $refsetid;
-		$ref = $reference;
-
-		$stmt->execute();
-
-		$result = $stmt->fetchAll();
-
-		$dbh = null;
-
-		return $result;
+	    $stmt = $dbh->prepare("SELECT * FROM `mcite_" . $element['columnname'] . "` WHERE `refsetid` = :refset AND `referenceid` = :ref ORDER by `id`;");
 
 	}
 
-	catch (PDOException $e) {
 
-		echo $e->getMessage();
 
-	}
+	$stmt->bindParam(':refset', $rsid);
+	$stmt->bindParam(':ref', $ref);
+
+	$rsid = $refsetid;
+	$ref = $reference;
+
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	return $result;
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_remove_master_citation ( $section, $id ) {
 
-	$element = nbt_get_form_element_for_elementid ( $section );
+    $element = nbt_get_form_element_for_elementid ( $section );
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("DELETE FROM `mcite_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("DELETE FROM `mcite_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
 
-		$stmt->bindParam(':id', $cid);
+	$stmt->bindParam(':id', $cid);
 
-		$cid = $id;
+	$cid = $id;
 
-		if ($stmt->execute()) {
+	if ($stmt->execute()) {
 
-			$dbh = null;
+	    $dbh = null;
 
-			return TRUE;
-
-		}
+	    return TRUE;
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
 
-	}
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_remove_citation ( $section, $citation ) {
 
-	$element = nbt_get_form_element_for_elementid ( $section );
+    $element = nbt_get_form_element_for_elementid ( $section );
 
-	echo $citation . " : ";
+    echo $citation . " : ";
 
-	echo "DELETE FROM `citations_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;";
+    echo "DELETE FROM `citations_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;";
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("DELETE FROM `citations_" . $element['columnname'] . "` WHERE `id` = :id LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("DELETE FROM `citations_" . $element['columnname'] . "` WHERE `id` = :id LIMIT 1;");
 
-		$stmt->bindParam(':id', $cid);
+	$stmt->bindParam(':id', $cid);
 
-		$cid = $citation;
+	$cid = $citation;
 
-		if ($stmt->execute()) {
+	if ($stmt->execute()) {
 
-			$dbh = null;
+	    $dbh = null;
 
-			return TRUE;
-
-		}
+	    return TRUE;
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
 
-	}
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_toggle_uncited_question ( $uncitedid, $question ) {
 
-//	echo "ID: " . $uncitedid . " question: " . $question;
+    //	echo "ID: " . $uncitedid . " question: " . $question;
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM uncited WHERE id = :id LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM uncited WHERE id = :id LIMIT 1;");
 
-//		$stmt->bindParam(':question', $ques);
-		$stmt->bindParam(':id', $unc);
+	//		$stmt->bindParam(':question', $ques);
+	$stmt->bindParam(':id', $unc);
 
-		$unc = $uncitedid;
+	$unc = $uncitedid;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ( $result as $row ) {
+	foreach ( $result as $row ) {
 
-			$oldanswer = $row[$question];
-
-		}
+	    $oldanswer = $row[$question];
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
 
+	echo $e->getMessage();
+
+    }
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE uncited SET " . $question . " = :value WHERE id = :id LIMIT 1;");
+
+	$stmt->bindParam(':value', $val2);
+	$stmt->bindParam(':id', $unc2);
+
+	$unc2 = $uncitedid;
+
+	if ( $oldanswer == 0 ) {
+	    $val2 = 1;
+	} else {
+	    $val2 = 0;
 	}
 
-	try {
+	$stmt->execute();
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("UPDATE uncited SET " . $question . " = :value WHERE id = :id LIMIT 1;");
+	$dbh = null;
 
-		$stmt->bindParam(':value', $val2);
-		$stmt->bindParam(':id', $unc2);
+    }
 
-		$unc2 = $uncitedid;
+    catch (PDOException $e) {
 
-		if ( $oldanswer == 0 ) {
-			$val2 = 1;
-		} else {
-			$val2 = 0;
-		}
+	echo $e->getMessage();
 
-		$stmt->execute();
-
-		$dbh = null;
-
-	}
-
-	catch (PDOException $e) {
-
-		echo $e->getMessage();
-
-	}
+    }
 
 }
 
 function nbt_toggle_discussion_citation_question ( $citationid, $discussioncitationquestion ) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM citations WHERE id = :citationid LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM citations WHERE id = :citationid LIMIT 1;");
 
-//		$stmt->bindParam(':question', $ques);
-		$stmt->bindParam(':citationid', $cite);
+	//		$stmt->bindParam(':question', $ques);
+	$stmt->bindParam(':citationid', $cite);
 
-		$cite = $citationid;
-		$ques = $discussioncitationquestion;
+	$cite = $citationid;
+	$ques = $discussioncitationquestion;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ( $result as $row ) {
+	foreach ( $result as $row ) {
 
-			$oldanswer = $row[$discussioncitationquestion];
-
-		}
+	    $oldanswer = $row[$discussioncitationquestion];
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
 
+	echo $e->getMessage();
+
+    }
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE citations SET " . $discussioncitationquestion . " = :value WHERE id = :citationid LIMIT 1;");
+
+	$stmt->bindParam(':value', $val2);
+	$stmt->bindParam(':citationid', $cite2);
+
+	$cite2 = $citationid;
+
+	if ( $oldanswer == 0 ) {
+	    $val2 = 1;
+	} else {
+	    $val2 = 0;
 	}
 
-	try {
+	$ques2 = $discussioncitationquestion;
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("UPDATE citations SET " . $discussioncitationquestion . " = :value WHERE id = :citationid LIMIT 1;");
+	$stmt->execute();
 
-		$stmt->bindParam(':value', $val2);
-		$stmt->bindParam(':citationid', $cite2);
+	$dbh = null;
 
-		$cite2 = $citationid;
+    }
 
-		if ( $oldanswer == 0 ) {
-			$val2 = 1;
-		} else {
-			$val2 = 0;
-		}
+    catch (PDOException $e) {
 
-		$ques2 = $discussioncitationquestion;
+	echo $e->getMessage();
 
-		$stmt->execute();
-
-		$dbh = null;
-
-	}
-
-	catch (PDOException $e) {
-
-		echo $e->getMessage();
-
-	}
+    }
 
 }
 
 function nbt_update_extraction ( $fid, $id, $column, $value ) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("UPDATE `extractions_" . $fid . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `extractions_" . $fid . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
 
-		$stmt->bindParam(':id', $rid);
-		$stmt->bindParam(':value', $val);
+	$stmt->bindParam(':id', $rid);
+	$stmt->bindParam(':value', $val);
 
-		$rid = $id;
-		$val = $value;
+	$rid = $id;
+	$val = $value;
 
-		if ( $stmt->execute() ) {
+	if ( $stmt->execute() ) {
 
-			$dbh = null;
+	    $dbh = null;
 
-			return TRUE;
+	    return TRUE;
 
-		} else {
+	} else {
 
-			$dbh = null;
+	    $dbh = null;
 
-			return FALSE;
-
-		}
-
+	    return FALSE;
 
 	}
 
-	catch (PDOException $e) {
 
-		echo $e->getMessage();
+    }
 
-	}
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_update_sub_extraction ( $eid, $id, $column, $value ) {
 
-	$element = nbt_get_form_element_for_elementid ( $eid );
+    $element = nbt_get_form_element_for_elementid ( $eid );
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("UPDATE `sub_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `sub_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
 
-		$stmt->bindParam(':id', $subexid);
-		$stmt->bindParam(':value', $val);
+	$stmt->bindParam(':id', $subexid);
+	$stmt->bindParam(':value', $val);
 
-		$subexid = $id;
-		$val = $value;
+	$subexid = $id;
+	$val = $value;
 
-		if ( $stmt->execute() ) {
+	if ( $stmt->execute() ) {
 
-			$dbh = null;
+	    $dbh = null;
 
-			return TRUE;
+	    return TRUE;
 
-		} else {
+	} else {
 
-			$dbh = null;
+	    $dbh = null;
 
-			return FALSE;
-
-		}
-
+	    return FALSE;
 
 	}
 
-	catch (PDOException $e) {
 
-		echo $e->getMessage();
+    }
 
-	}
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_update_msub_extraction ( $eid, $id, $column, $value ) {
 
-	$element = nbt_get_form_element_for_elementid ( $eid );
+    $element = nbt_get_form_element_for_elementid ( $eid );
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("UPDATE `msub_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `msub_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
 
-		$stmt->bindParam(':id', $subexid);
-		$stmt->bindParam(':value', $val);
+	$stmt->bindParam(':id', $subexid);
+	$stmt->bindParam(':value', $val);
 
-		$subexid = $id;
-		$val = $value;
+	$subexid = $id;
+	$val = $value;
 
-		if ( $stmt->execute() ) {
+	if ( $stmt->execute() ) {
 
-			$dbh = null;
+	    $dbh = null;
 
-			return TRUE;
+	    return TRUE;
 
-		} else {
+	} else {
 
-			$dbh = null;
+	    $dbh = null;
 
-			return FALSE;
-
-		}
-
+	    return FALSE;
 
 	}
 
-	catch (PDOException $e) {
 
-		echo $e->getMessage();
+    }
 
-	}
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_update_extraction_arm ( $id, $column, $value ) {
 
-	$columns = array (
-		"route",
-		"combination"
-	);
+    $columns = array (
+	"route",
+	"combination"
+    );
 
-	if ( in_array ($column, $columns) ) {
+    if ( in_array ($column, $columns) ) {
 
-		try {
+	try {
 
-			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-			$stmt = $dbh->prepare("UPDATE arms SET " . $column . " = :value WHERE id = :id LIMIT 1;");
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE arms SET " . $column . " = :value WHERE id = :id LIMIT 1;");
 
-			$stmt->bindParam(':id', $rid);
-			$stmt->bindParam(':value', $val);
+	    $stmt->bindParam(':id', $rid);
+	    $stmt->bindParam(':value', $val);
 
-			$rid = $id;
-			$val = $value;
+	    $rid = $id;
+	    $val = $value;
 
-			if ( $stmt->execute() ) {
+	    if ( $stmt->execute() ) {
 
-				$dbh = null;
+		$dbh = null;
 
-				return TRUE;
+		return TRUE;
 
-			} else {
+	    } else {
 
-				$dbh = null;
+		$dbh = null;
 
-				return FALSE;
+		return FALSE;
 
-			}
+	    }
 
-
-		}
-
-		catch (PDOException $e) {
-
-			echo $e->getMessage();
-
-		}
 
 	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+
+    }
 
 }
 
 function nbt_toggle_extraction ( $formid, $id, $column ) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("SELECT * FROM `extractions_" . $formid . "` WHERE id = :id LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("SELECT * FROM `extractions_" . $formid . "` WHERE id = :id LIMIT 1;");
 
-		$stmt->bindParam(':id', $rid);
+	$stmt->bindParam(':id', $rid);
 
-		$rid = $id;
+	$rid = $id;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ( $result as $row ) {
+	foreach ( $result as $row ) {
 
-			$old_answer = $row[$column];
-
-		}
+	    $old_answer = $row[$column];
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("UPDATE `extractions_" . $formid . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
+
+	$stmt->bindParam(':id', $rid);
+	$stmt->bindParam(':value', $val);
+
+	$rid = $id;
+	if ( $old_answer == 0 ) {
+	    $val = 1;
+	} else {
+	    $val = 0;
+	}
+
+	if ( $stmt->execute() ) {
+
+	    $dbh = null;
+
+	    return TRUE;
+
+	} else {
+
+	    $dbh = null;
+
+	    return FALSE;
 
 	}
 
-	try {
+    }
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("UPDATE `extractions_" . $formid . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
+    catch (PDOException $e) {
 
-		$stmt->bindParam(':id', $rid);
-		$stmt->bindParam(':value', $val);
+	echo $e->getMessage();
 
-		$rid = $id;
-		if ( $old_answer == 0 ) {
-			$val = 1;
-		} else {
-			$val = 0;
-		}
-
-		if ( $stmt->execute() ) {
-
-			$dbh = null;
-
-			return TRUE;
-
-		} else {
-
-			$dbh = null;
-
-			return FALSE;
-
-		}
-
-	}
-
-	catch (PDOException $e) {
-
-		echo $e->getMessage();
-
-	}
+    }
 
 }
 
 function nbt_toggle_sub_extraction ( $elementid, $id, $column ) {
 
-	$element = nbt_get_form_element_for_elementid ( $elementid );
+    $element = nbt_get_form_element_for_elementid ( $elementid );
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
 
-		$stmt->bindParam(':id', $seid);
+	$stmt->bindParam(':id', $seid);
 
-		$seid = $id;
+	$seid = $id;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ( $result as $row ) {
+	foreach ( $result as $row ) {
 
-			$old_answer = $row[$column];
-
-		}
+	    $old_answer = $row[$column];
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("UPDATE `sub_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
+
+	$stmt->bindParam(':id', $seid);
+	$stmt->bindParam(':value', $val);
+
+	$seid = $id;
+	if ( $old_answer == 0 ) {
+	    $val = 1;
+	} else {
+	    $val = 0;
+	}
+
+	if ( $stmt->execute() ) {
+
+	    $dbh = null;
+
+	    return TRUE;
+
+	} else {
+
+	    $dbh = null;
+
+	    return FALSE;
 
 	}
 
-	try {
+    }
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("UPDATE `sub_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
+    catch (PDOException $e) {
 
-		$stmt->bindParam(':id', $seid);
-		$stmt->bindParam(':value', $val);
+	echo $e->getMessage();
 
-		$seid = $id;
-		if ( $old_answer == 0 ) {
-			$val = 1;
-		} else {
-			$val = 0;
-		}
-
-		if ( $stmt->execute() ) {
-
-			$dbh = null;
-
-			return TRUE;
-
-		} else {
-
-			$dbh = null;
-
-			return FALSE;
-
-		}
-
-	}
-
-	catch (PDOException $e) {
-
-		echo $e->getMessage();
-
-	}
+    }
 
 }
 
 function nbt_toggle_msub_extraction ( $elementid, $id, $column ) {
 
-	$element = nbt_get_form_element_for_elementid ( $elementid );
+    $element = nbt_get_form_element_for_elementid ( $elementid );
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("SELECT * FROM `msub_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("SELECT * FROM `msub_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
 
-		$stmt->bindParam(':id', $seid);
+	$stmt->bindParam(':id', $seid);
 
-		$seid = $id;
+	$seid = $id;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ( $result as $row ) {
+	foreach ( $result as $row ) {
 
-			$old_answer = $row[$column];
-
-		}
+	    $old_answer = $row[$column];
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("UPDATE `msub_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
+
+	$stmt->bindParam(':id', $seid);
+	$stmt->bindParam(':value', $val);
+
+	$seid = $id;
+	if ( $old_answer == 0 ) {
+	    $val = 1;
+	} else {
+	    $val = 0;
+	}
+
+	if ( $stmt->execute() ) {
+
+	    $dbh = null;
+
+	    return TRUE;
+
+	} else {
+
+	    $dbh = null;
+
+	    return FALSE;
 
 	}
 
-	try {
+    }
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("UPDATE `msub_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
+    catch (PDOException $e) {
 
-		$stmt->bindParam(':id', $seid);
-		$stmt->bindParam(':value', $val);
+	echo $e->getMessage();
 
-		$seid = $id;
-		if ( $old_answer == 0 ) {
-			$val = 1;
-		} else {
-			$val = 0;
-		}
-
-		if ( $stmt->execute() ) {
-
-			$dbh = null;
-
-			return TRUE;
-
-		} else {
-
-			$dbh = null;
-
-			return FALSE;
-
-		}
-
-	}
-
-	catch (PDOException $e) {
-
-		echo $e->getMessage();
-
-	}
+    }
 
 }
 
 function nbt_get_extraction ( $formid, $refsetid, $refid, $userid ) {
 
-	// Insert a row
-	// This will fail if there is already a row
-	// Hooray for unique MySQL indices
+    // Insert a row
+    // This will fail if there is already a row
+    // Hooray for unique MySQL indices
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("INSERT INTO extractions_" . $formid . " (refsetid, referenceid, userid) VALUES (:refset, :refid, :userid);");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("INSERT INTO extractions_" . $formid . " (refsetid, referenceid, userid) VALUES (:refset, :refid, :userid);");
 
-		$stmt->bindParam(':refset', $rsid);
-		$stmt->bindParam(':refid', $rid);
-		$stmt->bindParam(':userid', $uid);
+	$stmt->bindParam(':refset', $rsid);
+	$stmt->bindParam(':refid', $rid);
+	$stmt->bindParam(':userid', $uid);
 
-		$rsid = $refsetid;
-		$rid = $refid;
-		$uid = $userid;
+	$rsid = $refsetid;
+	$rid = $refid;
+	$uid = $userid;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$dbh = null;
+	$dbh = null;
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
-	// See if an extraction exists
+    // See if an extraction exists
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ("SELECT * FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `referenceid` = :refid AND `userid` = :userid LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("SELECT * FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `referenceid` = :refid AND `userid` = :userid LIMIT 1;");
 
-		$stmt->bindParam(':refset', $rsid);
-		$stmt->bindParam(':refid', $rid);
-		$stmt->bindParam(':userid', $uid);
+	$stmt->bindParam(':refset', $rsid);
+	$stmt->bindParam(':refid', $rid);
+	$stmt->bindParam(':userid', $uid);
 
-		$rsid = $refsetid;
-		$rid = $refid;
-		$uid = $userid;
+	$rsid = $refsetid;
+	$rid = $refid;
+	$uid = $userid;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		foreach ( $result as $row ) {
+	foreach ( $result as $row ) {
 
-			return $row;
-
-		}
+	    return $row;
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
 
-	}
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_get_uncited ( $drugid, $refid, $userid ) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SELECT * FROM uncited WHERE drugid = :drug AND referenceid = :ref AND userid = :user;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM uncited WHERE drugid = :drug AND referenceid = :ref AND userid = :user;");
 
-		$stmt->bindParam(':drug', $did);
-		$stmt->bindParam(':ref', $ref);
-		$stmt->bindParam(':user', $user);
+	$stmt->bindParam(':drug', $did);
+	$stmt->bindParam(':ref', $ref);
+	$stmt->bindParam(':user', $user);
 
-		$did = $drugid;
-		$ref = $refid;
-		$user = $userid;
+	$did = $drugid;
+	$ref = $refid;
+	$user = $userid;
 
-		$stmt->execute();
+	$stmt->execute();
 
-		$result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-		$dbh = null;
+	$dbh = null;
 
-		return $result;
+	return $result;
 
-	}
+    }
 
-	catch (PDOException $e) {
+    catch (PDOException $e) {
 
-		echo $e->getMessage();
+	echo $e->getMessage();
 
-	}
+    }
 
 }
 
 function nbt_add_uncited ( $drugid, $refid, $userid, $text ) {
 
-//	echo "drugid: " . $drugid . " refid: " . $refid . " userid: " . $userid . " text: " . $text;
+    //	echo "drugid: " . $drugid . " refid: " . $refid . " userid: " . $userid . " text: " . $text;
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare ('INSERT INTO uncited (drugid, referenceid, userid, text) VALUES (:drug, :ref, :user, :text)');
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ('INSERT INTO uncited (drugid, referenceid, userid, text) VALUES (:drug, :ref, :user, :text)');
 
-		$stmt->bindParam(':drug', $did);
-		$stmt->bindParam(':ref', $ref);
-		$stmt->bindParam(':user', $user);
-		$stmt->bindParam(':text', $tex);
+	$stmt->bindParam(':drug', $did);
+	$stmt->bindParam(':ref', $ref);
+	$stmt->bindParam(':user', $user);
+	$stmt->bindParam(':text', $tex);
 
-		$did = $drugid;
-		$ref = $refid;
-		$user = $userid;
-		$tex = $text;
+	$did = $drugid;
+	$ref = $refid;
+	$user = $userid;
+	$tex = $text;
 
-		if ($stmt->execute()) {
+	if ($stmt->execute()) {
 
-			$dbh = null;
-			return TRUE;
-
-		}
+	    $dbh = null;
+	    return TRUE;
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
 
-	}
+	echo $e->getMessage();
+
+    }
 
 }
 
 function nbt_remove_uncited ($uncid) {
 
-	try {
+    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("DELETE FROM uncited WHERE id = :id LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("DELETE FROM uncited WHERE id = :id LIMIT 1;");
 
-		$stmt->bindParam(':id', $uid);
+	$stmt->bindParam(':id', $uid);
 
-		$uid = $uncid;
+	$uid = $uncid;
 
-		if ($stmt->execute()) {
+	if ($stmt->execute()) {
 
-			$dbh = null;
+	    $dbh = null;
 
-			return TRUE;
-
-		}
+	    return TRUE;
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-		echo $e->getMessage();
+    catch (PDOException $e) {
 
-	}
+	echo $e->getMessage();
+
+    }
 }
 
 function nbt_echo_multi_select ($formid, $extraction, $question, $options, $toggles = NULL ) {
