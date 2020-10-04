@@ -66,7 +66,7 @@ $references = nbt_get_all_references_for_refset($refset['id']);
 
 	foreach ( $users as $user ) {
 
-	    if ( count ($forms) == 1 ) {
+	    if ( count ($users) == 1 ) {
 		echo '<option value="' . $user['id'] . '" selected>' . $user['username'] . '</option>';
 	    } else {
 		echo '<option value="' . $user['id'] . '">' . $user['username'] . '</option>';
