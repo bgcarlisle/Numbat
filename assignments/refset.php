@@ -40,8 +40,11 @@ $references = nbt_get_all_references_for_refset($refset['id']);
     <p>For the following form:</p>
 
     <select id="nbtAssignFormChooser">
-	<option value="ns">Choose a form</option>
 	<?php
+
+	if ( count ($forms) > 1 ) {
+	    echo '<option value="ns">Choose a form</option>';
+	}
 
 	foreach ( $forms as $form ) {
 
@@ -54,15 +57,21 @@ $references = nbt_get_all_references_for_refset($refset['id']);
 	    
 	}
 
+	if ( count ($forms) > 1 ) {
+	    echo '<option value="all">[All forms]</select>';
+	}
+
 	?>
-	<option value="all">[All forms]</select>
     </select>
 
     <p>For the following user:</p>
 
     <select id="nbtAssignUserChooser">
-	<option value="ns">Choose a user</option>
 	<?php
+
+	if ( count ($users) > 1 ) {
+	    echo '<option value="ns">Choose a user</option>';
+	}
 
 	foreach ( $users as $user ) {
 
@@ -75,8 +84,11 @@ $references = nbt_get_all_references_for_refset($refset['id']);
 	    
 	}
 
+	if ( count ($users) > 1 ) {
+	    echo '<option value="all">[All users]</select>';
+	}
+
 	?>
-	<option value="all">[All users]</select>
     </select>
 
     <p>Perform the following action:</p>
