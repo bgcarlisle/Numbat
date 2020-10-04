@@ -20,6 +20,15 @@ $allassignments = nbt_get_all_assignments_for_refset ( $_GET['refset'] );
 
 $references = nbt_get_all_references_for_refset($refset['id']);
 
+// Get extractions for each form
+$finished_extractions = [];
+foreach ($forms as $form) {
+    array_push(
+	$finished_extractions,
+	nbt_get_all_extractions_for_refset_and_form ($refset['id'], $form['id'])
+    );
+}
+
 ?><div class="nbtContentPanel nbtGreyGradient">
     <h2>Assignments for: <?php echo $refset['name']; ?> (<?php echo count($references); ?> references)</h2>
 
@@ -157,6 +166,22 @@ $references = nbt_get_all_references_for_refset($refset['id']);
 			echo '<span class="nbtAssignmentName nbtNotAssigned" id="nbtAssignment-' . $reference['id'] . '-' . $form['id'] . '-' . $user['id'] . '" onclick="nbtToggleAssignment(' . $user['id'] . ', ' . $form['id'] . ', ' . $refset['id'] . ', ' . $reference['id'] . ');">' . $user['username'] . ' <span class="nbtAssignCheck">&#x2713;</span><span class="nbtAssignCross">&#x2717;</span></span>';
 		    }
 		    
+		}
+
+		// The number of finished extractions
+
+		$n_finished = 0;
+
+		foreach ($finished_extractions as $fes) {
+		    foreach ($fes as $fe) {
+			if ($fe['formid'] == $form['id'] && $fe['referenceid'] == $reference['id']) {
+			    $n_finished++;
+			}
+		    }
+		}
+		
+		if ($n_finished > 0) {
+		    echo "<p>" . $n_finished . " finished extraction(s)</p>";
 		}
 		
 		echo "</td>";  

@@ -739,6 +739,30 @@ function nbt_get_all_extracted_references_for_refset_and_form ( $refsetid, $form
 
 }
 
+function nbt_get_all_extractions_for_refset_and_form ( $refsetid, $formid, $minstatus = 2 ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT *, " . $formid . " AS `formid` FROM `extractions_" . $formid . "`, `referenceset_" . $refsetid . "` WHERE `extractions_" . $formid . "`.`refsetid` = " . $refsetid . " AND `extractions_" . $formid . "`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND `extractions_" . $formid . "`.`status` >= " . $minstatus);
+
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	return $result;
+	
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+    }
+    
+}
+
 function nbt_get_extractions_for_refset_ref_and_form ( $refsetid, $refid, $formid, $minstatus = 2 ) {
 
     try {
