@@ -1961,43 +1961,47 @@ function nbt_echo_multi_select ($formid, $extraction, $question, $options, $togg
 
     foreach ( $options as $dbcolumn => $plaintext ) {
 
-?><a href="#" class="nbtTextOptionSelect <?php
+	echo '<a href="#" class="nbtTextOptionSelect ';
 
-					 echo "sig" . $question;
+	echo "sig" . $question;
+	
+	if ( $extraction[$question . "_" . $dbcolumn] == 1 ) {
 
-					 if ( $extraction[$question . "_" . $dbcolumn] == 1 ) {
-
-					 ?> nbtTextOptionChosen<?php
-
-							       }
-
-							       ?>" id="nbtMS<?php echo $question . "_" . $dbcolumn; ?>" onclick="event.preventDefault();nbtSaveMultiSelect(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $question . "_" . $dbcolumn; ?>', 'nbtMS<?php echo $question . "_" . $dbcolumn; ?>');"  conditionalid="<?php echo $toggles[$dbcolumn]; ?>"><?php echo $plaintext; ?></a><?php
-
-																																																			 }
-
-																																																			 }
-
-function nbt_echo_subextraction_multi_select ($elementid, $subextraction, $question, $options, $toggles = NULL ) {
-
-	// $options must be an array of the names of the column in the db
-
-	foreach ( $options as $dbcolumn => $plaintext ) {
-
-		?><a href="#" class="nbtTextOptionSelect <?php
-
-			echo "nbt" . $question;
-
-			echo " nbtSub" . $subextraction['id'] . "-" . $question;
-
-			if ( $subextraction[$question . "_" . $dbcolumn] == 1 ) {
-
-				?> nbtTextOptionChosen<?php
-
-			}
-
-		?>" id="nbtSub<?php echo $elementid ?>-<?php echo $subextraction['id']; ?>MS<?php echo $dbcolumn; ?>" onclick="event.preventDefault();nbtSaveSubExtractionMultiSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question . "_" . $dbcolumn; ?>', 'nbtSub<?php echo $elementid ?>-<?php echo $subextraction['id']; ?>MS<?php echo $dbcolumn; ?>');"  conditionalid="<?php echo $toggles[$dbcolumn]; ?>_sub<?php echo $subextraction['id']; ?>"><?php echo $plaintext; ?></a><?php
+	    echo ' nbtTextOptionChosen';
 
 	}
+
+	echo '" id="nbtMS';
+
+	echo $question . "_" . $dbcolumn;
+
+	echo '" onclick="event.preventDefault();nbtSaveMultiSelect(';
+
+	echo $formid;
+
+	echo ', ';
+
+	echo $extraction['id'];
+
+	echo ", '";
+
+	echo $question . "_" . $dbcolumn;
+
+	echo "', 'nbtMS";
+
+	echo $question . "_" . $dbcolumn;
+
+	echo '\');"  conditionalid="';
+
+	echo $toggles[$dbcolumn];
+
+	echo '">';
+
+	echo $plaintext;
+
+	echo "</a>";
+
+    }
 
 }
 
