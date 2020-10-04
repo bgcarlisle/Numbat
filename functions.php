@@ -10462,6 +10462,92 @@ function nbtDeleteAssignment ( $assignmentid ) {
 
 }
 
+function nbtAssign ( $user, $form, $refset, $refids ) {	
+	      
+	      $rids = explode(",", $refids);
+
+	      $query = "";
+
+	      if ( $form == "all" && $user == "all" ) {
+		  $forms = nbt_get_all_extraction_forms ();
+		  $users = nbt_get_all_users ();
+
+		  foreach ($forms as $fo) {
+		      foreach ($users as $us) {
+			  foreach ($rids as $rid) {
+			      $query .= "INSERT IGNORE INTO `assignments` (userid, assignerid, formid, refsetid, referenceid) VALUES (" . $us['id'] . ", :assigner, " . $fo['id'] . ", :refset, " . $rid . "); ";
+			  }
+		      }
+		  }
+		  
+	      } else {
+
+		  if ( $form == "all" ) {
+
+		      $forms = nbt_get_all_extraction_forms ();
+
+		      foreach ($forms as $fo) {
+			  foreach ($rids as $rid) {
+			      $query .= "INSERT IGNORE INTO `assignments` (userid, assignerid, formid, refsetid, referenceid) VALUES (:user, :assigner, " . $fo['id'] . ", :refset, " . $rid . "); ";
+			  }
+		      }
+		      
+		  } else {
+		      if ( $user == "all" ) {
+
+			  $users = nbt_get_all_users ();
+
+			  foreach ($users as $us) {
+			      foreach ($rids as $rid) {
+				  $query .= "INSERT IGNORE INTO `assignments` (userid, assignerid, formid, refsetid, referenceid) VALUES (" . $us['id'] . ", :assigner, :form, :refset, " . $rid . "); ";
+			      }
+			  }
+			  
+		      } else {
+
+			  foreach ( $rids as $rid ) {
+			      $query .= "INSERT IGNORE INTO `assignments` (userid, assignerid, formid, refsetid, referenceid) VALUES (:user, :assigner, :form, :refset, " . $rid . "); ";
+			  }
+			  
+		      }
+		  }
+	      }
+	      
+	      try {
+		  $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		  $stmt = $dbh->prepare($query);
+		  
+		  $stmt->bindParam(':assigner', $aid);
+		  $stmt->bindParam(':refset', $rsid);
+
+		  if ( $user != "all" ) {
+		      $stmt->bindParam(':user', $uid);
+		  }
+
+		  if ( $form != "all" ) {
+		      $stmt->bindParam(':form', $fid);
+		  }
+		  
+		  $uid = $user;
+		  $aid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
+		  $fid = $form;
+		  $rsid = $refset;
+
+		  if ($stmt->execute()) {
+		      $dbh = null;
+		      return TRUE;
+		  } else {
+		      return FALSE;
+		  }
+		  
+	      }
+
+	      catch (PDOException $e) {
+		  echo $e->getMessage();
+	      }
+	      
+	      
+	      }
 function nbt_echo_display_name_and_codebook ( $displayname, $codebook ) {
 
 	?><p style="font-weight: 800;"><?php echo $displayname; ?><?php
