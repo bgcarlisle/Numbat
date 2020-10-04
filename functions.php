@@ -586,35 +586,6 @@ function nbt_log_user_out () {
 
 }
 
-function nbt_get_drugs_that_the_current_user_has_access_to () {
-
-    try {
-
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM permissions WHERE userid = :userid AND permission > 0;");
-
-	$stmt->bindParam(':userid', $user);
-
-	$user = $_SESSION[INSTALL_HASH . '_nbt_userid'];
-
-	$stmt->execute();
-
-	$result = $stmt->fetchAll();
-
-	$dbh = null;
-
-	return $result;
-
-    }
-
-    catch (PDOException $e) {
-
-	echo $e->getMessage();
-
-    }
-
-}
-
 function nbt_get_name_for_refsetid ( $drugid ) {
 
     try {
