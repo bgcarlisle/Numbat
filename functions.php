@@ -10548,6 +10548,88 @@ function nbtAssign ( $user, $form, $refset, $refids ) {
 	      
 	      
 	      }
+
+function nbtUnAssign ( $user, $form, $refset, $refids ) {
+
+	      $rids = explode(",", $refids);
+
+	      $query = "";
+
+	      if ( $form == "all" && $user == "all" ) {
+		  $forms = nbt_get_all_extraction_forms ();
+		  $users = nbt_get_all_users ();
+
+		  foreach ($forms as $fo) {
+		      foreach ($users as $us) {
+			  foreach ($rids as $rid) {
+			      $query .= "DELETE FROM `assignments` WHERE userid = " . $us['id'] . " AND formid = " . $fo['id'] . " AND refsetid = :refset AND referenceid = " . $rid . " LIMIT 1; ";
+			  }
+		      }
+		  }
+	      } else {
+
+		  if ($form == "all") {
+
+		      $forms = nbt_get_all_extraction_forms ();
+
+		      foreach ($forms as $fo) {
+			  foreach ($rids as $rid) {
+			      $query .= "DELETE FROM `assignments` WHERE userid = :user AND formid = " . $fo['id'] . " AND refsetid = :refset AND referenceid = " . $rid . " LIMIT 1; ";
+			  }
+		      }
+		  } else {
+		      if ($user == "all") {
+
+			  $users = nbt_get_all_users ();
+
+			  foreach ($users as $us) {
+			      foreach ($rids as $rid) {
+				  $query .= "DELETE FROM `assignments` WHERE userid = " . $us['id'] . " AND formid = :form AND refsetid = :refset AND referenceid = " . $rid . " LIMIT 1; ";
+			      }
+			  }
+		      } else {
+
+			  foreach ($rids as $rid) {
+			      $query .= "DELETE FROM `assignments` WHERE userid = :user AND formid = :form AND refsetid = :refset AND referenceid = " . $rid . " LIMIT 1; ";
+			  }
+		      }
+		  }
+		      
+	      }
+
+	      try {
+		  $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		  $stmt = $dbh->prepare($query);
+
+		  $stmt->bindParam(':refset', $rsid);
+
+		  if ($user != "all") {
+		      $stmt->bindParam(':user', $uid);
+		  }
+
+		  if ($form != "all") {
+		      $stmt->bindParam(':form', $fid);
+		  }
+
+		  $uid = $user;
+		  $aid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
+		  $fid = $form;
+		  $rsid = $refset;
+
+		  if ($stmt->execute()) {
+		      $dbh = null;
+		      return TRUE;
+		  } else {
+		      return FALSE;
+		  }
+	      }
+
+	      catch (PDOException $e) {
+		  echo $e->getMessage();
+	      }
+
+	      }
+	      
 function nbt_echo_display_name_and_codebook ( $displayname, $codebook ) {
 
 	?><p style="font-weight: 800;"><?php echo $displayname; ?><?php

@@ -2581,6 +2581,92 @@
      }
 
  }
+
+ function nbtRemoveAssign () {
+
+     if (
+	 $('input.nbtAssignSelect:checked').length > 0 &&
+	 $('#nbtAssignFormChooser').val() != 'ns' &&
+	 $('#nbtAssignUserChooser').val() != 'ns'
+     ) {
+	 rsid = $('#nbtRefSetID').val();
+
+	 refs = [];
+	 $('input.nbtAssignSelect:checked').each(function() {
+	     refs.push($(this).val());
+	 });
+	 rids = refs.join(',');
+
+	 fid = $('#nbtAssignFormChooser').val();
+
+	 uid = $('#nbtAssignUserChooser').val();
+
+	 $.ajax ({
+	     url: numbaturl + 'assignments/unassign.php',
+	     type: 'post',
+	     data: {
+		 userid: uid,
+		 formid: fid,
+		 refset: rsid,
+		 refids: rids
+	     },
+	     dataType: 'html'
+	 }).done(function (response) {
+	     if (response == "SUCCESS") {
+
+		 if (fid == "all" && uid == "all") {
+		     forms = $('#nbtAllFormIDs').val().split(',');
+		     users = $('#nbtAllUserIDs').val().split(',');
+
+		     forms.forEach(function (form) {
+			 users.forEach(function (user) {
+			     refs.forEach(function (ref) {
+				 $('#nbtAssignment-' + ref + '-' + form + '-' + user).addClass('nbtNotAssigned').removeClass('nbtAssigned');
+			     });
+			 });
+		     });
+		     
+		 } else {
+		     if (fid == "all") {
+			 forms = $('#nbtAllFormIDs').val().split(',');
+
+			 forms.forEach(function (form) {
+			     refs.forEach(function (ref) {
+				 $('#nbtAssignment-' + ref + '-' + form + '-' + uid).addClass('nbtNotAssigned').removeClass('nbtAssigned');
+			     });
+			 });
+		     } else {
+			 if (uid == "all") {
+			     users = $('#nbtAllUserIDs').val().split(',');
+
+			     users.forEach(function (user) {
+				 refs.forEach(function (ref) {
+				     $('#nbtAssignment-' + ref + '-' + fid + '-' + user).addClass('nbtNotAssigned').removeClass('nbtAssigned');
+				 });
+
+			     });
+			     
+			 } else {
+
+			     refs.forEach(function (ref) {
+				 $('#nbtAssignment-' + ref + '-' + fid + '-' + uid).addClass('nbtNotAssigned').removeClass('nbtAssigned');
+			     });
+			     
+			 }
+		     }
+		 }
+	     }
+
+	 });
+	 
+     } else {
+
+	 alert ('Please make sure you have selected a form, a user and at least one reference.');
+	 
+     }
+     
+ }
+
  function nbtAddAssignment ( uid, fid, rsid, rid ) {
 
      $.ajax ({
