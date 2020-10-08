@@ -59,7 +59,23 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 					}
 
-					$columns = explode ("\t", $lines[0]);
+							  $original_columns = explode ("\t", $lines[0]);
+
+							  $columns = [];
+							  
+							  foreach ( $original_columns as $column ) {
+							      $column = str_replace(" ", "_", $column);
+							      
+							      $column = preg_replace('/[^A-Za-z0-9 ]/', "_", $column);
+
+							      $column = preg_replace('/^(_)+/', '', $column);
+
+							      $column = preg_replace('/(_)+$/', '', $column);
+
+							      $column = strtolower($column);
+
+							      array_push($columns, $column);
+							  }
 
 					unset ($lines[0]);
 
