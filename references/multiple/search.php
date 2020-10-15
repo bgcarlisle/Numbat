@@ -215,7 +215,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
                                           <button onclick="nbtMultipleMoveExtractions(<?php echo $_POST['refset']; ?>, <?php echo $suggestion['id']; ?>);">Move</button>
                                     </td>
                                     <td>
-                                          <p>Move master copies to:</p>
+                                          <p>Move final copies to:</p>
                                           <select id="nbtMultiMoveMasterChooser<?php echo $suggestion['id']; ?>">
                                                 <option>Choose a reference id</option>
                                                 <?php
@@ -258,7 +258,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
                         </table>
 
                         <button id="nbtDeleteMultipleRefDelete<?php echo $suggestion['id']; ?>" onclick="$(this).fadeOut(0);$('#nbtDeleteMultipleRefWarning<?php echo $suggestion['id']; ?>').fadeIn();$('#nbtDeleteMultipleRefConfirm<?php echo $suggestion['id']; ?>').fadeIn();$('#nbtDeleteMultipleRefCancel<?php echo $suggestion['id']; ?>').fadeIn();">Delete this reference</button>
-                        <p class="nbtHidden" id="nbtDeleteMultipleRefWarning<?php echo $suggestion['id']; ?>">WARNING: You can't undo this. Make sure that you've moved all the assignments, extractions, master copies and citations to another equivalent reference.</p>
+                        <p class="nbtHidden" id="nbtDeleteMultipleRefWarning<?php echo $suggestion['id']; ?>">WARNING: You can't undo this. Make sure that you've moved all the assignments, extractions, final copies and citations to another equivalent reference.</p>
                         <button class="nbtHidden" id="nbtDeleteMultipleRefConfirm<?php echo $suggestion['id']; ?>" onclick="nbtDeleteMultipleRef(<?php echo $_POST['refset']; ?>, <?php echo $suggestion['id']; ?>);">Delete for real</button>
                         <button class="nbtHidden" id="nbtDeleteMultipleRefCancel<?php echo $suggestion['id']; ?>" onclick="$(this).fadeOut(0);$('#nbtDeleteMultipleRefWarning<?php echo $suggestion['id']; ?>').fadeOut(0);$('#nbtDeleteMultipleRefConfirm<?php echo $suggestion['id']; ?>').fadeOut(0);$('#nbtDeleteMultipleRefDelete<?php echo $suggestion['id']; ?>').fadeIn();">Cancel</button>
                   </div><?php
