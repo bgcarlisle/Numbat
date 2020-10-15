@@ -21,7 +21,12 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 		    include ( ABS_PATH . "forms/editform.php" );
 
 		    break;
-		    
+
+		case "export":
+
+		    include ( ABS_PATH . "forms/exportcodebook.php" );
+
+		    break;
 	    }
 
 	}
@@ -45,6 +50,9 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 }
 
-include ( ABS_PATH . "footer.php" );
+if ( $_GET['action'] != "export" ) {
+    include ( ABS_PATH . "footer.php" );
+}
+
 
 ?>
