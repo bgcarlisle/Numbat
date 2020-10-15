@@ -22,9 +22,6 @@
 		}
 
 		?>
-		<tr>
-			<td colspan="2"><button onclick="window.open('<?php echo SITE_URL; ?>assignments/?action=new','_self');">Add new assignments</button></td>
-		</tr>
 	</table>
 
 	<div class="nbtHidden nbtFeedbackGood nbtFeedback nbtFinePrint" id="nbtPrivilegeFeedback">&nbsp;</div>
