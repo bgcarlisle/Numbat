@@ -156,14 +156,14 @@ foreach ($forms as $form) {
 			    $assign['formid'] == $form['id'] &
 			    $assign['username'] == $user['username']
 			) {
-			    echo '<span class="nbtAssignmentName nbtAssigned" id="nbtAssignment-' . $reference['id'] . '-' . $form['id'] . '-' . $user['id'] . '" onclick="nbtToggleAssignment(' . $user['id'] . ', ' . $form['id'] . ', ' . $refset['id'] . ', ' . $reference['id'] . ');">' . $user['username'] . ' <span class="nbtAssignCheck">&#x2713;</span><span class="nbtAssignCross">&#x2717;</span></span>';
+			    echo '<span class="nbtAssignmentName nbtAssigned" id="nbtAssignment-' . $reference['id'] . '-' . $form['id'] . '-' . $user['id'] . '" onclick="nbtToggleAssignment(' . $user['id'] . ', ' . $form['id'] . ', ' . $refset['id'] . ', ' . $reference['id'] . ');">' . $user['username'] . '&nbsp;<span class="nbtAssignCheck">&#x2713;</span><span class="nbtAssignCross">&#x2717;</span></span> ';
 			    $assignmentfound = TRUE;
 			}
 			
 		    }
 
 		    if ( ! $assignmentfound ) {
-			echo '<span class="nbtAssignmentName nbtNotAssigned" id="nbtAssignment-' . $reference['id'] . '-' . $form['id'] . '-' . $user['id'] . '" onclick="nbtToggleAssignment(' . $user['id'] . ', ' . $form['id'] . ', ' . $refset['id'] . ', ' . $reference['id'] . ');">' . $user['username'] . ' <span class="nbtAssignCheck">&#x2713;</span><span class="nbtAssignCross">&#x2717;</span></span>';
+			echo '<span class="nbtAssignmentName nbtNotAssigned" id="nbtAssignment-' . $reference['id'] . '-' . $form['id'] . '-' . $user['id'] . '" onclick="nbtToggleAssignment(' . $user['id'] . ', ' . $form['id'] . ', ' . $refset['id'] . ', ' . $reference['id'] . ');">' . $user['username'] . '&nbsp;<span class="nbtAssignCheck">&#x2713;</span><span class="nbtAssignCross">&#x2717;</span></span> ';
 		    }
 		    
 		}

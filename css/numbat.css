@@ -423,7 +423,6 @@ span.nbtAssignmentName {
     border-radius: 3px;
     border: none;
     margin: 0 2px 0 2px;
-    white-space: nowrap;
 }
 span.nbtAssigned {
     background: #ccffcc;
