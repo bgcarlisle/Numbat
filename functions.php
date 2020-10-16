@@ -998,7 +998,7 @@ function nbt_return_references_for_assignment_search ( $refsetid, $query ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='" . DB_NAME . "' AND `TABLE_NAME`='referenceset_" . $refsetid . "'");
+	$stmt = $dbh->prepare("SHOW columns FROM referenceset_" . $refsetid);
 
 	$stmt->execute();
 
@@ -1014,8 +1014,8 @@ function nbt_return_references_for_assignment_search ( $refsetid, $query ) {
 
     }
 
-    $titlecol = $columns[$refset['title']];
-    $authorscol = $columns[$refset['authors']];
+    $titlecol = $columns[$refset['title']][0];
+    $authorscol = $columns[$refset['authors']][0];
 
     try {
 
