@@ -956,6 +956,13 @@ function nbt_get_reference_for_refsetid_and_refid ( $refsetid, $refid ) {
 
 function nbt_return_references_for_refset_and_query ( $citationsid, $refsetid, $refid, $query ) {
 
+    $columns = nbt_get_columns_for_refset ( $refsetid );
+
+    $refset = nbt_get_refset_for_id ( $refsetid );
+
+    $titlecol = $columns[$refset['title']][0];
+    $authorscol = $columns[$refset['authors']][0];
+
     $altquery = str_replace ("- ", "%", $query);
 
     $element = nbt_get_form_element_for_elementid ( $citationsid );
@@ -963,7 +970,7 @@ function nbt_return_references_for_refset_and_query ( $citationsid, $refsetid, $
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `title` LIKE :query OR `title` LIKE :altquery OR `authors` LIKE :query LIMIT 6;");
+	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `" . $titlecol . "` LIKE :query OR `" . $titlecol . "` LIKE :altquery OR `" . $authorscol . "` LIKE :query LIMIT 6;");
 
 	$stmt->bindParam(':query', $quer);
 	$stmt->bindParam(':altquery', $altquer);
