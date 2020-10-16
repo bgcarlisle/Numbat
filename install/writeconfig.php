@@ -141,7 +141,7 @@ catch (PDOException $e) {
 try { // reference sets table
 
 	$dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("DROP TABLE IF EXISTS `referencesets`; CREATE TABLE `referencesets` ( `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(200) NOT NULL DEFAULT '', PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+	$stmt = $dbh->prepare("DROP TABLE IF EXISTS `referencesets`; CREATE TABLE `referencesets` ( `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(200) NOT NULL DEFAULT '', `title` int(11) DEFAULT NULL, `authors` int(11) DEFAULT NULL, `year` int(11) DEFAULT NULL, `journal` int(11) DEFAULT NULL, `abstract` int(11) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ( $stmt->execute() ) {
 
