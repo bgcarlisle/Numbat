@@ -30,7 +30,7 @@ foreach ( $elements as $element ) {
 
 	    echo "Variable type: Open text field\n\n";
 
-	    echo "Database column name: " . $element['columnname'] . "\n\n";
+	    echo "Database column name: `" . $element['columnname'] . "`\n\n";
 
 	    break;
 
@@ -40,7 +40,7 @@ foreach ( $elements as $element ) {
 
 	    echo "Variable type: Text area\n\n";
 
-	    echo "Database column name: " . $element['columnname'] . "\n\n";
+	    echo "Database column name: `" . $element['columnname'] . "`\n\n";
 	    
 	    break;
 
@@ -50,7 +50,7 @@ foreach ( $elements as $element ) {
 
 	    echo "Variable type: Categorical (single selection only)\n\n";
 
-	    echo "Database column name: " . $element['columnname'] . "\n\n";
+	    echo "Database column name: `" . $element['columnname'] . "`\n\n";
 
 	    echo "Extractors were prompted to select one of the following mutually exclusive options.\n\n";
 
@@ -73,7 +73,7 @@ foreach ( $elements as $element ) {
 
 	    echo "Variable type: Categorical (multiple selection allowed)\n\n";
 
-	    echo "Database column prefix: " . $element['columnname'] . "\n\n";
+	    echo "Database column prefix: `" . $element['columnname'] . "`\n\n";
 
 	    echo "Extractors were prompted to select one or more of the following options.\n\n";
 
@@ -146,7 +146,7 @@ foreach ( $elements as $element ) {
 
 	    echo "Variable type: Country selector\n\n";
 
-	    echo "Database column name: " . $element['columnname'] . "\n\n";
+	    echo "Database column name: `" . $element['columnname'] . "`\n\n";
 
 	    echo "Extractors were prompted to select a country from the following list.\n\n";
 
@@ -168,7 +168,7 @@ foreach ( $elements as $element ) {
 
 	    echo "Variable type: Date\n\n";
 
-	    echo "Database column name: " . $element['columnname'] . "\n\n";
+	    echo "Database column name: `" . $element['columnname'] . "`\n\n";
 
 	    echo "Extractors were prompted to enter a date.\n\n";
 
@@ -195,7 +195,7 @@ foreach ( $elements as $element ) {
 
 	    echo "Extractors were prompted with values for this field that have been chosen in previous extractions in order to ensure consistency.";
 
-	    echo "Database column name: " . $element['columnname'] . "\n\n";
+	    echo "Database column name: `" . $element['columnname'] . "`\n\n";
 	    
 	    break;
 
