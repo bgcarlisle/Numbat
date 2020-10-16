@@ -991,10 +991,36 @@ function nbt_return_references_for_refset_and_query ( $citationsid, $refsetid, $
 
 function nbt_return_references_for_assignment_search ( $refsetid, $query ) {
 
+    $refset = nbt_get_refset_for_id ( $refsetid );
+
+    // get column names
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE title LIKE :query OR authors LIKE :query LIMIT 6;");
+	$stmt = $dbh->prepare("SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='" . DB_NAME . "' AND `TABLE_NAME`='referenceset_" . $refsetid . "'");
+
+	$stmt->execute();
+
+	$columns = $stmt->fetchAll();
+
+	$dbh = null;
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    $titlecol = $columns[$refset['title']];
+    $authorscol = $columns[$refset['authors']];
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE " . $titlecol . " LIKE :query OR " . $authorscol . " LIKE :query LIMIT 6;");
 
 	$stmt->bindParam(':query', $quer);
 
