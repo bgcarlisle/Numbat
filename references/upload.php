@@ -201,11 +201,14 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 	
 	?>
-	<div style="margin-bottom: 20px; display: none;">
-	    <h3>Title</h3>
+	<h3>Choose columns for reference metadata</h3>
+	<div style="margin-bottom: 20px;">
+	    <p>Title</p>
 	    <select name="nbtTitleColumn">
 		<option>Choose a column</option>
 		<?php
+
+		$colcount = 0;
 
 		foreach ($columns as $column) {
 		    // rename the column headings
@@ -221,19 +224,23 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    $column = strtolower($column);
 
 		    if ( $column == "title" ) {
-			echo '<option selected>' . $column . '</option>';
+			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
 		    } else {
-			echo '<option>' . $column . '</option>';
+			echo '<option value="' . $colcount . '">' . $column . '</option>';
 		    }
+
+		    $colcount++;
 		}
 
 		?>
 	    </select>
 	    
-	    <h3>Authors</h3>
+	    <p>Authors</p>
 	    <select name="nbtAuthorsColumn">
 		<option>Choose a column</option>
 		<?php
+
+		$colcount = 0;
 
 		foreach ($columns as $column) {
 		    // rename the column headings
@@ -249,19 +256,23 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    $column = strtolower($column);
 
 		    if ( $column == "authors" ) {
-			echo '<option selected>' . $column . '</option>';
+			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
 		    } else {
-			echo '<option>' . $column . '</option>';
+			echo '<option value="' . $colcount . '">' . $column . '</option>';
 		    }
+
+		    $colcount++;
 		}
 
 		?>
 	    </select>
 	    
-	    <h3>Year</h3>
+	    <p>Year</p>
 	    <select name="nbtYearColumn">
 		<option>Choose a column</option>
 		<?php
+
+		$colcount = 0;
 
 		foreach ($columns as $column) {
 		    // rename the column headings
@@ -277,19 +288,23 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    $column = strtolower($column);
 
 		    if ( $column == "year" ) {
-			echo '<option selected>' . $column . '</option>';
+			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
 		    } else {
-			echo '<option>' . $column . '</option>';
+			echo '<option value="' . $colcount . '">' . $column . '</option>';
 		    }
+
+		    $colcount++;
 		}
 
 		?>
 	    </select>
 	    
-	    <h3>Year</h3>
+	    <p>Journal</p>
 	    <select name="nbtJournalColumn">
 		<option>Choose a column</option>
 		<?php
+
+		$colcount = 0;
 
 		foreach ($columns as $column) {
 		    // rename the column headings
@@ -305,19 +320,23 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    $column = strtolower($column);
 
 		    if ( $column == "journal" ) {
-			echo '<option selected>' . $column . '</option>';
+			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
 		    } else {
-			echo '<option>' . $column . '</option>';
+			echo '<option value="' . $colcount . '">' . $column . '</option>';
 		    }
+
+		    $colcount++;
 		}
 
 		?>
 	    </select>
 	    
-	    <h3>Year</h3>
+	    <p>Abstract</p>
 	    <select name="nbtAbstractColumn">
 		<option>Choose a column</option>
 		<?php
+
+		$colcount = 0;
 
 		foreach ($columns as $column) {
 		    // rename the column headings
@@ -333,10 +352,12 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    $column = strtolower($column);
 
 		    if ( $column == "abstract" ) {
-			echo '<option selected>' . $column . '</option>';
+			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
 		    } else {
-			echo '<option>' . $column . '</option>';
+			echo '<option value="' . $colcount . '">' . $column . '</option>';
 		    }
+
+		    $colcount++;
 		}
 
 		?>

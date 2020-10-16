@@ -81,7 +81,7 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 					// Make a new row in the referencesets table
 
-					$refsetid = nbt_make_new_refset_row ( $_POST['nbtNewRefSetName'] );
+					$refsetid = nbt_make_new_refset_row ( $_POST['nbtNewRefSetName'], $_POST['nbtTitleColumn'], $_POST['nbtAuthorsColumn'], $_POST['nbtYearColumn'], $_POST['nbtJournalColumn'], $_POST['nbtAbstractColumn'] );
 
 					// Make a new refset table
 

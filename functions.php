@@ -12762,16 +12762,27 @@ function nbt_echo_subextraction_multi_select ($elementid, $subextraction, $quest
 
 																																																																																																																																																																																								    }
 
-																																																																																																																																																																																								    function nbt_make_new_refset_row ( $newname ) { // Returns the id of the new refset
+																																																																																																																																																																																								    function nbt_make_new_refset_row ( $newname, $title, $authors, $year, $journal, $abstract ) { // Returns the id of the new refset
 
 																																																																																																																																																																																									try {
 
 																																																																																																																																																																																									    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-																																																																																																																																																																																									    $stmt = $dbh->prepare("INSERT INTO referencesets (name) VALUES (:name)");
+																																																																																																																																																																																									    $stmt = $dbh->prepare("INSERT INTO referencesets (name, title, authors, year, journal, abstract) VALUES (:name, :title, :authors, :year, :journal, :abstract)");
 
 																																																																																																																																																																																									    $stmt->bindParam(':name', $name);
 
+																																																																																																																																																																																									    $stmt->bindParam(':title', $ti);
+																																																																																																																																																																																									    $stmt->bindParam(':authors', $au);
+																																																																																																																																																																																									    $stmt->bindParam(':year', $ye);
+																																																																																																																																																																																									    $stmt->bindParam(':journal', $jo);
+																																																																																																																																																																																									    $stmt->bindParam(':abstract', $ab);
 																																																																																																																																																																																									    $name = $newname;
+																																																																																																																																																																																									    $ti = $title + 2; // Have to add 2 to each one, because two columns are added to each table by Numbat
+																																																																																																																																																																																									    $au = $authors + 2;
+				 																																																																																																																																																																																					    $ye = $year + 2;
+																																																																																																																																																																																									    $jo = $journal + 2;
+																																																																																																																																																																																									    $ab = $abstract + 2;
+																																																																																																																																																																																									    
 
 																																																																																																																																																																																									    $stmt->execute();
 
