@@ -53,4 +53,6 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 }
 
+include ( ABS_PATH . "footer.php" );
+
 ?>
