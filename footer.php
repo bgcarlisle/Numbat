@@ -4079,6 +4079,29 @@
 
  }
 
+ function nbtUpdateRefsetMetadata ( col, rsid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'references/update_metadata.php',
+	 type: 'post',
+	 data: {
+	     refsetid: rsid,
+	     column: col,
+	     newcolumn: $('#nbtMetadata-' + col).val()
+	 },
+	 dataType: 'html'
+     }).done ( function (response) {
+
+	 $('#nbtMetadataResponse-' + col).html(response).fadeIn(500, function () {
+	     setTimeout(function () {
+		 $('#nbtMetadataResponse-' + col).fadeOut();
+	     }, 1000);
+	 });
+	 
+     });
+     
+ }
+
 </script>
 </body>
 </html>

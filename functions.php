@@ -989,11 +989,7 @@ function nbt_return_references_for_refset_and_query ( $citationsid, $refsetid, $
 
 }
 
-function nbt_return_references_for_assignment_search ( $refsetid, $query ) {
-
-    $refset = nbt_get_refset_for_id ( $refsetid );
-
-    // get column names
+function nbt_get_columns_for_refset ( $refsetid ) {
 
     try {
 
@@ -1006,6 +1002,8 @@ function nbt_return_references_for_assignment_search ( $refsetid, $query ) {
 
 	$dbh = null;
 
+	return $columns;
+
     }
 
     catch (PDOException $e) {
@@ -1013,6 +1011,43 @@ function nbt_return_references_for_assignment_search ( $refsetid, $query ) {
 	echo $e->getMessage();
 
     }
+    
+}
+
+function nbt_update_refset_metadata ( $refset, $column, $newvalue ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `referencesets` SET `" . $column . "` = :newvalue WHERE `id` = :id;");
+
+	$stmt->bindParam(':newvalue', $new);
+	$stmt->bindParam(':id', $id);
+
+	$id = $refset;
+	$new = $newvalue;
+
+	if ($stmt->execute()) {
+	    return TRUE;
+	} else {
+	    return FALSE;
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
+function nbt_return_references_for_assignment_search ( $refsetid, $query ) {
+
+    $refset = nbt_get_refset_for_id ( $refsetid );
+
+    $columns = nbt_get_columns_for_refset ( $refsetid );
 
     $titlecol = $columns[$refset['title']][0];
     $authorscol = $columns[$refset['authors']][0];
