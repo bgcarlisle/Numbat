@@ -133,11 +133,11 @@ foreach ($forms as $form) {
 
 	    echo "</td><td>";
 	    
-	    echo "<h4>" . $reference['title'] . "</h4>";
+	    echo "<h4>" . $reference[$refset['title']] . "</h4>";
 
-	    echo "<p>" . $reference['authors'] . "</p>";
+	    echo "<p>" . $reference[$refset['authors']] . "</p>";
 
-	    echo "<p>" . $reference['journal'] . ": " . $reference['year'] ."</p>";
+	    echo "<p>" . $reference[$refset['journal']] . ": " . $reference[$refset['year']] ."</p>";
 
 	    echo "</td>";
 

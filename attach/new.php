@@ -11,13 +11,15 @@
 
             $ref = nbt_get_reference_for_refsetid_and_refid ( $_GET['refset'], $_GET['ref'] );
 
-            ?><h4><?php echo $ref['title']; ?>.</h4>
-            <p class="nbtFinePrint"><?php echo $ref['authors']; ?>.
+            $refset = nbt_get_refset_for_id ( $_GET['refset'] );
+											    
+            ?><h4><?php echo $ref[$refset['title']]; ?>.</h4>
+            <p class="nbtFinePrint"><?php echo $ref[$refset['authors']]; ?>.
             <?php
 
-            if ( $ref['journal'] != "" && $ref['year'] != "" ) {
+            if ( $ref[$refset['journal']] != "" && $ref[$refset['year']] != "" ) {
 
-                  ?><span class="nbtJournalName"><?php echo $ref['journal']; ?></span>: <?php echo $ref['year']; ?>.<?php
+                  ?><span class="nbtJournalName"><?php echo $ref[$refset['journal']]; ?></span>: <?php echo $ref[$refset['year']]; ?>.<?php
 
             }
 

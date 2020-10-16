@@ -4,6 +4,8 @@ include_once ("../config.php");
 
 $suggestions = nbt_return_references_for_assignment_search ( $_POST['refset'], $_POST['query'] );
 
+$refset = nbt_get_refset_for_id ($_POST['refset']);
+
 $counter = 0;
 
 foreach ( $suggestions as $suggestion ) {
@@ -11,13 +13,13 @@ foreach ( $suggestions as $suggestion ) {
 	if ( $counter < 5 ) {
 
 		?><div>
-			<h4>[<?php echo $suggestion['id']; ?>] <?php echo $suggestion['title']; ?>.</h4>
-			<p><?php echo $suggestion['authors']; ?>.
+			<h4>[<?php echo $suggestion['id']; ?>] <?php echo $suggestion[$refset['title']]; ?>.</h4>
+			<p><?php echo $suggestion[$refset['authors']]; ?>.
 			<?php
 
-			if ( $suggestion['journal'] != "" && $suggestion['year'] != "" ) {
+			if ( $suggestion[$refset['journal']] != "" && $suggestion[$refset['year']] != "" ) {
 
-				?><span class="nbtJournalName"><?php echo $suggestion['journal']; ?></span>: <?php echo $suggestion['year']; ?>.<?php
+				?><span class="nbtJournalName"><?php echo $suggestion[$refset['journal']]; ?></span>: <?php echo $suggestion[$refset['year']]; ?>.<?php
 
 			}
 

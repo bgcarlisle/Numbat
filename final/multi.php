@@ -62,8 +62,8 @@ if ( count ( $refsets ) > 0 ) {
 
 								?>>
 								<td>
-									<h4><?php echo $extractedref['title']; ?></h4>
-									<p><?php echo $extractedref['authors']; ?>, <em><?php echo $extractedref['journal']; ?></em>: <?php echo $extractedref['year']; ?></p></td>
+									<h4><?php echo $extractedref[$refset['title']]; ?></h4>
+									<p><?php echo $extractedref[$refset['authors']]; ?>, <em><?php echo $extractedref[$refset['journal']]; ?></em>: <?php echo $extractedref[$refset['year']]; ?></p></td>
 								<td>
 									<?php
 

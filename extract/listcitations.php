@@ -6,6 +6,8 @@ $citations = nbt_get_citations ( $nbtListCitationsCitationDB, $nbtListCitationsR
 
 foreach ( $citations as $citation ) {
 
+        $refset = nbt_get_refset_for_id ($nbtListCitationsRefSetID);
+
 	$ref = nbt_get_reference_for_refsetid_and_refid ( $nbtListCitationsRefSetID, $citation['citationid'] );
 
 	?><div class="nbtGreyGradient nbtCitation nbtCitOrigRef<?php echo $nbtListCitationsCitationID; ?>-<?php echo $ref['id']; ?>" id="nbtCitation<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?>">
@@ -17,10 +19,10 @@ foreach ( $citations as $citation ) {
 			</span>
 		</p>
 		<span class="nbtCiteNo">#<input type="text" id="nbtCiteNo<?php echo $nbtListCitationsCitationID; ?>-<?php echo $citation['id']; ?>" value="<?php echo $citation['cite_no']; ?>" onblur="nbtUpdateCiteNo(<?php echo $nbtListCitationsCitationID; ?>, <?php echo $citation['id']; ?>);" class="nbtCiteNo"></span>
-		<h4><?php echo $ref['title']; ?>.</h4>
-		<p><?php echo $ref['authors']; ?>
-		<span class="nbtJournalName"><?php echo $ref['journal']; ?></span>:
-		<?php echo $ref['year']; ?>.</p>
+		<h4><?php echo $ref[$refset['title']]; ?>.</h4>
+		<p><?php echo $ref[$refset['authors']]; ?>
+		<span class="nbtJournalName"><?php echo $ref[$refset['journal']]; ?></span>:
+		<?php echo $ref[$refset['year']]; ?>.</p>
 
 		<?php
 

@@ -32,6 +32,8 @@
 
 	    foreach ( $assignments as $assignment ) {
 
+		$ref = nbt_get_reference_for_refsetid_and_refid ($assignment['refsetid'], $assignment['referenceid']);
+
 		$assignment_status = nbt_get_status_for_assignment ( $assignment );
 
 		echo '<tr';
@@ -67,13 +69,13 @@
 	    ?>
 	    <td><?php echo substr ($assignment['whenassigned'], 0, 10); ?></td>
 	    <td>
-		<h4><?php echo $assignment['title']; ?></h4>
-		<p><?php echo $assignment['authors']; ?></p>
+		<h4><?php echo $ref[$refset['title']]; ?></h4>
+		<p><?php echo $ref[$refset['authors']]; ?></p>
 		<?php
 
-		if ( $assignment['journalname'] != "" && $assignment['year'] != "" ) {
+		if ( $ref[$refset['journal']] != "" && $ref[$refset['year']] != "" ) {
 
-		?><p><?php echo $assignment['journalname']; ?>: <?php echo $assignment['year']; ?></p><?php
+		?><p><?php echo $ref[$refset['journal']]; ?>: <?php echo $ref[$refset['year']]; ?></p><?php
 
 												      }
 

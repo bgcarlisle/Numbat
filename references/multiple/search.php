@@ -6,6 +6,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
       $suggestions = nbt_search_multiples ( $_POST['refset'], $_POST['query'] );
 
+      $refset = nbt_get_refset_for_id ($_POST['refset']);
+    
       $counter = 0;
 
       foreach ( $suggestions as $suggestion ) {
@@ -13,8 +15,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
             if ( $counter < 5 ) {
 
                   ?><div id="nbtMultiple<?php echo $suggestion['id']; ?>">
-                        <h4>[<?php echo $suggestion['id']; ?>] <?php echo $suggestion['title']; ?>.</h4>
-                        <p><?php echo $suggestion['authors']; ?>. <span class="nbtJournalName"><?php echo $suggestion['journal']; ?></span>: <?php echo $suggestion['year']; ?>.</p>
+                        <h4>[<?php echo $suggestion['id']; ?>] <?php echo $suggestion[$refset['title']]; ?>.</h4>
+                        <p><?php echo $suggestion[$refset['authors']]; ?>. <span class="nbtJournalName"><?php echo $suggestion[$refset['journal']]; ?></span>: <?php echo $suggestion[$refset['year']]; ?>.</p>
 
                         <?php
 

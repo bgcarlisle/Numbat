@@ -4,6 +4,8 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 $ref = nbt_get_reference_for_refsetid_and_refid ( $_GET['refset'], $_GET['ref'] );
 
+$refset = nbt_get_refset_for_id ( $_GET['refset'] );
+
 $extractions = nbt_get_extractions_for_refset_ref_and_form ( $_GET['refset'], $_GET['ref'], $_GET['form'] );
 
 if ( count ( $extractions ) >= 2 ) {
@@ -12,13 +14,13 @@ if ( count ( $extractions ) >= 2 ) {
 
 	?><div class="nbtNonsidebar">
 		<div class="nbtContentPanel">
-			<h2><?php echo $ref['title']; ?></h2>
-			<p><?php echo $ref['authors']; ?></p>
+			<h2><?php echo $ref[$refset['title']]; ?></h2>
+			<p><?php echo $ref[$refset['authors']]; ?></p>
 			<?php
 
-			if (( $ref['journal'] != "") && ($ref['year'] != "")) {
+			if (( $ref[$refset['journal']] != "") && ($ref[$refset['year']] != "")) {
 
-				?><p><span class="nbtJournalName"><?php echo $ref['journal']; ?></span>: <?php echo $ref['year']; ?></p><?php
+				?><p><span class="nbtJournalName"><?php echo $ref[$refset['journal']]; ?></span>: <?php echo $ref[$refset['year']]; ?></p><?php
 
 			}
 
@@ -29,9 +31,9 @@ if ( count ( $extractions ) >= 2 ) {
 			<p class="nbtFinePrint"><a href="#" onclick="event.preventDefault();$('#nbtAbstract').slideToggle(200);">Show / hide abstract</a></p>
 			<p id="nbtAbstract"><?php
 
-			if ( $ref['abstract'] != NULL) {
+			if ( $ref[$refset['abstract']] != NULL) {
 
-				echo $ref['abstract'];
+				echo $ref[$refset['abstract']];
 
 			} else {
 

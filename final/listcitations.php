@@ -4,6 +4,8 @@ include_once ("../config.php");
 
 $distinctcites = nbt_get_distinct_citations_for_element_refset_and_ref ( $nbtListCitationsCitationID, $nbtListCitationsRefSetID, $nbtListCitationsReference );
 
+$refset = nbt_get_refset_for_id ($nbtListCitationsRefSetID);
+
 ?><table class="nbtTabledData">
 
 	<tr><?php
@@ -36,8 +38,8 @@ $distinctcites = nbt_get_distinct_citations_for_element_refset_and_ref ( $nbtLis
 
 							} else {
 
-								?><p><h4><?php echo $cite['title']; ?></h4></p>
-								<p><?php echo $cite['authors']; ?>, <em><?php echo $cite['journal']; ?></em>: <?php echo $cite['year']; ?></p><?php
+								?><p><h4><?php echo $cite[$refset['title']]; ?></h4></p>
+								<p><?php echo $cite[$refset['authors']]; ?>, <em><?php echo $cite[$refset['journal']]; ?></em>: <?php echo $cite[$refset['year']]; ?></p><?php
 
 							}
 

@@ -43,9 +43,9 @@
 
                                                 $ref = nbt_get_reference_for_refsetid_and_refid( $_GET['refset'], $refid );
 
-                                                ?><h4><?php echo $ref['title']; ?></h4>
-                                                <p><?php echo $ref['authors'] ?></p>
-                                                <p><?php echo $ref['journal'] ?>: <?php echo $ref['year'] ?></p>
+                                                ?><h4><?php echo $ref[$refset['title']]; ?></h4>
+                                                <p><?php echo $ref[$refset['authors']] ?></p>
+                                                <p><?php echo $ref[$refset['journal']] ?>: <?php echo $ref[$refset['year']] ?></p>
                                           </td>
                                           <td><a href="<?php echo SITE_URL; ?>attach/files/<?php echo $_GET['refset']; ?>/<?php echo $file; ?>">Attached file</a></td>
                                           <td>
@@ -64,9 +64,9 @@
 
                                                 $ref = nbt_get_reference_for_refsetid_and_refid( $_GET['refset'], $refid );
 
-                                                ?><h4><?php echo $ref['title']; ?></h4>
-                                                <p><?php echo $ref['authors'] ?></p>
-                                                <p><?php echo $ref['journal'] ?>: <?php echo $ref['year'] ?></p>
+                                                ?><h4><?php echo $ref[$refset['title']]; ?></h4>
+                                                <p><?php echo $ref[$refset['authors']] ?></p>
+                                                <p><?php echo $ref[$refset['journal']] ?>: <?php echo $ref['year'] ?></p>
                                           </td>
                                           <td><?php echo $file; ?></td>
                                           <td>&nbsp;</td>
