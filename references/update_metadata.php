@@ -6,7 +6,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     if (nbt_update_refset_metadata ( $_POST['refsetid'], $_POST['column'], $_POST['newcolumn'] )) {
 
-	echo "Saved";
+	echo "Changes saved";
 	
     } else {
 
