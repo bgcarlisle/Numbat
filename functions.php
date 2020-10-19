@@ -2139,142 +2139,186 @@ function nbt_echo_subextraction_multi_select ($elementid, $subextraction, $quest
 
 }
 
-  function nbt_echo_msubextraction_multi_select ($elementid, $subextraction, $question, $options, $toggles = NULL ) {
+function nbt_echo_msubextraction_multi_select ($elementid, $subextraction, $question, $options, $toggles = NULL ) {
 
-      // $options must be an array of the names of the column in the db
+    // $options must be an array of the names of the column in the db
 
-      foreach ( $options as $dbcolumn => $plaintext ) {
+    foreach ( $options as $dbcolumn => $plaintext ) {
 
-  ?><a href="#" class="nbtTextOptionSelect <?php
+	echo '<a href="#" class="nbtTextOptionSelect ';
 
-					   echo "nbt" . $question;
+	echo "nbt" . $question;
 
-					   echo " nbtSub" . $subextraction['id'] . "-" . $question;
+	echo " nbtSub" . $subextraction['id'] . "-" . $question;
 
-					   if ( $subextraction[$question . "_" . $dbcolumn] == 1 ) {
+	if ( $subextraction[$question . "_" . $dbcolumn] == 1 ) {
 
-					   ?> nbtTextOptionChosen<?php
+	    echo ' nbtTextOptionChosen';
 
-								 }
+	}
 
-								 ?>" id="nbtSub<?php echo $elementid ?>-<?php echo $subextraction['id']; ?>MS<?php echo $dbcolumn; ?>" onclick="event.preventDefault();nbtSaveMasterSubExtractionMultiSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question . "_" . $dbcolumn; ?>', 'nbtSub<?php echo $elementid ?>-<?php echo $subextraction['id']; ?>MS<?php echo $dbcolumn; ?>');"  conditionalid="<?php echo $toggles[$dbcolumn]; ?>"><?php echo $plaintext; ?></a><?php
+	echo '" id="nbtSub';
+	
+	echo $elementid;
 
-																																																																	      }
+	echo '-';
 
-																																																																	      }
+	echo $subextraction['id'];
 
-																																																																	      function nbt_echo_single_select ($formid, $extraction, $question, $answers, $toggles = NULL) {
+	echo "MS";
 
-																																																																		  // $question must be the name of the column in the db
-																																																																		  // $answers must be an array of the answer entered in the db and the plain text version displayed
+	echo $dbcolumn;
 
-																																																																		  foreach ( $answers as $dbanswer => $ptanswer ) {
+	echo '" onclick="event.preventDefault();nbtSaveMasterSubExtractionMultiSelect(';
 
-																																																																	      ?><a href="#" class="nbtTextOptionSelect<?php
+	echo $elementid;
 
-																																																																						      echo " nbt" . $question;
+	echo ", ";
 
-																																																																						      if ( ! is_null ( $extraction[$question] ) ) { // This is because PHP will say that 0 and NULL are the same
+	echo $subextraction['id'];
 
-																																																																							  if ( $extraction[$question] . " " == $dbanswer . " " ) { // This is because PHP has a hard time testing for equality between strings and integers
+	echo ", '";
 
-																																																																						      ?> nbtTextOptionChosen<?php
+	echo $question . "_" . $dbcolumn;
 
-																																																																									    }
+	echo "', 'nbtSub";
 
-																																																																									    }
+	echo $elementid;
 
-																																																																									    $buttonid = "nbtQ" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
+	echo "-";
 
-																																																																									    ?>" id="<?php echo $buttonid; ?>" onclick="event.preventDefault();nbtSaveSingleSelect(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbt<?php echo $question; ?>');" conditionalid="<?php echo $toggles[$dbanswer]; ?>"><?php echo $ptanswer; ?></a><?php
+	echo $subextraction['id'];
 
-																																																																																																																				}
+	echo "MS";
 
-																																																																																																																				}
+	echo $dbcolumn;
 
-																																																																																																																				function nbt_echo_subextraction_single_select ($elementid, $subextraction, $question, $answers, $toggles = NULL) {
+	echo '\');"  conditionalid="';
 
-																																																																																																																				    // $question must be the name of the column in the db
-																																																																																																																				    // $answers must be an array of the answer entered in the db and the plain text version displayed
+	echo $toggles[$dbcolumn];
 
-																																																																																																																				    foreach ( $answers as $dbanswer => $ptanswer ) {
+	echo '">';
 
-																																																																																																																				?><a href="#" class="nbtTextOptionSelect<?php
+	echo $plaintext;
 
-																																																																																																																									echo " nbtSub" . $subextraction['id'] . "-" . $question;
+	echo "</a>";
 
-																																																																																																																									if ( ! is_null ( $subextraction[$question] ) ) { // This is because PHP will say that 0 and NULL are the same
+    }
 
-																																																																																																																									    if ( $subextraction[$question] . " " == $dbanswer . " " ) { // This is because PHP has a hard time testing for equality between strings and integers
+}
 
-																																																																																																																									?> nbtTextOptionChosen<?php
+function nbt_echo_single_select ($formid, $extraction, $question, $answers, $toggles = NULL) {
 
-																																																																																																																											      }
+      // $question must be the name of the column in the db
+      // $answers must be an array of the answer entered in the db and the plain text version displayed
 
-																																																																																																																											      }
+      foreach ( $answers as $dbanswer => $ptanswer ) {
 
-																																																																																																																											      $buttonid = "nbtSub" . $elementid . "-" . $subextraction['id'] . "Q" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
+  ?><a href="#" class="nbtTextOptionSelect<?php
 
-																																																																																																																											      ?>" id="<?php echo $buttonid; ?>" onclick="event.preventDefault();nbtSaveSubExtractionSingleSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbtSub<?php echo $subextraction['id'] . "-" . $question; ?>');" conditionalid="<?php echo $toggles[$dbanswer]; ?>_sub<?php echo $subextraction['id']; ?>"><?php echo $ptanswer; ?></a><?php
+					  echo " nbt" . $question;
 
-																																																																																																																																																																																	    }
+					  if ( ! is_null ( $extraction[$question] ) ) { // This is because PHP will say that 0 and NULL are the same
 
-																																																																																																																																																																																	    }
+					      if ( $extraction[$question] . " " == $dbanswer . " " ) { // This is because PHP has a hard time testing for equality between strings and integers
 
-																																																																																																																																																																																	    function nbt_echo_msubextraction_single_select ($elementid, $subextraction, $question, $answers, $toggles = NULL) {
+					  ?> nbtTextOptionChosen<?php
 
-																																																																																																																																																																																		// $question must be the name of the column in the db
-																																																																																																																																																																																		// $answers must be an array of the answer entered in the db and the plain text version displayed
+								}
 
-																																																																																																																																																																																		foreach ( $answers as $dbanswer => $ptanswer ) {
+								}
 
-																																																																																																																																																																																	    ?><a href="#" class="nbtTextOptionSelect<?php
+								$buttonid = "nbtQ" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
 
-																																																																																																																																																																																						    echo " nbtSub" . $subextraction['id'] . "-" . $question;
+								?>" id="<?php echo $buttonid; ?>" onclick="event.preventDefault();nbtSaveSingleSelect(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbt<?php echo $question; ?>');" conditionalid="<?php echo $toggles[$dbanswer]; ?>"><?php echo $ptanswer; ?></a><?php
 
-																																																																																																																																																																																						    if ( ! is_null ( $subextraction[$question] ) ) { // This is because PHP will say that 0 and NULL are the same
+																																																		    }
 
-																																																																																																																																																																																							if ( $subextraction[$question] . " " == $dbanswer . " " ) { // This is because PHP has a hard time testing for equality between strings and integers
+																																																		    }
 
-																																																																																																																																																																																						    ?> nbtTextOptionChosen<?php
+																																																		    function nbt_echo_subextraction_single_select ($elementid, $subextraction, $question, $answers, $toggles = NULL) {
 
-																																																																																																																																																																																									  }
+																																																			// $question must be the name of the column in the db
+																																																			// $answers must be an array of the answer entered in the db and the plain text version displayed
 
-																																																																																																																																																																																									  }
+																																																			foreach ( $answers as $dbanswer => $ptanswer ) {
 
-																																																																																																																																																																																									  $buttonid = "nbtSub" . $elementid . "-" . $subextraction['id'] . "Q" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
+																																																		    ?><a href="#" class="nbtTextOptionSelect<?php
 
-																																																																																																																																																																																									  ?>" id="<?php echo $buttonid; ?>" onclick="event.preventDefault();nbtSaveMasterSubExtractionSingleSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbtSub<?php echo $subextraction['id'] . "-" . $question; ?>');" conditionalid="<?php echo $toggles[$dbanswer]; ?>"><?php echo $ptanswer; ?></a><?php
+																																																							    echo " nbtSub" . $subextraction['id'] . "-" . $question;
 
-																																																																																																																																																																																																																																										       }
+																																																							    if ( ! is_null ( $subextraction[$question] ) ) { // This is because PHP will say that 0 and NULL are the same
 
-																																																																																																																																																																																																																																										       }
+																																																								if ( $subextraction[$question] . " " == $dbanswer . " " ) { // This is because PHP has a hard time testing for equality between strings and integers
 
-																																																																																																																																																																																																																																										       function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
+																																																							    ?> nbtTextOptionChosen<?php
 
-																																																																																																																																																																																																																																										       ?><input type="text" value="<?php
+																																																										  }
 
-																																																																																																																																																																																																																																														   echo $extraction[$dbcolumn];
+																																																										  }
 
-																																																																																																																																																																																																																																														   ?>" id="nbtTextField<?php echo $dbcolumn; ?>" onblur="nbtSaveTextField(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtTextField<?php echo $dbcolumn; ?>', 'nbtTextField<?php echo $dbcolumn; ?>Feedback');" maxlength="<?php echo $maxlength; ?>"<?php
+																																																										  $buttonid = "nbtSub" . $elementid . "-" . $subextraction['id'] . "Q" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
 
-																																																																																																																																																																																																																																																																																	       if ( $allcaps ) {
+																																																										  ?>" id="<?php echo $buttonid; ?>" onclick="event.preventDefault();nbtSaveSubExtractionSingleSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbtSub<?php echo $subextraction['id'] . "-" . $question; ?>');" conditionalid="<?php echo $toggles[$dbanswer]; ?>_sub<?php echo $subextraction['id']; ?>"><?php echo $ptanswer; ?></a><?php
 
-																																																																																																																																																																																																																																																																																		   echo " style=\"text-transform: uppercase\"";
+																																																																																																																}
 
-																																																																																																																																																																																																																																																																																	       }
+																																																																																																																}
 
-																																																																																																																																																																																																																																																																																	       ?>><?php
+																																																																																																																function nbt_echo_msubextraction_single_select ($elementid, $subextraction, $question, $answers, $toggles = NULL) {
 
-																																																																																																																																																																																																																																																																																		  }
+																																																																																																																    // $question must be the name of the column in the db
+																																																																																																																    // $answers must be an array of the answer entered in the db and the plain text version displayed
 
-																																																																																																																																																																																																																																																																																		  function nbt_echo_text_area_field ($formid, $extraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
+																																																																																																																    foreach ( $answers as $dbanswer => $ptanswer ) {
 
-																																																																																																																																																																																																																																																																																		  ?><textarea style="width: 100%; height: 150px;" id="nbtTextAreaField<?php echo $dbcolumn; ?>" onkeyup="nbtCheckTextAreaCharacters('nbtTextAreaField<?php echo $dbcolumn; ?>', 5000);" onblur="nbtSaveTextField(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtTextAreaField<?php echo $dbcolumn; ?>', 'nbtTextAreaField<?php echo $dbcolumn; ?>Feedback');" maxlength="<?php echo $maxlength; ?>"><?php
+																																																																																																																?><a href="#" class="nbtTextOptionSelect<?php
 
-																																																																																																																																																																																																																																																																																																																																							       echo $extraction[$dbcolumn];
+																																																																																																																					echo " nbtSub" . $subextraction['id'] . "-" . $question;
 
-																																																																																																																																																																																																																																																																																																																																							       ?></textarea>
+																																																																																																																					if ( ! is_null ( $subextraction[$question] ) ) { // This is because PHP will say that 0 and NULL are the same
+
+																																																																																																																					    if ( $subextraction[$question] . " " == $dbanswer . " " ) { // This is because PHP has a hard time testing for equality between strings and integers
+
+																																																																																																																					?> nbtTextOptionChosen<?php
+
+																																																																																																																							      }
+
+																																																																																																																							      }
+
+																																																																																																																							      $buttonid = "nbtSub" . $elementid . "-" . $subextraction['id'] . "Q" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
+
+																																																																																																																							      ?>" id="<?php echo $buttonid; ?>" onclick="event.preventDefault();nbtSaveMasterSubExtractionSingleSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbtSub<?php echo $subextraction['id'] . "-" . $question; ?>');" conditionalid="<?php echo $toggles[$dbanswer]; ?>"><?php echo $ptanswer; ?></a><?php
+
+																																																																																																																																																																									   }
+
+																																																																																																																																																																									   }
+
+																																																																																																																																																																									   function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
+
+																																																																																																																																																																									   ?><input type="text" value="<?php
+
+																																																																																																																																																																												       echo $extraction[$dbcolumn];
+
+																																																																																																																																																																												       ?>" id="nbtTextField<?php echo $dbcolumn; ?>" onblur="nbtSaveTextField(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtTextField<?php echo $dbcolumn; ?>', 'nbtTextField<?php echo $dbcolumn; ?>Feedback');" maxlength="<?php echo $maxlength; ?>"<?php
+
+																																																																																																																																																																																																																   if ( $allcaps ) {
+
+																																																																																																																																																																																																																       echo " style=\"text-transform: uppercase\"";
+
+																																																																																																																																																																																																																   }
+
+																																																																																																																																																																																																																   ?>><?php
+
+																																																																																																																																																																																																																      }
+
+																																																																																																																																																																																																																      function nbt_echo_text_area_field ($formid, $extraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
+
+																																																																																																																																																																																																																      ?><textarea style="width: 100%; height: 150px;" id="nbtTextAreaField<?php echo $dbcolumn; ?>" onkeyup="nbtCheckTextAreaCharacters('nbtTextAreaField<?php echo $dbcolumn; ?>', 5000);" onblur="nbtSaveTextField(<?php echo $formid; ?>, <?php echo $extraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtTextAreaField<?php echo $dbcolumn; ?>', 'nbtTextAreaField<?php echo $dbcolumn; ?>Feedback');" maxlength="<?php echo $maxlength; ?>"><?php
+
+																																																																																																																																																																																																																																																																						   echo $extraction[$dbcolumn];
+
+																																																																																																																																																																																																																																																																						   ?></textarea>
     <p class="nbtInputFeedback" id="nbtTextAreaField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span><?php
 
 												   }
