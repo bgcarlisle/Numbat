@@ -82,7 +82,7 @@ foreach ( $elements as $element ) {
 	    $selectoptions = nbt_get_all_select_options_for_element ( $element['id'] );
 
 	    echo "| Displayed option name | Database value |\n";
-	    echo "|-----------------------|----------------|\n";
+	    echo "|:----------------------|---------------:|\n";
 
 	    foreach ( $selectoptions as $select ) {
 		echo "| " . $select['displayname'] . " | " . $select['dbname'] . " |\n";
@@ -111,7 +111,7 @@ foreach ( $elements as $element ) {
 	    $selectoptions = nbt_get_all_select_options_for_element ( $element['id'] );
 
 	    echo "| Displayed option name | Database value |\n";
-	    echo "|-----------------------|----------------|\n";
+	    echo "|:----------------------|---------------:|\n";
 
 	    foreach ( $selectoptions as $select ) {
 		echo "| " . $select['displayname'] . " | " . $select['dbname'] . " |\n";
@@ -140,7 +140,7 @@ foreach ( $elements as $element ) {
 	    $tablecolumns = nbt_get_all_columns_for_table_data ( $element['id'] );
 
 	    echo "| Displayed column name | Database column name |\n";
-	    echo "|-----------------------|----------------------|\n";
+	    echo "|:----------------------|---------------------:|\n";
 
 	    foreach ( $tablecolumns as $column ) {
 		echo "| " . $column['displayname'] . " | " . $column['dbname'] . " |\n";
@@ -171,7 +171,7 @@ foreach ( $elements as $element ) {
 		echo "Extractors were prompted to code each extraction for the following properties.\n\n";
 
 		echo "| Displayed prompt | Database column |\n";
-		echo "|------------------|-----------------|\n";
+		echo "|:-----------------|----------------:|\n";
 
 		foreach ( $citationcolumns as $column ) {
 		    echo "| " . $column['displayname'] . " | " . $column['dbname'] . " |\n";
@@ -347,7 +347,7 @@ foreach ( $elements as $element ) {
 			$selectoptions = nbt_get_all_select_options_for_sub_element ( $subelement['id'] );
 
 			echo "| Displayed option name | Database value |\n";
-			echo "|-----------------------|----------------|\n";
+			echo "|:----------------------|---------------:|\n";
 
 			foreach ( $selectoptions as $select ) {
 			    echo "| " . $select['displayname'] . " | " . $select['dbname'] . " |\n";
@@ -376,7 +376,7 @@ foreach ( $elements as $element ) {
 			$selectoptions = nbt_get_all_select_options_for_sub_element ( $subelement['id'] );
 
 			echo "| Displayed option name | Database value |\n";
-			echo "|-----------------------|----------------|\n";
+			echo "|:----------------------|---------------:|\n";
 
 			foreach ( $selectoptions as $select ) {
 			    echo "| " . $select['displayname'] . " | " . $select['dbname'] . " |\n";
@@ -403,7 +403,7 @@ foreach ( $elements as $element ) {
 			$tablecolumns = nbt_get_all_columns_for_table_data ( $element['id'], TRUE );
 
 			echo "| Displayed column name | Database column name |\n";
-			echo "|-----------------------|----------------------|\n";
+			echo "|:----------------------|---------------------:|\n";
 
 			foreach ( $tablecolumns as $column ) {
 			    echo "| " . $column['displayname'] . " | " . $column['dbname'] . " |\n";
