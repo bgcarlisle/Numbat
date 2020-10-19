@@ -17,6 +17,12 @@ echo "# Extraction form elements\n\n";
 
 foreach ( $elements as $element ) {
 
+    if ( $element['codebook'] != "" ) {
+
+	$element['codebook'] = "\n```\n" . $element['codebook'] . "\n```";
+	
+    }
+
     switch ( $element['type'] ) {
 	    
 	case "section_heading":
