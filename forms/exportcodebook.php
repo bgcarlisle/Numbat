@@ -18,9 +18,16 @@ echo "# Extraction form elements\n\n";
 foreach ( $elements as $element ) {
 
     switch ( $element['type'] ) {
+	    
 	case "section_heading":
 
 	    echo "## " . $element['displayname'] . "\n\n";
+
+	    if ( $element['codebook'] != "" ) {
+
+		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
+		
+	    }
 
 	    break;
 
@@ -32,6 +39,12 @@ foreach ( $elements as $element ) {
 
 	    echo "Database column name: `" . $element['columnname'] . "`\n\n";
 
+	    if ( $element['codebook'] != "" ) {
+
+		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
+		
+	    }
+
 	    break;
 
 	case "text_area":
@@ -41,6 +54,12 @@ foreach ( $elements as $element ) {
 	    echo "Variable type: Text area\n\n";
 
 	    echo "Database column name: `" . $element['columnname'] . "`\n\n";
+
+	    if ( $element['codebook'] != "" ) {
+
+		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
+		
+	    }
 	    
 	    break;
 
@@ -64,6 +83,12 @@ foreach ( $elements as $element ) {
 	    }
 	    
 	    echo "\n";
+
+	    if ( $element['codebook'] != "" ) {
+
+		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
+		
+	    }
 	    
 	    break;
 
@@ -87,6 +112,12 @@ foreach ( $elements as $element ) {
 	    }
 	    
 	    echo "\n";
+
+	    if ( $element['codebook'] != "" ) {
+
+		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
+		
+	    }
 	    
 	    break;
 
@@ -110,6 +141,12 @@ foreach ( $elements as $element ) {
 	    }
 	    
 	    echo "\n";
+
+	    if ( $element['codebook'] != "" ) {
+
+		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
+		
+	    }
 
 	    break;
 
@@ -137,6 +174,12 @@ foreach ( $elements as $element ) {
 		echo "\n";
 		
 	    }
+
+	    if ( $element['codebook'] != "" ) {
+
+		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
+		
+	    }
 	    
 	    break;
 
@@ -159,6 +202,12 @@ foreach ( $elements as $element ) {
 	    }
 
 	    echo "\n";
+
+	    if ( $element['codebook'] != "" ) {
+
+		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
+		
+	    }
 	    
 	    break;
 
@@ -172,6 +221,12 @@ foreach ( $elements as $element ) {
 
 	    echo "Extractors were prompted to enter a date.\n\n";
 
+	    if ( $element['codebook'] != "" ) {
+
+		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
+		
+	    }
+
 	    break;
 
 	case "reference_data":
@@ -183,8 +238,13 @@ foreach ( $elements as $element ) {
 	    echo "```\n";
 	    echo $element['columnname'];
 	    echo "\n```\n\n";
-	    
 
+	    if ( $element['codebook'] != "" ) {
+
+		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
+		
+	    }
+	    
 	    break;
 
 	case "prev_select":
@@ -196,6 +256,12 @@ foreach ( $elements as $element ) {
 	    echo "Extractors were prompted with values for this field that have been chosen in previous extractions in order to ensure consistency.";
 
 	    echo "Database column name: `" . $element['columnname'] . "`\n\n";
+
+	    if ( $element['codebook'] != "" ) {
+
+		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
+		
+	    }
 	    
 	    break;
 
@@ -204,6 +270,12 @@ foreach ( $elements as $element ) {
 	    echo "### " . $element['displayname'] . "\n\n";
 
 	    echo "Extractors were prompted to assign this reference to another extractor.\n\n";
+
+	    if ( $element['codebook'] != "" ) {
+
+		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
+		
+	    }
 	    
 	    break;
 
@@ -213,17 +285,136 @@ foreach ( $elements as $element ) {
 
 	    echo "Sub-extraction: an extraction form element that contains other form elements and can be repeated by the extractor as many times as necessary within an extraction.\n\n";
 
-	    // THIS ISN'T DONE YET
+	    if ( $element['codebook'] != "" ) {
+
+		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
+		
+	    }
+
+	    $subelements = nbt_get_sub_extraction_elements_for_elementid ( $element['id'] );
+
+	    foreach ($subelements as $subelement) {
+
+		switch ( $subelement['type']) {
+		    case "open_text":
+
+			echo "#### " . $subelement['displayname'] . "\n\n";
+
+			echo "Sub-extraction variable type: Open text field\n\n";
+
+			echo "Database column name: `" . $subelement['dbname'] . "`\n\n";
+
+			if ( $subelement['codebook'] != "" ) {
+
+			    echo "Extractor prompt: " . $subelement['codebook'] . "\n\n";
+			    
+			}
+			
+			break;
+
+		    case "date_selector":
+
+			echo "#### " . $subelement['displayname'] . "\n\n";
+
+			echo "Sub-extraction variable type: Date\n\n";
+
+			echo "Database column name: `" . $subelement['dbname'] . "`\n\n";
+
+			if ( $subelement['codebook'] != "" ) {
+
+			    echo "Extractor prompt: " . $subelement['codebook'] . "\n\n";
+			    
+			}
+			
+			break;
+
+		    case "single_select":
+
+			echo "#### " . $subelement['displayname'] . "\n\n";
+
+			echo "Sub-extraction variable type: Categorical (single selection only)\n\n";
+
+			echo "Database column name: `" . $subelement['dbname'] . "`\n\n";
+
+			echo "Extractors were prompted to select one of the following mutually exclusive options.\n\n";
+
+			$selectoptions = nbt_get_all_select_options_for_sub_element ( $subelement['id'] );
+
+			echo "| Displayed option name | Database value |\n";
+			echo "|-----------------------|----------------|\n";
+
+			foreach ( $selectoptions as $select ) {
+			    echo "| " . $select['displayname'] . " | " . $select['dbname'] . " |\n";
+			}
+			
+			echo "\n";
+
+			if ( $subelement['codebook'] != "" ) {
+
+			    echo "Extractor prompt: " . $subelement['codebook'] . "\n\n";
+			    
+			}
+
+			break;
+
+		    case "multi_select":
+
+			echo "#### " . $subelement['displayname'] . "\n\n";
+
+			echo "Sub-extraction variable type: Categorical (multiple selection allowed)\n\n";
+
+			echo "Database column prefix: `" . $subelement['dbname'] . "`\n\n";
+
+			echo "Extractors were prompted to select one or more of the following options.\n\n";
+
+			$selectoptions = nbt_get_all_select_options_for_sub_element ( $subelement['id'] );
+
+			echo "| Displayed option name | Database value |\n";
+			echo "|-----------------------|----------------|\n";
+
+			foreach ( $selectoptions as $select ) {
+			    echo "| " . $select['displayname'] . " | " . $select['dbname'] . " |\n";
+			}
+			
+			echo "\n";
+
+			if ( $subelement['codebook'] != "" ) {
+
+			    echo "Extractor prompt: " . $subelement['codebook'] . "\n\n";
+			    
+			}
+
+			break;
+
+		    case "table_data":
+
+			echo "#### " . $subelement['displayname'] . "\n\n";
+
+			echo "Sub-extraction table data\n\n";
+
+			echo "Extractors were prompted to add rows to a table of open text fields with the following column headings.\n\n";
+
+			$tablecolumns = nbt_get_all_columns_for_table_data ( $element['id'], TRUE );
+
+			echo "| Displayed column name | Database column name |\n";
+			echo "|-----------------------|----------------------|\n";
+
+			foreach ( $tablecolumns as $column ) {
+			    echo "| " . $column['displayname'] . " | " . $column['dbname'] . " |\n";
+			}
+
+			break;
+		}
+
+		
+		
+	    }
 
 	    break;
 	    
     }
 
-    if ( $element['codebook'] != "" ) {
-
-	echo "Extractor prompt: " . $element['codebook'] . "\n\n";
-	
-    }
+    
     
 }
 
@@ -233,6 +424,6 @@ echo "This codebook was automatically generated by Numbat Systematic Review Mana
 
 echo "# References\n\n";
 
-echo "1. Carlisle, B. G. Numbat Systematic Review Manager [Software]. Retrieved from https://numbat.bgcarlisle.com: The Grey Literature; 2020. Available from: https://numbat.bgcarlisle.com";
+echo "1. Carlisle, B. G. Numbat Systematic Review Manager [Software]. Retrieved from https://numbat.bgcarlisle.com: *The Grey Literature*; 2020. Available from: https://numbat.bgcarlisle.com";
 
 ?>
