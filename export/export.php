@@ -6,234 +6,388 @@ $forms = nbt_get_all_extraction_forms ();
 
 if ( count ( $refsets ) > 0 ) {
 
-	foreach ( $refsets as $refset ) {
+    echo "<h2>Export extractions</h2>";
 
-		?><div class="nbtContentPanel nbtGreyGradient">
-			<h2><?php echo $refset['name']; ?></h2>
+    foreach ( $refsets as $refset ) {
 
-                  <table class="nbtTabledData">
-                        <tr class="nbtTableHeaders">
-                              <td>Form name</td>
-                              <td>Extractions</td>
-                              <td>Final copy</td>
-                        </tr>
+	echo "<div class=\"nbtContentPanel nbtGreyGradient\">";
+	echo '<h2>' . $refset['name'] . '</h2>';
 
-                        <?php
+	echo '<table class="nbtTabledData">';
+	echo '<tr class="nbtTableHeaders">';
+	echo '<td>Form name</td>';
+	echo '<td>Extractions</td>';
+	echo '<td>Final copy</td>';
+	echo '</tr>';
 
-      			foreach ( $forms as $form ) {
+      	foreach ( $forms as $form ) {
 
-            				$extractedrefs = nbt_get_all_extracted_references_for_refset_and_form ( $refset['id'], $form['id'] );
+	    $extractedrefs = nbt_get_all_extracted_references_for_refset_and_form ( $refset['id'], $form['id'] );
 
-                                    $reconciledrefs = nbt_get_all_reconciled_references_for_refset_and_form ( $refset['id'], $form['id'] );
+	    $reconciledrefs = nbt_get_all_reconciled_references_for_refset_and_form ( $refset['id'], $form['id'] );
 
-                              ?><tr>
+	    echo '<tr>';
+	    echo '<td><h3>' . $form['name'] . '</h3></td>';
+	    echo '<td>';
 
-                                    <td><h3><?php echo $form['name']; ?></h3></td>
-                                    <td><?php
+	    if ( count ( $extractedrefs ) > 0 ) {
 
-                                    if ( count ( $extractedrefs ) > 0 ) {
+		echo "<button onclick=\"nbtExportData('extraction', ";
 
-                                          ?><button onclick="nbtExportData('extraction', <?php echo $refset['id'] ?>, <?php echo $form['id'] ?>, 0);">Export "<?php echo $form['name']; ?>" extractions</button><?php
+		echo $refset['id'];
 
-                                    } else {
+		echo ", ";
 
-                                          ?><p>No references have been extracted for this form.</p><?php
+		echo $form['id'];
 
-                                    }
+		echo ", 0);\">Export \"";
+		
+		echo $form['name'];
 
-                                    ?></td>
-                                    <td><?php
+		echo "\" extractions</button>";
 
-                                    if ( count ( $reconciledrefs ) > 0 ) {
+	    } else {
 
-                                          ?><button onclick="nbtExportData('extraction', <?php echo $refset['id'] ?>, <?php echo $form['id'] ?>, 1);">Export "<?php echo $form['name']; ?>" final</button><?php
+		echo '<p>No references have been extracted for this form.</p>';
+		
+	    }
 
-                                    } else {
+	    echo "</td>";
 
-                                          ?><p>No extractions have been reconciled for this form.</p><?php
+	    echo "<td>";
 
-                                    }
+	    if ( count ( $reconciledrefs ) > 0 ) {
 
-                                    ?></td>
+		echo "<button onclick=\"nbtExportData('extraction', ";
 
+		echo $refset['id'];
 
-                              </tr>
-                              <?php
+		echo ", ";
+		
+		echo $form['id'];
 
-                              $elements = nbt_get_elements_for_formid ( $form['id'] );
+		echo ", 1);\">Export \"";
 
-                              $count_special_elements = 0;
+		echo $form['name'];
 
-                              foreach ( $elements as $element ) {
+		echo "\" final</button>";
 
-                                    switch ( $element['type'] ) {
+	    } else {
 
-                                          case "table_data":
+		echo "<p>No extractions have been reconciled for this form.</p>";
 
-                                                ?><tr>
-                                                      <td>&nbsp;</td><?php
+	    }
 
-                                                      $extracted_rows = nbt_get_all_table_data_rows_for_refset ( $element['id'], $refset['id'] );
+	    echo "</td>";
 
-                                                      $reconciled_rows = nbt_get_all_reconciled_table_data_rows_for_refset ( $element['id'], $refset['id'] );
+	    echo "</tr>";
+	    
+            $elements = nbt_get_elements_for_formid ( $form['id'] );
 
-                                                      if ( count ( $extracted_rows ) > 0 ) {
+            $count_special_elements = 0;
 
-                                                            ?><td><button onclick="nbtExportData('table_data', <?php echo $refset['id']; ?>, '<?php echo $element['columnname']; ?>', 0);">Export "<?php echo $element['displayname']; ?>" table data</button></td><?php
+            foreach ( $elements as $element ) {
 
-                                                      } else {
+                switch ( $element['type'] ) {
 
-                                                            ?><td><p>Table "<?php echo $element['displayname']; ?>" has no extracted data.</p></td><?php
+		    case "table_data":
 
-                                                      }
+			echo "<tr>";
 
-                                                      if ( count ( $reconciled_rows ) > 0 ) {
+			echo "<td>&nbsp;</td>";
 
-                                                            ?><td><button onclick="nbtExportData('table_data', <?php echo $refset['id']; ?>, '<?php echo $element['columnname']; ?>', 1);">Export "<?php echo $element['displayname']; ?>" final table data</button></td><?php
+			$extracted_rows = nbt_get_all_table_data_rows_for_refset ( $element['id'], $refset['id'] );
+			
+			$reconciled_rows = nbt_get_all_reconciled_table_data_rows_for_refset ( $element['id'], $refset['id'] );
 
-                                                      } else {
+			if ( count ( $extracted_rows ) > 0 ) {
 
-                                                            ?><td><p>The final copy of table "<?php echo $element['displayname']; ?>" has no reconciled data.</p></td><?php
+			    echo "<td>";
 
-                                                      }
+			    echo "<button onclick=\"nbtExportData('table_data', ";
 
+			    echo $refset['id'];
 
-                                                      $count_special_elements ++;
+			    echo ", '";
+			    
+			    echo $element['columnname'];
 
-                                                ?></tr><?php
+			    echo "', 0);\">Export \"";
+			    
+			    echo $element['displayname'];
 
-                                          break;
+			    echo '" table data</button></td>';
 
-                                          case "ltable_data":
+			} else {
 
-                                                ?><tr>
-                                                      <td>&nbsp;</td><?php
+			    echo '<td><p>Table "';
 
-                                                      $extracted_rows = nbt_get_all_table_data_rows_for_refset ( $element['id'], $refset['id'] );
+			    echo $element['displayname'];
 
-                                                      $reconciled_rows = nbt_get_all_reconciled_table_data_rows_for_refset ( $element['id'], $refset['id'] );
+			    echo '" has no extracted data.</p></td>';
 
-                                                      if ( count ( $extracted_rows ) > 0 ) {
+			}
 
-                                                            ?><td><button onclick="nbtExportData('ltable_data', <?php echo $refset['id']; ?>, '<?php echo $element['columnname']; ?>', 0);">Export "<?php echo $element['displayname']; ?>" table data</button></td><?php
+			if ( count ( $reconciled_rows ) > 0 ) {
 
-                                                      } else {
+			    echo "<td><button onclick=\"nbtExportData('table_data', ";
 
-                                                            ?><td><p>Table "<?php echo $element['displayname']; ?>" has no extracted data.</p></td><?php
+			    echo $refset['id'];
 
-                                                      }
+			    echo ", '";
 
-                                                      if ( count ( $reconciled_rows ) > 0 ) {
+			    echo $element['columnname'];
 
-                                                            ?><td><button onclick="nbtExportData('ltable_data', <?php echo $refset['id']; ?>, '<?php echo $element['columnname']; ?>', 1);">Export "<?php echo $element['displayname']; ?>" final table data</button></td><?php
+			    echo '\', 1);">Export "';
 
-                                                      } else {
+			    echo $element['displayname'];
 
-                                                            ?><td><p>The final copy of table "<?php echo $element['displayname']; ?>" has no reconciled data.</p></td><?php
+			    echo '" final table data</button></td>';
+			    
+			} else {
 
-                                                      }
+			    echo '<td><p>The final copy of table "';
 
+			    echo $element['displayname'];
 
-                                                      $count_special_elements ++;
+			    echo '" has no reconciled data.</p></td>';
 
-                                                ?></tr><?php
+			}
+			
+			$count_special_elements ++;
 
-                                          break;
+			echo "</tr>";
 
-                                          case "sub_extraction":
+			break;
 
-                                                ?><tr>
-                                                      <td>&nbsp;</td><?php
+		    case "ltable_data":
 
-                                                      $extracted_rows = nbt_get_all_sub_extraction_rows_for_refset ( $element['id'], $refset['id'] );
+			echo "<tr>";
 
-                                                      $reconciled_rows = nbt_get_all_reconciled_sub_extraction_rows_for_refset ( $element['id'], $refset['id'] );
+			echo "<td>&nbsp;</td>";
+			
+			$extracted_rows = nbt_get_all_table_data_rows_for_refset ( $element['id'], $refset['id'] );
 
-                                                      if ( count ( $extracted_rows ) > 0 ) {
+			$reconciled_rows = nbt_get_all_reconciled_table_data_rows_for_refset ( $element['id'], $refset['id'] );
 
-                                                            ?><td><button onclick="nbtExportData('sub_extraction', <?php echo $refset['id']; ?>, '<?php echo $element['columnname']; ?>', 0);">Export "<?php echo $element['displayname']; ?>" sub-extraction</button></td><?php
+			if ( count ( $extracted_rows ) > 0 ) {
 
-                                                      } else {
+			    echo "<td><button onclick=\"nbtExportData('ltable_data', ";
 
-                                                            ?><td><p>Sub-extraction "<?php echo $element['displayname']; ?>" has no extracted data.</p></td><?php
+			    echo $refset['id'];
 
-                                                      }
+			    echo ", '";
 
-                                                      if ( count ( $reconciled_rows ) > 0 ) {
+			    echo $element['columnname'];
 
-                                                            ?><td><button onclick="nbtExportData('sub_extraction', <?php echo $refset['id']; ?>, '<?php echo $element['columnname']; ?>', 1);">Export "<?php echo $element['displayname']; ?>" final sub-extraction</button></td><?php
+			    echo '\', 0);">Export "';
+			    
+			    echo $element['displayname'];
 
-                                                      } else {
+			    echo '" table data</button></td>';
 
-                                                            ?><td><p>The final copy of sub-extraction "<?php echo $element['displayname']; ?>" has no reconciled data.</p></td><?php
+			} else {
 
-                                                      }
+			    echo '<td><p>Table "';
 
+			    echo $element['displayname'];
 
-                                                      $count_special_elements ++;
+			    echo '" has no extracted data.</p></td>';
 
-                                                ?></tr><?php
+			}
 
-                                          break;
+			if ( count ( $reconciled_rows ) > 0 ) {
 
-                                          case "citations":
+			    echo "<td><button onclick=\"nbtExportData('ltable_data', ";
 
-                                                ?><tr>
-                                                      <td>&nbsp;</td><?php
+			    echo $refset['id'];
 
-                                                      $extracted_cites = nbt_get_all_citations_for_refset ( $element['id'], $refset['id'] );
+			    echo ", '";
 
-                                                      $reconciled_cites = nbt_get_all_reconciled_citations_for_refset ( $element['id'], $refset['id'] );
+			    echo $element['columnname'];
 
-                                                      if ( count ( $extracted_cites ) > 0 ) {
+			    echo '\', 1);">Export "';
 
-                                                            ?><td><button onclick="nbtExportData('citations', <?php echo $refset['id'] ?>, '<?php echo $element['columnname']; ?>', 0);">Export "<?php echo $element['displayname'] ?>" citations</button></td><?php
+			    echo $element['displayname'];
 
-                                                      } else {
+			    echo '" final table data</button></td>';
+			    
+			} else {
 
-                                                            ?><td><p>Citation set "<?php echo $element['displayname']; ?>" has no extracted citations.</p></td><?php
+			    echo '<td><p>The final copy of table "';
 
-                                                      }
+			    echo $element['displayname'];
 
-                                                      if ( count ( $reconciled_cites ) > 0 ) {
+			    echo '" has no reconciled data.</p></td>';
 
-                                                            ?><td><button onclick="nbtExportData('citations', <?php echo $refset['id'] ?>, '<?php echo $element['columnname']; ?>', 1);">Export "<?php echo $element['displayname']; ?>" final citations</button></td><?php
+			}
 
-                                                      } else {
+			$count_special_elements ++;
 
-                                                            ?><td><p>The final copy of citation set "<?php echo $element['displayname']; ?>" has no reconciled citations.</p></td><?php
+			echo "</tr>";
 
-                                                      }
+			break;
 
+		    case "sub_extraction":
 
-                                                      $count_special_elements ++;
+			echo "<tr>";
 
-                                                ?></tr><?php
+			echo "<td>&nbsp;</td>";
 
-                                          break;
+			$extracted_rows = nbt_get_all_sub_extraction_rows_for_refset ( $element['id'], $refset['id'] );
 
-                                    }
+			$reconciled_rows = nbt_get_all_reconciled_sub_extraction_rows_for_refset ( $element['id'], $refset['id'] );
 
-                              }
+			if ( count ( $extracted_rows ) > 0 ) {
 
-      			}
+			    echo "<td><button onclick=\"nbtExportData('sub_extraction', ";
 
-      			?>
-                  </table>
-		</div><?php
+			    echo $refset['id'];
 
+			    echo ", '";
+			    
+			    echo $element['columnname'];
+
+			    echo '\', 0);">Export "';
+			    
+			    echo $element['displayname'];
+
+			    echo '" sub-extraction</button></td>';
+
+			} else {
+
+			    echo '<td><p>Sub-extraction "';
+			    
+			    echo $element['displayname'];
+
+			    echo '" has no extracted data.</p></td>';
+
+			}
+
+			if ( count ( $reconciled_rows ) > 0 ) {
+
+			    echo "<td><button onclick=\"nbtExportData('sub_extraction', ";
+
+			    echo $refset['id'];
+
+			    echo ", '";
+
+			    echo $element['columnname'];
+
+			    echo '\', 1);">Export "';
+
+			    echo $element['displayname'];
+
+			    echo '" final sub-extraction</button></td>';
+			    
+			} else {
+
+			    echo '<td><p>The final copy of sub-extraction "';
+
+			    echo $element['displayname'];
+
+			    echo '" has no reconciled data.</p></td>';
+
+			}
+
+			$count_special_elements ++;
+
+			echo '</tr>';
+
+			break;
+
+		    case "citations":
+
+			echo "<tr>";
+
+			echo "<td>&nbsp;</td>";
+			
+			$extracted_cites = nbt_get_all_citations_for_refset ( $element['id'], $refset['id'] );
+
+			$reconciled_cites = nbt_get_all_reconciled_citations_for_refset ( $element['id'], $refset['id'] );
+
+			if ( count ( $extracted_cites ) > 0 ) {
+
+			    echo "<td><button onclick=\"nbtExportData('citations', ";
+
+			    echo $refset['id'];
+
+			    echo ", '";
+
+
+			    echo $element['columnname'];
+
+			    echo '\', 0);">Export "';
+
+			    echo $element['displayname'];
+
+			    echo '" citations</button></td>';
+
+			} else {
+
+			    echo '<td><p>Citation set "';
+
+			    echo $element['displayname'];
+
+			    echo '" has no extracted citations.</p></td>';
+
+			}
+
+			if ( count ( $reconciled_cites ) > 0 ) {
+
+			    echo "<td><button onclick=\"nbtExportData('citations', ";
+
+			    echo $refset['id'];
+
+			    echo ", '";
+
+			    echo $element['columnname'];
+
+			    echo '\', 1);">Export "';
+
+			    echo $element['displayname'];
+
+			    echo '" final citations</button></td>';
+
+			} else {
+
+			    echo '<td><p>The final copy of citation set "';
+
+			    echo $element['displayname'];
+
+			    echo '" has no reconciled citations.</p></td>';
+
+			}
+
+			$count_special_elements ++;
+
+			echo "</tr>";
+
+			break;
+
+		}
+
+
+	    }
+	    
 	}
+
+	echo "</table>";
+
+	echo "</div>";
+
+    }
 
 } else {
 
-	?><div class="nbtContentPanel nbtGreyGradient">
-		<h2>Error</h2>
-		<p>You haven't got any reference sets.</p>
-	</div><?php
+?><div class="nbtContentPanel nbtGreyGradient">
+    <h2>Error</h2>
+    <p>You haven't got any reference sets.</p>
+</div>
 
-}
+<?php } ?>
 
-?><div id="nbtCoverup" style="display: none; background: #ccc; opacity: 0.5; z-index: 1; width: 100%; height: 100%; position: fixed; top: 0; left: 0;" onclick="$(this).fadeOut();$('#nbtThinky').fadeOut();">&nbsp;</div>
+<div id="nbtCoverup" style="display: none; background: #ccc; opacity: 0.5; z-index: 1; width: 100%; height: 100%; position: fixed; top: 0; left: 0;" onclick="$(this).fadeOut();$('#nbtThinky').fadeOut();">&nbsp;</div>
 <div id="nbtThinky" style="display: none; z-index: 2; position: fixed; top: 100px; width: 100%; text-align: center;">
-	<div style="padding: 10px 20px 10px 20px; border: 2px solid #666; border-radius: 5px; background: #eee; color: #666; display: inline;"><a href="<?php echo SITE_URL ?>export/result.csv" id="nbtThinkyLinky">Download</a></div>
+    <div style="padding: 10px 20px 10px 20px; border: 2px solid #666; border-radius: 5px; background: #eee; color: #666; display: inline;"><a href="<?php echo SITE_URL ?>export/result.csv" id="nbtThinkyLinky">Download</a></div>
 </div>
