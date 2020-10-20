@@ -445,6 +445,55 @@ function nbt_password_recovery_code_checks_out ( $username, $code) {
 
 }
 
+function nbt_admin_generate_password_link ( $userid ) {
+
+    $username = nbt_get_username_for_userid ($userid);
+
+    if ($username) {
+	
+	// First, generate a 10-character hash
+
+	$string = md5(uniqid(rand(), true));
+	$passwordchangecode = substr($string, 0, 10);
+
+	// Insert that into the DB for the user
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE users SET `passwordchangecode` = :code WHERE id = :uid");
+
+	    $stmt->bindParam(':code', $code);
+	    $stmt->bindParam(':uid', $uid);
+
+	    $uid = $userid;
+	    $code = $passwordchangecode;
+
+
+	    if ($stmt->execute()) {
+
+		return SITE_URL . "forgot/?username=" . $username . "&code=" . $passwordchangecode;
+		
+	    }
+
+	    $dbh = null;
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+    } else {
+	
+	return FALSE;
+	
+    }
+
+    
+}
+
 function nbt_change_password ( $username, $newpass ) {
 
     $string = md5(uniqid(rand(), true));
@@ -4258,6 +4307,37 @@ function nbt_change_user_privileges ( $userid, $privileges ) {
 
 	$user = $userid;
 	$priv = $privileges;
+
+	if ( $stmt->execute() ) {
+
+	    echo "Changes saved";
+
+	}
+
+	$dbh = null;
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+}
+
+function nbt_manually_change_email_verification ( $userid, $newvalue ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE users SET emailverify=:newval WHERE id = :userid LIMIT 1;");
+
+	$stmt->bindParam(':userid', $user);
+	$stmt->bindParam(':newval', $nv);
+
+	$user = $userid;
+	$nv = $newvalue;
 
 	if ( $stmt->execute() ) {
 

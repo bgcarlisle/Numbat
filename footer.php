@@ -113,6 +113,50 @@
 
  }
 
+ function nbtChangeUserEmailVerify ( userid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'users/changeemailverify.php',
+	 type: 'post',
+	 data: {
+	     user: userid,
+	     verify: $('#nbtUserEmailVerified' + userid).val()
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtPrivilegeFeedback').html(html);
+
+	 $('#nbtPrivilegeFeedback').fadeIn(500, function () {
+
+	     $('#nbtPrivilegeFeedback').fadeOut(3000);
+
+	 });
+
+     });
+
+ }
+
+ function nbtAdminChangePassword ( userid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'users/generatepasswordlink.php',
+	 type: 'post',
+	 data: {
+	     user: userid
+	 },
+	 dataType: 'html'
+     }).done ( function (response) {
+	 
+	 $('#nbtPasswordChangeFeedback').slideUp(500, function () {
+	     $('#nbtPasswordChangeFeedback').html(response);
+	     $('#nbtPasswordChangeFeedback').slideDown();
+	 });
+
+     });
+
+ }
+
  function nbtNewExtractionForm () {
 
      $.ajax ({
