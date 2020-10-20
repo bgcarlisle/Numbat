@@ -3573,6 +3573,18 @@
 
  }
 
+ function nbtPasswordCheck () {
+     if ( $('#nbtSignUpPassword1').val() == "" ) {
+	 $('#nbtChangePassButton').attr('disabled', true);
+     } else {
+	 if ($('#nbtSignUpPassword1').val() == $('#nbtSignUpPassword2').val()) {
+	     $('#nbtChangePassButton').removeAttr('disabled');
+	 } else {
+	     $('#nbtChangePassButton').attr('disabled', true);
+	 }
+     }
+ }
+
  function nbtChangePassword ( user, code ) {
 
      $.ajax ({
