@@ -9,7 +9,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
     if ( $link ) {
 	echo '<button onclick="$(\'#nbtPasswordChangeFeedback\').slideUp();" style="float: right; margin: 0 0 10px 10px;">Close</button>';
 	echo "<p>You may reset the password for this account at the following link:</p>";
-	echo "<p>" . $link . "</p>";
+	echo "<pre style=\"margin: 8px 0 2px 0;\">" . $link . "</pre>";
 	echo "<p>Send this link to the user in question and they will be able to change the password for their account to one of their own choosing.</p>";
     } else {
 	echo "No user found";
