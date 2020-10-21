@@ -494,7 +494,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 		    if ( count ( array_unique ( $values ) ) == 1 ) { // If all the extractors got the same result
 
-			nbt_copy_to_master ( $_GET['form'], $_GET['refset'], $_GET['ref'], $element['columnname'], $extractions[0]['id'] );
+			// nbt_copy_to_master ( $_GET['form'], $_GET['refset'], $_GET['ref'], $element['columnname'], $extractions[0]['id'] );
 
 			echo '<div class="nbtFeedbackGood nbtDoubleResult">';
 
