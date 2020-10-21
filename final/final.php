@@ -701,14 +701,16 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    if ( $extraction[$element['columnname']] == $master[$element['columnname']]) {
 
-				echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span></p>';
+				echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span>';
 
 			    } else {
 
-				echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtHidden nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span></p>';
+				echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtHidden nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span>';
 
 
 			    }
+
+			    echo '</p>';
 
 			    echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
 
