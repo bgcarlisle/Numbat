@@ -2085,6 +2085,12 @@
  }
 
  function nbtUpdateFinalSelector (form, refset, ref, col, newval, eid, element_type ) {
+
+     if ($('#nbtElement' + eid + '-' + newval).hasClass('nbtTextOptionChosen')) {
+	 setnull = 'TRUE';
+     } else {
+	 setnull = 'FALSE';
+     }
      
      $.ajax ({
 	 url: numbaturl + 'final/updateselector.php',
@@ -2095,7 +2101,8 @@
 	     rid: ref,
 	     column: col,
 	     newvalue: newval,
-	     elementtype: element_type
+	     elementtype: element_type,
+	     setnull: setnull
 	 },
 	 dataType: 'html'
      }).done ( function (response) {
@@ -2104,7 +2111,9 @@
 	     
 	     $('.nbtElement' + eid).removeClass('nbtTextOptionChosen');
 
-	     $('#nbtElement' + eid + '-' + newval).addClass('nbtTextOptionChosen');
+	     if (setnull == 'FALSE') {
+		 $('#nbtElement' + eid + '-' + newval).addClass('nbtTextOptionChosen');
+	     }
 	 }
 
      });

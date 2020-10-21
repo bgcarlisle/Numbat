@@ -8,6 +8,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 	case "single_select":
 
+	    if ( $_POST['setnull'] == "TRUE") {
+		$_POST['newvalue'] = NULL;
+	    }
+
 	    if ( nbt_update_final ( $_POST['fid'], $_POST['rsid'], $_POST['rid'], $_POST['column'], $_POST['newvalue']) ) {
 		
 		echo "Changes saved";

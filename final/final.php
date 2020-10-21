@@ -853,8 +853,6 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    }
 
-			    
-
 			    echo $option['displayname'];
 
 			    echo '</a>';
