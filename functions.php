@@ -10889,7 +10889,7 @@ function nbt_echo_display_name_and_codebook ( $displayname, $codebook ) {
 	
 	$codebook = str_replace ("\n", "<br>", $codebook);
 
-	echo '<a href="#" onclick="event.preventDefault();$(this).parent().next(\'.nbtCodebook\').slideToggle(100);">(?)</a></p>';
+	echo ' <a href="#" onclick="event.preventDefault();$(this).parent().next(\'.nbtCodebook\').slideToggle(100);">(?)</a></p>';
 
 	echo '<div class="nbtCodebook">';
 
