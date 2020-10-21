@@ -2042,7 +2042,7 @@
 
  }
 
- function nbtUpdateFinalOpenText ( form, refset, ref, col, inputid ) {
+ function nbtUpdateFinalColumn ( form, refset, ref, col, inputid ) {
      
      $.ajax ({
 	 url: numbaturl + 'final/updateopentext.php',
