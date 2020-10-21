@@ -27,7 +27,7 @@ if ( count ( $extractions ) >= 2 ) {
 	echo $ref[$refset['journal']];
 
 	echo '</span>: ' . $ref[$refset['year']] . '</p>';
-	
+
     }
 
     echo '</div>';
@@ -75,7 +75,7 @@ if ( count ( $extractions ) >= 2 ) {
 		echo ' nbtTextOptionChosen';
 
 	    }
-	    
+
 	}
 
 	$buttonid = "nbtQstatusA" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
@@ -120,7 +120,7 @@ if ( count ( $extractions ) >= 2 ) {
 		    $element['codebook'] = str_replace ("\n", "<br>", $element['codebook']);
 
 		    echo ' <a href="#" onclick="event.preventDefault();$(this).parent().next(\'.nbtCodebook\').slideToggle(100);">(?)</a></h3>';
-		    
+
 		    echo '<div class="nbtCodebook">';
 
 		    echo $element['codebook'];
@@ -130,11 +130,11 @@ if ( count ( $extractions ) >= 2 ) {
 		} else {
 
 		    echo '</h3>';
-		    
+
 		}
 
 		break;
-		
+
 	    case "open_text":
 
 	    case "prev_select":
@@ -180,7 +180,7 @@ if ( count ( $extractions ) >= 2 ) {
 			echo $element['id'];
 
 			echo '">';
-			
+
 			nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
 			foreach ( $extractions as $extraction ) {
@@ -192,7 +192,7 @@ if ( count ( $extractions ) >= 2 ) {
 			    }
 
 			    if ( $extraction[$element['columnname']] == $master[$element['columnname']]) {
-				
+
 				echo '<p>';
 
 				echo '<span id="nbtExtractedValue' . $element['id'] . '-' . $extraction['userid'] . '">' . $extraction[$element['columnname']] . '</span>';
@@ -200,7 +200,7 @@ if ( count ( $extractions ) >= 2 ) {
 				echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span></p>';
 
 				echo '<span class="nbtExtractionName">';
-				
+
 				echo $extraction['username'];
 
 				echo '</span>';
@@ -216,15 +216,15 @@ if ( count ( $extractions ) >= 2 ) {
 				echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtHidden nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span></p>';
 
 				echo '<span class="nbtExtractionName">';
-				
+
 				echo $extraction['username'];
 
 				echo '</span>';
 
 				echo '<button onclick="nbtCopyToMaster(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ", '" . $element['columnname'] . "', " . $extraction['id'] . ", " . $element['id'] . ", " . $extraction['userid'] . ');">Copy to final</button>';
-				
+
 			    }
-			    
+
 			}
 
 
@@ -232,10 +232,10 @@ if ( count ( $extractions ) >= 2 ) {
 			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . $master[$element['columnname']] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">';
 
 			echo "</div>";
-			
+
 
 		    }
-		    
+
 		} else { // The final copy is NULL
 
 		    // Test for equality
@@ -307,7 +307,7 @@ if ( count ( $extractions ) >= 2 ) {
 			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">';
 
 			echo "</div>";
-			
+
 		    }
 
 		}
@@ -335,7 +335,7 @@ if ( count ( $extractions ) >= 2 ) {
 			// nbt_copy_to_master ( $_GET['form'], $_GET['refset'], $_GET['ref'], $element['columnname'], $extractions[0]['id'] );
 
 			echo '<div class="nbtFeedbackGood nbtDoubleResult">';
-			
+
 			nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
 			if ( $extractions[0][$element['columnname']] == "" ) {
@@ -375,7 +375,7 @@ if ( count ( $extractions ) >= 2 ) {
 				echo '<p>';
 
 				echo '<span id="nbtExtractedValue' . $element['id'] . '-' . $extraction['userid'] . '">' . $extraction[$element['columnname']] . '</span>';
-				
+
 				echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span></p>';
 
 				echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
@@ -397,7 +397,7 @@ if ( count ( $extractions ) >= 2 ) {
 			    }
 
 			}
-			
+
 			echo '<textarea id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">' . $master[$element['columnname']] . '</textarea>';
 
 			echo "</div>";
@@ -421,7 +421,7 @@ if ( count ( $extractions ) >= 2 ) {
 			nbt_copy_to_master ( $_GET['form'], $_GET['refset'], $_GET['ref'], $element['columnname'], $extractions[0]['id'] );
 
 			echo '<div class="nbtFeedbackGood nbtDoubleResult">';
-			
+
 			nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
 			if ( $extractions[0][$element['columnname']] == "" ) {
@@ -590,7 +590,7 @@ if ( count ( $extractions ) >= 2 ) {
 		    } else {
 
 			echo '<div class="nbtFeedbackBad nbtDoubleResult" id="nbtExtractedElement' . $element['id'] . '">';
-			
+
 			nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
 			foreach ( $extractions as $extraction ) {
@@ -665,6 +665,36 @@ if ( count ( $extractions ) >= 2 ) {
 
 			echo '<span class="nbtExtractionName">[All extractors]</span>';
 
+			// final copy
+
+			echo '<p>';
+
+			foreach ( $selectoptions as $option ) {
+
+			    if ( $option['dbname'] == $master[$element['columnname']] ) {
+
+				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtElement' . $element['id'] . '" id="nbtElement' . $element['id'] . '-' . $option['dbname'] . '" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'' . $option['dbname'] . '\', ' . $element['id'] . ', \'' . $element['type'] . '\');">';
+
+				echo $option['displayname'];
+
+				echo '</a>';
+
+			    } else {
+
+				echo '<a class="nbtTextOptionSelect nbtElement' . $element['id'] . '" id="nbtElement' . $element['id'] . '-' . $option['dbname'] . '" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'' . $option['dbname'] . '\', ' . $element['id'] . ', \'' . $element['type'] . '\');">';
+
+				echo $option['displayname'];
+
+				echo '</a>';
+
+			    }
+
+			}
+
+			echo '</p>';
+
+			echo '<span class="nbtExtractionName">[Final copy]</span>';
+
 			echo '</div>';
 
 		    } else { // If there was not perfect agreement among the extractors (final not NULL)
@@ -718,6 +748,36 @@ if ( count ( $extractions ) >= 2 ) {
 
 			}
 
+			// final copy
+
+			echo '<p>';
+
+			foreach ( $selectoptions as $option ) {
+
+			    if ( $option['dbname'] == $master[$element['columnname']] ) {
+
+				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtElement' . $element['id'] . '" id="nbtElement' . $element['id'] . '-' . $option['dbname'] . '" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'' . $option['dbname'] . '\', ' . $element['id'] . ', \'' . $element['type'] . '\');">';
+
+				echo $option['displayname'];
+
+				echo '</a>';
+
+			    } else {
+
+				echo '<a class="nbtTextOptionSelect nbtElement' . $element['id'] . '" id="nbtElement' . $element['id'] . '-' . $option['dbname'] . '" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'' . $option['dbname'] . '\', ' . $element['id'] . ', \'' . $element['type'] . '\');">';
+
+				echo $option['displayname'];
+
+				echo '</a>';
+
+			    }
+
+			}
+
+			echo '</p>';
+
+			echo '<span class="nbtExtractionName">[Final copy]</span>';
+
 			echo '</div>';
 
 		    }
@@ -729,7 +789,7 @@ if ( count ( $extractions ) >= 2 ) {
 			nbt_copy_to_master ( $_GET['form'], $_GET['refset'], $_GET['ref'], $element['columnname'], $extractions[0]['id'] );
 
 			echo '<div class="nbtFeedbackGood nbtDoubleResult">';
-			
+
 			nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
 			echo '<p>';
@@ -751,7 +811,7 @@ if ( count ( $extractions ) >= 2 ) {
 				echo $option['displayname'];
 
 				echo '</a>';
-				
+
 
 			    }
 
@@ -760,6 +820,34 @@ if ( count ( $extractions ) >= 2 ) {
 			echo '</p>';
 
 			echo '<span class="nbtExtractionName">[All extractors]</span>';
+
+			// final copy
+
+			echo '<p>';
+
+			foreach ( $selectoptions as $option ) {
+
+			    if ( $option['dbname'] == $extractions[0][$element['columnname']] ) {
+				
+				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtElement' . $element['id'] . '" id="nbtElement' . $element['id'] . '-' . $option['dbname'] . '" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'' . $option['dbname'] . '\', ' . $element['id'] . ', \'' . $element['type'] . '\');">';
+
+			    } else {
+
+				echo '<a class="nbtTextOptionSelect nbtElement' . $element['id'] . '" id="nbtElement' . $element['id'] . '-' . $option['dbname'] . '" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'' . $option['dbname'] . '\', ' . $element['id'] . ', \'' . $element['type'] . '\');">';
+
+			    }
+
+			    
+
+			    echo $option['displayname'];
+
+			    echo '</a>';
+
+			}
+
+			echo '</p>';
+
+			echo '<span class="nbtExtractionName">[Final copy]</span>';
 
 			echo '</div>';
 
@@ -800,8 +888,26 @@ if ( count ( $extractions ) >= 2 ) {
 			    echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
 
 			    echo '<button onclick="nbtCopyToMaster(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ", '" . $element['columnname'] . "', " . $extraction['id'] . ', ' . $element['id'] . ', ' . $extraction['userid'] . ');">Copy to final</button>';
-			    
+
 			}
+
+			// final copy
+
+			echo '<p>';
+
+			foreach ( $selectoptions as $option ) {
+
+			    echo '<a class="nbtTextOptionSelect nbtElement' . $element['id'] . '" id="nbtElement' . $element['id'] . '-' . $option['dbname'] . '" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'' . $option['dbname'] . '\', ' . $element['id'] . ', \'' . $element['type'] . '\');">';
+
+			    echo $option['displayname'];
+
+			    echo '</a>';
+
+			}
+
+			echo '</p>';
+
+			echo '<span class="nbtExtractionName">[Final copy]</span>';
 
 			echo '</div>';
 

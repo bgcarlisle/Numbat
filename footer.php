@@ -2084,6 +2084,33 @@
      
  }
 
+ function nbtUpdateFinalSelector (form, refset, ref, col, newval, eid, element_type ) {
+     
+     $.ajax ({
+	 url: numbaturl + 'final/updateselector.php',
+	 type: 'post',
+	 data: {
+	     fid: form,
+	     rsid: refset,
+	     rid: ref,
+	     column: col,
+	     newvalue: newval,
+	     elementtype: element_type
+	 },
+	 dataType: 'html'
+     }).done ( function (response) {
+
+	 if (response == 'Changes saved') {
+	     
+	     $('.nbtElement' + eid).removeClass('nbtTextOptionChosen');
+
+	     $('#nbtElement' + eid + '-' + newval).addClass('nbtTextOptionChosen');
+	 }
+
+     });
+     
+ }
+
  function nbtUpdateMasterExtractionTableData ( tableid, rowid, columnid, inputid) {
 
      $.ajax ({
