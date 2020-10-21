@@ -2045,7 +2045,7 @@
  function nbtUpdateFinalColumn ( form, refset, ref, col, inputid ) {
      
      $.ajax ({
-	 url: numbaturl + 'final/updateopentext.php',
+	 url: numbaturl + 'final/updatecolumn.php',
 	 type: 'post',
 	 data: {
 	     fid: form,
