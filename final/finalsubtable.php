@@ -45,6 +45,6 @@ $no_of_columns = count ( $columns );
 
 		echo count ($columns) + 1;
 
-		?>"><button onclick="nbtAddSubTableRowToMaster(<?php echo $nbtMasterTableID; ?>, <?php echo $nbtMasterRefSet; ?>, <?php echo $nbtMasterRefID; ?>, <?php echo $nbtSubTableSubextractionID; ?>);">Add new row to master</button></td>
+		?>"><button onclick="nbtAddSubTableRowToMaster(<?php echo $nbtMasterTableID; ?>, <?php echo $nbtMasterRefSet; ?>, <?php echo $nbtMasterRefID; ?>, <?php echo $nbtSubTableSubextractionID; ?>);">Add new row to final</button></td>
 	</tr>
 </table>
