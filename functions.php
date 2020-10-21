@@ -10433,6 +10433,46 @@ function nbt_update_extraction_table_data ($tableid, $rowid, $column, $newvalue,
 
 }
 
+function nbt_update_final ( $formid, $refsetid, $refid, $column, $newvalue ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `" . $column . "` = :nv WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
+
+	$stmt->bindParam(':rsid', $rsid);
+	$stmt->bindParam(':rid', $rid);
+	$stmt->bindParam(':nv', $nv);
+
+	$rsid = $refsetid;
+	$rid = $refid;
+	$nv = $newvalue;
+
+	if ( $stmt->execute() ) {
+
+	    $dbh = null;
+
+	    return TRUE;
+
+	} else {
+
+	    $dbh = null;
+
+	    return FALSE;
+
+	}
+
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
 function nbt_update_extraction_mtable_data ($tableid, $rowid, $column, $newvalue, $sub_table = FALSE) {
 
     if ( $sub_table ) {

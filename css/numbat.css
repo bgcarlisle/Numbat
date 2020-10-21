@@ -520,3 +520,7 @@ img.nbtTitleImage {
 	color: #fff;
 	text-decoration: none;
 }
+input.finalOverride {
+    display: block;
+    margin-top: 20px;
+}

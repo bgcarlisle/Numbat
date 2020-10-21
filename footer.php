@@ -2042,6 +2042,47 @@
 
  }
 
+ function nbtUpdateFinalOpenText ( form, refset, ref, col, inputid ) {
+     
+     $.ajax ({
+	 url: numbaturl + 'final/updateopentext.php',
+	 type: 'post',
+	 data: {
+	     fid: form,
+	     rsid: refset,
+	     rid: ref,
+	     column: col,
+	     newvalue: $('#' + inputid).val()
+	 },
+	 dataType: 'html'
+     }).done ( function (response) {
+
+	 if (response == 'Changes saved') {
+
+	     $('#' + inputid).addClass('nbtBackgroundFeedbackGood');
+
+	     setTimeout ( function () {
+
+		 $('#' + inputid).removeClass('nbtBackgroundFeedbackGood');
+
+	     }, 500);
+
+	 } else {
+
+	     $('#' + inputid).addClass('nbtBackgroundFeedbackBad');
+
+	     setTimeout ( function () {
+
+		 $('#' + inputid).removeClass('nbtBackgroundFeedbackBad');
+
+	     }, 500);
+
+	 }
+
+     });
+     
+ }
+
  function nbtUpdateMasterExtractionTableData ( tableid, rowid, columnid, inputid) {
 
      $.ajax ({
@@ -3507,6 +3548,8 @@
 	 $('.nbtElement' + eid + 'Check').fadeOut(0);
 
 	 $('#nbtExtractedElement' + eid + '-' + uid).fadeIn();
+
+	 $('#nbtFinalOverride' + eid).val($('#nbtExtractedValue' + eid + '-' + uid).html());
 
      });
 
