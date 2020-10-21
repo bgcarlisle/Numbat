@@ -703,24 +703,20 @@ if ( count ( $extractions ) >= 2 ) {
 
 				echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span></p>';
 
-				echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
-
-				echo '<button onclick="nbtCopyToMaster(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ", '" . $element['columnname'] . "', " . $extraction['id'] . ", " . $element['id'] . ', ' . $extraction['userid'] . ');">Copy to final</button>';
-
 			    } else {
 
 				echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtHidden nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span></p>';
 
-				echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
-
-				echo '<button onclick="nbtCopyToMaster(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ", '" . $element['columnname'] . "', " . $extraction['id'] . ', ' . $element['id'] . ', ' . $extraction['userid'] . ');">Copy to final</button>';
 
 			    }
+
+			    echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
+
+			    echo '<button onclick="nbtCopyToMaster(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ", '" . $element['columnname'] . "', " . $extraction['id'] . ", " . $element['id'] . ', ' . $extraction['userid'] . ');">Copy to final</button>';
 
 			}
 
 			echo '</div>';
-
 
 		    }
 
