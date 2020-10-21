@@ -171,6 +171,8 @@ if ( count ( $extractions ) >= 2 ) {
 
 			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . $master[$element['columnname']] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">';
 
+			echo '<span class="nbtExtractionName">[Final copy]</span>';
+
 			echo '</div>';
 
 		    } else { // If not all the extractions are the same
@@ -231,6 +233,8 @@ if ( count ( $extractions ) >= 2 ) {
 
 			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . $master[$element['columnname']] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">';
 
+			echo '<span class="nbtExtractionName">[Final copy]</span>';
+
 			echo "</div>";
 
 
@@ -267,6 +271,8 @@ if ( count ( $extractions ) >= 2 ) {
 			echo '<span class="nbtExtractionName">[All extractors]</span>';
 
 			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . $extractions[0][$element['columnname']] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">';
+
+			echo '<span class="nbtExtractionName">[Final copy]</span>';
 
 			echo "</div>";
 
@@ -305,6 +311,8 @@ if ( count ( $extractions ) >= 2 ) {
 			}
 
 			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">';
+
+			echo '<span class="nbtExtractionName">[Final copy]</span>';
 
 			echo "</div>";
 
