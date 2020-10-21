@@ -2042,8 +2042,8 @@
 
  }
 
- function nbtUpdateFinalColumn ( form, refset, ref, col, inputid ) {
-     
+ function nbtUpdateFinalColumn ( form, refset, ref, col, inputid, element_type ) {
+
      $.ajax ({
 	 url: numbaturl + 'final/updatecolumn.php',
 	 type: 'post',
@@ -2052,7 +2052,8 @@
 	     rsid: refset,
 	     rid: ref,
 	     column: col,
-	     newvalue: $('#' + inputid).val()
+	     newvalue: $('#' + inputid).val(),
+	     elementtype: element_type
 	 },
 	 dataType: 'html'
      }).done ( function (response) {
