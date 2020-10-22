@@ -3586,7 +3586,15 @@
 
 	 $('#nbtExtractedElement' + eid + '-' + uid).fadeIn();
 
+	 // for open text, textarea and dates
+
 	 $('#nbtFinalOverride' + eid).val($('#nbtExtractedValue' + eid + '-' + uid).html());
+
+	 // for single select
+
+	 $('.nbtElement' + eid).removeClass('nbtTextOptionChosen');
+
+	 $('#nbtElement' + eid + '-' + $('.nbtSingleSelectExtraction' + exid + '.nbtTextOptionChosen').attr('dbname')).addClass('nbtTextOptionChosen');
 
      });
 

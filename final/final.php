@@ -659,7 +659,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    if ( $option['dbname'] == $extractions[0][$element['columnname']] ) {
 
-				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen">';
+				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				echo $option['displayname'];
 
@@ -667,7 +667,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    } else {
 
-				echo '<a class="nbtTextOptionSelect">';
+				echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				echo $option['displayname'];
 
@@ -727,7 +727,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 				if ( $option['dbname'] == $extraction[$element['columnname']] ) {
 
-				    echo '<a class="nbtTextOptionSelect nbtTextOptionChosen">';
+				    echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				    echo $option['displayname'];
 
@@ -735,7 +735,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 				} else {
 
-				    echo '<a class="nbtTextOptionSelect">';
+				    echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				    echo $option['displayname'];
 
@@ -814,7 +814,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    if ( $option['dbname'] == $extractions[0][$element['columnname']] ) {
 
-				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen">';
+				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				echo $option['displayname'];
 
@@ -822,7 +822,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    } else {
 
-				echo '<a class="nbtTextOptionSelect">';
+				echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				echo $option['displayname'];
 
@@ -879,7 +879,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 				if ( $option['dbname'] == $extraction[$element['columnname']] ) {
 
-				    echo '<a class="nbtTextOptionSelect nbtTextOptionChosen">';
+				    echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				    echo $option['displayname'];
 
@@ -887,7 +887,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 				} else {
 
-				    echo '<a class="nbtTextOptionSelect">';
+				    echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				    echo $option['displayname'];
 
@@ -986,87 +986,117 @@ if ( count ( $extractions ) >= 2 ) {
 
 		    if ( count ( array_unique ( $multivalues ) ) == 1 ) { // If they're all the same
 
-?><div class="nbtFeedbackGood nbtDoubleResult">
-    <?php nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] ); ?>
+			echo '<div class="nbtFeedbackGood nbtDoubleResult">';
 
-    <?php
+			nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
-    foreach ( $selectoptions as $option ) {
+			foreach ( $selectoptions as $option ) {
 
-	nbt_copy_to_master ( $_GET['form'], $_GET['refset'], $_GET['ref'], $element['columnname'] . "_" . $option['dbname'], $extractions[0]['id'] );
+			    nbt_copy_to_master ( $_GET['form'], $_GET['refset'], $_GET['ref'], $element['columnname'] . "_" . $option['dbname'], $extractions[0]['id'] );
 
-	if ( $extractions[0][$element['columnname'] . "_" . $option['dbname']] == 1 ) {
+			    if ( $extractions[0][$element['columnname'] . "_" . $option['dbname']] == 1 ) {
 
-    ?><a class="nbtTextOptionSelect nbtTextOptionChosen"><?php echo $option['displayname']; ?></a><?php
+				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen">';
 
-												  } else {
+				echo $option['displayname'];
 
-												  ?><a class="nbtTextOptionSelect"><?php echo $option['displayname']; ?></a><?php
+				echo '</a>';
 
-																					    }
+			    } else {
 
-																					    }
+				echo '<a class="nbtTextOptionSelect">';
 
-																					    ?>
+				echo $option['displayname'];
 
-</div><?php
+				echo '</a>';
 
-      } else { // If they're not all the same
+			    }
 
-      ?><div class="nbtFeedbackGood nbtDoubleResult" id="nbtExtractedElement<?php echo $element['id']; ?>">
-    <?php nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] ); ?>
+			}
 
-    <?php
+			echo '</div>';
 
-    foreach ( $extractions as $extraction ) {
+		    } else { // If they're not all the same
 
-    ?><p><?php
+			echo '<div class="nbtFeedbackGood nbtDoubleResult" id="nbtExtractedElement';
 
-	 foreach ( $selectoptions as $option ) {
+			echo $element['id'];
 
-	     if ( $extraction[$element['columnname'] . "_" . $option['dbname']] == 1 ) {
+			echo '">';
 
-	 ?><a class="nbtTextOptionSelect nbtTextOptionChosen"><?php echo $option['displayname']; ?></a><?php
+			nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
-												       } else {
+			foreach ( $extractions as $extraction ) {
 
-												       ?><a class="nbtTextOptionSelect"><?php echo $option['displayname']; ?></a><?php
+			    echo '<p>';
 
-																						 }
+			    foreach ( $selectoptions as $option ) {
 
-																						 }
+				if ( $extraction[$element['columnname'] . "_" . $option['dbname']] == 1 ) {
 
-																						 // Test to see if this is the one that's in the master
+				    echo '<a class="nbtTextOptionSelect nbtTextOptionChosen">';
 
-																						 $same_as_master = 1;
+				    echo $option['displayname'];
 
-																						 foreach ( $selectoptions as $option ) {
+				    echo '</a>';
 
-																						     if ( $extraction[$element['columnname'] . "_" . $option['dbname']] != $master[$element['columnname'] . "_" . $option['dbname']] ) {
+				} else {
 
-																							 $same_as_master = 0;
+				    echo '<a class="nbtTextOptionSelect">';
 
-																						     }
+				    echo $option['displayname'];
 
-																						 }
+				    echo '</a>';
 
-																						 if ( $same_as_master == 1 ) {
+				}
 
-																						 ?><span id="nbtExtractedElement<?php echo $element['id']; ?>-<?php echo $extraction['userid']; ?>" class="nbtFeedback nbtElement<?php echo $element['id']; ?>Check">&#x2713;</span></p>
+			    }
+
+			    // Test to see if this is the one that's in the master
+
+			    $same_as_master = 1;
+
+			    foreach ( $selectoptions as $option ) {
+
+				if ( $extraction[$element['columnname'] . "_" . $option['dbname']] != $master[$element['columnname'] . "_" . $option['dbname']] ) {
+
+				    $same_as_master = 0;
+
+				}
+
+			    }
+
+			    if ( $same_as_master == 1 ) {
+
+				echo '<span id="nbtExtractedElement';
+
+				echo $element['id'];
+
+				echo '-';
+
+				echo $extraction['userid'];
+
+				echo '" class="nbtFeedback nbtElement';
+
+				echo $element['id'];
+
+				echo 'Check">&#x2713;</span></p>';
+
+?>
+    <span class="nbtExtractionName"><?php echo $extraction['username']; ?></span>
+    <button onclick="nbtCopyMultiSelectToMaster(<?php echo $_GET['form']; ?>, <?php echo $_GET['refset'] ?>, <?php echo $_GET['ref']; ?>, <?php echo $extraction['id']; ?>, <?php echo $element['id']; ?>, <?php echo $extraction['userid']; ?>);">Copy to final</button><?php
+
+																																	 } else {
+
+																																	 ?><span id="nbtExtractedElement<?php echo $element['id']; ?>-<?php echo $extraction['userid']; ?>" class="nbtHidden nbtFeedback nbtElement<?php echo $element['id']; ?>Check">&#x2713;</span></p>
 	<span class="nbtExtractionName"><?php echo $extraction['username']; ?></span>
 	<button onclick="nbtCopyMultiSelectToMaster(<?php echo $_GET['form']; ?>, <?php echo $_GET['refset'] ?>, <?php echo $_GET['ref']; ?>, <?php echo $extraction['id']; ?>, <?php echo $element['id']; ?>, <?php echo $extraction['userid']; ?>);">Copy to final</button><?php
 
-																																	     } else {
+																																	     }
 
-																																	     ?><span id="nbtExtractedElement<?php echo $element['id']; ?>-<?php echo $extraction['userid']; ?>" class="nbtHidden nbtFeedback nbtElement<?php echo $element['id']; ?>Check">&#x2713;</span></p>
-	    <span class="nbtExtractionName"><?php echo $extraction['username']; ?></span>
-	    <button onclick="nbtCopyMultiSelectToMaster(<?php echo $_GET['form']; ?>, <?php echo $_GET['refset'] ?>, <?php echo $_GET['ref']; ?>, <?php echo $extraction['id']; ?>, <?php echo $element['id']; ?>, <?php echo $extraction['userid']; ?>);">Copy to final</button><?php
+																																	     }
 
-																																		 }
-
-																																		 }
-
-																																		 ?>
+																																	     ?>
 
       </div><?php
 
