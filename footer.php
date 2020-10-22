@@ -2042,7 +2042,7 @@
 
  }
 
- function nbtUpdateFinalColumn ( form, refset, ref, col, inputid, element_type ) {
+ function nbtUpdateFinalColumn ( form, refset, ref, col, inputid, element_type, eid ) {
 
      $.ajax ({
 	 url: numbaturl + 'final/updatecolumn.php',
@@ -2059,6 +2059,8 @@
      }).done ( function (response) {
 
 	 if (response == 'Changes saved') {
+
+	     $('.nbtElement' + eid + 'Check').fadeOut();
 
 	     $('#' + inputid).addClass('nbtBackgroundFeedbackGood');
 
@@ -2119,6 +2121,8 @@
      }).done ( function (response) {
 
 	 if (response == 'Changes saved') {
+
+	     $('.nbtElement' + eid + 'Check').fadeOut();
 
 	     if ( element_type == 'single_select' ) {
 

@@ -169,7 +169,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			echo '<span class="nbtExtractionName">All extractors</span>';
 
-			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . $master[$element['columnname']] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">';
+			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . $master[$element['columnname']] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">';
 
 			echo '<span class="nbtExtractionName">Final copy</span>';
 
@@ -231,7 +231,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 
 
-			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . $master[$element['columnname']] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">';
+			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . $master[$element['columnname']] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">';
 
 			echo '<span class="nbtExtractionName">Final copy</span>';
 
@@ -270,7 +270,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			echo '<span class="nbtExtractionName">All extractors</span>';
 
-			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . $extractions[0][$element['columnname']] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">';
+			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . $extractions[0][$element['columnname']] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">';
 
 			echo '<span class="nbtExtractionName">Final copy</span>';
 
@@ -310,7 +310,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			}
 
-			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">';
+			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">';
 
 			echo '<span class="nbtExtractionName">Final copy</span>';
 
@@ -360,7 +360,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			echo '<span class="nbtExtractionName">All extractors</span>';
 
-			echo '<textarea id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">' . $master[$element['columnname']] . '</textarea>';
+			echo '<textarea id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">' . $master[$element['columnname']] . '</textarea>';
 
 			echo '<span class="nbtExtractionName">Final copy</span>';
 
@@ -408,7 +408,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			}
 
-			echo '<textarea id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">' . $master[$element['columnname']] . '</textarea>';
+			echo '<textarea id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">' . $master[$element['columnname']] . '</textarea>';
 
 			echo '<span class="nbtExtractionName">Final copy</span>';
 
@@ -450,7 +450,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			echo '<span class="nbtExtractionName">All extractors</span>';
 
-			echo '<textarea id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">' . $extractions[0][$element['columnname']] . '</textarea>';
+			echo '<textarea id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">' . $extractions[0][$element['columnname']] . '</textarea>';
 
 			echo '<span class="nbtExtractionName">Final copy</span>';
 
@@ -480,7 +480,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			}
 
-			echo '<textarea id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');"></textarea>';
+			echo '<textarea id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');"></textarea>';
 
 			echo '<span class="nbtExtractionName">Final copy</span>';
 
@@ -524,7 +524,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			echo '<span class="nbtExtractionName">All extractors</span>';
 
-			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . substr ($master[$element['columnname']], 0, 7) . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">';
+			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . substr ($master[$element['columnname']], 0, 7) . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">';
 
 			echo '</div>';
 
@@ -565,7 +565,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			}
 
-			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . substr( $master[$element['columnname']], 0, 7) . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">';
+			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . substr( $master[$element['columnname']], 0, 7) . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">';
 
 			echo '</div>';
 
@@ -599,7 +599,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			echo '<span class="nbtExtractionName">All extractors</span>';
 
-			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . substr ($extractions[0][$element['columnname']], 0, 7) . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">';
+			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . substr ($extractions[0][$element['columnname']], 0, 7) . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">';
 
 			echo '</div>';
 
@@ -621,7 +621,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			}
 
-			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\');">';
+			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">';
 
 			echo '</div>';
 
@@ -1369,213 +1369,213 @@ if ( count ( $extractions ) >= 2 ) {
 
 		break;
 
-			case "table_data":
+	    case "table_data":
 
-			nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
-			foreach ( $extractions as $extraction ) {
+		foreach ( $extractions as $extraction ) {
 
-			?><p style="margin-bottom: 5px;"><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span></p>
+?><p style="margin-bottom: 5px;"><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span></p>
 
-		      <div id="nbtTableExtraction<?php echo $element['id']; ?>-<?php $extraction['id'] ?>"><?php
+    <div id="nbtTableExtraction<?php echo $element['id']; ?>-<?php $extraction['id'] ?>"><?php
 
-													   $nbtExtractTableDataID = $element['id'];
-													   $nbtExtractRefSet = $_GET['refset'];
-													   $nbtExtractRefID = $_GET['ref'];
-													   $nbtExtractUserID = $extraction['userid'];
+											 $nbtExtractTableDataID = $element['id'];
+											 $nbtExtractRefSet = $_GET['refset'];
+											 $nbtExtractRefID = $_GET['ref'];
+											 $nbtExtractUserID = $extraction['userid'];
 
-													   $tableformat = "table_data";
+											 $tableformat = "table_data";
 
-													   include ('./tabledata.php');
+											 include ('./tabledata.php');
 
-													   ?></div><?php
+											 ?></div><?php
 
-														   }
+												 }
 
-														   ?><p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final copy table</span></p>
-		      <div id="nbtMasterTable<?php echo $element['id']; ?>"><?php
+												 ?><p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final copy table</span></p>
+    <div id="nbtMasterTable<?php echo $element['id']; ?>"><?php
 
-									    $nbtMasterTableID = $element['id'];
-									    $nbtMasterRefSet = $_GET['refset'];
-									    $nbtMasterRefID = $_GET['ref'];
+							  $nbtMasterTableID = $element['id'];
+							  $nbtMasterRefSet = $_GET['refset'];
+							  $nbtMasterRefID = $_GET['ref'];
 
-									    $tableformat = "table_data";
+							  $tableformat = "table_data";
 
-									    include ('./finaltable.php');
+							  include ('./finaltable.php');
 
-									    ?></div><?php
+							  ?></div><?php
 
-										    break;
+								  break;
 
-										    case "ltable_data":
+								  case "ltable_data":
 
-										    nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+								  nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
-										    foreach ( $extractions as $extraction ) {
+								  foreach ( $extractions as $extraction ) {
 
-										    ?><p style="margin-bottom: 5px;"><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span></p>
+								  ?><p style="margin-bottom: 5px;"><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span></p>
 
-			  <div id="nbtTableExtraction<?php echo $element['id']; ?>-<?php $extraction['id'] ?>"><?php
+	<div id="nbtTableExtraction<?php echo $element['id']; ?>-<?php $extraction['id'] ?>"><?php
 
-													       $nbtExtractTableDataID = $element['id'];
-													       $nbtExtractRefSet = $_GET['refset'];
-													       $nbtExtractRefID = $_GET['ref'];
-													       $nbtExtractUserID = $extraction['userid'];
+											     $nbtExtractTableDataID = $element['id'];
+											     $nbtExtractRefSet = $_GET['refset'];
+											     $nbtExtractRefID = $_GET['ref'];
+											     $nbtExtractUserID = $extraction['userid'];
 
-													       $tableformat = "ltable_data";
+											     $tableformat = "ltable_data";
 
-													       include ('./tabledata.php');
+											     include ('./tabledata.php');
 
-													       ?></div><?php
+											     ?></div><?php
 
-														       }
+												     }
 
-														       ?><p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final copy table</span></p>
-			  <div id="nbtMasterTable<?php echo $element['id']; ?>"><?php
+												     ?><p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final copy table</span></p>
+	<div id="nbtMasterTable<?php echo $element['id']; ?>"><?php
 
-										$nbtMasterTableID = $element['id'];
-										$nbtMasterRefSet = $_GET['refset'];
-										$nbtMasterRefID = $_GET['ref'];
+							      $nbtMasterTableID = $element['id'];
+							      $nbtMasterRefSet = $_GET['refset'];
+							      $nbtMasterRefID = $_GET['ref'];
 
-										$tableformat = "ltable_data";
+							      $tableformat = "ltable_data";
 
-										include ('./finaltable.php');
+							      include ('./finaltable.php');
 
-										?></div><?php
+							      ?></div><?php
 
-											break;
+								      break;
 
-											case "citations":
+								      case "citations":
 
-											nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+								      nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
-											?><div class="nbtCitationList"><?php
+								      ?><div class="nbtCitationList"><?php
 
-														       $nbtListCitationsCitationID = $element['id'];
-														       $nbtListCitationsRefSetID = $_GET['refset'];
-														       $nbtListCitationsReference = $_GET['ref'];
-														       $nbtListCitationsUserID = $extraction['userid'];
+												     $nbtListCitationsCitationID = $element['id'];
+												     $nbtListCitationsRefSetID = $_GET['refset'];
+												     $nbtListCitationsReference = $_GET['ref'];
+												     $nbtListCitationsUserID = $extraction['userid'];
 
-														       include ("./listcitations.php");
+												     include ("./listcitations.php");
 
-														       ?></div>
+												     ?></div>
 
-			  <p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final citations list</span></p>
-			  <div class="nbtCitationList" id="nbtMasterCitations<?php echo $element['id']; ?>"><?php
+	<p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final citations list</span></p>
+	<div class="nbtCitationList" id="nbtMasterCitations<?php echo $element['id']; ?>"><?php
 
-													    $nbtListCitationsCitationID = $element['id'];
-													    $nbtListCitationsRefSetID = $_GET['refset'];
-													    $nbtListCitationsReference = $_GET['ref'];
+											  $nbtListCitationsCitationID = $element['id'];
+											  $nbtListCitationsRefSetID = $_GET['refset'];
+											  $nbtListCitationsReference = $_GET['ref'];
 
-													    include ("./finalcitations.php");
+											  include ("./finalcitations.php");
 
-													    ?></div><?php
+											  ?></div><?php
 
-														    break;
+												  break;
 
-														    case "sub_extraction":
+												  case "sub_extraction":
 
-														    ?><div><?php
+												  ?><div><?php
 
-															   nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+													 nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
-															   ?><table class="nbtTabledData">
-			      <tr><?php
+													 ?><table class="nbtTabledData">
+	    <tr><?php
 
-				  foreach ( $extractions as $extraction ) {
+		foreach ( $extractions as $extraction ) {
 
-				  ?><td><p style="margin-bottom: 5px;"><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span></td><?php
+		?><td><p style="margin-bottom: 5px;"><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span></td><?php
 
-																			 }
+																       }
 
-																			 ?></tr>
-				  <tr><?php
+																       ?></tr>
+		<tr><?php
 
-				      foreach ( $extractions as $extraction ) {
+		    foreach ( $extractions as $extraction ) {
 
-				      ?><td>
-				  </p>
+		    ?><td>
+		</p>
 
-				  <div class="nbtSubExtraction" id="nbtSubExtraction<?php echo $element['id']; ?>-<?php echo $extraction['userid']; ?>"><?php
+		<div class="nbtSubExtraction" id="nbtSubExtraction<?php echo $element['id']; ?>-<?php echo $extraction['userid']; ?>"><?php
 
-																			$nbtSubExtractionElementID = $element['id'];
-																			$nbtExtractRefSet = $_GET['refset'];
-																			$nbtExtractRefID = $_GET['ref'];
-																			$nbtExtractUserID = $extraction['userid'];
+																      $nbtSubExtractionElementID = $element['id'];
+																      $nbtExtractRefSet = $_GET['refset'];
+																      $nbtExtractRefID = $_GET['ref'];
+																      $nbtExtractUserID = $extraction['userid'];
 
-																			include (ABS_PATH . 'final/subextraction.php');
+																      include (ABS_PATH . 'final/subextraction.php');
 
-																			?></div>
-				      </td><?php
+																      ?></div>
+		    </td><?php
 
-					   }
+			 }
 
-					   ?></tr>
-															   </table><?php
+			 ?></tr>
+													 </table><?php
 
-																   ?><p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final sub-extraction</span></p>
-															   <div id="nbtMasterSubExtraction<?php echo $element['id']; ?>"><?php
+														 ?><p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final sub-extraction</span></p>
+													 <div id="nbtMasterSubExtraction<?php echo $element['id']; ?>"><?php
 
-																							 $nbtMasterSubExtrID = $element['id'];
-																							 $nbtMasterRefSet = $_GET['refset'];
-																							 $nbtMasterRefID = $_GET['ref'];
+																				       $nbtMasterSubExtrID = $element['id'];
+																				       $nbtMasterRefSet = $_GET['refset'];
+																				       $nbtMasterRefID = $_GET['ref'];
 
-																							 include ('./finalsubextraction.php');
+																				       include ('./finalsubextraction.php');
 
-																							 ?></div>
+																				       ?></div>
 
-														    </div><?php
+												  </div><?php
 
-															  break;
+													break;
 
-															  case "reference_data":
+													case "reference_data":
 
-															  ?><div class="nbtContentPanel">
-															<h3><?php echo $element['displayname']; ?><?php
+													?><div class="nbtContentPanel">
+												      <h3><?php echo $element['displayname']; ?><?php
 
-																				  if ( $element['codebook'] != "" ) {
+																		if ( $element['codebook'] != "" ) {
 
-																				      $element['codebook'] = str_replace ("\n", "<br>", $element['codebook']);
+																		    $element['codebook'] = str_replace ("\n", "<br>", $element['codebook']);
 
-																				  ?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></h3>
-															    <div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
+																		?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></h3>
+													  <div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
 
-																							      } else {
+																					    } else {
 
-																							      ?></h3><?php
+																					    ?></h3><?php
 
-																								     }
+																						   }
 
-																								     $refdata = $element['columnname'];
+																						   $refdata = $element['columnname'];
 
-																								     preg_match_all(
-																									 '/\$([A-Za-z0-9_-]+)/',
-																									 $element['columnname'],
-																									 $cols_to_replace
-																								     );
+																						   preg_match_all(
+																						       '/\$([A-Za-z0-9_-]+)/',
+																						       $element['columnname'],
+																						       $cols_to_replace
+																						   );
 
-																								     foreach ( $cols_to_replace[0] as $col_to_replace ) {
+																						   foreach ( $cols_to_replace[0] as $col_to_replace ) {
 
-																									 $refdata = str_replace (
-																									     $col_to_replace,
-																									     $ref[substr($col_to_replace, 1)],
-																									     $refdata
-																									 );
-																								     }
+																						       $refdata = str_replace (
+																							   $col_to_replace,
+																							   $ref[substr($col_to_replace, 1)],
+																							   $refdata
+																						       );
+																						   }
 
-																								     echo "<p>" . $refdata . "</p>";
+																						   echo "<p>" . $refdata . "</p>";
 
-																								     ?>
+																						   ?>
 
-															  </div><?php
+													</div><?php
 
-																break;
+													      break;
 
-																}
+													      }
 
-																}
+													      }
 
-																?></div>
+													      ?></div>
     </div>
     </div>
 
