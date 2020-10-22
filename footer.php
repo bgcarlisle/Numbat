@@ -3640,6 +3640,14 @@
 
 	 $('#nbtExtractedElement' + eid + '-' + uid).fadeIn();
 
+	 // update the final copy
+
+	 $('.nbtElement' + eid).removeClass('nbtTextOptionChosen');
+
+	 $('.nbtExtractedOption' + eid + '-' + uid + '.nbtTextOptionChosen').each(function () {
+	     $('#nbtElement' + eid + '-' + $(this).attr('dbname')).addClass('nbtTextOptionChosen');
+	 });
+
      });
 
  }
