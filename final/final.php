@@ -1057,89 +1057,15 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    if ( $same_as_master == 1 ) {
 
-				echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtFeedback nbtElement' . $element['id'];
+				echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span></p>';
 
-				echo 'Check">&#x2713;</span></p>';
-
-				echo '<span class="nbtExtractionName">';
-
-				echo $extraction['username'];
-
-				echo '</span>';
-
-				echo '<button onclick="nbtCopyMultiSelectToMaster(';
-
-				echo $_GET['form'];
-
-				echo ', ';
-
-				echo $_GET['refset'];
-
-				echo ', ';
-
-				echo $_GET['ref'];
-
-				echo ', ';
-
-				echo $extraction['id'];
-
-				echo ', ';
-
-				echo $element['id'];
-
-				echo ', ';
-
-				echo $extraction['userid'];
-
-				echo ');">Copy to final</button>';
+				echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>' . '<button onclick="nbtCopyMultiSelectToMaster(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', ' . $extraction['id'] . ', ' . $element['id'] . ', ' . $extraction['userid'] . ');">Copy to final</button>';
 
 			    } else {
 
-				echo '<span id="nbtExtractedElement';
+				echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtHidden nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span></p>';
 
-				echo $element['id'];
-
-				echo '-';
-
-				echo $extraction['userid'];
-
-				echo '" class="nbtHidden nbtFeedback nbtElement';
-
-				echo $element['id'];
-
-				echo 'Check">&#x2713;</span></p>';
-
-				echo '<span class="nbtExtractionName">';
-				
-				echo $extraction['username'];
-				
-				echo '</span>';
-
-				echo '<button onclick="nbtCopyMultiSelectToMaster(';
-
-				echo $_GET['form'];
-
-				echo ', ';
-
-				echo $_GET['refset'];
-
-				echo ', ';
-
-				echo $_GET['ref'];
-
-				echo ', ';
-
-				echo $extraction['id'];
-
-				echo ', ';
-
-				echo $element['id'];
-
-				echo ', ';
-
-				echo $extraction['userid'];
-
-				echo ');">Copy to final</button>';
+				echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>' . '<button onclick="nbtCopyMultiSelectToMaster(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', ' . $extraction['id'] . ', ' . $element['id'] . ', ' . $extraction['userid'] . ');">Copy to final</button>';
 
 			    }
 
@@ -1220,51 +1146,11 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    }
 
-			    echo '<span id="nbtExtractedElement';
+			    echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtHidden nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span></p>';
 
-			    echo $element['id'];
+			    echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
 
-			    echo '-';
-
-			    echo $extraction['userid'];
-
-			    echo '" class="nbtHidden nbtFeedback nbtElement';
-
-			    echo $element['id'];
-
-			    echo 'Check">&#x2713;</span></p>';
-
-			    echo '<span class="nbtExtractionName">';
-			    
-			    echo $extraction['username'];
-
-			    echo '</span>';
-
-			    echo '<button onclick="nbtCopyMultiSelectToMaster(';
-
-			    echo $_GET['form'];
-
-			    echo ', ';
-
-			    echo $_GET['refset'];
-
-			    echo ', ';
-
-			    echo $_GET['ref'];
-
-			    echo ', ';
-
-			    echo $extraction['id'];
-
-			    echo ', ';
-
-			    echo $element['id'];
-
-			    echo ', ';
-
-			    echo $extraction['userid'];
-
-			    echo ');">Copy to final</button>';
+			    echo '<button onclick="nbtCopyMultiSelectToMaster(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', ' . $extraction['id'] . ', ' . $element['id'] . ', ' .  $extraction['userid'] . ');">Copy to final</button>';
 
 			}
 
