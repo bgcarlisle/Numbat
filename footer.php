@@ -2084,11 +2084,22 @@
      
  }
 
- function nbtUpdateFinalSelector (form, refset, ref, col, newval, eid, element_type ) {
+ function nbtUpdateFinalSelector (form, refset, ref, col, newval, eid, element_type) {
 
-     if ($('#nbtElement' + eid + '-' + newval).hasClass('nbtTextOptionChosen')) {
-	 setnull = 'TRUE';
-     } else {
+     if ( element_type == 'single_select' ) {
+	 if ($('#nbtElement' + eid + '-' + newval).hasClass('nbtTextOptionChosen')) {
+	     setnull = 'TRUE';
+	 } else {
+	     setnull = 'FALSE';
+	 }
+     }
+
+     if ( element_type == 'multi_select' ) {
+	 if ($('#nbtElement' + eid + '-' + col).hasClass('nbtTextOptionChosen')) {
+	     newval = 0;
+	 } else {
+	     newval = 1;
+	 }
 	 setnull = 'FALSE';
      }
      
@@ -2108,16 +2119,24 @@
      }).done ( function (response) {
 
 	 if (response == 'Changes saved') {
-	     
-	     $('.nbtElement' + eid).removeClass('nbtTextOptionChosen');
 
-	     if (setnull == 'FALSE') {
-		 $('#nbtElement' + eid + '-' + newval).addClass('nbtTextOptionChosen');
+	     if ( element_type == 'single_select' ) {
+
+		 $('.nbtElement' + eid).removeClass('nbtTextOptionChosen');
+
+		 if (setnull == 'FALSE') {
+		     $('#nbtElement' + eid + '-' + newval).addClass('nbtTextOptionChosen');
+		 }
+
+	     }
+
+	     if ( element_type == 'multi_select' ) {
+		 $('#nbtElement' + eid + '-' + col).toggleClass('nbtTextOptionChosen');
 	     }
 	 }
 
      });
-     
+
  }
 
  function nbtUpdateMasterExtractionTableData ( tableid, rowid, columnid, inputid) {

@@ -1009,11 +1009,11 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    if ( $master[$element['columnname'] . "_" . $option['dbname']] == 1 ) {
 
-				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen">' . $option['displayname'] . '</a>';
+				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen" id="nbtElement' . $element[id] . '-' . $element['columnname'] . "_" . $option['dbname'] . '" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . "_" . $option['dbname'] . '\', \'' . $extraction[$element['columnname'] . "_" . $option['dbname']] . '\', ' . $element['id'] .', \'' . $element['type'] . '\');">' . $option['displayname'] . '</a>';
 				
 			    } else {
 
-				echo '<a class="nbtTextOptionSelect">' . $option['displayname'] . '</a>';
+				echo '<a class="nbtTextOptionSelect" id="nbtElement' . $element[id] . '-' . $element['columnname'] . "_" . $option['dbname'] . '" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . "_" . $option['dbname'] . '\', \'' . $extraction[$element['columnname'] . "_" . $option['dbname']] . '\', ' . $element['id'] .', \'' . $element['type'] . '\');">' . $option['displayname'] . '</a>';
 
 			    }
 			}
@@ -1094,11 +1094,11 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    if ( $master[$element['columnname'] . "_" . $option['dbname']] == 1 ) {
 
-				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen">' . $option['displayname'] . '</a>';
+				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen" id="nbtElement' . $element[id] . '-' . $element['columnname'] . "_" . $option['dbname'] . '" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . "_" . $option['dbname'] . '\', \'' . $extraction[$element['columnname'] . "_" . $option['dbname']] . '\', ' . $element['id'] .', \'' . $element['type'] . '\');">' . $option['displayname'] . '</a>';
 				
 			    } else {
 
-				echo '<a class="nbtTextOptionSelect">' . $option['displayname'] . '</a>';
+				echo '<a class="nbtTextOptionSelect" id="nbtElement' . $element[id] . '-' . $element['columnname'] . "_" . $option['dbname'] . '" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . "_" . $option['dbname'] . '\', \'' . $extraction[$element['columnname'] . "_" . $option['dbname']] . '\', ' . $element['id'] .', \'' . $element['type'] . '\');">' . $option['displayname'] . '</a>';
 
 			    }
 			}
@@ -1157,11 +1157,11 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    if ($extractions[0][$element['columnname'] . "_" . $option['dbname']] == 1) {
 
-				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen">' . $option['displayname'] . '</a>';
+				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen" id="nbtElement' . $element[id] . '-' . $element['columnname'] . "_" . $option['dbname'] . '" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . "_" . $option['dbname'] . '\', \'' . $extraction[$element['columnname'] . "_" . $option['dbname']] . '\', ' . $element['id'] .', \'' . $element['type'] . '\');">' . $option['displayname'] . '</a>';
 				
 			    } else {
 
-				echo '<a class="nbtTextOptionSelect">' . $option['displayname'] . '</a>';
+				echo '<a class="nbtTextOptionSelect" id="nbtElement' . $element[id] . '-' . $element['columnname'] . "_" . $option['dbname'] . '" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . "_" . $option['dbname'] . '\', \'' . $extraction[$element['columnname'] . "_" . $option['dbname']] . '\', ' . $element['id'] .', \'' . $element['type'] . '\');">' . $option['displayname'] . '</a>';
 				
 			    }
 			    
@@ -1192,7 +1192,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 				if ( $extraction[$element['columnname'] . "_" . $option['dbname']] == 1 ) {
 
-				    echo '<a class="nbtTextOptionSelect nbtTextOptionChosen">';
+				    echo '<a class="nbtTextOptionSelect nbtTextOptionChosen" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . "_" . $option['dbname'] . '\', \'' . $extraction[$element['columnname'] . "_" . $option['dbname']] . '\', ' . $element['id'] .', \'' . $element['type'] . '\');">';
 
 				    echo $option['displayname'];
 
@@ -1200,7 +1200,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 				} else {
 
-				    echo '<a class="nbtTextOptionSelect">';
+				    echo '<a class="nbtTextOptionSelect" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . "_" . $option['dbname'] . '\', \'' . $extraction[$element['columnname'] . "_" . $option['dbname']] . '\', ' . $element['id'] .', \'' . $element['type'] . '\');">';
 
 				    echo $option['displayname'];
 
@@ -1224,7 +1224,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			foreach ( $selectoptions as $option ) {
 
-			    echo '<a class="nbtTextOptionSelect">' . $option['displayname'] . '</a>';
+			    echo '<a class="nbtTextOptionSelect" id="nbtElement' . $element[id] . '-' . $element['columnname'] . "_" . $option['dbname'] . '" onclick="nbtUpdateFinalSelector(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . "_" . $option['dbname'] . '\', \'' . $extraction[$element['columnname'] . "_" . $option['dbname']] . '\', ' . $element['id'] .', \'' . $element['type'] . '\');">' . $option['displayname'] . '</a>';
 			    
 			}
 
