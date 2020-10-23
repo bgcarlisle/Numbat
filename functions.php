@@ -14611,4 +14611,58 @@ function nbt_get_unique_entries_for_prev_select ( $elementid, $refsetid, $extrac
 
 }
 
+function nbt_get_unique_values_for_refset_column ( $refsetid, $column ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT DISTINCT(" . $column . ") FROM `referenceset_" . $refsetid ."`;");
+
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	return $result;
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
+function nbt_get_referenceids_for_refset_column_and_value ( $refsetid, $column, $value ) {
+    
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT `id` FROM `referenceset_" . $refsetid ."` WHERE `" . $column . "` = :value;");
+
+	$stmt->bindParam(':value', $val);
+
+	$val = $value;
+
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	return $result;
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
 ?>

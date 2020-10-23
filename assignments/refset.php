@@ -20,6 +20,8 @@ $allassignments = nbt_get_all_assignments_for_refset ( $_GET['refset'] );
 
 $references = nbt_get_all_references_for_refset($refset['id']);
 
+$columns = nbt_get_columns_for_refset ( $refset['id'] );
+
 // Get extractions for each form
 $finished_extractions = [];
 foreach ($forms as $form) {
@@ -45,6 +47,35 @@ foreach ($forms as $form) {
     <span>Select k random references:</span>
     <input type="text" id="nbtRandomK" value="<?php echo floor(count($references) / 2); ?>">
     <button onclick="$('input.nbtAssignSelect').prop('checked', false);$('input.nbtAssignSelect').sort(function(){return (Math.round(Math.random())-0.5);}).slice(0,$('#nbtRandomK').val()).prop('checked', true);">Select</button>
+
+    <p>Select all references where 
+
+	<select id="nbtRefsetColumnSelect" onchange="nbtAssignerChooseColumn(<?php echo $_GET['refset']; ?>);">
+	    <option>Choose a column</option>
+	    <?php
+
+	    foreach ($columns as $col) {
+
+		if ( $col[0] != "id" && $col[0] != "manual" ) {
+
+		    echo '<option value="' . $col[0] . '">' . $col[0] . '</option>';
+		    
+		}
+		
+	    }
+	    
+	    ?>
+	</select>
+
+	is
+
+	<select id="nbtRefsetColumnSelectValues">
+	    <option value="na">No column chosen</option>
+	</select>
+
+	<button onclick="nbtAssignerSelectByColumn(<?php echo $refset['id']; ?>);">Select</button>
+
+    </p>
 
     <p>For the following form:</p>
 
@@ -129,7 +160,7 @@ foreach ($forms as $form) {
 
 	    echo  "<td>";
 
-	    echo '<input type="checkbox" class="nbtAssignSelect" value="' . $reference['id'] . '" style="margin: 8px 12px 8px 2px;">';
+	    echo '<input type="checkbox" id="nbtAssignSelectRefID' . $reference['id'] . '" class="nbtAssignSelect" value="' . $reference['id'] . '" style="margin: 8px 12px 8px 2px;">';
 
 	    echo "</td><td>";
 	    

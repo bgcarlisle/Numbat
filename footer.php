@@ -147,7 +147,7 @@
 	 },
 	 dataType: 'html'
      }).done ( function (response) {
-	 
+
 	 $('#nbtPasswordChangeFeedback').slideUp(500, function () {
 	     $('#nbtPasswordChangeFeedback').html(response);
 	     $('#nbtPasswordChangeFeedback').slideDown();
@@ -2083,7 +2083,7 @@
 	 }
 
      });
-     
+
  }
 
  function nbtUpdateFinalSelector (form, refset, ref, col, newval, eid, element_type) {
@@ -2104,7 +2104,7 @@
 	 }
 	 setnull = 'FALSE';
      }
-     
+
      $.ajax ({
 	 url: numbaturl + 'final/updateselector.php',
 	 type: 'post',
@@ -2633,8 +2633,65 @@
      }).done ( function (response) {
 
 	 $('#nbtAssignment-' + rid + '-' + fid + '-' + uid).toggleClass('nbtAssigned').toggleClass('nbtNotAssigned');
-	 
+
      })
+ }
+
+ function nbtAssignerChooseColumn ( refset ) {
+
+     $('#nbtRefsetColumnSelectValues').empty();
+     $('#nbtRefsetColumnSelectValues').append('<option value="na">...</option>');
+
+     $.ajax ({
+	 url: numbaturl + 'assignments/selectcolumn.php',
+	 type: 'post',
+	 data: {
+	     rsid: refset,
+	     col: $('#nbtRefsetColumnSelect').val()
+	 },
+	 dataType: 'html'
+     }).done(function (response) {
+
+	 $('#nbtRefsetColumnSelectValues').empty();
+	 $('#nbtRefsetColumnSelectValues').append('<option value="na">Choose a value</option>');
+
+	 values = JSON.parse(response);
+
+	 for (var key in values) {
+
+	     $('#nbtRefsetColumnSelectValues').append('<option value="' + values[key][0].replace(/"/g, '&quot;') + '">' + values[key][0] + '</option>');
+	     
+	 }
+	 
+     });
+ }
+
+ function nbtAssignerSelectByColumn ( refset ) {
+
+     $.ajax ({
+	 url: numbaturl + 'assignments/selectcolumnvalue.php',
+	 type: 'post',
+	 data: {
+	     rsid: refset,
+	     col: $('#nbtRefsetColumnSelect').val(),
+	     val: $('#nbtRefsetColumnSelectValues').val()
+	 },
+	 dataType: 'html'
+     }).done(function (response) {
+
+	 // First unselect everything
+	 $('input.nbtAssignSelect').prop('checked', false);
+
+	 rids = JSON.parse(response);
+
+	 for (var key in rids) {
+
+	     $('#nbtAssignSelectRefID' + rids[key][0]).prop('checked', true);
+	     
+	 }
+	 
+     });
+     
  }
 
  function nbtAssign () {
@@ -2646,7 +2703,7 @@
      ) {
 	 rsid = $('#nbtRefSetID').val();
 
-	 refs = [];    
+	 refs = [];
 	 $('input.nbtAssignSelect:checked').each(function() {
 	     refs.push($(this).val());
 	 });
@@ -2682,7 +2739,7 @@
 			     });
 			 });
 		     });
-		     
+
 		 } else {
 		     if ( fid == "all" ) {
 
@@ -2693,7 +2750,7 @@
 				 $('#nbtAssignment-' + ref + '-' + form + '-' + uid).removeClass('nbtNotAssigned').addClass('nbtAssigned');
 			     });
 			 });
-			 
+
 		     } else {
 			 if ( uid == "all") {
 
@@ -2704,25 +2761,25 @@
 				     $('#nbtAssignment-' + ref + '-' + fid + '-' + user).removeClass('nbtNotAssigned').addClass('nbtAssigned');
 				 });
 			     });
-			     
+
 			 } else {
 
 			     refs.forEach(function (ref) {
 				 $('#nbtAssignment-' + ref + '-' + fid + '-' + uid).removeClass('nbtNotAssigned').addClass('nbtAssigned');
 			     });
-			     
+
 			 }
 		     }
 		 }
-		 
+
 	     }
-	     
+
 	 });
 
      } else {
 
 	 alert('Please make sure you have selected a form, a user and at least one reference.');
-	 
+
      }
 
  }
@@ -2770,7 +2827,7 @@
 			     });
 			 });
 		     });
-		     
+
 		 } else {
 		     if (fid == "all") {
 			 forms = $('#nbtAllFormIDs').val().split(',');
@@ -2790,26 +2847,26 @@
 				 });
 
 			     });
-			     
+
 			 } else {
 
 			     refs.forEach(function (ref) {
 				 $('#nbtAssignment-' + ref + '-' + fid + '-' + uid).addClass('nbtNotAssigned').removeClass('nbtAssigned');
 			     });
-			     
+
 			 }
 		     }
 		 }
 	     }
 
 	 });
-	 
+
      } else {
 
 	 alert ('Please make sure you have selected a form, a user and at least one reference.');
-	 
+
      }
-     
+
  }
 
  function nbtAddAssignment ( uid, fid, rsid, rid ) {
@@ -4272,9 +4329,9 @@
 		 $('#nbtMetadataResponse-' + col).fadeOut();
 	     }, 1000);
 	 });
-	 
+
      });
-     
+
  }
 
 </script>
