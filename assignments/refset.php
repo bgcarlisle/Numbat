@@ -44,9 +44,10 @@ foreach ($forms as $form) {
     <button onclick="$('input.nbtAssignSelect').prop('checked', false);">None</button>
     <button onclick="$('input.nbtAssignSelect').click();">Invert</button>
 
-    <span>Select k random references:</span>
-    <input type="text" id="nbtRandomK" value="<?php echo floor(count($references) / 2); ?>">
-    <button onclick="nbtAssignerSelectKRandom(<?php echo $_GET['refset']; ?>);">Select</button>
+    <p>Select k random references:
+	<input type="text" id="nbtRandomK" value="<?php echo floor(count($references) / 2); ?>">
+	<button onclick="nbtAssignerSelectKRandom(<?php echo $_GET['refset']; ?>);">Select</button>
+    </p>
 
     <p>Select all references where 
 
@@ -77,6 +78,8 @@ foreach ($forms as $form) {
 
     </p>
 
+    <hr>
+    
     <p>For the following form:</p>
 
     <select id="nbtAssignFormChooser">
@@ -130,6 +133,8 @@ foreach ($forms as $form) {
 
 	?>
     </select>
+
+    <hr>
 
     <p>Perform the following action:</p>
 
