@@ -14665,4 +14665,31 @@ function nbt_get_referenceids_for_refset_column_and_value ( $refsetid, $column, 
     
 }
 
+function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k ) {
+    
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT `id` FROM `referenceset_" . $refsetid ."` ORDER BY RAND() LIMIT " . $k . ";");
+
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	return $result;
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+
+}
+
+
 ?>

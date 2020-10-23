@@ -46,7 +46,7 @@ foreach ($forms as $form) {
 
     <span>Select k random references:</span>
     <input type="text" id="nbtRandomK" value="<?php echo floor(count($references) / 2); ?>">
-    <button onclick="$('input.nbtAssignSelect').prop('checked', false);$('input.nbtAssignSelect').sort(function(){return (Math.round(Math.random())-0.5);}).slice(0,$('#nbtRandomK').val()).prop('checked', true);">Select</button>
+    <button onclick="nbtAssignerSelectKRandom(<?php echo $_GET['refset']; ?>);">Select</button>
 
     <p>Select all references where 
 
