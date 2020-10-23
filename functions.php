@@ -13320,53 +13320,6 @@ function nbtQueryReferenceSet ( $refsetid, $query ) {
 
 }
 
-function nbtAddAdvancedAssignment ( $userid, $formid, $refsetid, $query ) {
-
-    $result = nbtQueryReferenceSet ( $refsetid, $query );
-
-    $counter = 0;
-
-    foreach ( $result as $row ) {
-
-	try {
-
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare ("INSERT INTO `assignments` (userid, assignerid, formid, refsetid, referenceid) VALUES (:user, :assigner, :form, :refset, :ref)");
-
-	    $stmt->bindParam(':user', $user);
-	    $stmt->bindParam(':assigner', $assign);
-	    $stmt->bindParam(':form', $form);
-	    $stmt->bindParam(':refset', $rsid);
-	    $stmt->bindParam(':ref', $ref);
-
-	    $user = $userid;
-	    $assign = $_SESSION[INSTALL_HASH . '_nbt_userid'];
-	    $form = $formid;
-	    $rsid = $refsetid;
-	    $ref = $row['id'];
-
-	    if ($stmt->execute()) {
-
-		$counter++;
-
-	    }
-
-	    $dbh = null;
-
-	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-
-    }
-
-    echo $counter . " assignments added";
-
-}
-
 function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $originalid ) {
 
     $element = nbt_get_form_element_for_elementid ( $elementid );

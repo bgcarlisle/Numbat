@@ -2516,65 +2516,6 @@
 
  }
 
- function nbtFindReferenceToAssign () {
-
-     if ( $('#nbtAssignUser').val() == 'NULL' ) {
-
-	 $('#nbtFoundReferencesForAssigment').addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint').removeClass('nbtCitationSuggestions').html('Choose a user to be assigned');
-
-     } else {
-
-	 if ( $('#nbtAssignForm').val() == 'NULL' ) {
-
-	     $('#nbtFoundReferencesForAssigment').addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint').removeClass('nbtCitationSuggestions').html('Choose a form');
-
-	 } else {
-
-	     if ( $('#nbtAssignRefSet').val() == 'NULL' ) {
-
-		 $('#nbtFoundReferencesForAssigment').addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint').removeClass('nbtCitationSuggestions').html('Choose a reference set');
-
-
-	     } else {
-
-		 $('#nbtFoundReferencesForAssigment').removeClass('nbtFeedback').removeClass('nbtFeedbackBad').removeClass('nbtFinePrint').addClass('nbtCitationSuggestions');
-
-		 if ( $('#nbtReferenceFinder').val() == '' ) {
-
-		     $('#nbtFoundReferencesForAssigment').fadeOut(100);
-
-		     $('#nbtFoundReferencesForAssigment').html('');
-
-		 } else {
-
-		     $('#nbtFoundReferencesForAssigment').fadeIn(100);
-
-		     $.ajax ({
-			 url: numbaturl + 'assignments/referencefinder.php',
-			 type: 'post',
-			 data: {
-			     userid: $('#nbtAssignUser').val(),
-			     formid: $('#nbtAssignForm').val(),
-			     refset: $('#nbtAssignRefSet').val(),
-			     query: $('#nbtReferenceFinder').val()
-			 },
-			 dataType: 'html'
-		     }).done ( function (html) {
-
-			 $('#nbtFoundReferencesForAssigment').html(html);
-
-		     });
-
-		 }
-
-	     }
-
-	 }
-
-     }
-
- }
-
  function nbtFindReferenceToAttach () {
 
      if ( $('#nbtAssignRefSet').val() == 'NULL' ) {
@@ -2660,9 +2601,9 @@
 	 for (var key in values) {
 
 	     $('#nbtRefsetColumnSelectValues').append('<option value="' + values[key][0].replace(/"/g, '&quot;') + '">' + values[key][0] + '</option>');
-	     
+
 	 }
-	 
+
      });
  }
 
@@ -2687,11 +2628,11 @@
 	 for (var key in rids) {
 
 	     $('#nbtAssignSelectRefID' + rids[key][0]).prop('checked', true);
-	     
+
 	 }
-	 
+
      });
-     
+
  }
 
  function nbtAssignerSelectKRandom ( refset ) {
@@ -2714,11 +2655,11 @@
 	 for (var key in rids) {
 
 	     $('#nbtAssignSelectRefID' + rids[key][0]).prop('checked', true);
-	     
+
 	 }
-	 
+
      });
-     
+
  }
 
  function nbtAssign () {
@@ -2893,36 +2834,6 @@
 	 alert ('Please make sure you have selected a form, a user and at least one reference.');
 
      }
-
- }
-
- function nbtAddAssignment ( uid, fid, rsid, rid ) {
-
-     $.ajax ({
-	 url: numbaturl + 'assignments/addassignment.php',
-	 type: 'post',
-	 data: {
-	     userid: uid,
-	     formid: fid,
-	     refset: rsid,
-	     ref: rid
-	 },
-	 dataType: 'html'
-     }).done ( function (html) {
-
-	 if ( html == 'Assignment added' ) {
-
-	     $('#nbtAddAssignmentFeedback' + rid).addClass('nbtFeedback').addClass('nbtFeedbackGood').addClass('nbtFinePrint');
-
-	 } else {
-
-	     $('#nbtAddAssignmentFeedback' + rid).addClass('nbtFeedback').addClass('nbtFeedbackBad').addClass('nbtFinePrint');
-
-	 }
-
-	 $('#nbtAddAssignmentFeedback' + rid).html(html);
-
-     });
 
  }
 
@@ -3434,32 +3345,6 @@
      }).done ( function (html) {
 
 	 $('#nbtRefSetRow' + rsid).fadeOut();
-
-     });
-
- }
-
- function nbtAddAdvancedAssignment () {
-
-     $.ajax ({
-	 url: numbaturl + 'assignments/addadvassignment.php',
-	 type: 'post',
-	 data: {
-	     userid: $('#nbtAssignUser').val(),
-	     formid: $('#nbtAssignForm').val(),
-	     refset: $('#nbtAssignRefSet').val(),
-	     query: $('#nbtAdvancedAssignInput').val()
-	 },
-	 dataType: 'html'
-     }).done ( function (html) {
-
-	 $('#nbtAdvancedAssignmentFeedback').html(html);
-
-	 $('#nbtAdvancedAssignmentFeedback').fadeIn(500, function () {
-
-	     $('#nbtAdvancedAssignmentFeedback').fadeOut(1500);
-
-	 });
 
      });
 
