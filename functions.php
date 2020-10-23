@@ -14616,7 +14616,7 @@ function nbt_get_unique_values_for_refset_column ( $refsetid, $column ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT DISTINCT(" . $column . ") FROM `referenceset_" . $refsetid ."`;");
+	$stmt = $dbh->prepare("SELECT DISTINCT(" . $column . ") FROM `referenceset_" . $refsetid ."` ORDER BY `" . $column . "`;");
 
 	$stmt->execute();
 
