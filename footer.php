@@ -31,59 +31,44 @@
 
 	 if ( ! emailregex.test (id.value) ) { // If it's not a well-formed email
 
-	     document.getElementById("nbtSignupEmailFeedback").innerHTML = 'Enter a valid email address';
-	     $("#sigSignupEmailFeedback").removeClass('sigFeedbackGood');
-	     $("#sigSignupEmailFeedback").addClass('sigFeedbackBad');
-	     $("#sigSignupEmailFeedback").fadeIn(100);
+	     $('#nbtSignupEmailFeedback').html('Enter a valid email address');
+	     $("#nbtSignupEmailFeedback").removeClass('nbtFeedbackGood');
+	     $("#nbtSignupEmailFeedback").addClass('nbtFeedbackBad');
+	     $("#nbtSignupEmailFeedback").fadeIn(100);
 
 	 } else { // Email is well-formed
 
 	     // Check that the email isn't already in use on another account
 
-	     var xmlhttp;
+	     $.ajax ({
+		 url: numbaturl + 'signup/checkemail.php',
+		 type: 'post',
+		 data: {
+		     email: $(id).val()
+		 },
+		 dataType: 'html'
+	     }).done( function (response) {
 
-	     if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+		 $('#nbtSignupEmailFeedback').html(response);
 
-		 xmlhttp = new XMLHttpRequest();
-
-	     } else { // Code for IE5, IE6
-
-		 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-
-	     }
-
-	     xmlhttp.onreadystatechange = function () {
-		 if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-		     document.getElementById("sigSignupEmailFeedback").innerHTML=xmlhttp.responseText;
-
-		     if (xmlhttp.responseText == 'Email is already in use :(') {
-			 $("#sigSignupEmailFeedback").removeClass('sigFeedbackGood');
-			 $("#sigSignupEmailFeedback").addClass('sigFeedbackBad');
-			 $("#sigSignupEmailFeedback").fadeIn(100);
-		     } else {
-			 $("#sigSignupEmailFeedback").removeClass('sigFeedbackBad');
-			 $("#sigSignupEmailFeedback").addClass('sigFeedbackGood');
-			 $("#sigSignupEmailFeedback").fadeIn(100);
-		     }
-
-		 } else if (xmlhttp.readyState > 0 && xmlhttp.readyState < 4) {
-		     document.getElementById("sigSignupEmailFeedback").innerHTML='think think think ...';
+		 if (response == 'Email is already in use :(') {
+		     $("#nbtSignupEmailFeedback").removeClass('nbtFeedbackGood');
+		     $("#nbtSignupEmailFeedback").addClass('nbtFeedbackBad');
+		     $("#nbtSignupEmailFeedback").fadeIn(100);
+		 } else {
+		     $("#nbtSignupEmailFeedback").removeClass('nbtFeedbackBad');
+		     $("#nbtSignupEmailFeedback").addClass('nbtFeedbackGood');
+		     $("#nbtSignupEmailFeedback").fadeIn(100);
 		 }
-	     }
-
-	     xmlhttp.open ("POST","http://www.bgcarlisle.com/signals/signup/checkemail.php",true);
-	     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-
-	     xmlhttp.send ("email=" + id.value);
+	     });
 
 	 }
 
      } else {
-
-	 document.getElementById("sigSignupEmailFeedback").innerHTML='';
-	 $("#sigSignupEmailFeedback").removeClass('sigFeedbackGood');
-	 $("#sigSignupEmailFeedback").removeClass('sigFeedbackBad');
-	 $("#sigSignupEmailFeedback").fadeOut(100);
+	 $('#nbtSignupEmailFeedback').html('');
+	 $("#nbtSignupEmailFeedback").removeClass('nbtFeedbackGood');
+	 $("#nbtSignupEmailFeedback").removeClass('nbtFeedbackBad');
+	 $("#nbtSignupEmailFeedback").fadeOut(100);
 
      }
 
