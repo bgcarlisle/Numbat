@@ -845,38 +845,6 @@ function nbt_get_extractions_for_refset_ref_and_form ( $refsetid, $refid, $formi
 
 }
 
-function nbt_get_all_unstarted_references_for_drug_id ( $drugid, $start = 0, $range = 25 ) {
-
-    $drugname = nbt_get_name_for_refsetid ($drugid);
-
-    try {
-
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	//		$stmt = $dbh->prepare("SELECT * FROM " . $drugname . " ORDER BY id ASC LIMIT :start, :range;");
-	$stmt = $dbh->prepare("SELECT * FROM `signals_extractions`.`" . $drugname . "` WHERE include = 1 AND id NOT IN ( SELECT referenceid FROM `signals_extractions`.`extractions` WHERE drugid = :drugid ) ORDER BY id ASC;");
-
-	$stmt->bindParam(':drugid', $did);
-
-	$did = $drugid;
-
-	$stmt->execute();
-
-	$result = $stmt->fetchAll();
-
-	$dbh = null;
-
-	return $result;
-
-    }
-
-    catch (PDOException $e) {
-
-	echo $e->getMessage();
-
-    }
-
-}
-
 function nbt_count_all_references_for_drug_id ( $drugid ) {
 
     $drugname = nbt_get_name_for_refsetid ($drugid);
