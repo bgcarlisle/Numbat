@@ -1375,217 +1375,293 @@ if ( count ( $extractions ) >= 2 ) {
 
 		foreach ( $extractions as $extraction ) {
 
-?><p style="margin-bottom: 5px;"><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span></p>
+		    echo '<p style="margin-bottom: 5px;"><span class="nbtExtractionName">';
 
-    <div id="nbtTableExtraction<?php echo $element['id']; ?>-<?php $extraction['id'] ?>"><?php
+		    echo $extraction['username'];
 
-											 $nbtExtractTableDataID = $element['id'];
-											 $nbtExtractRefSet = $_GET['refset'];
-											 $nbtExtractRefID = $_GET['ref'];
-											 $nbtExtractUserID = $extraction['userid'];
+		    echo '</span></p>';
 
-											 $tableformat = "table_data";
+		    echo '<div id="nbtTableExtraction';
 
-											 include ('./tabledata.php');
+		    echo $element['id'];
 
-											 ?></div><?php
+		    echo '-';
 
-												 }
+		    echo $extraction['id'];
 
-												 ?><p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final copy table</span></p>
-    <div id="nbtMasterTable<?php echo $element['id']; ?>"><?php
+		    echo '">';
 
-							  $nbtMasterTableID = $element['id'];
-							  $nbtMasterRefSet = $_GET['refset'];
-							  $nbtMasterRefID = $_GET['ref'];
+		    $nbtExtractTableDataID = $element['id'];
+		    $nbtExtractRefSet = $_GET['refset'];
+		    $nbtExtractRefID = $_GET['ref'];
+		    $nbtExtractUserID = $extraction['userid'];
 
-							  $tableformat = "table_data";
+		    $tableformat = "table_data";
 
-							  include ('./finaltable.php');
+		    include ('./tabledata.php');
 
-							  ?></div><?php
+		    echo '</div>';
 
-								  break;
+		}
 
-								  case "ltable_data":
+		echo '<p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final copy table</span></p>';
 
-								  nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+		echo '<div id="nbtMasterTable';
 
-								  foreach ( $extractions as $extraction ) {
+		echo $element['id'];
 
-								  ?><p style="margin-bottom: 5px;"><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span></p>
+		echo '">';
 
-	<div id="nbtTableExtraction<?php echo $element['id']; ?>-<?php $extraction['id'] ?>"><?php
+		$nbtMasterTableID = $element['id'];
+		$nbtMasterRefSet = $_GET['refset'];
+		$nbtMasterRefID = $_GET['ref'];
 
-											     $nbtExtractTableDataID = $element['id'];
-											     $nbtExtractRefSet = $_GET['refset'];
-											     $nbtExtractRefID = $_GET['ref'];
-											     $nbtExtractUserID = $extraction['userid'];
+		$tableformat = "table_data";
 
-											     $tableformat = "ltable_data";
+		include ('./finaltable.php');
 
-											     include ('./tabledata.php');
+		echo '</div>';
 
-											     ?></div><?php
 
-												     }
+		break;
 
-												     ?><p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final copy table</span></p>
-	<div id="nbtMasterTable<?php echo $element['id']; ?>"><?php
+	    case "ltable_data":
 
-							      $nbtMasterTableID = $element['id'];
-							      $nbtMasterRefSet = $_GET['refset'];
-							      $nbtMasterRefID = $_GET['ref'];
-
-							      $tableformat = "ltable_data";
-
-							      include ('./finaltable.php');
-
-							      ?></div><?php
-
-								      break;
-
-								      case "citations":
-
-								      nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
-
-								      ?><div class="nbtCitationList"><?php
-
-												     $nbtListCitationsCitationID = $element['id'];
-												     $nbtListCitationsRefSetID = $_GET['refset'];
-												     $nbtListCitationsReference = $_GET['ref'];
-												     $nbtListCitationsUserID = $extraction['userid'];
-
-												     include ("./listcitations.php");
-
-												     ?></div>
-
-	<p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final citations list</span></p>
-	<div class="nbtCitationList" id="nbtMasterCitations<?php echo $element['id']; ?>"><?php
-
-											  $nbtListCitationsCitationID = $element['id'];
-											  $nbtListCitationsRefSetID = $_GET['refset'];
-											  $nbtListCitationsReference = $_GET['ref'];
-
-											  include ("./finalcitations.php");
-
-											  ?></div><?php
-
-												  break;
-
-												  case "sub_extraction":
-
-												  ?><div><?php
-
-													 nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
-
-													 ?><table class="nbtTabledData">
-	    <tr><?php
+		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
 		foreach ( $extractions as $extraction ) {
 
-		?><td><p style="margin-bottom: 5px;"><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span></td><?php
+		    echo '<p style="margin-bottom: 5px;"><span class="nbtExtractionName">';
 
-																       }
+		    echo $extraction['username'];
 
-																       ?></tr>
-		<tr><?php
+		    echo '</span></p>';
 
-		    foreach ( $extractions as $extraction ) {
+		    echo '<div id="nbtTableExtraction';
 
-		    ?><td>
-		</p>
+		    echo $element['id'];
 
-		<div class="nbtSubExtraction" id="nbtSubExtraction<?php echo $element['id']; ?>-<?php echo $extraction['userid']; ?>"><?php
+		    echo '-';
 
-																      $nbtSubExtractionElementID = $element['id'];
-																      $nbtExtractRefSet = $_GET['refset'];
-																      $nbtExtractRefID = $_GET['ref'];
-																      $nbtExtractUserID = $extraction['userid'];
+		    echo $extraction['id'];
 
-																      include (ABS_PATH . 'final/subextraction.php');
+		    echo '">';
 
-																      ?></div>
-		    </td><?php
+		    $nbtExtractTableDataID = $element['id'];
+		    $nbtExtractRefSet = $_GET['refset'];
+		    $nbtExtractRefID = $_GET['ref'];
+		    $nbtExtractUserID = $extraction['userid'];
 
-			 }
+		    $tableformat = "ltable_data";
 
-			 ?></tr>
-													 </table><?php
+		    include ('./tabledata.php');
 
-														 ?><p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final sub-extraction</span></p>
-													 <div id="nbtMasterSubExtraction<?php echo $element['id']; ?>"><?php
+		    echo '</div>';
 
-																				       $nbtMasterSubExtrID = $element['id'];
-																				       $nbtMasterRefSet = $_GET['refset'];
-																				       $nbtMasterRefID = $_GET['ref'];
+		}
 
-																				       include ('./finalsubextraction.php');
+		echo '<p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final copy table</span></p>';
 
-																				       ?></div>
+		echo '<div id="nbtMasterTable';
 
-												  </div><?php
+		echo $element['id'];
 
-													break;
+		echo '">';
 
-													case "reference_data":
+		$nbtMasterTableID = $element['id'];
+		$nbtMasterRefSet = $_GET['refset'];
+		$nbtMasterRefID = $_GET['ref'];
 
-													?><div class="nbtContentPanel">
-												      <h3><?php echo $element['displayname']; ?><?php
+		$tableformat = "ltable_data";
 
-																		if ( $element['codebook'] != "" ) {
+		include ('./finaltable.php');
 
-																		    $element['codebook'] = str_replace ("\n", "<br>", $element['codebook']);
+		echo '</div>';
 
-																		?> <a href="#" onclick="event.preventDefault();$(this).parent().next('.nbtCodebook').slideToggle(100);">(?)</a></h3>
-													  <div class="nbtCodebook"><?php echo $element['codebook']; ?></div><?php
+		break;
 
-																					    } else {
+	    case "citations":
 
-																					    ?></h3><?php
+		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
-																						   }
+		echo '<div class="nbtCitationList">';
 
-																						   $refdata = $element['columnname'];
+		$nbtListCitationsCitationID = $element['id'];
+		$nbtListCitationsRefSetID = $_GET['refset'];
+		$nbtListCitationsReference = $_GET['ref'];
+		$nbtListCitationsUserID = $extraction['userid'];
 
-																						   preg_match_all(
-																						       '/\$([A-Za-z0-9_-]+)/',
-																						       $element['columnname'],
-																						       $cols_to_replace
-																						   );
+		include ("./listcitations.php");
 
-																						   foreach ( $cols_to_replace[0] as $col_to_replace ) {
+		echo '</div>';
 
-																						       $refdata = str_replace (
-																							   $col_to_replace,
-																							   $ref[substr($col_to_replace, 1)],
-																							   $refdata
-																						       );
-																						   }
+		echo '<p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final citations list</span></p>';
 
-																						   echo "<p>" . $refdata . "</p>";
+		echo '<div class="nbtCitationList" id="nbtMasterCitations';
+		
+		echo $element['id'];
 
-																						   ?>
+		echo '">';
 
-													</div><?php
+		$nbtListCitationsCitationID = $element['id'];
+		$nbtListCitationsRefSetID = $_GET['refset'];
+		$nbtListCitationsReference = $_GET['ref'];
 
-													      break;
+		include ("./finalcitations.php");
 
-													      }
+		echo '</div>';
 
-													      }
+		break;
 
-													      ?></div>
-    </div>
-    </div>
+	    case "sub_extraction":
 
-    <div style="height: 200px;">&nbsp;</div><?php
+		echo '<div>';
 
-					    } else {
+		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
-					    ?><div class="nbtContentPanel">
-	<h2>Only one extraction done</h2>
-	<p>Reconciliation is only available for references with two completed extractions.</p>
-					    </div><?php
+		echo '<table class="nbtTabledData">';
 
-						  }
+		echo '<tr>';
+
+		foreach ( $extractions as $extraction ) {
+
+		    echo '<td><p style="margin-bottom: 5px;"><span class="nbtExtractionName">';
+
+		    echo $extraction['username'];
+
+		    echo '</span></p></td>';
+		    
+		}
+
+		echo '</tr>';
+
+		echo '<tr>';
+
+		foreach ( $extractions as $extraction ) {
+
+		    echo '<td>';
+
+		    echo '<div class="nbtSubExtraction" id="nbtSubExtraction';
+		    
+		    echo $element['id'];
+
+		    echo '-';
+
+		    echo $extraction['userid'];
+
+		    echo '">';
+
+		    $nbtSubExtractionElementID = $element['id'];
+		    $nbtExtractRefSet = $_GET['refset'];
+		    $nbtExtractRefID = $_GET['ref'];
+		    $nbtExtractUserID = $extraction['userid'];
+
+		    include (ABS_PATH . 'final/subextraction.php');
+
+		    echo '</div>';
+
+		    echo '</td>';
+
+		    
+
+		}
+
+		echo '</tr>';
+
+		echo '</table>';
+
+		echo '<p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final sub-extraction</span></p>';
+
+		echo '<div id="nbtMasterSubExtraction';
+
+		echo $element['id'];
+
+		echo '">';
+
+		$nbtMasterSubExtrID = $element['id'];
+		$nbtMasterRefSet = $_GET['refset'];
+		$nbtMasterRefID = $_GET['ref'];
+
+		include ('./finalsubextraction.php');
+
+		echo '</div>';
+
+		echo '</div>';
+
+		break;
+
+	    case "reference_data":
+
+		echo '<div class="nbtContentPanel">';
+
+		echo '<h3>';
+
+		echo $element['displayname'];
+
+		if ( $element['codebook'] != "" ) {
+
+		    $element['codebook'] = str_replace ("\n", "<br>", $element['codebook']);
+
+		    echo ' <a href="#" onclick="event.preventDefault();$(this).parent().next(\'.nbtCodebook\').slideToggle(100);">(?)</a></h3>';
+
+		    echo '<div class="nbtCodebook">';
+
+		    echo $element['codebook'];
+
+		    echo '</div>';
+
+		} else {
+
+		    echo '</h3>';
+
+		}
+
+		$refdata = $element['columnname'];
+
+		preg_match_all(
+		    '/\$([A-Za-z0-9_-]+)/',
+		    $element['columnname'],
+		    $cols_to_replace
+		);
+
+		foreach ( $cols_to_replace[0] as $col_to_replace ) {
+
+		    $refdata = str_replace (
+			$col_to_replace,
+			$ref[substr($col_to_replace, 1)],
+			$refdata
+		    );
+		}
+
+		echo "<p>" . $refdata . "</p>";
+
+		echo '</div>';
+
+
+		break;
+
+	}
+
+    }
+
+    echo '</div>';
+
+    echo '</div>';
+
+    echo '</div>';
+
+    echo '<div style="height: 200px;">&nbsp;</div>';
+
+} else {
+
+    echo '<div class="nbtContentPanel">';
+
+    echo '<h2>Only one extraction done</h2>';
+
+    echo '<p>Reconciliation is only available for references with two completed extractions.</p>';
+
+    echo '</div>';
+
+}
+
+?>
