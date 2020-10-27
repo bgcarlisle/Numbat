@@ -667,7 +667,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    } else {
 
-				echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' $element['id'] . "-" . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
+				echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' . $element['id'] . "-" . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				echo $option['displayname'];
 
@@ -887,7 +887,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 				} else {
 
-				    echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' $element['id'] . "-" . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
+				    echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' . $element['id'] . "-" . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				    echo $option['displayname'];
 

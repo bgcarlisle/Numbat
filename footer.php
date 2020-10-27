@@ -3571,7 +3571,7 @@
 
 	 $('.nbtElement' + eid).removeClass('nbtTextOptionChosen');
 
-	 $('.nbtSingleSelectExtraction' eid + '-' + exid + '.nbtTextOptionChosen').attr('dbname')).addClass('nbtTextOptionChosen');
+	 $('#nbtElement' + eid + '-' + $('.nbtSingleSelectExtraction' + eid + '-' + exid + '.nbtTextOptionChosen').attr('dbname')).addClass('nbtTextOptionChosen');
 
      });
 
