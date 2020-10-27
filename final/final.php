@@ -659,7 +659,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    if ( $option['dbname'] == $extractions[0][$element['columnname']] ) {
 
-				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
+				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtSingleSelectExtraction' . $element['id'] . "-" . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				echo $option['displayname'];
 
@@ -667,7 +667,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    } else {
 
-				echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
+				echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' $element['id'] . "-" . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				echo $option['displayname'];
 
@@ -727,7 +727,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 				if ( $option['dbname'] == $extraction[$element['columnname']] ) {
 
-				    echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
+				    echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtSingleSelectExtraction' . $element['id'] . "-" . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				    echo $option['displayname'];
 
@@ -735,7 +735,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 				} else {
 
-				    echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
+				    echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' . $element['id'] . "-" . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				    echo $option['displayname'];
 
@@ -814,7 +814,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    if ( $option['dbname'] == $extractions[0][$element['columnname']] ) {
 
-				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
+				echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtSingleSelectExtraction' . $element['id'] . "-" . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				echo $option['displayname'];
 
@@ -822,7 +822,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    } else {
 
-				echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
+				echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' . $element['id'] . "-" . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				echo $option['displayname'];
 
@@ -879,7 +879,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 				if ( $option['dbname'] == $extraction[$element['columnname']] ) {
 
-				    echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
+				    echo '<a class="nbtTextOptionSelect nbtTextOptionChosen nbtSingleSelectExtraction' . $element['id'] . "-" . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				    echo $option['displayname'];
 
@@ -887,7 +887,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 				} else {
 
-				    echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
+				    echo '<a class="nbtTextOptionSelect nbtSingleSelectExtraction' $element['id'] . "-" . $extraction['id'] . '" dbname="' . $option['dbname'] . '">';
 
 				    echo $option['displayname'];
 
