@@ -41,13 +41,13 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 					$lines = array();
 
-					if ( count ( explode ( "\n", $filecontent ) ) > count ( explode ( "\r", $filecontent ) ) ) {
+					if ( count ( explode ( "\n", $filecontent ) ) > count ( explode ( "\r\n", $filecontent ) ) ) {
 
 					   $line_demarcation = "\n";
 
 					} else {
 
-					   $line_demarcation = "\r";
+					   $line_demarcation = "\r\n";
 
 					}
 
