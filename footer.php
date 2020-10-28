@@ -2045,6 +2045,8 @@
 
 	 if (response == 'Changes saved') {
 
+	     $('#nbtExtractedElement' + eid).removeClass('nbtFeedbackBad').addClass('nbtFeedbackGood');
+
 	     $('.nbtElement' + eid + 'Check').fadeOut();
 
 	     $('#' + inputid).addClass('nbtBackgroundFeedbackGood');
@@ -2106,6 +2108,8 @@
      }).done ( function (response) {
 
 	 if (response == 'Changes saved') {
+
+	     $('#nbtExtractedElement' + eid).removeClass('nbtFeedbackBad').addClass('nbtFeedbackGood');
 
 	     $('.nbtElement' + eid + 'Check').fadeOut();
 
