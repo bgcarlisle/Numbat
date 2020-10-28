@@ -1284,6 +1284,8 @@
 
  function nbtChangeCitationSelectorSuffix ( eid ) {
 
+     nbtRemoveSpecialCharactersFromField ('#nbtCitationSelectorSuffix' + eid);
+
      $.ajax ({
 	 url: numbaturl + 'forms/changecitationselectorsuffix.php',
 	 type: 'post',
