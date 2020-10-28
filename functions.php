@@ -7941,66 +7941,20 @@ function nbt_change_table_suffix ( $elementid, $newsuffix ) {
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
-    // Start a counter to see if everything saved properly
+    if ( $newsuffix == $element['columnname'] ) {
+	$itworked = 3;
+    } else {
 
-    $itworked = 0;
+	// Start a counter to see if everything saved properly
 
-    // then alter the column in the extraction table
+	$itworked = 0;
 
-    try {
-
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("RENAME TABLE `tabledata_" . $element['columnname'] . "` TO `tabledata_" . $newsuffix . "`;");
-
-	if ($stmt->execute()) {
-
-	    $itworked ++;
-
-	}
-
-    }
-
-    catch (PDOException $e) {
-
-	echo $e->getMessage();
-
-    }
-
-    // then alter the column in the master table
-
-    try {
-
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("RENAME TABLE `mtable_" . $element['columnname'] . "` TO `mtable_" . $newsuffix . "`;");
-
-	if ($stmt->execute()) {
-
-	    $itworked ++;
-
-	}
-
-    }
-
-    catch (PDOException $e) {
-
-	echo $e->getMessage();
-
-    }
-
-    if ( $itworked == 2 ) {
-
-	// then change the form element table to match
+	// then alter the column in the extraction table
 
 	try {
 
 	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("UPDATE `formelements` SET `columnname`=:newname WHERE `id` = :eid");
-
-	    $stmt->bindParam(':eid', $eid);
-	    $stmt->bindParam(':newname', $nn);
-
-	    $eid = $element['id'];
-	    $nn = $newsuffix;
+	    $stmt = $dbh->prepare ("RENAME TABLE `tabledata_" . $element['columnname'] . "` TO `tabledata_" . $newsuffix . "`;");
 
 	    if ($stmt->execute()) {
 
@@ -8008,13 +7962,65 @@ function nbt_change_table_suffix ( $elementid, $newsuffix ) {
 
 	    }
 
-	    $dbh = null;
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+
+	// then alter the column in the master table
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare ("RENAME TABLE `mtable_" . $element['columnname'] . "` TO `mtable_" . $newsuffix . "`;");
+
+	    if ($stmt->execute()) {
+
+		$itworked ++;
+
+	    }
 
 	}
 
 	catch (PDOException $e) {
 
 	    echo $e->getMessage();
+
+	}
+
+	if ( $itworked == 2 ) {
+
+	    // then change the form element table to match
+
+	    try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `formelements` SET `columnname`=:newname WHERE `id` = :eid");
+
+		$stmt->bindParam(':eid', $eid);
+		$stmt->bindParam(':newname', $nn);
+
+		$eid = $element['id'];
+		$nn = $newsuffix;
+
+		if ($stmt->execute()) {
+
+		    $itworked ++;
+
+		}
+
+		$dbh = null;
+
+	    }
+
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	    }
 
 	}
 
