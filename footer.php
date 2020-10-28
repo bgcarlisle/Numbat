@@ -801,6 +801,10 @@
 
  function nbtUpdateSingleSelect ( eid, sid, dbcolumn ) {
 
+     if ( dbcolumn == 'dbname' ) {
+	 nbtRemoveSpecialCharactersFromField ('#nbtSingleSelect' + sid + dbcolumn);
+     }
+
      $.ajax ({
 	 url: numbaturl + 'forms/updatesingleselect.php',
 	 type: 'post',
