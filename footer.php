@@ -382,7 +382,24 @@
 
  }
 
+ function nbtRemoveSpecialCharactersFromField ( id ) {
+
+     // get rid of special characters
+
+     column_name = $( id ).val();
+
+     column_name = column_name.replace(/[^A-Za-z0-9_]+/, '_');
+     column_name = column_name.replace(/__/g, '_');
+     column_name = column_name.replace(/^_/, '');
+     column_name = column_name.replace(/_$/, '');
+
+     $( id ).val(column_name);
+
+ }
+
  function nbtChangeColumnName ( eid, size ) {
+
+     nbtRemoveSpecialCharactersFromField ('#nbtElementColumnName' + eid);
 
      $.ajax ({
 	 url: numbaturl + 'forms/changecolumnname.php',
@@ -393,9 +410,9 @@
 	     dbsize: size
 	 },
 	 dataType: 'html'
-     }).done ( function (html) {
+     }).done ( function (response) {
 
-	 $('#nbtFormElementFeedback' + eid).html(html);
+	 $('#nbtFormElementFeedback' + eid).html(response);
 
 	 $('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
 
@@ -433,6 +450,8 @@
 
  function nbtChangeDateColumnName ( eid ) {
 
+     nbtRemoveSpecialCharactersFromField ('#nbtElementColumnName' + eid);
+
      $.ajax ({
 	 url: numbaturl + 'forms/changedatecolumnname.php',
 	 type: 'post',
@@ -456,6 +475,8 @@
  }
 
  function nbtChangeMultiSelectColumnPrefix ( eid ) {
+
+     nbtRemoveSpecialCharactersFromField ('#nbtElementColumnPrefix' + eid);
 
      $.ajax ({
 	 url: numbaturl + 'forms/changemultiselectcolumnprefix.php',
@@ -867,6 +888,8 @@
 
  function nbtUpdateMultiSelectOptionColumn ( eid, sid, oldcolumn ) {
 
+     nbtRemoveSpecialCharactersFromField ('#nbtMultiSelectColumn' + sid);
+
      $.ajax ({
 	 url: numbaturl + 'forms/updatemultiselectoptioncolumn.php',
 	 type: 'post',
@@ -923,6 +946,8 @@
 
  function nbtChangeTableSuffix ( eid ) {
 
+     nbtRemoveSpecialCharactersFromField ('#nbtTableSuffix' + eid);
+
      $.ajax ({
 	 url: numbaturl + 'forms/changetablesuffix.php',
 	 type: 'post',
@@ -946,6 +971,8 @@
  }
 
  function nbtChangeSubTableSuffix ( seid ) {
+
+     nbtRemoveSpecialCharactersFromField ('#nbtSubTableSuffix' + seid);
 
      $.ajax ({
 	 url: numbaturl + 'forms/changesubtablesuffix.php',
@@ -2904,6 +2931,8 @@
  }
 
  function nbtChangeSubExtractionSuffix ( eid ) {
+
+     nbtRemoveSpecialCharactersFromField ('#nbtTableSuffix' + eid);
 
      $.ajax ({
 	 url: numbaturl + 'forms/changesubextractionsuffix.php',
