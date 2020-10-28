@@ -388,7 +388,7 @@
 
      column_name = $( id ).val();
 
-     column_name = column_name.replace(/[^A-Za-z0-9_]+/, '_');
+     column_name = column_name.replace(/[^A-Za-z0-9_]+/g, '_');
      column_name = column_name.replace(/__/g, '_');
      column_name = column_name.replace(/^_/, '');
      column_name = column_name.replace(/_$/, '');
