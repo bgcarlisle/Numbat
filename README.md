@@ -1,10 +1,10 @@
-# Numbat Meta-Analysis Manager
+# Numbat Systematic Review Manager
 
 ## Overview
 
 The source code for Numbat is available on [Github](https://github.com/bgcarlisle/Numbat "Numbat Github").
 
-Numbat is free software first developed by PhD student Benjamin Carlisle in 2014 for use by the STREAM research group[^1] in the Biomedical Ethics Unit at McGill University to facilitate meta-analytic work for the *Animals, Humans and the Continuity of Evidence* grant as well as the *Signals, Safety and Success* grant. This work was funded by the Canadian Institutes of Health Research (MOP 119574), and it is released as free and open-source under the GNU AGPL v 3.
+Numbat is free software first developed by PhD student Benjamin Carlisle in 2014 for use by the STREAM research group[^1] in the Biomedical Ethics Unit at McGill University to facilitate systematic review work for the *Animals, Humans and the Continuity of Evidence* grant as well as the *Signals, Safety and Success* grant. This work was funded by the Canadian Institutes of Health Research (MOP 119574), and it is released as free and open-source under the GNU AGPL v 3.
 
 It is named after the numbat, because numbats feed on termites by extracting them from their hiding places with very long and flexible tongues.
 
@@ -44,7 +44,7 @@ The following are the intended uses of Numbat.
 
 * Google has a bad record for keeping private data private
 * No good, built-in way to reconcile multiple extractions
-* Built-in blinding from other extractors' work to minimise validity threats to your meta-analytic work
+* Built-in blinding from other extractors' work to minimise validity threats to your systematic review work
 * Built-in assignment manager
 * Google Forms do not accommodate certain data structures, like table data and reference networks
 
