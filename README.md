@@ -1,4 +1,4 @@
-# Numbat Meta-Analysis Extraction Manager
+# Numbat Meta-Analysis Manager
 
 ## Overview
 
