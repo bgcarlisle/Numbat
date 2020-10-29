@@ -2,7 +2,9 @@
 
 ## Overview
 
-Numbat is free software first developed by PhD student Benjamin Carlisle in 2014 for use by the STREAM research group[^1] in the Biomedical Ethics Unit at McGill University to facilitate meta-analytic work for the *Animals, Humans and the Continuity of Evidence* grant as well as the *Signals, Safety and Success* grant. This work was funded by the Canadian Institutes of Health Research (MOP 119574), and it is released as free and open-source under the GNU GPL v 2.
+The source code for Numbat is available on [Github](https://github.com/bgcarlisle/Numbat "Numbat Github").
+
+Numbat is free software first developed by PhD student Benjamin Carlisle in 2014 for use by the STREAM research group[^1] in the Biomedical Ethics Unit at McGill University to facilitate meta-analytic work for the *Animals, Humans and the Continuity of Evidence* grant as well as the *Signals, Safety and Success* grant. This work was funded by the Canadian Institutes of Health Research (MOP 119574), and it is released as free and open-source under the GNU AGPL v 3.
 
 It is named after the numbat, because numbats feed on termites by extracting them from their hiding places with very long and flexible tongues.
 
@@ -12,7 +14,7 @@ It is named after the numbat, because numbats feed on termites by extracting the
 
 ### What Numbat does
 
-Numbat is a piece of software designed for managing the extraction of large volumes of data from primary sources among multiple users, and then reconciling the differences between them. It is designed for use in meta-analytic projects in an academic context.
+Numbat is a piece of software designed for managing the extraction of large volumes of data from primary sources among multiple users, and then reconciling the differences between them. It is designed for use in systematic review projects in an academic context.
 
 The following are the intended uses of Numbat.
 
@@ -25,7 +27,7 @@ The following are the intended uses of Numbat.
 ### What Numbat doesn't do
 
 * Statistical analysis of results
-* Calculating Cohen's kappa
+* Calculating Cohen's/Fleiss' kappa
 * Semantic analysis of papers to extract (you have to read the papers yourself)
 * Magic
 
@@ -38,7 +40,6 @@ The following are the intended uses of Numbat.
 * Ownership of one's own data
 * Ease of back-up
 
-
 ### Why not just use a Google Form?
 
 * Google has a bad record for keeping private data private
@@ -47,42 +48,39 @@ The following are the intended uses of Numbat.
 * Built-in assignment manager
 * Google Forms do not accommodate certain data structures, like table data and reference networks
 
-
 ## Installation requirements
 
 You may be able to install Numbat on setups different from what is described below, but the following is what it was designed for.
 
-* Apache 2.2.22-14
-* PHP 5.3.27
-* MySQL 5
+* Apache
+* PHP
+* MySQL
 
 Copy the entire file to your web server, and navigate to the Numbat directory with your browser. You will need to know your MySQL server, username and password to complete the installation.
 
-## What's new in 2.10
+## What's new in 2.11
 
-* User-facing "master" language has been removed, replaced with "final"
+* Bug fixes
+* "Final override" to allow extractors to override extracted data at the point of reconciliation
+* Codebook export as Markdown document
 
 ## How to cite Numbat
 
-Here is a BibTeX entry you can use to cite Numbat in your papers:
+Here is a BibTeX entry for Numbat:
 
 ```
-@Manual{numbat2-6carlisle,
-  Title          = {Numbat {M}eta-{A}nalysis {E}xtraction {M}anager},
-  Author         = {Benjamin Gregory Carlisle},
-  Organization   = {Studies of Ethics, Translation and Medicine (STREAM),
-                   Biomedical Ethics Unit, McGill University},
-  Address        = {Montreal, Canada},
-  url            = {http://bgcarlisle.github.io/Numbat/},
-  year           = 2015
+@Manual{numbat-carlisle,
+  Title          = {Numbat {S}ystematic {R}eview {M}anager},
+  Author         = {Carlisle, Benjamin Gregory},
+  Organization   = {The Grey Literature},
+  Address        = {Berlin, Germany},
+  url            = {https://numbat.bgcarlisle.com},
+  year           = 2014
 }
 ```
 
-## Contact info
-
-I cannot guarantee that I will be able to help you with your problems. Depending on the nature and scope of your problems, you may be better off calling 911 or admitting yourself to the nearest hospital. That said, if you have found bugs, or if you have ideas for future directions for the software, please submit an issue to this repo!
+If you use my software to complete a systematic review and you found it useful, I would take it as a kindness if you cited it. 
 
 Best,
 
-Benjamin Carlisle  
-Murph E.
+Benjamin Gregory Carlisle PhD
