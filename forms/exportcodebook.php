@@ -1,8 +1,9 @@
 <?php
 
-header('Content-Type: text/markdown');
-
 $form = nbt_get_form_for_id ($_GET['id']);
+
+header('Content-Type: text/markdown');
+header('Content-Disposition: attachment; filename="' . date("Y-m-d") . '-' . $form['name'] . '.md"');
 
 $elements = nbt_get_elements_for_formid ($_GET['id']);
 
