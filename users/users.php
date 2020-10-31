@@ -85,6 +85,6 @@
     <p>Admin: can assign extractions, edit reference sets and forms, grant user privileges, do extractions and export data</p>
     <p>User: can do extractions and reconcile extractions with other users only</p>
 
-    <p>All users must have verified email addresses in order to sign in. In the case that the user's email account is blocking emails from Numbat and they are not in the user's spam folder, you may mark a user's email address as verified manually and use the "change password" button above to generate a link to a form that will allow them to choose a password..</p>
+    <p>All users must have verified email addresses in order to sign in. In the case that the user's email account is blocking emails from Numbat and they are not in the user's spam folder, you may mark a user's email address as verified manually and use the "change password" button above to generate a link to a form that will allow them to choose a password.</p>
 
 </div>
