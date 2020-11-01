@@ -256,7 +256,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    $column = strtolower($column);
 
-		    if ( ($column == "authors" || $column == "locations") && $selected == 0 ) {
+		    if ( ($column == "authors" || $column == "author" || $column == "locations") && $selected == 0 ) {
 			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
 			$selected++;
 		    } else {
@@ -290,7 +290,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    $column = strtolower($column);
 
-		    if ( ($column == "year" || $column == "start_date") && $selected == 0 ) {
+		    if ( ($column == "year" || $column == "publication_year" || $column == "start_date") && $selected == 0 ) {
 			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
 		    } else {
 			echo '<option value="' . $colcount . '">' . $column . '</option>';
@@ -323,7 +323,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    $column = strtolower($column);
 
-		    if ( ($column == "journal" || $column == "status") && $selected == 0 ) {
+		    if ( ($column == "journal" || $column == "publication_title" || $column == "status") && $selected == 0 ) {
 			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
 			$selected++;
 		    } else {
@@ -357,7 +357,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    $column = strtolower($column);
 
-		    if ( ($column == "abstract" || $column == "url") && $selected == 0) {
+		    if ( ($column == "abstract" || $column == "abstract_note" || $column == "acronym") && $selected == 0) {
 			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
 			$selected++;
 		    } else {
