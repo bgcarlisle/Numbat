@@ -5,11 +5,12 @@
 	</h2>
 	<table class="nbtTabledData">
 		<tr class="nbtTableHeaders">
-			<td>Reference set</td>
-			<td>Edit reference set</td>
-			<td>Manually added references</td>
-			<td>Manage multiples</td>
-			<td>Delete</td>
+		    <td>Reference set</td>
+		    <td>View reference set</td>
+		    <td>Edit reference set</td>
+		    <td>Manually added references</td>
+		    <td>Manage multiples</td>
+		    <td>Delete</td>
 		</tr>
 		<?php
 
@@ -18,8 +19,9 @@
 		foreach ( $allrefsets as $refset ) {
 
 			?><tr id="nbtRefSetRow<?php echo $refset['id']; ?>">
-				<td><?php echo $refset['name']; ?></td>
-				<td><a href="<?php echo SITE_URL; ?>references/?action=edit&refset=<?php echo $refset['id']; ?>">Edit</a></td>
+      		                <td><?php echo $refset['name']; ?></td>
+		                <td><a href="<?php echo SITE_URL; ?>references/?action=view&refset=<?php echo $refset['id']; ?>">View</a></td>
+ 		                <td><a href="<?php echo SITE_URL; ?>references/?action=edit&refset=<?php echo $refset['id']; ?>">Edit</a></td>
 				<td><a href="<?php echo SITE_URL; ?>references/manual/?refset=<?php echo $refset['id']; ?>">Manual refs</a></td>
 				<td><a href="<?php echo SITE_URL; ?>references/multiple/?refset=<?php echo $refset['id']; ?>">Multiples</a></td>
 				<td>
@@ -32,7 +34,7 @@
 
 		?>
 		<tr>
-			<td colspan=5><button onclick="$('#nbtNewReferenceSetInstructions').slideDown();$(this).fadeOut();">Add new reference set</button></td>
+			<td colspan=6><button onclick="$('#nbtNewReferenceSetInstructions').slideDown();$(this).fadeOut();">Add new reference set</button></td>
 		</tr>
 	</table>
 
