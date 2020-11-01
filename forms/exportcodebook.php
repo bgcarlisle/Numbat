@@ -105,17 +105,17 @@ foreach ( $elements as $element ) {
 
 	    echo "Variable type: Categorical (multiple selection allowed)\n\n";
 
-	    echo "Database column prefix: `" . $element['columnname'] . "`\n\n";
-
 	    echo "Extractors were prompted to select one or more of the following options.\n\n";
+
+	    echo "The options selected by extractors would be exported with a 1 in the corresponding database column.\n\n";
 
 	    $selectoptions = nbt_get_all_select_options_for_element ( $element['id'] );
 
-	    echo "| Displayed option name | Database value |\n";
-	    echo "|:----------------------|---------------:|\n";
+	    echo "| Displayed option name | Database column |\n";
+	    echo "|:----------------------|----------------:|\n";
 
 	    foreach ( $selectoptions as $select ) {
-		echo "| " . $select['displayname'] . " | " . $select['dbname'] . " |\n";
+		echo "| " . $select['displayname'] . " | " . $element['columnname'] . "_" . $select['dbname'] . " |\n";
 	    }
 	    
 	    echo "\n";
