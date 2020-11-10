@@ -1,0 +1,9 @@
+ALTER TABLE `referencesets`
+ADD COLUMN `title` INT(11) NULL DEFAULT NULL AFTER `name`,
+ADD COLUMN `authors` INT(11) NULL DEFAULT NULL AFTER `title`,
+ADD COLUMN `year` INT(11) NULL DEFAULT NULL AFTER `authors`,
+ADD COLUMN `journal` INT(11) NULL DEFAULT NULL AFTER `year`,
+ADD COLUMN `abstract` INT(11) NULL DEFAULT NULL AFTER `journal`;
+
+ALTER TABLE `formelements` 
+CHANGE COLUMN `columnname` `columnname` VARCHAR(500) NULL DEFAULT NULL ;
