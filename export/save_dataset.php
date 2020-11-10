@@ -8,8 +8,6 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
     $filename = substr (hash('sha256', rand(0, 10000)), 0, 12);
 
-    
-
     echo $filename;
 
     switch ( $_POST['export_type'] ) {
