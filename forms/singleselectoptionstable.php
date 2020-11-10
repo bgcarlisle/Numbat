@@ -26,6 +26,6 @@
 	}
 
 	?><tr>
-		<td colspan="4"><button onclick="nbtAddSingleSelectOption(<?php echo $tableelementid; ?>);">Add new option</button></td>
+		<td colspan="5"><button onclick="nbtAddSingleSelectOption(<?php echo $tableelementid; ?>);">Add new option</button></td>
 	</tr>
 </table>

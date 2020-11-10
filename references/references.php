@@ -36,7 +36,7 @@
 
 		     ?>
 		<tr>
-		    <td colspan=6><button onclick="$('#nbtNewReferenceSetInstructions').slideDown();$(this).fadeOut();">Add new reference set</button></td>
+		    <td colspan="7"><button onclick="$('#nbtNewReferenceSetInstructions').slideDown();$(this).fadeOut();">Add new reference set</button></td>
 		</tr>
 	</table>
 
