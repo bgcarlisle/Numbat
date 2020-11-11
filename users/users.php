@@ -24,7 +24,7 @@
 	    
 	    if ( $user['id'] == $_SESSION[INSTALL_HASH . '_nbt_userid']) {
 
-	    ?>Email verified<?php
+	    ?><td>Email verified</td><?php
 	    
 	    } else {
 		
