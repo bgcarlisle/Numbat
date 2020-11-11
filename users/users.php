@@ -20,12 +20,25 @@
 	?><tr>
 	    <td><?php echo $user['username']; ?></td>
 	    <td><?php echo $user['email']; ?></td>
-	    <td>
+	    <?php
+	    
+	    if ( $user['id'] == $_SESSION[INSTALL_HASH . '_nbt_userid']) {
+
+	    ?>Email verified<?php
+	    
+	    } else {
+		
+	    ?><td>
 		<select id="nbtUserEmailVerified<?php echo $user['id']; ?>" onchange="nbtChangeUserEmailVerify(<?php echo $user['id']; ?>);"">
 		    <option value="1"<?php if ($user['emailverify'] == "0") { echo " selected"; } ?>>Email verified</option>
 		    <option value="0"<?php if ($user['emailverify'] != "0") { echo " selected"; } ?>>Email not verified</option>
 		</select>
-	    </td>
+	    </td><?php
+	    
+	    }
+
+	    ?>
+	    
 	    <td>
 		<button onclick="nbtAdminChangePassword(<?php echo $user['id'] ?>);">Change password</button>
 	    </td>
