@@ -93,7 +93,7 @@
 
     <div class="nbtHidden nbtFeedbackGood nbtFeedback nbtFinePrint" id="nbtPrivilegeFeedback">&nbsp;</div>
 
-    <div class="nbtHidden" id="nbtPasswordChangeFeedback" style="border: 1px solid #333; border-radius: 5px; padding: 10px;">&nbsp;</div>
+    <div class="nbtHidden" id="nbtPasswordChangeFeedback" style="border: 1px solid #666; border-radius: 5px; padding: 10px;">&nbsp;</div>
 
     <p>Admin: can assign extractions, edit reference sets and forms, grant user privileges, do extractions and export data</p>
     <p>User: can do extractions and reconcile extractions with other users only</p>
