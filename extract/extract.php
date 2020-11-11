@@ -497,6 +497,8 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 					       );
 					   }
 
+					   $refdata = str_replace("\n", "<br>", $refdata);
+
 					   echo "<p>" . $refdata . "</p>";
 
 					?></div><?php
