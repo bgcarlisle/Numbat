@@ -2597,6 +2597,8 @@
 
 	 $('#nbtAssignment-' + rid + '-' + fid + '-' + uid).toggleClass('nbtAssigned').toggleClass('nbtNotAssigned');
 
+	 nbtUpdateCompletedAssignmentsCount ( fid, rsid );
+
      })
  }
 
@@ -2717,6 +2719,8 @@
 
 	     if ( response == "SUCCESS" ) {
 
+		 nbtUpdateCompletedAssignmentsCount ( fid, rsid );
+
 		 if ( fid == "all" && uid == "all" ) {
 
 		     forms = $('#nbtAllFormIDs').val().split(',');
@@ -2804,7 +2808,10 @@
 	     },
 	     dataType: 'html'
 	 }).done(function (response) {
+	     
 	     if (response == "SUCCESS") {
+
+		 nbtUpdateCompletedAssignmentsCount ( fid, rsid );
 
 		 if (fid == "all" && uid == "all") {
 		     forms = $('#nbtAllFormIDs').val().split(',');
@@ -4288,6 +4295,36 @@
 	 });
 
      });
+
+ }
+
+ function nbtUpdateCompletedAssignmentsCount ( formid, refsetid ) {
+
+     denominator = $('.nbtAssigned.nbtAssignmentNameForForm' + formid).length;
+
+     if ( denominator > 0 ) {
+
+	 $.ajax ({
+	     url: numbaturl + 'assignments/incomplete_assignments_count.php',
+	     type: 'post',
+	     data: {
+		 fid: formid,
+		 rsid: refsetid
+	     },
+	     dataType: 'html'
+	 }).done ( function (response) {
+
+	     denominator = $('.nbtAssigned.nbtAssignmentNameForForm' + formid).length;
+
+	     $('#nbtAssignmentsNotCompletedCountForForm-' + formid).html(response + '/' + denominator + ' assignments incomplete');
+
+	 });
+	 
+     } else {
+
+	 $('#nbtAssignmentsNotCompletedCountForForm-' + formid).html(denominator + ' assignments');
+	 
+     }
 
  }
 

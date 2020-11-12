@@ -152,6 +152,10 @@ foreach ($forms as $form) {
 
 		echo $form['name'];
 
+		echo '<span id="nbtAssignmentsNotCompletedCountForForm-' . $form['id'] . '" onclick="nbtUpdateCompletedAssignmentsCount(' . $form['id'] . ', ' . $refset['id'] . ');" style="display: block; float: right;">';
+
+		echo '</span>';
+
 		echo "</td>";
 	    }
 
@@ -192,14 +196,14 @@ foreach ($forms as $form) {
 			    $assign['formid'] == $form['id'] &
 			    $assign['username'] == $user['username']
 			) {
-			    echo '<span class="nbtAssignmentName nbtAssigned" id="nbtAssignment-' . $reference['id'] . '-' . $form['id'] . '-' . $user['id'] . '" onclick="nbtToggleAssignment(' . $user['id'] . ', ' . $form['id'] . ', ' . $refset['id'] . ', ' . $reference['id'] . ');">' . $user['username'] . '&nbsp;<span class="nbtAssignCheck">&#x2713;</span><span class="nbtAssignCross">&#x2717;</span></span> ';
+			    echo '<span class="nbtAssignmentName nbtAssigned nbtAssignmentNameForForm' . $form['id'] . '" id="nbtAssignment-' . $reference['id'] . '-' . $form['id'] . '-' . $user['id'] . '" onclick="nbtToggleAssignment(' . $user['id'] . ', ' . $form['id'] . ', ' . $refset['id'] . ', ' . $reference['id'] . ');">' . $user['username'] . '&nbsp;<span class="nbtAssignCheck">&#x2713;</span><span class="nbtAssignCross">&#x2717;</span></span> ';
 			    $assignmentfound = TRUE;
 			}
 			
 		    }
 
 		    if ( ! $assignmentfound ) {
-			echo '<span class="nbtAssignmentName nbtNotAssigned" id="nbtAssignment-' . $reference['id'] . '-' . $form['id'] . '-' . $user['id'] . '" onclick="nbtToggleAssignment(' . $user['id'] . ', ' . $form['id'] . ', ' . $refset['id'] . ', ' . $reference['id'] . ');">' . $user['username'] . '&nbsp;<span class="nbtAssignCheck">&#x2713;</span><span class="nbtAssignCross">&#x2717;</span></span> ';
+			echo '<span class="nbtAssignmentName nbtNotAssigned nbtAssignmentNameForForm' . $form['id'] . '" id="nbtAssignment-' . $reference['id'] . '-' . $form['id'] . '-' . $user['id'] . '" onclick="nbtToggleAssignment(' . $user['id'] . ', ' . $form['id'] . ', ' . $refset['id'] . ', ' . $reference['id'] . ');">' . $user['username'] . '&nbsp;<span class="nbtAssignCheck">&#x2713;</span><span class="nbtAssignCross">&#x2717;</span></span> ';
 		    }
 		    
 		}
@@ -229,4 +233,16 @@ foreach ($forms as $form) {
 	?>
     </table>
 </div>
+<script>
+ $(document).ready ( function () {
 
+     <?php
+     foreach ($forms as $form) {
+	 ?>
+	 nbtUpdateCompletedAssignmentsCount (<?php echo $form['id']; ?>, <?php echo $refset['id']; ?>);
+	 <?php
+     }
+     ?>
+
+ });
+</script>

@@ -14624,5 +14624,36 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k ) {
 
 }
 
+function get_incomplete_assignments_for_form_and_refset ( $formid, $refsetid ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM assignments WHERE refsetid = :rsid AND formid = :fid AND referenceid NOT IN (SELECT `referenceid` FROM `extractions_" . $formid . "` WHERE extractions_" . $formid . ".refsetid = assignments.refsetid AND `status` = 2 AND extractions_" . $formid . ".userid = assignments.userid)");
+
+	$stmt->bindParam(':fid', $fid);
+	$stmt->bindParam(':rsid', $rsid);
+
+	$fid = $formid;
+	$rsid = $refsetid;
+	
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	return $result;
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
 
 ?>
