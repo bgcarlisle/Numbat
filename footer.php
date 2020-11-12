@@ -4316,7 +4316,9 @@
 
 	     denominator = $('.nbtAssigned.nbtAssignmentNameForForm' + formid).length;
 
-	     $('#nbtAssignmentsNotCompletedCountForForm-' + formid).html(response + '/' + denominator + ' assignments incomplete');
+	     numerator = denominator - response;
+
+	     $('#nbtAssignmentsNotCompletedCountForForm-' + formid).html(numerator + '/' + denominator + ' assignments complete');
 
 	 });
 	 
