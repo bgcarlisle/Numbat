@@ -4474,7 +4474,7 @@ function nbt_delete_extraction_form ( $formid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("DELETE FROM `forms` WHERE id = :id LIMIT 1; DROP TABLE `extractions_" . $formid . "`;");
+	$stmt = $dbh->prepare("DELETE FROM `forms` WHERE id = :id LIMIT 1; DROP TABLE `extractions_" . $formid . "`; DROP TABLE `m_extractions_" . $formid . "`;");
 
 	$stmt->bindParam(':id', $fid);
 
