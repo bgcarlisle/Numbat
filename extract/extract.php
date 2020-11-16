@@ -267,7 +267,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 						$countries = nbt_return_country_array (); ?>
 
-						<select id="nbtCountrySelect<?php echo $element['columnname']; ?>" onblur="nbtSaveTextField(<?php echo $_GET['form']; ?>, <?php echo $extraction['id']; ?>, '<?php echo $element['columnname']; ?>', 'nbtCountrySelect<?php echo $element['columnname']; ?>', 'sigCountrySelect<?php echo $element['columnname']; ?>Feedback');">
+						<select id="nbtCountrySelect<?php echo $element['columnname']; ?>" onblur="nbtSaveTextField(<?php echo $_GET['form']; ?>, <?php echo $extraction['id']; ?>, '<?php echo $element['columnname']; ?>', 'nbtCountrySelect<?php echo $element['columnname']; ?>', 'nbtCountrySelect<?php echo $element['columnname']; ?>Feedback');">
 							<?php
 
 							foreach ( $countries as $country ) {
@@ -286,7 +286,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 							?>
 						</select>
-						<span class="nbtInputFeedback" id="sigCountrySelect<?php echo $element['columnname']; ?>Feedback">&nbsp;</span>
+						<span class="nbtInputFeedback" id="nbtCountrySelect<?php echo $element['columnname']; ?>Feedback">&nbsp;</span>
 					</div><?php
 
 				break;
