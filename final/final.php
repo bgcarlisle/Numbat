@@ -1239,6 +1239,8 @@ if ( count ( $extractions ) >= 2 ) {
 
 	    case "country_selector":
 
+		$countries = nbt_return_country_array ();
+
 		$values = array ();
 
 		foreach ( $extractions as $extraction ) {
@@ -1247,11 +1249,9 @@ if ( count ( $extractions ) >= 2 ) {
 
 		}
 
-		if ( ! is_null ($master[$element['columnname']]) ) {
+		if ( ! is_null ($master[$element['columnname']]) ) { // if the final copy is not null
 
-		    if ( count ( array_unique ( $values ) ) == 1 ) {
-
-			nbt_copy_to_master ( $_GET['form'], $_GET['refset'], $_GET['ref'], $element['columnname'], $extractions[0]['id'] );
+		    if ( count ( array_unique ( $values ) ) == 1 ) { // if there was perfect agreement
 
 			echo '<div class="nbtFeedbackGood nbtDoubleResult">';
 
@@ -1265,9 +1265,30 @@ if ( count ( $extractions ) >= 2 ) {
 
 			echo '<p>' . $extractions[0][$element['columnname']] . '</p>';
 
+			echo '<span class="nbtExtractionName">All extractors</span>';
+
+			// final copy
+
+			echo '<p><select id="nbtCountrySelectFinalOverride' . $element['columnname'] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtCountrySelectFinalOverride' . $element['columnname'] . '\', ' . $element['id'] .');">';
+
+			foreach ( $countries as $country ) {
+
+			    if ( $master[$element['columnname']] == $country ) {
+				echo '<option value="' . $country . '" selected>' . $country . '</option>';
+			    } else {
+				echo '<option value="' . $country . '">' . $country . '</option>';
+			    }
+
+			    
+			}
+
+			echo '</select></p><span class="nbtExtractionName">Final copy</span>';
+
+			// end of final copy
+
 			echo '</div>';
 
-		    } else {
+		    } else { // there was not perfect agreement among extractors
 
 			echo '<div class="nbtFeedbackGood nbtDoubleResult" id="nbtExtractedElement' . $element['id'] . '">';
 
@@ -1291,7 +1312,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 				echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
 
-				echo '<button onclick="nbtCopyToMaster(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ", '" . $element['columnname'] . "', " . $extraction['id'] . ', ' . $element['id'] . ', ' . $extraction['userid'] . ');">Copy to final</button>';
+				echo '<button onclick="nbtCopyToMaster(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ", '" . $element['columnname'] . "', " . $extraction['id'] . ', ' . $element['id'] . ', ' . $extraction['userid'] . ');$(\'#nbtCountrySelectFinalOverride' . $element['columnname'] . '\').val(\'' . $extraction[$element['columnname']] . '\');">Copy to final</button>';
 
 			    } else {
 
@@ -1303,19 +1324,38 @@ if ( count ( $extractions ) >= 2 ) {
 
 				echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
 
-				echo '<button onclick="nbtCopyToMaster(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ", '" . $element['columnname'] . "', " . $extraction['id'] . ', ' . $element['id'] . ', ' . $extraction['userid'] . ');">Copy to final</button>';
+				echo '<button onclick="nbtCopyToMaster(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ", '" . $element['columnname'] . "', " . $extraction['id'] . ', ' . $element['id'] . ', ' . $extraction['userid'] . ');$(\'#nbtCountrySelectFinalOverride' . $element['columnname'] . '\').val(\'' . $extraction[$element['columnname']] . '\');">Copy to final</button>';
 
 			    }
 
 			}
+			
+			// final copy
+
+			echo '<p><select id="nbtCountrySelectFinalOverride' . $element['columnname'] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtCountrySelectFinalOverride' . $element['columnname'] . '\', ' . $element['id'] .');$(\'.nbtElement' . $element['id'] . 'Check\').fadeOut();">';
+
+			foreach ( $countries as $country ) {
+
+			    if ( $master[$element['columnname']] == $country ) {
+				echo '<option value="' . $country . '" selected>' . $country . '</option>';
+			    } else {
+				echo '<option value="' . $country . '">' . $country . '</option>';
+			    }
+
+			    
+			}
+
+			echo '</select></p><span class="nbtExtractionName">Final copy</span>';
+
+			// end of final copy
 
 			echo '</div>';
 
 		    }
 
-		} else {
+		} else { // the final copy is null
 
-		    if ( count ( array_unique ( $values ) ) == 1 ) {
+		    if ( count ( array_unique ( $values ) ) == 1 ) { // if there was perfect agreement
 
 			nbt_copy_to_master ( $_GET['form'], $_GET['refset'], $_GET['ref'], $element['columnname'], $extractions[0]['id'] );
 
@@ -1331,9 +1371,30 @@ if ( count ( $extractions ) >= 2 ) {
 
 			echo '<p>' . $extractions[0][$element['columnname']] . '</p>';
 
+			echo '</select></p><span class="nbtExtractionName">All extractors</span>';
+
+			// final copy override
+			
+			echo '<p><select id="nbtCountrySelectFinalOverride' . $element['columnname'] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtCountrySelectFinalOverride' . $element['columnname'] . '\', ' . $element['id'] .');">';
+
+			foreach ( $countries as $country ) {
+
+			    if ( $extractions[0][$element['columnname']] == $country ) {
+				echo '<option value="' . $country . '" selected>' . $country . '</option>';
+			    } else {
+				echo '<option value="' . $country . '">' . $country . '</option>';
+			    }
+
+			    
+			}
+
+			echo '</select></p><span class="nbtExtractionName">Final copy</span>';
+			
+			// end final copy
+
 			echo '</div>';
 
-		    } else {
+		    } else { // if there was not perfect agreement
 
 			echo '<div class="nbtFeedbackBad nbtDoubleResult" id="nbtExtractedElement' . $element['id'] . '">';
 
@@ -1355,10 +1416,29 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
 
-			    echo '<button onclick="nbtCopyToMaster(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ", '" . $element['columnname'] . "', " . $extraction['id'] . ', ' . $element['id'] . ', ' . $extraction['userid'] . ');">Copy to final</button>';
+			    echo '<button onclick="nbtCopyToMaster(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ", '" . $element['columnname'] . "', " . $extraction['id'] . ', ' . $element['id'] . ', ' . $extraction['userid'] . ');$(\'#nbtCountrySelectFinalOverride' . $element['columnname'] . '\').val(\'' . $extraction[$element['columnname']] . '\');">Copy to final</button>';
 
 
 			}
+
+			// final copy
+
+			echo '<p><select id="nbtCountrySelectFinalOverride' . $element['columnname'] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtCountrySelectFinalOverride' . $element['columnname'] . '\', ' . $element['id'] .');$(\'.nbtElement' . $element['id'] . 'Check\').fadeOut();">';
+
+			foreach ( $countries as $country ) {
+
+			    if ( $master[$element['columnname']] == $country ) {
+				echo '<option value="' . $country . '" selected>' . $country . '</option>';
+			    } else {
+				echo '<option value="' . $country . '">' . $country . '</option>';
+			    }
+
+			    
+			}
+
+			echo '</select></p><span class="nbtExtractionName">Final copy</span>';
+
+			// end of final copy
 
 			echo '</div>';
 
