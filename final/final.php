@@ -10,7 +10,7 @@ $extractions = nbt_get_extractions_for_refset_ref_and_form ( $_GET['refset'], $_
 
 if ( count ( $extractions ) >= 2 ) {
 
-    $master = nbt_get_master ( $_GET['form'], $_GET['refset'], $_GET['ref'] );
+    $master = nbt_get_final ( $_GET['form'], $_GET['refset'], $_GET['ref'] );
 
     echo '<div class="nbtNonsidebar">';
 

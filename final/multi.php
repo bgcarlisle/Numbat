@@ -34,7 +34,7 @@ if ( count ( $refsets ) > 0 ) {
 
 						foreach ( $extractedrefs as $extractedref ) {
 
-							$master = nbt_get_master ( $form['id'], $refset['id'], $extractedref['id'], FALSE );
+							$master = nbt_get_final ( $form['id'], $refset['id'], $extractedref['id'], FALSE );
 
 							?><tr<?php
 

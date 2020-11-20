@@ -3924,9 +3924,9 @@ function nbt_toggle_assignment_hide ( $assignid ) {
 
 }
 
-function nbt_get_master ( $formid, $refsetid, $refid, $insert = TRUE ) {
+function nbt_get_final ( $formid, $refsetid, $refid, $insert = TRUE ) {
 
-    // Try to insert
+    // By default, try to insert
     // If it's already there, it will fail
     // Hooray for MySQL indices
 
