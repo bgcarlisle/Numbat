@@ -19,7 +19,7 @@ if ( count ( $refsets ) > 0 ) {
 			foreach ( $forms as $form ) {
 
 				$extractedrefs = nbt_get_all_extracted_references_for_refset_and_form ( $refset['id'], $form['id'] );
-
+ 
 				if ( count ( $extractedrefs ) > 0 ) {
 
 					?><h3 style="margin-top: 10px;"><?php echo $form['name']; ?></h3>
@@ -34,7 +34,7 @@ if ( count ( $refsets ) > 0 ) {
 
 						foreach ( $extractedrefs as $extractedref ) {
 
-							$master = nbt_get_master ( $form['id'], $refset['id'], $extractedref['id'] );
+							$master = nbt_get_master ( $form['id'], $refset['id'], $extractedref['id'], FALSE );
 
 							?><tr<?php
 

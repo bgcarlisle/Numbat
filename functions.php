@@ -3924,33 +3924,37 @@ function nbt_toggle_assignment_hide ( $assignid ) {
 
 }
 
-function nbt_get_master ( $formid, $refsetid, $refid ) {
+function nbt_get_master ( $formid, $refsetid, $refid, $insert = TRUE ) {
 
     // Try to insert
     // If it's already there, it will fail
     // Hooray for MySQL indices
 
-    try {
+    if ( $insert ) {	
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO `m_extractions_" . $formid . "` (refsetid, referenceid) VALUES (:refset, :refid);");
+	try {
 
-	$stmt->bindParam(':refset', $rsid);
-	$stmt->bindParam(':refid', $rid);
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare ("INSERT INTO `m_extractions_" . $formid . "` (refsetid, referenceid) VALUES (:refset, :refid);");
 
-	$rsid = $refsetid;
-	$rid = $refid;
+	    $stmt->bindParam(':refset', $rsid);
+	    $stmt->bindParam(':refid', $rid);
 
-	$stmt->execute();
+	    $rsid = $refsetid;
+	    $rid = $refid;
 
-	$dbh = null;
+	    $stmt->execute();
 
-    }
+	    $dbh = null;
 
-    catch (PDOException $e) {
+	}
 
-	echo $e->getMessage();
+	catch (PDOException $e) {
 
+	    echo $e->getMessage();
+
+	}
+	
     }
 
     // Now, get the row
