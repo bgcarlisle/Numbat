@@ -4236,22 +4236,26 @@
 
  function nbtExportRefset ( rsid ) {
 
-     $.ajax ({
-	 url: numbaturl + 'references/save_refset.php',
-	 type: 'post',
-	 data: {
-	     refsetid: rsid
-	 },
-	 dataType: 'html'
-     }).done ( function (response) {
+     if ( rsid != "ns" ) {
 
-	 $('#nbtThinkyLinky').attr('href', numbaturl + 'references/referenceset_' + response + '.csv')
+	 $.ajax ({
+	     url: numbaturl + 'references/save_refset.php',
+	     type: 'post',
+	     data: {
+		 refsetid: rsid
+	     },
+	     dataType: 'html'
+	 }).done ( function (response) {
 
-	 $('#nbtCoverup').fadeIn();
-	 $('#nbtThinky').fadeIn();
+	     $('#nbtThinkyLinky').attr('href', numbaturl + 'references/referenceset_' + response + '.csv')
+
+	     $('#nbtCoverup').fadeIn();
+	     $('#nbtThinky').fadeIn();
 
 
-     });
+	 });
+	 
+     }
 
  }
 

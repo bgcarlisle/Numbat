@@ -530,3 +530,9 @@ textarea.finalOverride {
     width: 96%;
     height: 150px;
 }
+.nbtImportElement {
+    border: 1px solid #999;
+    border-radius: 3px;
+    padding: 0 8px 8px 8px;
+    margin: 4px 0;
+}

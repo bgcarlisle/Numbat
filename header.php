@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+    <head>
 
 	<title>Numbat: <?php echo nbt_get_setting ( "project_name" ); ?></title>
 
@@ -26,81 +26,86 @@
 
 	<link rel="SHORTCUT ICON" href="<?php echo SITE_URL; ?>images/favicon.ico"/>
 
-</head>
+    </head>
 
-<body>
+    <body>
 
-<div id="nbtTopBanner">
+	<div id="nbtTopBanner">
+	    <?php
+
+	    if ( nbt_user_is_logged_in () ) {
+
+	    ?><a href="#" onclick="event.preventDefault();$('nav').slideToggle();"><h1>Numbat: <?php echo nbt_get_setting ( "project_name" ); ?></h1></a><?php
+
+																			 } else {
+
+																			 ?><a href="<?php echo SITE_URL; ?>"><h1>Numbat: <?php echo nbt_get_setting ( "project_name" ); ?></h1></a><?php
+
+																																   }
+
+																																   if ( nbt_user_is_logged_in () ) {
+
+																																   ?><a href="<?php echo SITE_URL . "signout/"; ?>">
+		<span id="nbtTopBannerRight">Sign out (<?php echo $_SESSION[INSTALL_HASH . '_nbt_username']; ?>)</span>
+																																   </a><?php
+
+																																       }
+
+																																       ?>
+	</div>
 	<?php
 
 	if ( nbt_user_is_logged_in () ) {
 
-		?><a href="#" onclick="event.preventDefault();$('nav').slideToggle();"><h1>Numbat: <?php echo nbt_get_setting ( "project_name" ); ?></h1></a><?php
-
-	} else {
-
-		?><a href="<?php echo SITE_URL; ?>"><h1>Numbat: <?php echo nbt_get_setting ( "project_name" ); ?></h1></a><?php
-
-	}
-
-	if ( nbt_user_is_logged_in () ) {
-
-		?><a href="<?php echo SITE_URL . "signout/"; ?>">
-			<span id="nbtTopBannerRight">Sign out (<?php echo $_SESSION[INSTALL_HASH . '_nbt_username']; ?>)</span>
-		</a><?php
-
-	}
-
-	?>
-</div>
-<?php
-
-if ( nbt_user_is_logged_in () ) {
-
 	?><nav>
-		<ul>
-			<li>
-				<a href="<?php echo SITE_URL; ?>users/">
-					User administration
-				</a>
-			</li>
-			<li>
-				<a href="<?php echo SITE_URL; ?>references/">
-					Manage reference sets
-				</a>
-			</li>
-			<li>
-				<a href="<?php echo SITE_URL; ?>forms/">
-					Edit extraction forms
-				</a>
-			</li>
-			<li>
-				<a href="<?php echo SITE_URL; ?>attach/">
-					Attach files to references
-				</a>
-			</li>
-			<li>
-				<a href="<?php echo SITE_URL; ?>assignments/">
-					Manage extraction assignments
-				</a>
-			</li>
-			<li>
-				<a href="<?php echo SITE_URL; ?>extract/">
-					Do extractions
-				</a>
-			</li>
-			<li>
-				<a href="<?php echo SITE_URL; ?>final/">
-					Reconcile finished extractions
-				</a>
-			</li>
-			<li>
-				<a href="<?php echo SITE_URL; ?>export/">
-					Export data
-				</a>
-			</li>
-			<li>
-				<a href="<?php echo SITE_URL; ?>backup/">
+	    <ul>
+		<li>
+		    <a href="<?php echo SITE_URL; ?>users/">
+			User administration
+		    </a>
+		</li>
+		<li>
+		    <a href="<?php echo SITE_URL; ?>references/">
+			Manage reference sets
+		    </a>
+		</li>
+		<li>
+		    <a href="<?php echo SITE_URL; ?>forms/">
+			Edit extraction forms
+		    </a>
+		</li>
+		<li>
+		    <a href="<?php echo SITE_URL; ?>attach/">
+			Attach files to references
+		    </a>
+		</li>
+		<li>
+		    <a href="<?php echo SITE_URL; ?>assignments/">
+			Manage extraction assignments
+		    </a>
+		</li>
+		<li>
+		    <a href="<?php echo SITE_URL; ?>extract/">
+			Do extractions
+		    </a>
+		</li>
+		<li>
+		    <a href="<?php echo SITE_URL; ?>extract/?action=import">
+			Import extractions
+		    </a>
+		</li>
+		<li>
+		    <a href="<?php echo SITE_URL; ?>final/">
+			Reconcile finished extractions
+		    </a>
+		</li>
+		<li>
+		    <a href="<?php echo SITE_URL; ?>export/">
+			Export data
+		    </a>
+		</li>
+		<li>
+		    <a href="<?php echo SITE_URL; ?>backup/">
 					Backup data
 				</a>
 			</li>
