@@ -81,6 +81,8 @@ Here is a BibTeX entry for Numbat:
 }
 ```
 
+You may also cite this resource as: `(Numbat, RRID:SCR_019207)`.
+
 If you use my software to complete a systematic review and you found it useful, I would take it as a kindness if you cited it. 
 
 Best,
