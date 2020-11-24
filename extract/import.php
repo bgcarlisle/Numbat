@@ -63,9 +63,14 @@ $users = nbt_get_all_users ();
 		    echo '<option value="' . $form['id'] . '-' . $element['id'] . '">-- ' . $element['displayname'] . ' (table)</option>';
 		}
 
+		// Sub-extractions are not supported yet
+		/*
+
 		if ($element['type'] == "sub_extraction") {
 		    echo '<option value="' . $form['id'] . '-' . $element['id'] . '">-- ' . $element['displayname'] . ' (sub-extraction)</option>';
 		}
+
+		*/
 		
 	    }
 	    
