@@ -1522,6 +1522,40 @@ function nbt_toggle_discussion_citation_question ( $citationid, $discussioncitat
 
 function nbt_update_extraction ( $fid, $id, $column, $value ) {
 
+    if ( $column == "status" && $value == 2 ) { // Special case: they're clicking "completed"
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE `extractions_" . $fid . "` SET `timestamp_finished` = NOW() WHERE id = :id and `timestamp_finished` IS NULL LIMIT 1;");
+
+	    $stmt->bindParam(':id', $rid);
+
+	    $rid = $id;
+
+	    if ( $stmt->execute() ) {
+
+		$dbh = null;
+
+	    } else {
+
+		$dbh = null;
+
+	    }
+
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    // And in the special case or the regular case, do this:
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -14051,6 +14085,40 @@ function nbt_add_reference_data ( $formid, $elementid ) {
 }
 
 function nbt_set_master_status ( $formid, $masterid, $newstatus ) {
+
+    if ( $newstatus == 2 ) { // Special case: they're clicking "completed"
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `timestamp_finished` = NOW() WHERE id = :fid and `timestamp_finished` IS NULL LIMIT 1;");
+
+	    $stmt->bindParam(':fid', $fid);
+
+	    $fid = $masterid;
+
+	    if ( $stmt->execute() ) {
+
+		$dbh = null;
+
+	    } else {
+
+		$dbh = null;
+
+	    }
+
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    // And do this in any case
 
     try {
 
