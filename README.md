@@ -64,7 +64,7 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 * "Final override" to allow extractors to override extracted data at the point of reconciliation
 * Codebook export as Markdown document
 
-To migrate from Numbat 2.10 or earlier, run the SQL queries found in `migration.sql`.
+To migrate from Numbat 2.10 or earlier, run `migration.php`.
 
 ## How to cite Numbat
 
