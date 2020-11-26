@@ -294,6 +294,59 @@ if ( count ( $refsets ) > 0 ) {
 
 			echo '</tr>';
 
+			//
+
+			$sub_elements = nbt_get_sub_extraction_elements_for_elementid ( $element['id'] );
+
+			foreach ( $sub_elements as $sub_element ) {
+
+			    switch ( $sub_element['type'] ) {
+
+				case "table_data":
+
+				    $extracted_rows = nbt_get_all_table_data_rows_for_refset ( $sub_element['id'], $refset['id'], TRUE );
+
+				    $reconciled_rows = nbt_get_all_reconciled_table_data_rows_for_refset ( $sub_element['id'], $refset['id'], TRUE );
+
+				    echo '<tr>';
+
+				    echo '<td>&nbsp;</td>';
+
+				    echo '<td>';
+
+				    if ( count ($extracted_rows) > 0 ) {
+
+					echo '<button onclick="nbtExportData(\'sub_table\', ' . $refset['id'] . ', \'' . $sub_element['dbname'] . '\', 0);">Export "' . $sub_element['displayname'] . '" sub-extraction table data</button>';
+					
+				    } else {
+
+					echo 'Sub-extraction table "' . $sub_element['displayname'] . '" has no extracted data.';
+					
+				    }
+
+				    echo '</td>';
+
+				    echo '<td>';
+
+				    if ( count ($reconciled_rows) > 0 ) {
+
+					echo '<button onclick="nbtExportData(\'sub_table\', ' . $refset['id'] . ', \'' . $sub_element['dbname'] . '\', 1);">Export "' . $sub_element['displayname'] . '" final sub-extraction table data</button>';
+					
+				    } else {
+
+					echo 'The final copy of the sub-extraction table "' . $sub_element['displayname'] . '" has no reconciled data.';
+				    }
+
+				    echo '</td>';
+
+				    echo '</tr>';
+				    
+				    break;
+
+			    }
+			    
+			}
+
 			break;
 
 		    case "citations":

@@ -4210,7 +4210,7 @@
 
  }
 
- function nbtExportData ( etype, rsid, fid, m_or_e ) {
+ function nbtExportData ( etype, rsid, fid, f_or_e ) {
 
      $.ajax ({
 	 url: numbaturl + 'export/save_dataset.php',
@@ -4219,7 +4219,7 @@
 	     export_type: etype,
 	     refsetid: rsid,
 	     formid: fid,
-	     master: m_or_e
+	     final: f_or_e
 	 },
 	 dataType: 'html'
      }).done ( function (response) {
