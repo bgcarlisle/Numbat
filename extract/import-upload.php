@@ -127,6 +127,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				case "citations":
 				case "assignment_editor":
 				case "reference_data":
+				case "timer":
 				    // Do nothing
 				    break;
 
@@ -262,104 +263,289 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 			    
 			}
 			
-		    } else { // It's a table or sub-extraction
-			
-			$elementid = substr($_POST['form'], strpos ($_POST['form'], "-")+1);
+		    } else { // It's a table, sub-extraction, or sub-extraction table
 
-			$formid = substr($_POST['form'], 0, strpos ($_POST['form'], "-"));
+			$identifiers = explode ("-", $_POST['form']);
 
-			$form = nbt_get_form_for_id ( $_POST['form'] );
+			if ( count ( $identifiers ) == 2 ) { // It's a table or a sub-extraction
 
-			$element = nbt_get_form_element_for_elementid ($elementid);
+			    $elementid = substr($_POST['form'], strpos ($_POST['form'], "-")+1);
 
-			switch ($element['type']) {
+			    $formid = substr($_POST['form'], 0, strpos ($_POST['form'], "-"));
 
-			    case "table_data":
-			    case "ltable_data":
+			    $form = nbt_get_form_for_id ( $formid );
 
-				echo "<p>Form: " . $form['name'] . " / " . $element['displayname'] . " (table)</p>";
+			    $element = nbt_get_form_element_for_elementid ($elementid);
 
-				echo '<input type="hidden" name="import_type" value="table_data">';
-				echo '<input type="hidden" name="form" value="' . $form['id'] . '">';
-				echo '<input type="hidden" name="element" value="' . $element['id'] . '">';
+			    switch ($element['type']) {
 
-				$tablecolumns = nbt_get_all_columns_for_table_data ( $element['id'] );
+				case "table_data":
+				case "ltable_data":
 
-				foreach ($tablecolumns as $tcol) {
+				    echo "<p>Form: " . $form['name'] . " / " . $element['displayname'] . " (table)</p>";
 
-				    echo '<div class="nbtImportElement">';
+				    echo '<input type="hidden" name="import_type" value="table_data">';
+				    echo '<input type="hidden" name="form" value="' . $form['id'] . '">';
+				    echo '<input type="hidden" name="element" value="' . $element['id'] . '">';
 
-				    echo '<h3>' . $tcol['displayname'] . '</h3>';
+				    $tablecolumns = nbt_get_all_columns_for_table_data ( $element['id'] );
 
-				    echo '<select name="' . $tcol['dbname'] . '">';
+				    foreach ($tablecolumns as $tcol) {
 
-				    echo '<option value="ns">Leave blank</option>';
+					echo '<div class="nbtImportElement">';
 
-				    foreach ($columns as $index => $col) {
+					echo '<h3>' . $tcol['displayname'] . '</h3>';
 
-					if ($col == $element['dbname']) {
-					    echo '<option value="' . $index . '" selected>' . $col . '</option>';
-					} else {
-					    echo '<option value="' . $index . '">' . $col . '</option>';
+					echo '<select name="' . $tcol['dbname'] . '">';
+
+					echo '<option value="ns">Leave blank</option>';
+
+					foreach ($columns as $index => $col) {
+
+					    if ($col == $element['dbname']) {
+						echo '<option value="' . $index . '" selected>' . $col . '</option>';
+					    } else {
+						echo '<option value="' . $index . '">' . $col . '</option>';
+					    }
+					    
 					}
+
+					echo '</select>';
+
+					echo '</div>';
 					
 				    }
 
-				    echo '</select>';
+				    break;
 
-				    echo '</div>';
+				case "sub_extraction":
+
+				    echo "<p>Form: " . $form['name'] . " / " . $element['displayname'] . " (sub-extraction)</p>";
+
+				    echo '<input type="hidden" name="import_type" value="sub_extraction">';
+				    echo '<input type="hidden" name="element" value="' . $element['id'] . '">';
+
+				    $subelements = nbt_get_sub_extraction_elements_for_elementid ( $element['id'] );
+
+				    foreach ($subelements as $subel) {
+
+					switch ( $subel['type'] ) {
+
+					    case "table_data":
+						// Do nothing
+						break;
+
+					    case "open_text":
+
+						echo '<div class="nbtImportElement">';
+
+						echo '<h3>' . $subel['displayname'] . '</h3>';
+
+						echo '<select name="' . $subel['dbname'] . '">';
+
+						echo '<option value="ns">Leave blank</option>';
+
+						foreach ($columns as $index => $col) {
+
+						    if ($col == $element['dbname']) {
+							echo '<option value="' . $index . '" selected>' . $col . '</option>';
+						    } else {
+							echo '<option value="' . $index . '">' . $col . '</option>';
+						    }
+						    
+						}
+
+						echo '</select>';
+
+						echo '</div>';
+						
+						break;
+						
+					    case "date_selector":
+
+						echo '<div class="nbtImportElement">';
+
+						echo '<h3>' . $subel['displayname'] . '</h3>';
+
+						echo '<p>Numbat expects the selected column to contain only numeric dates in ISO-8601 format (YYYY-MM-DD).</p>';
+
+						echo '<select name="' . $subel['dbname'] . '">';
+
+						echo '<option value="ns">Leave blank</option>';
+
+						foreach ($columns as $index => $col) {
+
+						    if ($col == $element['dbname']) {
+							echo '<option value="' . $index . '" selected>' . $col . '</option>';
+						    } else {
+							echo '<option value="' . $index . '">' . $col . '</option>';
+						    }
+						    
+						}
+
+						echo '</select>';
+
+						echo '</div>';
+
+						break;
+						
+					    case "single_select":
+
+						echo '<div class="nbtImportElement">';
+
+						$selectoptions = nbt_get_all_select_options_for_sub_element ( $subel['id'] );
+
+						echo '<h3>' . $subel['displayname'] . '</h3>';
+
+						echo '<p>Numbat expects the selected column to contain only the following values:</p>';
+						
+						echo '<ul>';
+
+						foreach ($selectoptions as $sopt) {
+						    echo '<li>' . $sopt['dbname'] . '</li>';
+						}
+
+						echo '</ul>';
+
+						echo '<select name="' . $subel['dbname'] . '">';
+
+						echo '<option value="ns">Leave blank</option>';
+
+						foreach ($columns as $index => $col) {
+
+						    if ($col == $element['dbname']) {
+							echo '<option value="' . $index . '" selected>' . $col . '</option>';
+						    } else {
+							echo '<option value="' . $index . '">' . $col . '</option>';
+						    }
+						    
+						}
+
+						echo '</select>';
+
+						echo '</div>';
+
+						break;
+						
+					    case "multi_select":
+
+						echo '<div class="nbtImportElement">';
+
+						echo '<h3>' . $element['displayname'] . '</h3>';
+
+						echo '<p>Numbat expects each of these columns to contain 0 or 1 to indicate non-selected and selected options, respectively.</p>';
+
+						$selectoptions = nbt_get_all_select_options_for_sub_element ( $subel['id'] );
+
+						foreach ($selectoptions as $sopt) {
+
+						    echo '<p>' . $sopt['displayname'] . '</p>';
+
+						    echo '<select name="' . $subel['dbname'] . '_' . $sopt['dbname'] . '">';
+
+						    echo '<option value="ns">Leave blank</option>';
+						    
+						    foreach ($columns as $index => $col) {
+
+							if ($col == $element['columnname'] . "_" . $sopt['dbname']) {
+							    echo '<option value="' . $index . '" selected>' . $col . '</option>';
+							} else {
+							    echo '<option value="' . $index . '">' . $col . '</option>';
+							}
+							
+						    }
+
+						    echo '</select>';
+						    
+						}
+						
+						echo '</div>';
+						
+						break;
+					}
+
+				    }
+				    
+				    break;
+			    }
+			    
+			} else { // It's a sub-extraction table
+
+			    $elementid = $identifiers[1];
+
+			    $formid = $identifiers[0];
+
+			    $subelementid = $identifiers[2];
+
+			    $form = nbt_get_form_for_id ( $formid );
+
+			    $element = nbt_get_form_element_for_elementid ($elementid);
+			    
+			    $subelement = nbt_get_sub_element_for_subelementid ( $subelementid );
+
+			    echo "<p>Form: " . $form['name'] . " / " . $element['displayname'] . " (sub-extraction) / " . $subelement['displayname'] . " (sub-extraction table)</p>";
+
+			    echo '<input type="hidden" name="import_type" value="sub_table">';
+			    echo '<input type="hidden" name="form" value="' . $form['id'] . '">';
+			    echo '<input type="hidden" name="element" value="' . $element['id'] . '">';
+			    echo '<input type="hidden" name="subelement" value="' . $subelement['id'] . '">';
+
+			    $tablecolumns = nbt_get_all_columns_for_sub_table_data ( $subelement['id'] );
+
+			    foreach ($tablecolumns as $tcol) {
+
+				echo '<div class="nbtImportElement">';
+
+				echo '<h3>' . $tcol['displayname'] . '</h3>';
+
+				echo '<select name="' . $tcol['dbname'] . '">';
+
+				echo '<option value="ns">Leave blank</option>';
+
+				foreach ($columns as $index => $col) {
+
+				    if ($col == $element['dbname']) {
+					echo '<option value="' . $index . '" selected>' . $col . '</option>';
+				    } else {
+					echo '<option value="' . $index . '">' . $col . '</option>';
+				    }
 				    
 				}
 
-				break;
+				echo '</select>';
 
-			    case "sub_extraction":
+				echo '</div>';
+				
+			    }
 
-				echo "<p>Form: " . $form['name'] . " / " . $element['displayname'] . " (sub-extraction)</p>";
+			    echo "<h3>Sub-extraction ID</h3>";
 
-				echo '<input type="hidden" name="import_type" value="sub_extraction">';
+			    echo '<select name="subextractionid">';
 
-				$subelements = nbt_get_sub_extraction_elements_for_elementid ( $element['id'] );
+			    foreach ($columns as $index => $col) {
 
-				foreach ($subelements as $subel) {
-
-				    switch ( $subel['type'] ) {
-
-					case "open_text":
-					case "date_selector":
-					case "single_select":
-					case "multi_select":
-					case "table_data":
-					    break;
-				    }
-
-				    echo '<div class="nbtImportElement">';
-
-				    echo '<h3>' . $subel['displayname'] . '</h3>';
-
-				    echo '<select name="' . $subel['dbname'] . '">';
-
-				    echo '<option value="ns">Leave blank</option>';
-
-				    foreach ($columns as $index => $col) {
-
-					if ($col == $element['dbname']) {
-					    echo '<option value="' . $index . '" selected>' . $col . '</option>';
-					} else {
-					    echo '<option value="' . $index . '">' . $col . '</option>';
-					}
-					
-				    }
-
-				    echo '</select>';
-
-				    echo '</div>';
-				    
+				if (
+				    $col == "sub_extraction_id" |
+				    $col == "subextraction_id" |
+				    $col == "sub_extractionid" |
+				    $col == "sub_extractionid" |
+				    $col == "sub_extraction" |
+				    $col == "se_id" |
+				    $col == "seid"
+				) {
+				    echo '<option value="' . $index . '" selected>' . $col . '</option>';
+				} else {
+				    echo '<option value="' . $index . '">' . $col . '</option>';
 				}
 				
-				break;
+			    }
+
+			    echo '</select>';
+
+			    echo '<p>Every row must belong to a parent sub-extraction. Choose a column from the uploaded file that contains the sub-extraction id that corresponds to the row in question.</p>';
+			    
 			}
-			
+
 		    }
 
 		    echo "<h3>User</h3>";

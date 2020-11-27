@@ -13365,7 +13365,96 @@ function nbt_insert_imported_extraction ( $formid, $refsetid, $usercolumn, $user
     
 }
 
-function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $usercolumn, $user, $referenceid_column, $selected_columns, $row, $separator ) {
+function nbt_insert_imported_sub_extraction ( $elementid, $refsetid, $usercolumn, $user, $referenceid_column, $selected_elements, $row, $separator ) {
+
+    if ( ! ctype_space($row) && $row != '' ) {
+
+	$element = nbt_get_form_element_for_elementid ($elementid);
+
+	$dbcols = [];
+
+	foreach ($selected_elements as $sele => $colno) {
+
+	    $dbcols[] = $sele;
+	    
+	}
+
+	$sqlcols = "`" . implode ( "`, `", $dbcols ) . "`";
+
+	$sqlparams = ":" . implode ( ", :", $dbcols );
+
+	$values = explode($separator, $row);
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("INSERT INTO `sub_" . $element['columnname'] . "` (" . $sqlcols . ", `refsetid`, `referenceid`, `userid`) VALUES (" . $sqlparams . ", :rsid, :rid, :uid)");
+
+	    $counter = 0;
+	    $colvars = [];
+
+	    foreach ( $selected_elements as $sele => $colno) {
+		
+		$stmt->bindParam(':' . $sele, $colvars[$counter]);
+
+		// This removes quotes if they're at the beginning and the end of a field
+
+		$length = strlen ($values[$colno]);
+
+		if ( ( substr ($values[$colno], $length-1, 1) == "\"" ) && ( substr ($values[$colno], 0, 1) == "\"" ) ) {
+
+		    $values[$colno] = substr ( $values[$colno], 1, $length-2 );
+
+		}
+
+		$colvars[$counter] = $values[$colno];
+
+		$counter++;
+		
+	    }
+
+	    $stmt->bindParam(':rsid', $rsid);
+	    $stmt->bindParam(':rid', $rid);
+	    $stmt->bindParam(':uid', $uid);
+
+	    $rsid = $refsetid;
+	    $rid = $values[$referenceid_column];
+
+	    if ($usercolumn == "ns") {
+		$uid = $user;
+	    } else {
+		$uid = nbt_get_userid_for_username ($values[$usercolumn]);
+
+		if ( ! $uid ) {
+		    $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
+		}
+	    }
+
+	    if ($stmt->execute()) {
+
+		$dbh = null;
+		return TRUE;
+
+	    } else {
+
+		$dbh = null;
+		return FALSE;
+
+	    }
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+    
+}
+
+function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $usercolumn, $user, $referenceid_column, $selected_columns, $row, $separator, $sub_extraction = FALSE, $subextractionid_column ) {
 
     if ( ! ctype_space($row) && $row != '' ) {
 
@@ -13383,13 +13472,30 @@ function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $userc
 
 	$values = explode($separator, $row);
 
-	$element = nbt_get_form_element_for_elementid ($elementid);
+	if ( $sub_extraction ) {
+	    
+	    $subelement = nbt_get_sub_element_for_subelementid ( $elementid );
+
+	    $suffix = $subelement['dbname'];
+	    
+	} else {
+
+	    $element = nbt_get_form_element_for_elementid ($elementid);
+
+	    $suffix = $element['columnname'];
+	    
+	}
 
 	try {
 
 	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("INSERT INTO `tabledata_" . $element['columnname'] . "` (" . $sqlcols . ", `refsetid`, `referenceid`, `userid`) VALUES (" . $sqlparams . ", :rsid, :rid, :uid)");
 
+	    if ( $sub_extraction ) {
+		$stmt = $dbh->prepare("INSERT INTO `tabledata_" . $suffix . "` (" . $sqlcols . ", `refsetid`, `referenceid`, `userid`, `subextractionid`) VALUES (" . $sqlparams . ", :rsid, :rid, :uid, :seid)");
+	    } else {
+		$stmt = $dbh->prepare("INSERT INTO `tabledata_" . $suffix . "` (" . $sqlcols . ", `refsetid`, `referenceid`, `userid`) VALUES (" . $sqlparams . ", :rsid, :rid, :uid)");
+	    }
+	    
 	    $counter = 0;
 	    $colvars = [];
 
@@ -13428,6 +13534,11 @@ function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $userc
 		if ( ! $uid ) {
 		    $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
 		}
+	    }
+
+	    if ( $sub_extraction ) {
+		$stmt->bindParam(':seid', $seid);
+		$seid = $values[$subextractionid_column];
 	    }
 
 	    if ($stmt->execute()) {

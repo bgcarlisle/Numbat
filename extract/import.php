@@ -29,7 +29,11 @@ $users = nbt_get_all_users ();
 
 	echo '<select name="refset" onchange="$(\'#nbtThinky\').fadeOut(0);;nbtExportRefset($(this).val());">';
 
-	echo '<option value="ns">Choose a reference set</option>';
+	if ( count ($refsets) > 1 ) {
+
+	    echo '<option value="ns">Choose a reference set</option>';
+	    
+	}
 
 	foreach ($refsets as $refset) {
 
@@ -63,15 +67,19 @@ $users = nbt_get_all_users ();
 		    echo '<option value="' . $form['id'] . '-' . $element['id'] . '">-- ' . $element['displayname'] . ' (table)</option>';
 		}
 
-		// Sub-extractions are not supported yet
-		/*
-
 		if ($element['type'] == "sub_extraction") {
 		    echo '<option value="' . $form['id'] . '-' . $element['id'] . '">-- ' . $element['displayname'] . ' (sub-extraction)</option>';
+
+		    $subelements = nbt_get_sub_extraction_elements_for_elementid ( $element['id'] );
+
+		    foreach ( $subelements as $subelement ) {
+			if ( $subelement['type'] == "table_data") {
+			    echo '<option value="' . $form['id'] . '-' . $element['id'] . '-' . $subelement['id'] . '">---- ' . $element['displayname'] . ' (sub-extraction table)</option>';
+			}
+		    }
+		    
 		}
 
-		*/
-		
 	    }
 	    
 	}

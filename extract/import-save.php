@@ -193,19 +193,46 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 			foreach ($subelements as $sele) {
 
-			    if ( $_POST[$sele['dbname']] != "ns") {
+			    switch ($sele['type']) {
 
-				$selected_tablecolumns[$tcol['dbname']] = $_POST[$tcol['dbname']];
-				
+				case "table_data":
+				    // Do nothing
+				    break;
+
+				case "multi_select":
+
+				    $selectoptions = nbt_get_all_select_options_for_sub_element ( $sele['id'] );
+
+				    foreach ($selectoptions as $sopt) {
+
+					if ( $_POST[$sele['dbname'] . "_" . $sopt['dbname']] != "ns" ) {
+
+					    $selected_subelements[$sele['dbname'] . "_" . $sopt['dbname']] = $_POST[$sele['dbname'] . "_" . $sopt['dbname']];
+					    
+					}
+					
+				    }
+				    
+				    break;
+
+				default:
+
+				    if ( $_POST[$sele['dbname']] != "ns") {
+
+					$selected_subelements[$sele['dbname']] = $_POST[$sele['dbname']];
+					
+				    }
+				    
+				    break;
 			    }
-			    
+
 			}
 
 			$countrows = 0;
 
 			foreach ( $lines as $line ) {
 
-			    if (nbt_insert_imported_table_data ( $_POST['form'], $_POST['element'], $_POST['refset'], $_POST['usercolumn'], $_POST['user'], $_POST['referenceid'], $selected_tablecolumns, $line, "\t" )) {
+			    if (nbt_insert_imported_sub_extraction ( $_POST['element'], $_POST['refset'], $_POST['usercolumn'], $_POST['user'], $_POST['referenceid'], $selected_subelements, $line, "\t" )) {
 				$countrows++;
 			    }
 			    
@@ -230,15 +257,62 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 			echo '</div>';
 			
 			break;
+
+		    case "sub_table":
+
+			$tablecolumns = nbt_get_all_columns_for_sub_table_data ( $_POST['subelement'] );
+
+			$selected_tablecolumns = [];
+
+			foreach ($tablecolumns as $tcol) {
+
+			    if ( $_POST[$tcol['dbname']] != "ns") {
+
+				$selected_tablecolumns[$tcol['dbname']] = $_POST[$tcol['dbname']];
+				
+			    }
+			    
+			}
+
+			$countrows = 0;
+
+			foreach ( $lines as $line ) {
+
+			    if (nbt_insert_imported_table_data ( $_POST['form'], $_POST['subelement'], $_POST['refset'], $_POST['usercolumn'], $_POST['user'], $_POST['referenceid'], $selected_tablecolumns, $line, "\t", TRUE, $_POST['subextractionid'] )) {
+				$countrows++;
+			    }
+			    
+			}
+
+			$form = nbt_get_form_for_id ( $_POST['form'] );
+			$element = nbt_get_form_element_for_elementid ( $_POST['element'] );
+			$subelement = nbt_get_sub_element_for_subelementid ( $_POST['subelement'] );
+			$refset = nbt_get_refset_for_id ( $_POST['refset'] );
+
+			echo '<div class="nbtContentPanel nbtGreyGradient">';
+
+			echo '<h2>Import complete</h2>';
+
+			echo '<p>Reference set: ' . $refset['name'] . '</p>';
+
+			echo '<p>Form: ' . $form['name'] . ' / ' . $element['displayname'] . ' (sub-extraction) / ' . $subelement['displayname'] . ' (sub-extraction table)</p>';
+
+			echo '<hr>';
+
+			echo "<p>Imported " . $countrows . " rows</p>";
+
+			echo '</div>';
+
+			break;
 			
 		}
 
 	    }
 	    
 	}
-
 	
     }
+    
 }
 
 ?>
