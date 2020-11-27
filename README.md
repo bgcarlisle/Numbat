@@ -27,17 +27,18 @@ The following are the intended uses of Numbat.
 ### What Numbat doesn't do
 
 * Statistical analysis of results
-* Calculating Cohen's/Fleiss' kappa
+* Calculating Cohen's/Fleiss' kappa (but I have an *R* script for that, contact me)
 * Semantic analysis of papers to extract (you have to read the papers yourself)
 * Magic
 
 ### Values for the Numbat project
 
 * No user lock-in as a philosophy for data in Numbat—data entered in Numbat should be easily imported and exported, so that users are never trapped
-* Adherence to standards
+* Open formats
 * Usability
 * Expandability / modularity of software
 * Ownership of one's own data
+* Low barriers to entry
 * Ease of back-up
 
 ### Why not just use a Google Form?
@@ -61,8 +62,12 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 ## What's new in 2.11
 
 * Bug fixes
+* Refactoring code for easier maintenance
 * "Final override" to allow extractors to override extracted data at the point of reconciliation
 * Codebook export as Markdown document
+* Improved assignment editor
+* Improved reference set importer (no mandatory columns)
+* Import extractions form
 
 To migrate from Numbat 2.10 or earlier, run `migration.php`.
 
@@ -81,7 +86,7 @@ Here is a BibTeX entry for Numbat:
 }
 ```
 
-You may also cite this resource as: `(Numbat, RRID:SCR_019207)`.
+You may also cite this resource as: (Numbat, [RRID:SCR_019207](https://scicrunch.org/scicrunch/Resources/record/nlx_144509-1/SCR_019207/resolver "RRID:SCR_019207")).
 
 If you use my software to complete a systematic review and you found it useful, I would take it as a kindness if you cited it. 
 
