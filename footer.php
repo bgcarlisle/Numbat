@@ -365,6 +365,22 @@
      });
  }
 
+ function nbtAddNewExtractionTimer ( fid, eid ) {
+     $.ajax ({
+	 url: numbaturl + 'forms/addextractiontimer.php',
+	 type: 'post',
+	 data: {
+	     formid: fid,
+	     elementid: eid
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtFormElements').html(html);
+
+     });
+ }
+
  function nbtDeleteFormElement ( eid ) {
 
      $.ajax ({
@@ -1778,7 +1794,7 @@
 
  function nbtSaveSingleSelect (formid, extractionid, questionlabel, response, buttonid, classid) {
 
-     if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // IF it's already selected
+     if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // If it's already selected
 
 	 $.ajax ({
 	     url: numbaturl + 'extract/updateextraction.php',
@@ -1816,6 +1832,11 @@
 	     $('#' + buttonid).addClass('nbtTextOptionChosen');
 
 	     nbtUpdateConditionalDisplays ();
+
+	     if ( questionlabel == "status" && response == "2" && $('#time_finished').val() == "NaN" ) {
+		 // If the extraction is being marked as complete
+		 $('#time_finished').val('0');
+	     }
 
 	 });
 
@@ -4332,6 +4353,251 @@
 	 
      }
 
+ }
+
+ function nbtUpdateExtractionDisplay () {
+
+     time_started = $('#time_started').val();
+     time_finished = $('#time_finished').val();
+
+     switch (true) {
+
+	 case time_started < 60:
+
+	     $('#time_started_display').html('Less than a minute ago');
+
+	     break;
+
+	 case time_started < (60*60):
+
+	     // console.log('less than an hour');
+
+	     display_time_started = Math.floor(time_started / 60);
+
+	     $('#time_started_display').html( display_time_started + ' minute(s) ago');
+	     
+	     break;
+
+	 case time_started < (24*60*60):
+
+	     // console.log('less than a day');
+
+	     display_time_hours = Math.floor(time_started / (60*60));
+
+	     display_time_minutes = Math.floor ( (time_started - (display_time_hours*60*60)) / 60);
+
+	     display_time_minutes = ('0' + display_time_minutes).slice(-2);
+
+	     display_time_combined = display_time_hours + ":" + display_time_minutes;
+
+	     $('#time_started_display').html( display_time_combined + ' ago');
+
+	     break;
+
+	 case time_started < (7*24*60*60):
+
+	     // console.log('less than a week');
+
+	     display_time_days = Math.floor( time_started / 86400 );
+
+	     $('#time_started_display').html( display_time_days + ' day(s) ago');
+
+	     break;
+
+	 case time_started < (365*24*60*60):
+
+	     // console.log('less than a year');
+
+	     display_time_weeks = Math.floor( time_started / (86400*7) );
+
+	     $('#time_started_display').html( display_time_weeks + ' week(s) ago');
+
+	     break;
+
+	 default:
+
+	     // console.log('more than a year');
+
+	     display_time_years = Math.floor( time_started / (365*24*60*60) );
+
+	     $('#time_started_display').html( display_time_years + ' year(s) ago');
+
+	     break;
+     }
+
+     if (time_finished == "NaN") {
+
+	 $('#time_finished_display').html('(Timer is still running; mark the extraction as Completed to stop the timer)');
+
+	 $('#nbtFinishedTimeClearButton').slideUp();
+	 
+     } else {
+
+	 $('#nbtFinishedTimeClearButton').slideDown();
+
+	 time_elapsed =  time_started - time_finished;
+
+	 // console.log('finished ' + time_finished);
+	 // console.log('elapsed ' + time_elapsed);
+
+	 switch (true) {
+
+	     case time_finished < 60:
+
+		 finished_display = 'Less than a minute ago';
+		 
+		 break;
+
+	     case time_finished < (60*60):
+
+		 display_time_finished = Math.floor(time_finished / 60);
+
+		 finished_display = display_time_finished + ' minute(s) ago';
+		 
+		 break;
+
+	     case time_finished < (24*60*60):
+
+		 display_time_hours = Math.floor(time_finished / (60*60));
+
+		 display_time_minutes = Math.floor ( (time_finished - (display_time_hours*60*60)) / 60);
+
+		 display_time_minutes = ('0' + display_time_minutes).slice(-2);
+
+		 display_time_combined = display_time_hours + ":" + display_time_minutes;
+
+		 finished_display = display_time_combined + ' ago';
+
+		 break;
+
+	     case time_finished < (7*24*60*60):
+
+		 display_time_days = Math.floor( time_finished / 86400 );
+
+		 finished_display = display_time_days + ' day(s) ago';
+
+		 break;
+
+	     case time_finished < (365*24*60*60):
+
+		 display_time_weeks = Math.floor( time_finished / (86400*7) );
+
+		 finished_display = display_time_weeks + ' week(s) ago';
+
+		 break;
+
+	     default:
+
+		 display_time_years = Math.floor( time_finished / (365*24*60*60) );
+
+		 finished_display = display_time_years + ' years(s) ago';
+
+		 break;
+		 
+	 }
+
+	 switch (true) {
+
+	     case time_elapsed < (24*60*60):
+
+		 elapsed_hours = Math.floor(time_elapsed / (60*60))
+
+		 elapsed_minutes = Math.floor ( (time_elapsed - (elapsed_hours*60*60)) / 60 );
+
+		 elapsed_display_minutes = ('0' + elapsed_minutes).slice(-2);
+
+		 elapsed_display = elapsed_hours + ":" + elapsed_display_minutes;
+		 
+		 break;
+
+	     default:
+
+		 elapsed_days = Math.floor( time_elapsed / 86400 );
+
+		 elapsed_display = elapsed_days + ' days';
+
+		 break;
+	 }
+
+	 $('#time_finished_display').html(finished_display + ' (extraction time ' + elapsed_display + ')');
+	 
+     }
+     
+ }
+
+ function nbtUpdateExtractionTimer (seconds) {
+
+     time_started = parseInt($('#time_started').val());
+     time_finished = parseInt($('#time_finished').val());
+
+     $('#time_started').val(time_started + seconds);
+     $('#time_finished').val(time_finished + seconds);
+
+     nbtUpdateExtractionDisplay();
+
+     setTimeout( function () {
+
+	 nbtUpdateExtractionTimer (seconds);
+	 
+     }, seconds * 1000);
+     
+ }
+
+ function nbtRestartExtractionTimer ( form, refset, ref ) {
+
+     $.ajax ({
+	 url: numbaturl + 'extract/restart-extraction-timer.php',
+	 type: 'post',
+	 data: {
+	     fid: form,
+	     rsid: refset,
+	     rid: ref
+	 },
+	 dataType: 'html'
+     }).done ( function (response) {
+
+	 if (response == 'Timer reset') {
+
+	     $('#time_started').val('0');
+	     $('#time_finished').val('NaN');
+	     $('#nbtQstatusA1').click();
+	     
+	 } else {
+
+	     alert ('Error resetting timer');
+	     
+	 }
+
+     });
+     
+ }
+
+ function nbtClearFinishedTime ( form, refset, ref ) {
+
+     $.ajax ({
+	 url: numbaturl + 'extract/clear-finished-extraction-timer.php',
+	 type: 'post',
+	 data: {
+	     fid: form,
+	     rsid: refset,
+	     rid: ref
+	 },
+	 dataType: 'html'
+     }).done ( function (response) {
+
+	 if (response == 'Timer reset') {
+	     
+	     $('#time_finished').val('NaN');
+	     $('#nbtQstatusA1').click();
+	     
+	 } else {
+
+	     alert ('Error resetting timer');
+	     
+	 }
+
+     });
+     
  }
 
 </script>

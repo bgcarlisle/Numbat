@@ -211,65 +211,75 @@ if ( count ( $elements ) > 0 ) {
 					<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 					<p class="nbtFinePrint">Will appear on extraction form</p>
 					<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 200);" maxlength="50"></p>
-					<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
+					<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
+					<?php
 
 					break;
 
-				}
+					case "timer":
 
-				?>
-				<p>Codebook</p>
-				<p class="nbtFinePrint">Will appear on extraction sheet when (?) is clicked</p>
-				<textarea style="width: 100%; height: 80px;" id="nbtElementCodebook<?php echo $element['id']; ?>" onblur="nbtChangeElementCodebook(<?php echo $element['id']; ?>);"><?php echo $element['codebook']; ?></textarea>
-				<p>Toggle: <input type="text" id="nbtElementToggle<?php echo $element['id']; ?>" value="<?php echo $element['toggle']; ?>" onblur="nbtChangeElementToggle(<?php echo $element['id']; ?>);"></p>
-				<p class="nbtFinePrint">If the toggle field is filled in, this form element will be hidden until an extractor clicks a selector marked with the same toggle class. Do not put spaces, #'s or periods here.</p>
-				<button onclick="nbtMoveFeedElement(<?php echo $element['formid']; ?>, <?php echo $element['id']; ?>, 1);">&#8593;</button>
-				<button onclick="nbtMoveFeedElement(<?php echo $element['formid']; ?>, <?php echo $element['id']; ?>, -1);">&#8595;</button>
-			<p id="nbtFormElementFeedback<?php echo $element['id']; ?>" class="nbtHidden nbtFinePrint">&nbsp;</p>
+					echo '<h4>Extraction timer <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>';
+
+					echo '<p>Numbat automatically times all extractions starting from the first time a user opens the extraction, until the first time they click "Complete". This element displays a timer to the user when the extraction is on-going, and allows the user to re-start the timer.</p>';
+
+					break;
+					}
+
+					?>
+					<p>Codebook</p>
+					<p class="nbtFinePrint">Will appear on extraction sheet when (?) is clicked</p>
+					<textarea style="width: 100%; height: 80px;" id="nbtElementCodebook<?php echo $element['id']; ?>" onblur="nbtChangeElementCodebook(<?php echo $element['id']; ?>);"><?php echo $element['codebook']; ?></textarea>
+					<p>Toggle: <input type="text" id="nbtElementToggle<?php echo $element['id']; ?>" value="<?php echo $element['toggle']; ?>" onblur="nbtChangeElementToggle(<?php echo $element['id']; ?>);"></p>
+					<p class="nbtFinePrint">If the toggle field is filled in, this form element will be hidden until an extractor clicks a selector marked with the same toggle class. Do not put spaces, #'s or periods here.</p>
+					<button onclick="nbtMoveFeedElement(<?php echo $element['formid']; ?>, <?php echo $element['id']; ?>, 1);">&#8593;</button>
+					<button onclick="nbtMoveFeedElement(<?php echo $element['formid']; ?>, <?php echo $element['id']; ?>, -1);">&#8595;</button>
+					<p id="nbtFormElementFeedback<?php echo $element['id']; ?>" class="nbtHidden nbtFinePrint">&nbsp;</p>
 			</div>
 			<button style="margin-bottom: 10px;" onclick="$(this).fadeOut(0);$('#nbtNewElementSelector<?php echo $element['id']; ?>').fadeIn();">Add new element</button>
 			<div id="nbtNewElementSelector<?php echo $element['id']; ?>" class="nbtHidden">
-				<h3>Add new form element</h3>
-				<button onclick="nbtAddNewSectionHeading(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Section heading</button>
-				<button onclick="nbtAddNewOpenText(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Open text</button>
-				<button onclick="nbtAddNewTextArea(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Text area</button>
-				<button onclick="nbtAddNewDateSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Date selector</button>
-				<button onclick="nbtAddNewSingleSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Single select</button>
-				<button onclick="nbtAddNewMultiSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Multi select</button>
-				<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>, 'table_data');">Table data</button>
-				<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>, 'ltable_data');">Large table data</button>
-				<button onclick="nbtAddNewCountrySelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Country selector</button>
-				<button onclick="nbtAddNewCitationSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Citations</button>
-				<button onclick="nbtAddNewSubExtraction(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Sub-extraction</button>
-				<button onclick="nbtAddNewAssignmentEditor(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Assignment editor</button>
-				<button onclick="nbtAddNewRefdata(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Reference data prompt</button>
-				<button onclick="nbtAddNewPrevSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Previously extracted entry selector</button>
+			    <h3>Add new form element</h3>
+			    <button onclick="nbtAddNewSectionHeading(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Section heading</button>
+			    <button onclick="nbtAddNewOpenText(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Open text</button>
+			    <button onclick="nbtAddNewTextArea(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Text area</button>
+			    <button onclick="nbtAddNewDateSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Date selector</button>
+			    <button onclick="nbtAddNewSingleSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Single select</button>
+			    <button onclick="nbtAddNewMultiSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Multi select</button>
+			    <button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>, 'table_data');">Table data</button>
+			    <button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>, 'ltable_data');">Large table data</button>
+			    <button onclick="nbtAddNewCountrySelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Country selector</button>
+			    <button onclick="nbtAddNewCitationSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Citations</button>
+			    <button onclick="nbtAddNewSubExtraction(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Sub-extraction</button>
+			    <button onclick="nbtAddNewAssignmentEditor(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Assignment editor</button>
+			    <button onclick="nbtAddNewRefdata(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Reference data prompt</button>
+			    <button onclick="nbtAddNewPrevSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Previously extracted entry selector</button>
+			    <button onclick="nbtAddNewExtractionTimer(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Extraction timer</button>
 			</div>
 		</div><?php
 
-	}
+		      }
 
-} else {
+		      } else {
 
-	$element['id'] = 0;
+			  $element['id'] = 0;
 
-	?><button style="margin-bottom: 10px;" onclick="$(this).fadeOut(0);$('#nbtNewElementSelector<?php echo $element['id']; ?>').fadeIn();">Add new element</button>
-	<div id="nbtNewElementSelector<?php echo $element['id']; ?>" class="nbtHidden">
-		<h3>Add new form element</h3>
-		<button onclick="nbtAddNewSectionHeading(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Section heading</button>
-		<button onclick="nbtAddNewOpenText(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Open text</button>
-		<button onclick="nbtAddNewTextArea(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Text area</button>
-		<button onclick="nbtAddNewDateSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Date selector</button>
-		<button onclick="nbtAddNewSingleSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Single select</button>
-		<button onclick="nbtAddNewMultiSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Multi select</button>
-		<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>, 'table_data');">Table data</button>
-		<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>, 'ltable_data');">Large table data</button>
-		<button onclick="nbtAddNewCountrySelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Country selector</button>
-		<button onclick="nbtAddNewCitationSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Citations</button>
-		<button onclick="nbtAddNewSubExtraction(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Sub-extraction</button>
-		<button onclick="nbtAddNewAssignmentEditor(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Assignment editor</button>
-		<button onclick="nbtAddNewRefdata(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Reference data prompt</button>
-		<button onclick="nbtAddNewPrevSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Previously extracted entry selector</button>
+		      ?><button style="margin-bottom: 10px;" onclick="$(this).fadeOut(0);$('#nbtNewElementSelector<?php echo $element['id']; ?>').fadeIn();">Add new element</button>
+		    <div id="nbtNewElementSelector<?php echo $element['id']; ?>" class="nbtHidden">
+			<h3>Add new form element</h3>
+			<button onclick="nbtAddNewSectionHeading(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Section heading</button>
+			<button onclick="nbtAddNewOpenText(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Open text</button>
+			<button onclick="nbtAddNewTextArea(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Text area</button>
+			<button onclick="nbtAddNewDateSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Date selector</button>
+			<button onclick="nbtAddNewSingleSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Single select</button>
+			<button onclick="nbtAddNewMultiSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Multi select</button>
+			<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>, 'table_data');">Table data</button>
+			<button onclick="nbtAddNewTableData(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>, 'ltable_data');">Large table data</button>
+			<button onclick="nbtAddNewCountrySelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Country selector</button>
+			<button onclick="nbtAddNewCitationSelector(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Citations</button>
+			<button onclick="nbtAddNewSubExtraction(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Sub-extraction</button>
+			<button onclick="nbtAddNewAssignmentEditor(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Assignment editor</button>
+			<button onclick="nbtAddNewRefdata(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Reference data prompt</button>
+			<button onclick="nbtAddNewPrevSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Previously extracted entry selector</button>
+			<button onclick="nbtAddNewExtractionTimer(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Extraction timer</button>
 	</div><?php
 
 }

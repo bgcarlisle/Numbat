@@ -9074,6 +9074,78 @@ function nbt_new_dump_file () {
 
 }
 
+function nbt_add_extraction_timer ( $formid, $elementid ) {
+
+    // this element is the one immediately before where we want to insert a new element
+
+    $element = nbt_get_form_element_for_elementid ( $elementid );
+
+    // get all the elements after this one and increase their sortorder value by 1
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
+
+	$stmt->bindParam(':fid', $fid);
+	$stmt->bindParam(':sort', $sort);
+
+	$fid = $formid;
+	$sort = $element['sortorder'];
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    foreach ( $result as $row ) {
+
+		nbt_increase_element_sortorder ( $row['id'] );
+
+	    }
+
+	} else {
+
+	    echo "MySQL fail";
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // then insert a new element into the form elements table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type) VALUES (:form, :sort, :type);");
+
+	$stmt->bindParam(':form', $fid);
+	$stmt->bindParam(':sort', $sort);
+	$stmt->bindParam(':type', $type);
+
+	$fid = $formid;
+	$sort = $element['sortorder'] + 1;
+	$type = "timer";
+
+	$stmt->execute();
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+}
+
 function nbt_add_date_selector ( $formid, $elementid ) {
 
     // this element is the one immediately before where we want to insert a new element
@@ -15078,5 +15150,113 @@ function get_incomplete_assignments_for_form_and_refset ( $formid, $refsetid ) {
     
 }
 
+function nbt_get_times_for_extraction ( $formid, $refsetid, $refid, $userid ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT UNIX_TIMESTAMP() - UNIX_TIMESTAMP(`timestamp_started`) as `time_started`, UNIX_TIMESTAMP() - UNIX_TIMESTAMP(`timestamp_finished`) as `time_finished` FROM `extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid");
+
+	$stmt->bindParam(':rsid', $rsid);
+	$stmt->bindParam(':rid', $rid);
+	$stmt->bindParam(':uid', $uid);
+
+	$rsid = $refsetid;
+	$rid = $refid;
+	$uid = $userid;
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    return $result[0];
+
+	    $dbh = null;
+
+	} else {
+
+	    return FALSE;
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
+function nbt_restart_extraction_timer ( $formid, $refsetid, $refid, $userid ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `timestamp_started` = NOW(), `timestamp_finished` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid");
+
+	$stmt->bindParam(':rsid', $rsid);
+	$stmt->bindParam(':rid', $rid);
+	$stmt->bindParam(':uid', $uid);
+
+	$rsid = $refsetid;
+	$rid = $refid;
+	$uid = $userid;
+
+	if ($stmt->execute()) {
+
+	    return TRUE;
+
+	} else {
+
+	    return FALSE;
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
+function nbt_clear_finished_extraction_timer ( $formid, $refsetid, $refid, $userid ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `timestamp_finished` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid");
+
+	$stmt->bindParam(':rsid', $rsid);
+	$stmt->bindParam(':rid', $rid);
+	$stmt->bindParam(':uid', $uid);
+
+	$rsid = $refsetid;
+	$rid = $refid;
+	$uid = $userid;
+
+	if ($stmt->execute()) {
+
+	    return TRUE;
+
+	} else {
+
+	    return FALSE;
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
 
 ?>
