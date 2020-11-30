@@ -68,6 +68,7 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 * Improved assignment editor
 * Improved reference set importer (no mandatory columns)
 * Import extractions form
+* Extraction timer reference element
 
 To migrate from Numbat 2.10 or earlier, run `migration.php`.
 
