@@ -13526,7 +13526,7 @@ function nbt_insert_imported_sub_extraction ( $elementid, $refsetid, $usercolumn
     
 }
 
-function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $usercolumn, $user, $referenceid_column, $selected_columns, $row, $separator, $sub_extraction = FALSE, $subextractionid_column ) {
+function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $usercolumn, $user, $referenceid_column, $selected_columns, $row, $separator, $sub_extraction = FALSE, $subextractionid_column = NULL ) {
 
     if ( ! ctype_space($row) && $row != '' ) {
 
