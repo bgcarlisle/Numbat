@@ -423,7 +423,7 @@ foreach ( $elements as $element ) {
 
 	    echo "## Extraction timer\n\n";
 
-	    echo "Numbat automatically times all extractions starting from the first time a user opens the extraction, until the first time they click 'Complete'. This element displays a timer to the user when the extraction is on-going, and allows the user to re-start the timer.";
+	    echo "Numbat automatically times all extractions starting from the first time a user opens the extraction, until the first time they click 'Complete'. This element displays a timer to the user when the extraction is on-going, and allows the user to re-start the timer.\n\n";
 
 	    if ( $element['codebook'] != "" ) {
 
