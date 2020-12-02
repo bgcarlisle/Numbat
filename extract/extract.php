@@ -191,7 +191,16 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		nbt_echo_display_name_and_codebook ( "Extraction timer", $element['codebook'] );
 
-		$extraction_times = nbt_get_times_for_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'], $_SESSION[INSTALL_HASH . '_nbt_userid'] );
+		if ( ! $form_preview ) {
+
+		    $extraction_times = nbt_get_times_for_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'], $_SESSION[INSTALL_HASH . '_nbt_userid'] );
+		    
+		} else {
+
+		    $extraction_times['time_started'] = 0;
+		    $extraction_times['time_finished'] = "NaN";
+		    
+		}
 
 		echo '<input type="hidden" id="time_started" value="' . $extraction_times['time_started'] . '">';
 

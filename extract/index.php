@@ -22,9 +22,10 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 		    $ref[1] = "Carlisle, BG et al.";
 		    $ref[2] = "Fancypants Journal";
 		    $ref[3] = "2014";
-		    $ref[4] = "BACKGROUND: Mostly white. METHODS: Many? RESULTS: Few. DISCUSSION: No thank you.";
+		    $ref[4] = "Abstract text!!";
 
 		    $extraction['id'] = 0;
+		    $form_preview = TRUE;
 
 		    include ( ABS_PATH . "header.php" );
 		    include ( ABS_PATH . "extract/extract.php" );
