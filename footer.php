@@ -3495,6 +3495,27 @@
 
  }
 
+ function nbtCopyTableDataAllRows ( tform, eid, rsid, refid, uid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'final/copytabledataallrows.php',
+	 type: 'post',
+	 data: {
+	     tableformat: tform,
+	     elementid: eid,
+	     refset: rsid,
+	     ref: refid,
+	     user: uid
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtMasterTable' + eid).html(html);
+
+     });
+
+ }
+
  function nbtAddTableDataRowToMaster ( tform, eid, rsid, refid ) {
 
      $.ajax ({

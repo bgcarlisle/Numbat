@@ -7,34 +7,39 @@ $rows = nbt_get_table_data_rows ( $nbtExtractTableDataID, $nbtExtractRefSet, $nb
 $no_of_columns = count ( $columns );
 
 ?><table class="nbtTabledData">
-	<tr class="nbtTableHeaders">
-		<?php
-
-		foreach ( $columns as $column ) {
-
-			?><td><?php echo $column['displayname']; ?></td><?php
-
-		}
-
-		?>
-		<td style="width: 70px;">Copy to final</td>
-	</tr>
+    <tr class="nbtTableHeaders">
 	<?php
 
-	foreach ( $rows as $row ) {
+	foreach ( $columns as $column ) {
 
-		?><tr class="nbtTDRow<?php echo $nbtExtractTableDataID; ?>" id="nbtTDRowID<?php echo $nbtExtractTableDataID; ?>-<?php echo $row['id']; ?>"><?php
+	?><td><?php echo $column['displayname']; ?></td><?php
 
-			foreach ( $columns as $column ) {
+							}
 
-				?><td><?php echo $row[$column['dbname']]; ?></td><?php
+							?>
+	<td style="width: 70px;">Copy to final</td>
+    </tr>
+    <?php
 
-			}
+    foreach ( $rows as $row ) {
 
-			?><td><button id="nbtTableExtractionRowDelete<?php echo $nbtExtractTableDataID; ?>-<?php echo $row['id']; ?>" onclick="nbtCopyTableDataRow('<?php echo $tableformat; ?>', <?php echo $nbtExtractTableDataID; ?>, <?php echo $nbtExtractRefSet ?>, <?php echo $nbtExtractRefID ?>, <?php echo $row['id']; ?>);">Copy</button></td>
-		</tr><?php
+    ?>
+	<tr class="nbtTDRow<?php echo $nbtExtractTableDataID; ?>" id="nbtTDRowID<?php echo $nbtExtractTableDataID; ?>-<?php echo $row['id']; ?>">
+	    <?php
 
-	}
+	    foreach ( $columns as $column ) {
 
-	?>
+	    ?>
+		<td><?php echo $row[$column['dbname']]; ?></td>
+	    <?php
+
+	    }
+
+	    ?><td><button id="nbtTableExtractionRowCopy<?php echo $nbtExtractTableDataID; ?>-<?php echo $row['id']; ?>" onclick="nbtCopyTableDataRow('<?php echo $tableformat; ?>', <?php echo $nbtExtractTableDataID; ?>, <?php echo $nbtExtractRefSet ?>, <?php echo $nbtExtractRefID ?>, <?php echo $row['id']; ?>);">Copy</button></td>
+	</tr><?php
+
+	     }
+
+	     ?>
 </table>
+<button id="nbtTableExtractionRowCopyAll<?php echo $nbtExtractTableDataID; ?>" onclick="nbtCopyTableDataAllRows('<?php echo $tableformat; ?>', <?php echo $nbtExtractTableDataID; ?>, <?php echo $nbtExtractRefSet ?>, <?php echo $nbtExtractRefID ?>, <?php echo $row['userid']; ?>);">Copy all rows to final</button>
