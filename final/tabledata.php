@@ -42,4 +42,4 @@ $no_of_columns = count ( $columns );
 
 	     ?>
 </table>
-<button id="nbtTableExtractionRowCopyAll<?php echo $nbtExtractTableDataID; ?>" onclick="nbtCopyTableDataAllRows('<?php echo $tableformat; ?>', <?php echo $nbtExtractTableDataID; ?>, <?php echo $nbtExtractRefSet ?>, <?php echo $nbtExtractRefID ?>, <?php echo $row['userid']; ?>);">Copy all rows to final</button>
+<button id="nbtTableExtractionRowCopyAll<?php echo $nbtExtractTableDataID; ?>" onclick="nbtCopyTableDataAllRows('<?php echo $tableformat; ?>', <?php echo $nbtExtractTableDataID; ?>, <?php echo $nbtExtractRefSet ?>, <?php echo $nbtExtractRefID ?>, <?php echo $nbtExtractUserID; ?>);">Copy all rows to final</button>
