@@ -59,16 +59,9 @@ You may be able to install Numbat on setups different from what is described bel
 
 Copy the entire file to your web server, and navigate to the Numbat directory with your browser. You will need to know your MySQL server, username and password to complete the installation.
 
-## What's new in 2.11
+## What's new in 2.12
 
-* Bug fixes
-* Refactoring code for easier maintenance
-* "Final override" to allow extractors to override extracted data at the point of reconciliation
-* Codebook export as Markdown document
-* Improved assignment editor
-* Improved reference set importer (no mandatory columns)
-* Import extractions form
-* Extraction timer reference element
+* Copy all rows in table to final during reconciliation
 
 To migrate from Numbat 2.10 or earlier, run `migration.php`.
 
