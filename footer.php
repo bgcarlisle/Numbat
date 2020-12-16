@@ -2535,27 +2535,25 @@
 
  function nbtUpdateConditionalDisplays () {
 
-     $('a.nbtTextOptionSelect').each( function () {
+     toggles = $('#nbtToggles').val().split(" ");
 
-	 if ( $(this).hasClass('nbtTextOptionChosen') ) {
+     for (var i = 0; i < toggles.length; i++) {
 
-	     if ( $(this).attr('conditionalid') != '') {
+	 toggle = toggles[i];
 
-		 $('.' + $(this).attr('conditionalid')).slideDown(50);
+	 selected_toggle = $('[conditionalid=\'' + toggle + '\'].nbtTextOptionSelect.nbtTextOptionChosen').length > 0;
 
-	     }
+	 if ( selected_toggle ) {
 
+	     $('.' + toggle).slideDown();
+	     
 	 } else {
 
-	     if ( $(this).attr('conditionalid') != '') {
-
-		 $('.' + $(this).attr('conditionalid')).slideUp(50);
-
-	     }
-
+	     $('.' + toggle).slideUp();
+	     
 	 }
-
-     });
+	 
+     }
 
  }
 

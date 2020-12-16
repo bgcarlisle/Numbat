@@ -4729,6 +4729,43 @@ function nbt_get_elements_for_formid ( $formid ) {
 
 }
 
+
+function nbt_get_toggles_for_formid ( $formid ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT DISTINCT(`toggle`) FROM `formelements` WHERE `toggle` != '' AND `formid` = :fid;");
+
+	$stmt->bindParam(':fid', $fid);
+
+	$fid = $formid;
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    return $result;
+
+	} else {
+
+	    echo "MySQL fail";
+
+	}
+
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+}
+
 function nbt_get_form_element_for_elementid ( $elementid ) {
 
     try {
