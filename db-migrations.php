@@ -360,10 +360,66 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 
     }
+
+    // 4. Make the sub-extraction `codebook` column 2000 characters long
+
+    echo '<h3>Make codebook in form sub-extraction elements table longer</h3>';
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SHOW COLUMNS FROM `subelements` LIKE 'codebook';");
+
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	foreach ($result as $row) {
+
+	    if ( $row[1] != "varchar(2000)") {
+
+		try {
+
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $stmt = $dbh->prepare("ALTER TABLE `subelements` CHANGE COLUMN `codebook` `codebook` VARCHAR(2000) NULL DEFAULT NULL;");
+
+		    if ($stmt->execute()) {
+			echo "<p>Form sub-extraction elements table codebook column updated to 2000 characters in length</p>";
+		    } else {
+			echo "<p>Error updating subelements table</p>";
+		    }
+
+		    $dbh = null;
+		    
+		}
+
+		catch (PDOException $e) {
+
+		    echo $e->getMessage();
+
+		}
+		
+	    } else {
+
+		echo "<p>The form sub-extraction elements table columname column is already 2000 characters long</p>";
+		
+	    }
+	    
+	}
+	
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
     
 } else {
 
-    echo "<p>You do not have sufficient privileges to perform database migration</p>";
+    echo "<p>You are not logged in, or you do not have sufficient privileges to perform database migration</p>";
     
 }
 
