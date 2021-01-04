@@ -4264,7 +4264,7 @@
 	 dataType: 'html'
      }).done ( function (response) {
 
-	 $('#nbtThinkyLinky').attr('href', numbaturl + 'export/' + response + '.csv')
+	 $('#nbtThinkyLinky').attr('href', numbaturl + 'export/' + response + '.tsv')
 
 	 $('#nbtCoverup').fadeIn();
 	 $('#nbtThinky').fadeIn();

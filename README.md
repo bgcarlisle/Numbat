@@ -61,9 +61,11 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 
 ## What's new in 2.12
 
-* Copy all rows in table to final during reconciliation
+* Bug fixes
+* Button to automate copying of all rows in table to final during reconciliation
+* Export now provides informative name for exported file
 
-To migrate from Numbat 2.10 or earlier, run `migration.php`.
+To migrate from Numbat 2.10 or earlier, run `db-migrations.php` while logged in as an administrator.
 
 ## How to cite Numbat
 
