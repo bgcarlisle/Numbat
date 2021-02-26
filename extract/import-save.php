@@ -114,7 +114,7 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 			foreach ( $lines as $line ) {
 
-			    if (nbt_insert_imported_extraction ( $_POST['form'], $_POST['refset'], $_POST['usercolumn'], $_POST['user'], $_POST['referenceid'], $selected_elements, $line, "\t" )) {
+			    if (nbt_insert_imported_extraction ( $_POST['form'], $_POST['refset'], $_POST['usercolumn'], $_POST['user'], $_POST['referenceid'], $selected_elements, $line, "\t", $_POST['status'] )) {
 				$countrows++;
 			    }
 			    
