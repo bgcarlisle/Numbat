@@ -2379,7 +2379,7 @@ function nbt_echo_msubextraction_single_select ($elementid, $subextraction, $que
 
 }
 
-function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
+function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $maxlength, $allcaps = FALSE, $regex = NULL) {
 
     echo '<input type="text" value="';
 
@@ -2409,8 +2409,11 @@ function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $maxlength, $allc
 
     echo $dbcolumn;
 
-    echo 'Feedback\');" maxlength="';
+    echo 'Feedback\', \'';
 
+    echo $regex;
+
+    echo '\');" maxlength="';
 
     echo $maxlength;
 
@@ -2423,6 +2426,8 @@ function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $maxlength, $allc
     }
 
     echo ">";
+
+    echo '<span id="nbtTextField' . $dbcolumn . 'Feedback" class="nbtInputFeedback"></span>';
 
 }
 
@@ -6054,6 +6059,68 @@ function nbt_change_column_name ( $elementid, $newcolumnname, $dbsize = 200 ) {
 
     }
 
+}
+
+function nbt_change_regex ( $elementid, $newregex ) {
+
+    if ( $newregex == "" ) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE `formelements` SET `regex`= NULL WHERE `id` = :eid");
+
+	    $stmt->bindParam(':eid', $eid);
+
+	    $eid = $elementid;
+
+	    if ($stmt->execute()) {
+
+		echo "Regex saved";
+
+	    }
+
+	    $dbh = null;
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    } else {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE `formelements` SET `regex`=:newregex WHERE `id` = :eid");
+
+	    $stmt->bindParam(':eid', $eid);
+	    $stmt->bindParam(':newregex', $nr);
+
+	    $eid = $elementid;
+	    $nr = $newregex;
+
+	    if ($stmt->execute()) {
+
+		echo "Regex saved";
+
+	    }
+
+	    $dbh = null;
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+    
 }
 
 function nbt_refdata_change_column_name ( $elementid, $newcolumnname ) {

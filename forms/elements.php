@@ -6,9 +6,11 @@ $elements = nbt_get_elements_for_formid ($_GET['id']);
 
 if ( count ( $elements ) > 0 ) {
 
-	foreach ( $elements as $element ) {
+    foreach ( $elements as $element ) {
 
-		?><div id="nbtFormElement<?php echo $element['id']; ?>">
+	echo '<div id="nbtFormElement' . $element['id'] . '">';
+
+?>
 			<div style="border: 1px solid #999; border-radius: 3px; padding: 10px; margin: 5px 0 20px 0;">
 				<button style="float: right;" onclick="$(this).fadeOut(0);$('#nbtDeleteFormElement<?php echo $element['id']; ?>').fadeIn();">Delete</button>
 				<button class="nbtHidden" id="nbtDeleteFormElement<?php echo $element['id']; ?>" style="float: right;" onclick="nbtDeleteFormElement(<?php echo $element['id']; ?>);">For real</button>
@@ -31,8 +33,12 @@ if ( count ( $elements ) > 0 ) {
 						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
 						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 200);" maxlength="50"></p>
-						<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
-
+						<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
+						<p>Regex validation: <input type="text" id="nbtElementRegex<?php echo $element['id']; ?>" value="<?php echo $element['regex']; ?>" onblur="nbtChangeRegex(<?php echo $element['id']; ?>);" maxlength="500"></p>
+						<p class="nbtFinePrint">Will not save extractor input unless the text matches the regex supplied; leave blank for no regex validation</p>
+						
+						<?php
+													       
 					break;
 
 					case "text_area":
@@ -254,9 +260,10 @@ if ( count ( $elements ) > 0 ) {
 			    <button onclick="nbtAddNewPrevSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Previously extracted entry selector</button>
 			    <button onclick="nbtAddNewExtractionTimer(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Extraction timer</button>
 			</div>
-		</div><?php
+	</div>
+				<?php
 
-		      }
+				}
 
 		      } else {
 

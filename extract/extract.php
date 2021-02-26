@@ -247,7 +247,7 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
-		nbt_echo_text_field ($_GET['form'], $extraction, $element['columnname'], 200, FALSE);
+		nbt_echo_text_field ($_GET['form'], $extraction, $element['columnname'], 200, FALSE, $element['regex']);
 
 		echo '</div>';
 
