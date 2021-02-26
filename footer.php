@@ -464,6 +464,29 @@
 
  }
 
+ function nbtChangeRegex ( eid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/changeregex.php',
+	 type: 'post',
+	 data: {
+	     element: eid,
+	     newregex: $('#nbtElementRegex' + eid).val()
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtFormElementFeedback' + eid).html(html);
+
+	 $('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+
+	     $('#nbtFormElementFeedback' + eid).fadeOut(1500);
+
+	 });
+
+     });
+ }
+
  function nbtChangeDateColumnName ( eid ) {
 
      nbtRemoveSpecialCharactersFromField ('#nbtElementColumnName' + eid);
@@ -1458,43 +1481,58 @@
 
  }
 
- function nbtSaveTextField (formid, extractionid, questionid, textfieldid) {
+ function nbtSaveTextField (formid, extractionid, questionid, textfieldid, feedbackid, regex = null) {
 
-     $.ajax ({
-	 url: numbaturl + 'extract/updateextraction.php',
-	 type: 'post',
-	 data: {
-	     fid: formid,
-	     id: extractionid,
-	     question: questionid,
-	     answer: $('#' + textfieldid).val()
-	 },
-	 dataType: 'html'
-     }).done ( function (html) {
+     if ( ! ($('#' + textfieldid).val() == "" | regex == null | RegExp(regex).test ($('#' + textfieldid).val()) ) ) {
 
-	 if (html == 'Changes saved') {
+	 $('#' + textfieldid).addClass('nbtBackgroundFeedbackBad');
 
-	     $('#' + textfieldid).addClass('nbtBackgroundFeedbackGood');
+	 $('#' + feedbackid).html('Not saved: regex does not match ' + regex).slideDown();
+	 
+     } else {
 
-	     setTimeout ( function () {
+	 $('#' + feedbackid).slideUp();
 
-		 $('#' + textfieldid).removeClass('nbtBackgroundFeedbackGood');
+	 $.ajax ({
+	     url: numbaturl + 'extract/updateextraction.php',
+	     type: 'post',
+	     data: {
+		 fid: formid,
+		 id: extractionid,
+		 question: questionid,
+		 answer: $('#' + textfieldid).val()
+	     },
+	     dataType: 'html'
+	 }).done ( function (html) {
 
-	     }, 500);
+	     if (html == 'Changes saved') {
 
-	 } else {
-
-	     $('#' + textfieldid).addClass('nbtBackgroundFeedbackBad');
-
-	     setTimeout ( function () {
-
+		 $('#' + textfieldid).addClass('nbtBackgroundFeedbackGood');
 		 $('#' + textfieldid).removeClass('nbtBackgroundFeedbackBad');
 
-	     }, 500);
+		 setTimeout ( function () {
 
-	 }
+		     $('#' + textfieldid).removeClass('nbtBackgroundFeedbackGood');
 
-     });
+		 }, 500);
+
+	     } else {
+
+		 $('#' + textfieldid).addClass('nbtBackgroundFeedbackBad');
+
+		 setTimeout ( function () {
+
+		     $('#' + textfieldid).removeClass('nbtBackgroundFeedbackBad');
+
+		 }, 500);
+
+	     }
+
+	 });
+	 
+     }
+     
+     
 
  }
 
