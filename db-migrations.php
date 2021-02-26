@@ -465,7 +465,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	echo $e->getMessage();
 
-    }    
+    }
+    
 } else {
 
     echo "<p>You are not logged in, or you do not have sufficient privileges to perform database migration</p>";
