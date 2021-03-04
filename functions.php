@@ -2439,13 +2439,13 @@ function nbt_echo_text_area_field ($formid, $extraction, $dbcolumn, $maxlength, 
 
 }
 
-function nbt_echo_subextraction_text_field ($elementid, $subextraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
+function nbt_echo_subextraction_text_field ($elementid, $subextraction, $dbcolumn, $maxlength, $allcaps = FALSE, $regex = NULL) {
 
     echo '<input type="text" value="';
 
     echo $subextraction[$dbcolumn];
 
-?>" id="nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>" onblur="nbtSaveSubExtractionTextField(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>Feedback');" maxlength="<?php echo $maxlength; ?>"<?php if ( $allcaps ) { echo " style=\"text-transform: uppercase\""; } ?>><span class="nbtInputFeedback" id="nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span>
+?>" id="nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>" onblur="nbtSaveSubExtractionTextField(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>Feedback', '<?php echo $regex; ?>');" maxlength="<?php echo $maxlength; ?>"<?php if ( $allcaps ) { echo " style=\"text-transform: uppercase\""; } ?>><span class="nbtInputFeedback" id="nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span>
 <?php
 
 }
@@ -6101,6 +6101,68 @@ function nbt_change_regex ( $elementid, $newregex ) {
 	    $stmt->bindParam(':newregex', $nr);
 
 	    $eid = $elementid;
+	    $nr = $newregex;
+
+	    if ($stmt->execute()) {
+
+		echo "Regex saved";
+
+	    }
+
+	    $dbh = null;
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+    
+}
+
+function nbt_change_subelement_regex ( $subelementid, $newregex ) {
+
+    if ( $newregex == "" ) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE `subelements` SET `regex`= NULL WHERE `id` = :seid");
+
+	    $stmt->bindParam(':seid', $seid);
+
+	    $seid = $subelementid;
+
+	    if ($stmt->execute()) {
+
+		echo "Regex saved";
+
+	    }
+
+	    $dbh = null;
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    } else {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE `subelements` SET `regex`=:newregex WHERE `id` = :seid");
+
+	    $stmt->bindParam(':seid', $seid);
+	    $stmt->bindParam(':newregex', $nr);
+
+	    $seid = $subelementid;
 	    $nr = $newregex;
 
 	    if ($stmt->execute()) {

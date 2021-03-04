@@ -19,6 +19,8 @@ foreach ( $subelements as $subelement ) {
 				<p>Column name: <input type="text" id="nbtSubElementColumnName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubColumnName(<?php echo $subelement['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
 
+				<p>Regex validation: <input type="text" id="nbtSubElementRegex<?php echo $subelement['id']; ?>" value="<?php echo $subelement['regex']; ?>" onblur="nbtChangeSubElementRegex(<?php echo $subelement['id']; ?>);" maxlength="500"></p>
+				<p class="nbtFinePrint">Will not save extractor input unless the text matches the regex supplied; leave blank for no regex validation</p>							       
 			break;
 
 			case "single_select":

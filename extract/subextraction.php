@@ -31,7 +31,7 @@ foreach ( $subextractions as $subextraction ) {
 
 						nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
 
-						nbt_echo_subextraction_text_field ($nbtSubExtractionElementID, $subextraction, $subelement['dbname'], 500, FALSE); // Needs fixin'
+						nbt_echo_subextraction_text_field ($nbtSubExtractionElementID, $subextraction, $subelement['dbname'], 500, FALSE, $subelement['regex']); // Needs fixin'
 
 					if ( $previous != NULL ) {
 

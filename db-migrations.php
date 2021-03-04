@@ -466,6 +466,56 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	echo $e->getMessage();
 
     }
+
+    // 5. Add the regex column to `subelements`
+
+    echo '<h3>Add the regex column to the subextraction elements table</h3>';
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SHOW COLUMNS FROM `subelements` LIKE 'regex';");
+
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	if ( count ($result) == 0 ) {
+
+	    try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("ALTER TABLE `subelements` ADD `regex` VARCHAR(500) NULL DEFAULT NULL AFTER `toggle`;");
+
+		if ($stmt->execute()) {
+		    echo "<p>The regex column has been added to the subextraction elements table</p>";
+		} else {
+		    echo "<p>Error adding the regex column to the subextraction elements table</p>";
+		}
+		
+	    }
+
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	    }
+	    
+	} else {
+
+	    echo "<p>The subextraction elements table already has a regex column</p>";
+	    
+	}
+	
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
     
 } else {
 

@@ -487,6 +487,29 @@
      });
  }
 
+ function nbtChangeSubElementRegex ( seid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/changesubelementregex.php',
+	 type: 'post',
+	 data: {
+	     subelement: seid,
+	     newregex: $('#nbtSubElementRegex' + seid).val()
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtSubElementFeedback' + seid).html(html);
+
+	 $('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
+
+	     $('#nbtSubElementFeedback' + seid).fadeOut(1500);
+
+	 });
+
+     });
+ }
+ 
  function nbtChangeDateColumnName ( eid ) {
 
      nbtRemoveSpecialCharactersFromField ('#nbtElementColumnName' + eid);
@@ -1536,33 +1559,43 @@
 
  }
 
- function nbtSaveSubExtractionTextField (elementid, extractionid, questionid, textfieldid, feedbackid) {
+ function nbtSaveSubExtractionTextField (elementid, extractionid, questionid, textfieldid, feedbackid, regex = null) {
 
-     $.ajax ({
-	 url: numbaturl + 'extract/updatesubextraction.php',
-	 type: 'post',
-	 data: {
-	     eid: elementid,
-	     id: extractionid,
-	     question: questionid,
-	     answer: $('#' + textfieldid).val()
-	 },
-	 dataType: 'html'
-     }).done ( function (html) {
+     if ( ! ($('#' + textfieldid).val() == "" | regex == null | RegExp(regex).test ($('#' + textfieldid).val()) ) ) {
 
-	 $('#' + feedbackid).html(html);
+	 $('#' + textfieldid).addClass('nbtBackgroundFeedbackBad');
 
-	 $('#' + feedbackid).fadeIn(50, function () {
+	 $('#' + feedbackid).html('Not saved: regex does not match ' + regex).slideDown();
+	 
+     } else {
 
-	     setTimeout ( function () {
+	 $.ajax ({
+	     url: numbaturl + 'extract/updatesubextraction.php',
+	     type: 'post',
+	     data: {
+		 eid: elementid,
+		 id: extractionid,
+		 question: questionid,
+		 answer: $('#' + textfieldid).val()
+	     },
+	     dataType: 'html'
+	 }).done ( function (html) {
 
-		 $('#' + feedbackid).fadeOut(1000);
+	     $('#' + feedbackid).html(html);
 
-	     }, 2000);
+	     $('#' + feedbackid).fadeIn(50, function () {
+
+		 setTimeout ( function () {
+
+		     $('#' + feedbackid).fadeOut(1000);
+
+		 }, 2000);
+
+	     });
 
 	 });
-
-     });
+	 
+     }
 
  }
 
@@ -1781,7 +1814,7 @@
 
 		     }, 2000);
 
-		 })
+		 });
 
 	     });
 	     
