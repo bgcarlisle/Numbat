@@ -1757,31 +1757,46 @@
 
 	 $('#' + textfieldid).val(html);
 
-	 $.ajax ({
-	     url: numbaturl + 'extract/updatesubextraction.php',
-	     type: 'post',
-	     data: {
-		 eid: elementid,
-		 id: subextractionid,
-		 question: questionid,
-		 answer: html + '-01'
-	     },
-	     dataType: 'html'
-	 }).done ( function (html2) {
+	 if ( html != 'Bad date format' ) {
 
-	     $('#' + feedbackid).html(html2);
+	     $.ajax ({
+		 url: numbaturl + 'extract/updatesubextraction.php',
+		 type: 'post',
+		 data: {
+		     eid: elementid,
+		     id: subextractionid,
+		     question: questionid,
+		     answer: html + '-01'
+		 },
+		 dataType: 'html'
+	     }).done ( function (html2) {
 
-	     $('#' + feedbackid).fadeIn(50, function () {
+		 $('#' + feedbackid).html(html2);
 
-		 setTimeout ( function () {
+		 $('#' + feedbackid).fadeIn(50, function () {
 
-		     $('#' + feedbackid).fadeOut(1000);
+		     setTimeout ( function () {
 
-		 }, 2000);
+			 $('#' + feedbackid).fadeOut(1000);
 
-	     })
+		     }, 2000);
 
-	 });
+		 })
+
+	     });
+	     
+	 } else {
+
+	     $('#' + textfieldid).addClass('nbtBackgroundFeedbackBad');
+
+	     setTimeout ( function () {
+
+		 $('#' + textfieldid).removeClass('nbtBackgroundFeedbackBad');
+		 $('#' + textfieldid).val('');
+
+	     }, 1500);
+	     
+	 }
 
      });
 
