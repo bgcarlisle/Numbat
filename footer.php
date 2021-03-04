@@ -1569,6 +1569,8 @@
 	 
      } else {
 
+	 $('#' + textfieldid).removeClass('nbtBackgroundFeedbackBad');
+
 	 $.ajax ({
 	     url: numbaturl + 'extract/updatesubextraction.php',
 	     type: 'post',
