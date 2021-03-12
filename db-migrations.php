@@ -192,7 +192,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	
     }
 
-    // 2. Make `columnname` 500 characters long
+    // 2. Make `columnname` 1000 characters long
 
     echo '<h3>Make columnname in form elements table longer</h3>';
 
@@ -209,15 +209,15 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	foreach ($result as $row) {
 
-	    if ( $row[1] != "varchar(500)") {
+	    if ( $row[1] != "varchar(1000)") {
 
 		try {
 
 		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		    $stmt = $dbh->prepare("ALTER TABLE `formelements` CHANGE COLUMN `columnname` `columnname` VARCHAR(500) NULL DEFAULT NULL;");
+		    $stmt = $dbh->prepare("ALTER TABLE `formelements` CHANGE COLUMN `columnname` `columnname` VARCHAR(1000) NULL DEFAULT NULL;");
 
 		    if ($stmt->execute()) {
-			echo "<p>Form elements table columnname column updated to 500 characters in length</p>";
+			echo "<p>Form elements table columnname column updated to 1000 characters in length</p>";
 		    } else {
 			echo "<p>Error updating formelements table</p>";
 		    }
@@ -234,7 +234,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		
 	    } else {
 
-		echo "<p>The form elements table columname column is already 500 characters long</p>";
+		echo "<p>The form elements table columname column is already 1000 characters long</p>";
 		
 	    }
 	    
