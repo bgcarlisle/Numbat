@@ -25,7 +25,7 @@ foreach ( $subextractions as $subextraction ) {
 
 				case "date_selector":
 
-					echo substr ( $subextraction[$subelement['dbname']], 0, 7 );
+					echo $subextraction[$subelement['dbname']];
 
 				break;
 

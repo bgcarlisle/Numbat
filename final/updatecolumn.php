@@ -11,7 +11,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 	    $converted_time =  strtotime($_POST['newvalue']);
 
 	    if ( $converted_time ) {
-		$_POST['newvalue'] = date('Y-m', $converted_time) . "-01";
+		$_POST['newvalue'] = date('Y-m-d', $converted_time);
 
 		if ( nbt_update_final ( $_POST['fid'], $_POST['rsid'], $_POST['rid'], $_POST['column'], $_POST['newvalue']) ) {
 		    

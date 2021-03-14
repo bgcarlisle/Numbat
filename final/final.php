@@ -518,13 +518,13 @@ if ( count ( $extractions ) >= 2 ) {
 
 			echo '<p>';
 
-			echo '<span id="nbtExtractedValue' . $element['id'] . '-' . $extraction['userid'] . '">' . substr ( $extractions[0][$element['columnname']], 0, 7 ) . '</span>';
+			echo '<span id="nbtExtractedValue' . $element['id'] . '-' . $extraction['userid'] . '">' . $extractions[0][$element['columnname']] . '</span>';
 
 			echo '</p>';
 
 			echo '<span class="nbtExtractionName">All extractors</span>';
 
-			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . substr ($master[$element['columnname']], 0, 7) . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">';
+			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . $master[$element['columnname']] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">';
 
 			echo '</div>';
 
@@ -541,7 +541,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 				echo '<p>';
 
-				echo '<span id="nbtExtractedValue' . $element['id'] . '-' . $extraction['userid'] . '">' . substr ( $extraction[$element['columnname']], 0, 7 ) . '</span>';
+				echo '<span id="nbtExtractedValue' . $element['id'] . '-' . $extraction['userid'] . '">' . $extraction[$element['columnname']] . '</span>';
 
 				echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span></p>';
 
@@ -553,7 +553,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 				echo '<p>';
 
-				echo '<span id="nbtExtractedValue' . $element['id'] . '-' . $extraction['userid'] . '">' . substr ( $extraction[$element['columnname']], 0, 7 ) . '</span>';
+				echo '<span id="nbtExtractedValue' . $element['id'] . '-' . $extraction['userid'] . '">' . $extraction[$element['columnname']] . '</span>';
 
 				echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtHidden nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span></p>';
 
@@ -565,7 +565,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			}
 
-			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . substr( $master[$element['columnname']], 0, 7) . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">';
+			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . $master[$element['columnname']] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">';
 
 			echo '</div>';
 
@@ -593,13 +593,13 @@ if ( count ( $extractions ) >= 2 ) {
 
 			echo '<p>';
 
-			echo '<span id="nbtExtractedValue' . $element['id'] . '-' . $extraction['userid'] . '">' . substr ( $extractions[0][$element['columnname']], 0, 7 ) . '</span>';
+			echo '<span id="nbtExtractedValue' . $element['id'] . '-' . $extraction['userid'] . '">' . $extractions[0][$element['columnname']] . '</span>';
 
 			echo '</p>';
 
 			echo '<span class="nbtExtractionName">All extractors</span>';
 
-			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . substr ($extractions[0][$element['columnname']], 0, 7) . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">';
+			echo '<input id="nbtFinalOverride' . $element['id'] . '" class="finalOverride" type="text" value="' . $extractions[0][$element['columnname']] . '" onblur="nbtUpdateFinalColumn(' . $_GET['form'] .', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\', \'nbtFinalOverride' . $element['id'] . '\', \'' . $element['type'] . '\', ' . $element['id'] . ');">';
 
 			echo '</div>';
 
@@ -613,7 +613,7 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    echo '<p>';
 
-			    echo '<span id="nbtExtractedValue' . $element['id'] . '-' . $extraction['userid'] . '">' . substr ( $extraction[$element['columnname']], 0, 7 ) . '</span>';
+			    echo '<span id="nbtExtractedValue' . $element['id'] . '-' . $extraction['userid'] . '">' . $extraction[$element['columnname']] . '</span>';
 
 			    echo '<span id="nbtExtractedElement' . $element['id'] . '-' . $extraction['userid'] . '" class="nbtHidden nbtFeedback nbtElement' . $element['id'] . 'Check">&#x2713;</span></p>' . '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
 

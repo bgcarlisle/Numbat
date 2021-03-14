@@ -2466,9 +2466,9 @@ function nbt_echo_date_selector ($formid, $extraction, $dbcolumn) {
 ?><p class="nbtDateSelector">
     <input type="text" value="<?php
 
-			      if ( substr ($extraction[$dbcolumn], 0, 7) != "0000-00" ) {
+			      if ( $extraction[$dbcolumn] != "0000-00-00" ) {
 
-				  echo substr ($extraction[$dbcolumn], 0, 7);
+				  echo $extraction[$dbcolumn];
 
 			      }
 
@@ -2482,9 +2482,9 @@ function nbt_echo_sub_date_selector ($elementid, $subextraction, $dbcolumn) {
 
 ?><input type="text" value="<?php
 
-			    if ( substr ($subextraction[$dbcolumn], 0, 7) != "0000-00" ) {
+			    if ( $subextraction[$dbcolumn] != "0000-00-00" ) {
 
-				echo substr ($subextraction[$dbcolumn], 0, 7);
+				echo $subextraction[$dbcolumn];
 
 			    }
 
@@ -2498,9 +2498,9 @@ function nbt_echo_msub_date_selector ($elementid, $subextraction, $dbcolumn) {
 
 ?><input type="text" value="<?php
 
-			    if ( substr ($subextraction[$dbcolumn], 0, 7) != "0000-00" ) {
+			    if ( $subextraction[$dbcolumn] != "0000-00-00" ) {
 
-				echo substr ($subextraction[$dbcolumn], 0, 7);
+				echo $subextraction[$dbcolumn];
 
 			    }
 

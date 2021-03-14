@@ -10,7 +10,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		if ( strtotime ( $_POST['datestring'] ) ) {
 
-			echo date ("Y-m", strtotime ( $_POST['datestring'] ) );
+			echo date ("Y-m-d", strtotime ( $_POST['datestring'] ) );
 
 		} else {
 
