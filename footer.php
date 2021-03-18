@@ -4711,6 +4711,10 @@
      
  }
 
+ $('a.nbtstatus').click(function () {
+     $('#nbtStatusAtBottomOfExtraction').html($(this).html());
+ });
+
 </script>
 </body>
 </html>

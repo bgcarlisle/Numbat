@@ -879,6 +879,32 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
     }
 
+    echo "<p>Extraction status: <span id=\"nbtStatusAtBottomOfExtraction\">";
+
+    switch ($extraction['status']) {
+
+	case 0:
+
+	    echo "Not yet started";
+
+	    break;
+
+	case 1:
+
+	    echo "In progress";
+
+	    break;
+
+	case 2:
+
+	    echo "Completed";
+
+	    break;
+	    
+    }
+
+    echo "</span>. (Change this using the selector at the top)</p>";
+
     ?></div>
 </div>
 
