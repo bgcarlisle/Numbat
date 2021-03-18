@@ -516,7 +516,74 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	echo $e->getMessage();
 
     }
-    
+
+    // 6. Add the `copypreviousprompt` column to the `subelements` table
+
+    echo '<h3>"Copy from previous" prompt in sub-extractions</h3>';
+
+    function check_for_subelements_column ($columnname) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `subelements` LIKE :column;");
+
+	    $stmt->bindParam(':column', $col);
+
+	    $col = $columnname;
+
+	    $stmt->execute();
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    if ( count ($result) == 1 ) {
+		return TRUE;
+	    } else {
+		return FALSE;
+	    }
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    if ( ! check_for_subelements_column ("copypreviousprompt") ) {
+
+	// The column doesn't exist yet
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `subelements` ADD COLUMN `copypreviousprompt` INT NOT NULL DEFAULT '1' AFTER `regex`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>The sub-extraction elements table has been updated with \"copy from previous\" column</p>";
+	    } else {
+		echo "<p>Error updating the sub-extraction elements table with \"copy from previous\" column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    } else {
+
+	echo "<p>The sub-extraction elements table already has a \"copy from previous\" prompt column</p>";
+	
+    }
 } else {
 
     echo "<p>You are not logged in, or you do not have sufficient privileges to perform database migration</p>";

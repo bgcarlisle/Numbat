@@ -33,7 +33,7 @@ foreach ( $subextractions as $subextraction ) {
 
 						nbt_echo_subextraction_text_field ($nbtSubExtractionElementID, $subextraction, $subelement['dbname'], 500, FALSE, $subelement['regex']); // Needs fixin'
 
-					if ( $previous != NULL ) {
+					if ( $previous != NULL & $subelement['copypreviousprompt'] == 1 ) {
 
 						?><button style="display: block; margin-top: 4px;" onclick="$('#nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>').val( $('#nbtSub<?php echo $previous['id']; ?>TextField<?php echo $subelement['dbname']; ?>').val() ); nbtSaveSubExtractionTextField(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>Feedback');">Copy from previous</button><?php
 
@@ -59,7 +59,7 @@ foreach ( $subextractions as $subextraction ) {
 
 						nbt_echo_sub_date_selector ($nbtSubExtractionElementID, $subextraction, $subelement['dbname']);
 
-					if ( $previous != NULL ) {
+					if ( $previous != NULL & subelement['copypreviousprompt'] == 1) {
 
 						?><button style="display: block; margin-top: 4px;" onclick="$('#nbtSub<?php echo $subextraction['id']; ?>DateField<?php echo $subelement['dbname']; ?>').val('<?php echo $previous[$subelement['dbname']]; ?>');nbtSaveSubExtractionDateField(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>DateField<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>Feedback');">Copy from previous</button><?php
 
@@ -97,7 +97,7 @@ foreach ( $subextractions as $subextraction ) {
 
 						nbt_echo_subextraction_single_select ( $nbtSubExtractionElementID, $subextraction, $subelement['dbname'], $answers, $toggles );
 
-						if ( $previous != NULL ) {
+						if ( $previous != NULL & $subelement['copypreviousprompt'] == 1 ) {
 
 							?><button style="margin-left: 20px;" onclick="nbtCopySEPreviousSingleSelect(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $previous['id']; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $subelement['dbname']; ?>');">Copy from previous</button><?php
 
@@ -135,7 +135,7 @@ foreach ( $subextractions as $subextraction ) {
 
 						nbt_echo_subextraction_multi_select ($nbtSubExtractionElementID, $subextraction, $subelement['dbname'], $answers, $toggles );
 
-						if ( $previous != NULL ) {
+						if ( $previous != NULL & $subelement['copypreviousprompt'] == 1 ) {
 
 							?><button style="margin-left: 20px;" onclick="nbtCopySEPreviousMultiSelect(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $previous['id']; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $subelement['dbname']; ?>');">Copy from previous</button><?php
 

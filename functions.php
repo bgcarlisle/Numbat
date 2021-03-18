@@ -10218,6 +10218,35 @@ function nbt_toggle_citation_property_forcecaps ( $columnid ) {
 
 }
 
+function nbt_toggle_subelement_copy_from_prev ( $subelementid ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `subelements` SET `copypreviousprompt`=IF(`copypreviousprompt`=1, 0, 1) WHERE `id` = :seid");
+
+	$stmt->bindParam(':seid', $seid);
+
+	$seid = $subelementid;
+
+	if ($stmt->execute()) {
+
+	    return "Changes saved";
+
+	}
+
+	$dbh = null;
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+}
+
 function nbt_get_citation_property_for_propertyid ( $propertyid ) {
 
     try {

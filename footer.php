@@ -1485,6 +1485,27 @@
 
  }
 
+ function nbtSubElementPromptCopyFromPrevToggle ( seid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/togglesubelementcopyfromprev.php',
+	 type: 'post',
+	 data: {
+	     subelement: seid
+	 },
+	 dataType: 'html'
+     }).done ( function (response) {
+
+	 if ( response == 'Changes saved' ) {
+
+	     $('#nbtSubElementPromptCopyFromPrev' + seid).toggleClass('nbtTextOptionChosen');
+
+	 }
+
+     });
+     
+ }
+
  function nbtMoveCitationProperty ( eid, cid, dir ) {
 
      $.ajax ({
