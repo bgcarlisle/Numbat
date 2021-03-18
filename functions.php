@@ -15288,29 +15288,135 @@ function nbt_get_referenceids_for_refset_column_and_value ( $refsetid, $column, 
     
 }
 
-function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k ) {
-    
-    try {
+function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $comp, $form ) {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT `id` FROM `referenceset_" . $refsetid ."` ORDER BY RAND() LIMIT " . $k . ";");
+    if ( $form != "ns") {
+	
+	$refsetid = intval($refsetid);
+	$k = intval($k);
+	$n = intval($n);
+	$form = intval($form);
 
-	$stmt->execute();
+	switch ( $comp ) {
 
-	$result = $stmt->fetchAll();
+	    case "exactly":
+		$comp = "=";
+		break;
 
-	$dbh = null;
+	    case "fewerthan":
+		$comp = "<";
+		break;
 
-	return $result;
+	    case "morethan":
+		$comp = ">";
+		break;
+	}
 
+	switch ( $crit ) {
+
+	    case "":
+		
+		try {
+
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $stmt = $dbh->prepare("SELECT `id` FROM `referenceset_" . $refsetid ."` ORDER BY RAND() LIMIT " . $k . ";");
+
+		    $stmt->execute();
+
+		    $result = $stmt->fetchAll();
+
+		    $dbh = null;
+
+		    return $result;
+
+		}
+
+		catch (PDOException $e) {
+
+		    echo $e->getMessage();
+
+		}
+		
+		break;
+
+	    case "Assigned":
+
+		try {
+
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $stmt = $dbh->prepare("SELECT id FROM `referenceset_" . $refsetid . "` WHERE (SELECT COUNT(DISTINCT(`userid`)) FROM assignments WHERE refsetid = " . $refsetid . " AND formid = " . $form . " AND assignments.referenceid = referenceset_" . $refsetid . ".id) " . $comp . " " . $n . " ORDER BY RAND() LIMIT " . $k . ";");
+
+		    $stmt->execute();
+
+		    $result = $stmt->fetchAll();
+
+		    $dbh = null;
+
+		    return $result;
+
+		}
+
+		catch (PDOException $e) {
+
+		    echo $e->getMessage();
+
+		}
+		
+		break;
+
+	    case "Extracted":
+
+		try {
+
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $stmt = $dbh->prepare("SELECT id FROM `referenceset_" . $refsetid . "` WHERE (SELECT COUNT(*) FROM extractions_" . $form . " WHERE status = 2 AND refsetid = " . $refsetid . " AND extractions_" . $form . ".referenceid = referenceset_" . $refsetid . ".id) " . $comp . " " . $n . " ORDER BY RAND() LIMIT " . $k . ";");
+
+		    $stmt->execute();
+
+		    $result = $stmt->fetchAll();
+
+		    $dbh = null;
+
+		    return $result;
+
+		}
+
+		catch (PDOException $e) {
+
+		    echo $e->getMessage();
+
+		}
+		
+		break;
+
+	    case "Final":
+
+		try {
+
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $stmt = $dbh->prepare("SELECT id FROM `referenceset_" . $refsetid . "` WHERE (SELECT COUNT(*) FROM m_extractions_" . $form . " WHERE status = 2 AND refsetid = " . $refsetid . " AND m_extractions_" . $form . ".referenceid = referenceset_" . $refsetid . ".id) " . $comp . " " . $n . " ORDER BY RAND() LIMIT " . $k . ";");
+
+		    $stmt->execute();
+
+		    $result = $stmt->fetchAll();
+
+		    $dbh = null;
+
+		    return $result;
+
+		}
+
+		catch (PDOException $e) {
+
+		    echo $e->getMessage();
+
+		}
+		
+		break;
+		
+	}
+	
     }
-
-    catch (PDOException $e) {
-
-	echo $e->getMessage();
-
-    }
-    
 
 }
 

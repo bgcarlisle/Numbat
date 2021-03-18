@@ -2791,14 +2791,30 @@
 
  }
 
- function nbtAssignerSelectKRandom ( refset ) {
+ function nbtAssignerSelectKRandom ( refset, crit ) {
+
+     kval = $('#nbtRandomK' + crit).val();
+
+     if ( crit != '' ) {
+	 nval = $('#nbtRandomN' + crit).val();
+	 comptype = $('#nbtRandomComp' + crit).val();
+	 formname = $('#nbtRandomForm' + crit).val();
+     } else {
+	 nval = '';
+	 comptype = '';
+	 formname = '';
+     }
 
      $.ajax ({
 	 url: numbaturl + 'assignments/selectkrandom.php',
 	 type: 'post',
 	 data: {
 	     rsid: refset,
-	     k: $('#nbtRandomK').val()
+	     k: kval,
+	     n: nval,
+	     crit: crit,
+	     comp: comptype,
+	     form: formname
 	 },
 	 dataType: 'html'
      }).done(function (response) {

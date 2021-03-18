@@ -44,10 +44,89 @@ foreach ($forms as $form) {
     <button onclick="$('input.nbtAssignSelect').prop('checked', false);">None</button>
     <button onclick="$('input.nbtAssignSelect').click();">Invert</button>
 
-    <p>Select k random references:
-	<input type="text" id="nbtRandomK" value="<?php echo floor(count($references) / 2); ?>">
-	<button onclick="nbtAssignerSelectKRandom(<?php echo $_GET['refset']; ?>);">Select</button>
+    <p>Select
+	<input type="text" id="nbtRandomK" value="<?php echo floor(count($references) / 2); ?>" style="width: 75px;">
+	random reference(s)
+	<button onclick="nbtAssignerSelectKRandom(<?php echo $_GET['refset']; ?>, '');">Select</button>
     </p>
+    
+    <hr>
+
+    <p>Select
+	<input type="text" id="nbtRandomKAssigned" value="<?php echo floor(count($references) / 2); ?>" style="width: 75px;">
+	random reference(s) from those with
+	<select id="nbtRandomCompAssigned">
+	    <option value="exactly">exactly</option>
+	    <option value="fewerthan">fewer than</option>
+	    <option value="morethan">more than</option>
+	</select>
+	<input type="text" id="nbtRandomNAssigned" value="2" style="width: 75px;">
+	extractor(s) assigned form:
+	<select id="nbtRandomFormAssigned">
+	    <option value="ns">Choose a form</option>
+	    <?php
+
+	    foreach ($forms as $form) {
+
+	    ?><option value="<?php echo $form['id']; ?>"><?php echo $form['name']; ?></option><?php
+		
+	    }
+	    
+	    ?>
+	</select>
+	<button onclick="nbtAssignerSelectKRandom(<?php echo $_GET['refset']; ?>, 'Assigned');">Select</button>
+    </p>
+    <hr>
+    <p>Select
+	<input type="text" id="nbtRandomKExtracted" value="<?php echo floor(count($references) / 2); ?>" style="width: 75px;">
+	random reference(s) from those with
+	<select id="nbtRandomCompExtracted">
+	    <option value="exactly">exactly</option>
+	    <option value="fewerthan">fewer than</option>
+	    <option value="morethan">more than</option>
+	</select>
+	<input type="text" id="nbtRandomNExtracted" value="2" style="width: 75px;">
+	extraction(s) completed with form:
+	<select id="nbtRandomFormExtracted">
+	    <option value="ns">Choose a form</option>
+	    <?php
+
+	    foreach ($forms as $form) {
+
+	    ?><option value="<?php echo $form['id']; ?>"><?php echo $form['name']; ?></option><?php
+		
+	    }
+	    
+	    ?>
+	</select>
+	<button onclick="nbtAssignerSelectKRandom(<?php echo $_GET['refset']; ?>, 'Extracted');">Select</button>
+    </p>
+    <hr>
+    <!-- <p>Select
+	<input type="text" id="nbtRandomKFinal" value="<?php echo floor(count($references) / 2); ?>" style="width: 75px;">
+	random reference(s) from those with
+	<select id="nbtRandomCompFinal">
+	    <option value="exactly">exactly</option>
+	    <option value="fewerthan">fewer than</option>
+	    <option value="morethan">more than</option>
+	</select>
+	<input type="text" id="nbtRandomNFinal" value="2" style="width: 75px;">
+	extraction(s) reconciled with form:
+	<select id="nbtRandomFormFinal">
+	    <option value="ns">Choose a form</option>
+	    <?php
+
+	    foreach ($forms as $form) {
+
+	    ?><option value="<?php echo $form['id']; ?>"><?php echo $form['name']; ?></option><?php
+		
+	    }
+	    
+	    ?>
+	</select>
+	<button onclick="nbtAssignerSelectKRandom(<?php echo $_GET['refset']; ?>, 'Final');">Select</button>
+    </p>
+    <hr> -->
 
     <p>Select all references where 
 
@@ -79,6 +158,8 @@ foreach ($forms as $form) {
     </p>
 
     <hr>
+
+    <p>With the selected references</p>
     
     <p>For the following form:</p>
 
