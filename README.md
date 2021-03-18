@@ -67,6 +67,7 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 * Import extractions allows user to set status of imported rows
 * Optional regex validation for open text field in main extraction and in sub-extractions
 * Exact dates rather than just months for date selection elements
+* More sophisticated randomization tools for assignment selection
 
 To migrate from Numbat 2.10 or earlier, run `db-migrations.php` while logged in as an administrator.
 
