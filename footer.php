@@ -2623,24 +2623,28 @@
 
  function nbtUpdateConditionalDisplays () {
 
-     toggles = $('#nbtToggles').val().split(" ");
+     if ( $('#nbtToggles').val() != "" ) {
 
-     for (var i = 0; i < toggles.length; i++) {
+	 toggles = $('#nbtToggles').val().split(" ");
 
-	 toggle = toggles[i];
+	 for (var i = 0; i < toggles.length; i++) {
 
-	 selected_toggle = $('[conditionalid=\'' + toggle + '\'].nbtTextOptionSelect.nbtTextOptionChosen').length > 0;
+	     toggle = toggles[i];
 
-	 if ( selected_toggle ) {
+	     selected_toggle = $('[conditionalid=\'' + toggle + '\'].nbtTextOptionSelect.nbtTextOptionChosen').length > 0;
 
-	     $('.' + toggle).slideDown();
-	     
-	 } else {
+	     if ( selected_toggle ) {
 
-	     $('.' + toggle).slideUp();
+		 $('.' + toggle).slideDown();
+		 
+	     } else {
+
+		 $('.' + toggle).slideUp();
+		 
+	     }
 	     
 	 }
-	 
+
      }
 
  }
