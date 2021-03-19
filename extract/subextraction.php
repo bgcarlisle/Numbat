@@ -59,7 +59,7 @@ foreach ( $subextractions as $subextraction ) {
 
 						nbt_echo_sub_date_selector ($nbtSubExtractionElementID, $subextraction, $subelement['dbname']);
 
-					if ( $previous != NULL & subelement['copypreviousprompt'] == 1) {
+					if ( $previous != NULL & $subelement['copypreviousprompt'] == 1) {
 
 						?><button style="display: block; margin-top: 4px;" onclick="$('#nbtSub<?php echo $subextraction['id']; ?>DateField<?php echo $subelement['dbname']; ?>').val('<?php echo $previous[$subelement['dbname']]; ?>');nbtSaveSubExtractionDateField(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>DateField<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>Feedback');">Copy from previous</button><?php
 
