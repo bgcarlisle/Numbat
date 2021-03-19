@@ -1548,46 +1548,11 @@ function nbt_toggle_extraction ( $formid, $id, $column ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("SELECT * FROM `extractions_" . $formid . "` WHERE id = :id LIMIT 1;");
+	$stmt = $dbh->prepare ("UPDATE `extractions_" . $formid . "` SET `" . $column . "` = IF(`" . $column . "`=1,0,1) WHERE id = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $rid);
 
 	$rid = $id;
-
-	$stmt->execute();
-
-	$result = $stmt->fetchAll();
-
-	$dbh = null;
-
-	foreach ( $result as $row ) {
-
-	    $old_answer = $row[$column];
-
-	}
-
-    }
-
-    catch (PDOException $e) {
-
-	echo $e->getMessage();
-
-    }
-
-    try {
-
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("UPDATE `extractions_" . $formid . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
-
-	$stmt->bindParam(':id', $rid);
-	$stmt->bindParam(':value', $val);
-
-	$rid = $id;
-	if ( $old_answer == 0 ) {
-	    $val = 1;
-	} else {
-	    $val = 0;
-	}
 
 	if ( $stmt->execute() ) {
 
@@ -1620,46 +1585,11 @@ function nbt_toggle_sub_extraction ( $elementid, $id, $column ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
+	$stmt = $dbh->prepare ("UPDATE `sub_" . $element['columnname'] . "` SET `" . $column . "` = IF(`" . $column . "`=1,0,1) WHERE id = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $seid);
 
 	$seid = $id;
-
-	$stmt->execute();
-
-	$result = $stmt->fetchAll();
-
-	$dbh = null;
-
-	foreach ( $result as $row ) {
-
-	    $old_answer = $row[$column];
-
-	}
-
-    }
-
-    catch (PDOException $e) {
-
-	echo $e->getMessage();
-
-    }
-
-    try {
-
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("UPDATE `sub_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
-
-	$stmt->bindParam(':id', $seid);
-	$stmt->bindParam(':value', $val);
-
-	$seid = $id;
-	if ( $old_answer == 0 ) {
-	    $val = 1;
-	} else {
-	    $val = 0;
-	}
 
 	if ( $stmt->execute() ) {
 
