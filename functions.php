@@ -1543,53 +1543,6 @@ function nbt_update_msub_extraction ( $eid, $id, $column, $value ) {
 
 }
 
-function nbt_update_extraction_arm ( $id, $column, $value ) {
-
-    $columns = array (
-	"route",
-	"combination"
-    );
-
-    if ( in_array ($column, $columns) ) {
-
-	try {
-
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("UPDATE arms SET " . $column . " = :value WHERE id = :id LIMIT 1;");
-
-	    $stmt->bindParam(':id', $rid);
-	    $stmt->bindParam(':value', $val);
-
-	    $rid = $id;
-	    $val = $value;
-
-	    if ( $stmt->execute() ) {
-
-		$dbh = null;
-
-		return TRUE;
-
-	    } else {
-
-		$dbh = null;
-
-		return FALSE;
-
-	    }
-
-
-	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-
-    }
-
-}
-
 function nbt_toggle_extraction ( $formid, $id, $column ) {
 
     try {
