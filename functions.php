@@ -2965,7 +2965,7 @@ function nbt_update_citeno ( $section, $citid, $newvalue ) {
 
 function nbt_toggle_ref_inclusion ( $drugid, $refid ) {
 
-    // First, find out whether it's included or not
+    // First, get the refset name
 
     $refsetname = nbt_get_name_for_refsetid ($drugid);
 
@@ -3624,70 +3624,6 @@ function nbt_get_status_for_assignment ( $assignment ) {
 	    }
 
 	}
-
-    }
-
-    catch (PDOException $e) {
-
-	echo $e->getMessage();
-
-    }
-
-}
-
-function nbt_toggle_assignment_hide ( $assignid ) {
-
-    try {
-
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("SELECT * FROM assignments WHERE id = :assignid LIMIT 1;");
-
-	$stmt->bindParam(':assignid', $aid);
-
-	$aid = $assignid;
-
-	$stmt->execute();
-
-	$result = $stmt->fetchAll();
-
-	$dbh = null;
-
-	foreach ( $result as $row ) {
-
-	    $hidden = $row['hidden'];
-
-	}
-
-    }
-
-    catch (PDOException $e) {
-
-	echo $e->getMessage();
-
-    }
-
-    if ( $hidden == 1 ) {
-
-	$newvalue = 0;
-
-    } else {
-
-	$newvalue = 1;
-
-    }
-
-    try {
-
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("UPDATE assignments SET hidden = :newvalue WHERE id = :assignid LIMIT 1;");
-
-	$stmt->bindParam(':assignid', $aid);
-	$stmt->bindParam(':newvalue', $nv);
-
-	$aid = $assignid;
-	$nv = $newvalue;
-
-	$stmt->execute();
 
     }
 
