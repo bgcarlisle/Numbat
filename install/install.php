@@ -146,7 +146,7 @@ if ($_SERVER["HTTPS"] == "on") {
 	    <div class="nbtSubExtraction">
 		<h3>Numbat details</h3>
 		<p>Numbat project name</p>
-		<p class="nbtFinePrint">E.g. "Meta-analyses for Signals, Safety and Success grant"</p>
+		<p class="nbtFinePrint">E.g. "Systematic Review for Signals, Safety and Success grant"</p>
 		<input type="text" id="nbtProjectName">
 		<p>Admin username</p>
 		<p class="nbtFinePrint">Admin users can be added, changed or removed at any time, but there must be at least one user who is the admin.</p>
