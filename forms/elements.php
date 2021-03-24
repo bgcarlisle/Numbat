@@ -205,7 +205,7 @@ if ( count ( $elements ) > 0 ) {
 						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
 						<p>Reference data:</p>
-						<textarea style="width: 100%; height: 80px;" id="nbtElementColumnName<?php echo $element['id']; ?>" onblur="nbtChangeRefdataColumnName(<?php echo $element['id']; ?>);" maxlength="500"><?php echo $element['columnname']; ?></textarea>
+						<textarea style="width: 100%; height: 80px;" id="nbtElementColumnName<?php echo $element['id']; ?>" onblur="nbtChangeRefdataColumnName(<?php echo $element['id']; ?>);" maxlength="2500"><?php echo $element['columnname']; ?></textarea>
 						<p class="nbtFinePrint">Enter one or more column names from the reference set, preceded by a dollar sign, and they will be replaced with the value of that column for the reference being extracted. E.g. if you have a "phase" column on your reference set and you enter $phase below, it will be replaced by the value of that column for that reference.</p><?php
 
 																				 break;
