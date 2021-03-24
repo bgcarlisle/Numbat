@@ -102,6 +102,39 @@ foreach ($forms as $form) {
 	<button onclick="nbtAssignerSelectKRandom(<?php echo $_GET['refset']; ?>, 'Extracted');">Select</button>
     </p>
     <hr>
+    <p>Select
+	<input type="text" id="nbtRandomKByUserK" value="<?php echo floor(count($references) / 2); ?>" style="width: 75px;">
+	random reference(s) from those that have the form
+	<select id="nbtRandomKByUserForm">
+	    <option value="ns">Choose a form</option>
+	    <?php
+
+	    foreach ($forms as $form) {
+
+	    ?><option value="<?php echo $form['id']; ?>"><?php echo $form['name']; ?></option><?php
+		
+	    }
+	    
+	    ?>
+	</select>
+	<select id="nbtRandomKByUserYN">
+	    <option value="alreadyassigned">already assigned to</option>
+	    <option value="notalreadyassigned">not already assigned to</option>
+	</select>
+	<select id="nbtRandomKByUserUser">
+	    <?php
+
+	    foreach ($users as $user) {
+
+		echo '<option value="' . $user['id'] . '">' . $user['username'] . "</option>";
+		
+	    }
+
+	    ?>
+	</select>
+	<button onclick="nbtAssignerSelectKRandomByUser(<?php echo $_GET['refset']; ?>);">Select</button>
+    </p>
+    <hr>
     <!-- <p>Select
 	<input type="text" id="nbtRandomKFinal" value="<?php echo floor(count($references) / 2); ?>" style="width: 75px;">
 	random reference(s) from those with
