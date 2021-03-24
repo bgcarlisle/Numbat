@@ -790,8 +790,8 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		foreach ( $cols_to_replace[0] as $col_to_replace ) {
 
-		    $refdata = str_replace (
-			$col_to_replace,
+		    $refdata = preg_replace (
+			"/\\" . $col_to_replace . "\b/",
 			$ref[substr($col_to_replace, 1)],
 			$refdata
 		    );
