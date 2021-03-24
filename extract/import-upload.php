@@ -106,6 +106,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    if ( ! strpos ($_POST['form'], "-") ) { // If it is not a table or sub-extraction
 
+			$showstatusselector = TRUE;
+
 			echo '<input type="hidden" name="import_type" value="extraction">';
 
 			$form = nbt_get_form_for_id ( $_POST['form'] );
@@ -264,6 +266,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 			}
 			
 		    } else { // It's a table, sub-extraction, or sub-extraction table
+
+			$showstatusselector = FALSE;
 
 			$identifiers = explode ("-", $_POST['form']);
 
@@ -621,21 +625,25 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    echo '<p>Choose a column from the uploaded file that contains the reference id that corresponds to the row in question.</p>';
 
-		    echo "<hr>";
+		    if ($showstatusselector) {
 
-		    echo "<h3>Status</h3>";
+			echo "<hr>";
 
-		    echo '<select name="status">';
+			echo "<h3>Status</h3>";
 
-		    echo '<option value="0">Not yet started</option>';
+			echo '<select name="status">';
 
-		    echo '<option value="1">In progress</option>';
+			echo '<option value="0">Not yet started</option>';
 
-		    echo '<option value="2">Completed</option>';
+			echo '<option value="1">In progress</option>';
 
-		    echo '</select>';
+			echo '<option value="2">Completed</option>';
 
-		    echo '<p>Choose the status the extractions should have after they are imported.</p>';
+			echo '</select>';
+
+			echo '<p>Choose the status the extractions should have after they are imported.</p>';
+			
+		    }
 
 		    echo '<hr><button>Import extractions</button>';
 
