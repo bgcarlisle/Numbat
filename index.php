@@ -1,6 +1,6 @@
 <?php
 
-if ( ! file_exists ( __DIR__ . "/install/" ) ) {
+if ( file_exists ( __DIR__ . "/config.php" ) ) {
 	
 	include_once ('./config.php');
 	
