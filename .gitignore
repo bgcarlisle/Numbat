@@ -5,3 +5,4 @@ config.php
 *.sql
 extract/tmp/*
 references/tmp/*
+attach/files/*
