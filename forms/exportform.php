@@ -13,19 +13,23 @@ if ( ! is_dir ( ABS_PATH . "forms/tmp/" ) ) {
     chmod ( ABS_PATH . "forms/tmp/", 0777 );
 }
 
-$formmeta = array(
-    "name"        => $form['name'],
-    "description" => $form['description'],
-    "version"     => $form['version'],
-    "author"      => $form['author'],
-    "affiliation" => $form['affiliation'],
-    "project"     => $form['project'],
-    "protocol"    => $form['protocol'],
-    "projectdate" => $form['projectdate'],
-    "numbat"      => "2.12",
-    "elements"    => json_encode($elements)
+$formdata = array(
+    "name"          => $form['name'],
+    "description"   => $form['description'],
+    "version"       => $form['version'],
+    "author"        => $form['author'],
+    "affiliation"   => $form['affiliation'],
+    "project"       => $form['project'],
+    "protocol"      => $form['protocol'],
+    "projectdate"   => $form['projectdate'],
+    "numbatversion" => "2.12",
+    "elements"      => json_encode($elements)
 );
 
-file_put_contents( ABS_PATH . "forms/tmp/form.json", json_encode($formmeta));
+file_put_contents( ABS_PATH . "forms/tmp/form.json", json_encode($formdata));
+
+$formfile = json_decode(file_get_contents(ABS_PATH . "forms/tmp/form.json"));
+
+echo $formfile['name'];
 
 ?>
