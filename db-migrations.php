@@ -584,6 +584,193 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	echo "<p>The sub-extraction elements table already has a \"copy from previous\" prompt column</p>";
 	
     }
+
+    // 7. Add the new columns to the forms table
+
+    echo '<h3>Add form metadata columns for export and sharing</h3>';
+
+    function check_for_forms_column ($columnname) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `forms` LIKE :column;");
+
+	    $stmt->bindParam(':column', $col);
+
+	    $col = $columnname;
+
+	    $stmt->execute();
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    if ( count ($result) == 1 ) {
+		return TRUE;
+	    } else {
+		return FALSE;
+	    }
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    if ( ! check_for_forms_column("version") ) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `version` VARCHAR(50) NULL DEFAULT NULL AFTER `description`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>The forms table has been updated with \"version\" column</p>";
+	    } else {
+		echo "<p>Error updating the forms table with \"version\" column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    if ( ! check_for_forms_column("author") ) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `author` VARCHAR(2500) NULL DEFAULT NULL AFTER `version`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>The forms table has been updated with \"author\" column</p>";
+	    } else {
+		echo "<p>Error updating the forms table with \"author\" column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    if ( ! check_for_forms_column("affiliation") ) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `affiliation` VARCHAR(2500) NULL DEFAULT NULL AFTER `author`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>The forms table has been updated with \"affiliation\" column</p>";
+	    } else {
+		echo "<p>Error updating the forms table with \"affiliation\" column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    if ( ! check_for_forms_column("project") ) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `project` VARCHAR(2500) NULL DEFAULT NULL AFTER `affiliation`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>The forms table has been updated with \"project\" column</p>";
+	    } else {
+		echo "<p>Error updating the forms table with \"project\" column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    if ( ! check_for_forms_column("protocol") ) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `protocol` VARCHAR(2500) NULL DEFAULT NULL AFTER `project`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>The forms table has been updated with \"protocol\" column</p>";
+	    } else {
+		echo "<p>Error updating the forms table with \"protocol\" column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    if ( ! check_for_forms_column("projectdate") ) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `projectdate` VARCHAR(500) NULL DEFAULT NULL AFTER `protocol`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>The forms table has been updated with \"projectdate\" column</p>";
+	    } else {
+		echo "<p>Error updating the forms table with \"projectdate\" column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
 } else {
 
     echo "<p>You are not logged in, or you do not have sufficient privileges to perform database migration</p>";
