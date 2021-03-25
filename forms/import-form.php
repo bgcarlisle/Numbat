@@ -60,9 +60,18 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		fclose ( $file );
 
-		$form = json_decode($filecontent, true);
+		$import = json_decode($filecontent, true);
 
-		echo $form['name'];
+		$newformid = nbt_new_extraction_form (
+		    $import['name'],
+		    $import['description'],
+		    $import['version'],
+		    $import['author'],
+		    $import['affiliation'],
+		    $import['project'],
+		    $import['protocol'],
+		    $import['projectdate']
+		);
 		
 	    }
 	    

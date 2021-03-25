@@ -4090,18 +4090,34 @@ function nbt_get_all_extraction_forms () {
 
 }
 
-function nbt_new_extraction_form () {
+function nbt_new_extraction_form ( $formname = "New extraction form", $description = "Add a useful description of your new form here.", $version = "1.0", $author = NULL, $affiliation = NULL, $project = NULL, $protocol = NULL, $projectdate = NULL) {
+
+    if ( is_null ($projectdate) ) {
+	$projectdate=date("Y-m-d");
+    }
 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO forms (name, description) VALUES (:name, :description);");
+	$stmt = $dbh->prepare ("INSERT INTO forms (name, description, version, author, affiliation, project, protocol, projectdate) VALUES (:name, :description, :version, :author, :affiliation, :project, :protocol, :projectdate);");
 
 	$stmt->bindParam(':name', $name);
 	$stmt->bindParam(':description', $desc);
+	$stmt->bindParam(':version', $vers);
+	$stmt->bindParam(':author', $auth);
+	$stmt->bindParam(':affiliation', $affi);
+	$stmt->bindParam(':project', $proj);
+	$stmt->bindParam(':protocol', $prot);
+	$stmt->bindParam(':projectdate', $prda);
 
-	$name = "New extraction form";
-	$desc = "Add a useful description of your new form here.";
+	$name = $formname;
+	$desc = $description;
+	$vers = $version;
+	$auth = $author;
+	$affi = $affiliation;
+	$proj = $project;
+	$prot = $protocol;
+	$prda = $projectdate;
 
 	$stmt->execute();
 
@@ -4147,7 +4163,7 @@ function nbt_new_extraction_form () {
 
     }
 
-    // Make the master table
+    // Make the final table
 
     try {
 
@@ -4158,7 +4174,7 @@ function nbt_new_extraction_form () {
 
 	    $dbh = null;
 
-	    return TRUE;
+	    return $newid;
 
 	}
 
