@@ -185,9 +185,13 @@
 	     formid: fid
 	 },
 	 dataType: 'html'
-     }).done ( function (html) {
+     }).done ( function (response) {
 
-	 $('#nbtFormsTable').html(html);
+	 if ( response == "Deleted" ) {
+	     $('#nbtFormTableRow' + fid).fadeOut(100, function() {
+		 $('#nbtFormTableRow' + fid).remove();
+	     });
+	 }
 
      });
 

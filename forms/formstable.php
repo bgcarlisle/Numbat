@@ -14,7 +14,7 @@
     foreach ( $allforms as $form ) {
 
     ?>
-	<tr>
+	<tr id="nbtFormTableRow<?php echo $form['id']; ?>">
 	    <td>
 		<h3><?php echo $form['name']; ?> <?php echo $form['version']; ?></h3>
 		<p><?php echo $form['author']; ?> <?php if ($form['affiliation'] != "") { echo "(" . $form['affiliation'] . ")"; } ?></p>
@@ -46,17 +46,13 @@
     <tr>
 	<td colspan="6"><button onclick="nbtNewExtractionForm();">Add new extraction form</button></td>
     </tr>
-    <tr>
-	<td colspan="6">
-	    <button id="nbtShowImportFormButton" onclick="$('#nbtImportForm').slideDown();$('#nbtShowImportFormButton').slideUp();">Import an extraction form</button>
-	    <div class="nbtHidden" id="nbtImportForm">
-		<h3>Import a Numbat form from a .json file</h3>
-		<form action="<?php echo SITE_URL; ?>forms/import-form.php" method="post" enctype="multipart/form-data">
-		    <input type="file" name="file" id="file">
-		    <button>Import Numbat form</button>
-		    <button onclick="event.preventDefault();$('#nbtShowImportFormButton').slideDown();$('#nbtImportForm').slideUp();">Cancel</button>
-		</form>
-	    </div>
-	</td>
-    </tr>
 </table>
+<button id="nbtShowImportFormButton" onclick="$('#nbtImportForm').slideDown();$('#nbtShowImportFormButton').slideUp();">Import an extraction form</button>
+<div class="nbtHidden" id="nbtImportForm">
+    <h3>Import a Numbat form from a .json file</h3>
+    <form action="<?php echo SITE_URL; ?>forms/importform.php" method="post" enctype="multipart/form-data">
+	<input type="file" name="file" id="file">
+	<button>Import Numbat form</button>
+	<button onclick="event.preventDefault();$('#nbtShowImportFormButton').slideDown();$('#nbtImportForm').slideUp();">Cancel</button>
+    </form>
+</div>
