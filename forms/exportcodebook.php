@@ -12,7 +12,7 @@ echo "---\n";
 echo "title: \"" . $form['name'] . "\"\n";
 echo "author:\n";
 echo "- name: \"" . $form['author'] . "\"\n";
-echo "  affiliation: \"" . $form['affiliation'] . "\"";
+echo "  affiliation: \"" . $form['affiliation'] . "\"\n";
 echo "date: \"" . $form['date'] . "\"\n";
 
 echo "---\n\n";
