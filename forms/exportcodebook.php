@@ -57,6 +57,15 @@ foreach ( $elements as $element ) {
 
 	    echo "Database column name: `" . $element['columnname'] . "`\n\n";
 
+	    if ( $element['regex'] != "" ) {
+
+		echo "This text field used regular expression validation.";
+
+		echo "This field would only be saved if the text entered matched the following regex.\n\n";
+
+		echo "Regex: `" . $element['regex'] . "`\n\n";
+	    }
+
 	    if ( $element['codebook'] != "" ) {
 
 		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
@@ -321,6 +330,16 @@ foreach ( $elements as $element ) {
 			echo "Sub-extraction variable type: Open text field\n\n";
 
 			echo "Database column name: `" . $subelement['dbname'] . "`\n\n";
+
+			if ( $subelement['regex'] != "" ) {
+
+			    echo "This text field used regular expression validation.";
+
+			    echo "This field would only be saved if the text entered matched the following regex.\n\n";
+
+			    echo "Regex: `" . $subelement['regex'] . "`\n\n";
+
+			}
 
 			if ( $subelement['codebook'] != "" ) {
 
