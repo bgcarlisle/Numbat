@@ -10,9 +10,20 @@ $elements = nbt_get_elements_for_formid ($_GET['id']);
 echo "---\n";
 
 echo "title: \"" . $form['name'] . "\"\n";
-echo "date: \"" . date("Y-m-d") . "\"\n";
+echo "author:\n";
+echo "- name: \"" . $form['author'] . "\"\n";
+echo "  affiliation: \"" . $form['affiliation'] . "\"";
+echo "date: \"" . $form['date'] . "\"\n";
 
 echo "---\n\n";
+
+echo "# Extraction form details\n\n";
+
+echo $form['name'] . " version " . $form['version'] . "\n\n";
+
+echo $form['description'] . "\n\n";
+
+echo "[" . $form['project'] . "](" . $form['protocol'] . ")\n\n";
 
 echo "# Extraction form elements\n\n";
 
