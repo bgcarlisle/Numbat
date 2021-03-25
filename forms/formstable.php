@@ -1,6 +1,6 @@
 <table class="nbtTabledData">
     <tr class="nbtTableHeaders">
-	<td>Form name</td>
+	<td>Form metadata</td>
 	<td style="width: 100px;">Edit</td>
 	<td style="width: 100px;">Preview</td>
 	<td style="width: 100px;">Export form</td>
