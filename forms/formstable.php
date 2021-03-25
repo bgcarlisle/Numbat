@@ -15,8 +15,21 @@
 
     ?>
 	<tr>
-	    <td><h3><?php echo $form['name']; ?></h3>
-		<p><?php echo $form['description']; ?></p></td>
+	    <td>
+		<h3><?php echo $form['name']; ?> <?php echo $form['version']; ?></h3>
+		<p><?php echo $form['author']; ?> <?php if ($form['affiliation'] != "") { echo "(" . $form['affiliation'] . ")"; } ?></p>
+		<p><?php echo $form['description']; ?></p>
+		<?php
+
+		if ( $form['protocol'] != "" ) {
+		    echo '<p><a href="' . $form['protocol'] . '" target="_blank">' . $form['project'] . '</a></p>';
+		} else {
+		    echo '<p>' . $form['project'] . '</p>';
+		}
+		
+		?>
+		<p><?php echo $form['projectdate']; ?></p>
+	    </td>
 	    <td><a href="<?php echo SITE_URL; ?>forms/?action=edit&id=<?php echo $form['id']; ?>">Edit</a></td>
 	    <td><a href="<?php echo SITE_URL; ?>extract/?action=preview&form=<?php echo $form['id']; ?>" target="_blank">Preview</a></td>
 	    <td><a href="<?php echo SITE_URL; ?>forms/?action=exportform&id=<?php echo $form['id']; ?>" target="_blank">Export form (.json)</a></td>
