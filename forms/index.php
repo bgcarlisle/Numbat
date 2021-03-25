@@ -22,7 +22,13 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 		    break;
 
-		case "export":
+		case "exportform":
+
+		    include ( ABS_PATH . "forms/exportform.php" );
+
+		    break;
+
+		case "exportcodebook":
 
 		    include ( ABS_PATH . "forms/exportcodebook.php" );
 
