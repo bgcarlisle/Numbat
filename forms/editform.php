@@ -33,7 +33,7 @@ $form = nbt_get_form_for_id ($_GET['id']);
 	<p class="nbtFeedback nbtFeedbackGood nbtHidden nbtFinePrint" id="nbtFormMetadataFeedback-protocol">&nbsp;</p>
 	
 	<p>Date when this project was designed and carried out</p>
-	<input type="text" id="nbtFormMetadata-protocol" onblur="nbtSaveFormMetadata(<?php echo $form['id']; ?>, 'projectdate');" value="<?php echo $form['projectdate']; ?>">
+	<input type="text" id="nbtFormMetadata-projectdate" onblur="nbtSaveFormMetadata(<?php echo $form['id']; ?>, 'projectdate');" value="<?php echo $form['projectdate']; ?>">
 	<p class="nbtFeedback nbtFeedbackGood nbtHidden nbtFinePrint" id="nbtFormMetadataFeedback-projectdate">&nbsp;</p>
 
 	<p>Description</p>
