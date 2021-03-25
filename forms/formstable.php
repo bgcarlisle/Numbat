@@ -31,6 +31,19 @@
 
     ?>
     <tr>
-	<td colspan=5><button onclick="nbtNewExtractionForm();">Add extraction form</button></td>
+	<td colspan="6"><button onclick="nbtNewExtractionForm();">Add new extraction form</button></td>
+    </tr>
+    <tr>
+	<td colspan="6">
+	    <button id="nbtShowImportFormButton" onclick="$('#nbtImportForm').slideDown();$('#nbtShowImportFormButton').slideUp();">Import an extraction form</button>
+	    <div class="nbtHidden" id="nbtImportForm">
+		<h3>Import a Numbat form from a .json file</h3>
+		<form action="<?php echo SITE_URL; ?>forms/import-form.php" method="post" enctype="multipart/form-data">
+		    <input type="file" name="file" id="file">
+		    <button>Import Numbat form</button>
+		    <button onclick="event.preventDefault();$('#nbtShowImportFormButton').slideDown();$('#nbtImportForm').slideUp();">Cancel</button>
+		</form>
+	    </div>
+	</td>
     </tr>
 </table>
