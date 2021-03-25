@@ -56,7 +56,7 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 }
 
-if ( $_GET['action'] != "export" ) {
+if ( $_GET['action'] != "exportcodebook" & $_GET['action'] != "exportform" ) {
     include ( ABS_PATH . "footer.php" );
 }
 
