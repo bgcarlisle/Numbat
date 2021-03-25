@@ -2,16 +2,14 @@
 
 $form = nbt_get_form_for_id ($_GET['id']);
 
+header('Content-Type: application/json');
+header('Content-Disposition: attachment; filename="' . date("Y-m-d") . '-' . $form['name'] . '.json"');
+
 $elements = nbt_get_elements_for_formid ($_GET['id']);
-
-if ( ! is_dir ( ABS_PATH . "forms/tmp/" ) ) {
-    
-    mkdir( ABS_PATH . "forms/tmp/", 0777 );
-    
-} else {
-
-    chmod ( ABS_PATH . "forms/tmp/", 0777 );
-}
+$selectoptions = nbt_get_all_select_options_for_formid ($_GET['id']);
+$tabledatacols = nbt_get_all_table_data_cols_for_formid ($_GET['id']);
+$subelements = nbt_get_all_subelements_for_formid ($_GET['id']);
+$citationscols = nbt_get_all_citations_cols_for_formid ($_GET['id']);
 
 $formdata = array(
     "name"          => $form['name'],
@@ -23,13 +21,13 @@ $formdata = array(
     "protocol"      => $form['protocol'],
     "projectdate"   => $form['projectdate'],
     "numbatversion" => "2.12",
-    "elements"      => json_encode($elements)
+    "elements"      => json_encode($elements),
+    "selectoptions" => json_encode($selectoptions),
+    "tabledatacols" => json_encode($tabledatacols),
+    "subelements"   => json_encode($subelements),
+    "citationscols" => json_encode($citationscols)
 );
 
-file_put_contents( ABS_PATH . "forms/tmp/form.json", json_encode($formdata));
-
-$formfile = json_decode(file_get_contents(ABS_PATH . "forms/tmp/form.json"));
-
-echo $formfile['name'];
+echo json_encode($formdata);
 
 ?>
