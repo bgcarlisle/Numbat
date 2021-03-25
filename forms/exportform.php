@@ -13,13 +13,6 @@ if ( ! is_dir ( ABS_PATH . "forms/tmp/" ) ) {
     chmod ( ABS_PATH . "forms/tmp/", 0777 );
 }
 
-$readme = "# Numbat export\n\n
-
-This zipped folder contains 
-";
-
-file_put_contents( ABS_PATH . "forms/tmp/README.md", $readme);
-
 $formmeta = array(
     "name"        => $form['name'],
     "description" => $form['description'],
@@ -29,7 +22,8 @@ $formmeta = array(
     "project"     => $form['project'],
     "protocol"    => $form['protocol'],
     "projectdate" => $form['projectdate'],
-    "numbat"      => "2.12"
+    "numbat"      => "2.12",
+    "elements"    => json_encode($elements)
 );
 
 file_put_contents( ABS_PATH . "forms/tmp/form.json", json_encode($formmeta));
