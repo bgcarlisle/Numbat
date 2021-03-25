@@ -193,47 +193,24 @@
 
  }
 
- function nbtSaveFormName ( fid ) {
+ function nbtSaveFormMetadata ( fid, col ) {
 
      $.ajax ({
-	 url: numbaturl + 'forms/changeformname.php',
+	 url: numbaturl + 'forms/changeformmetadata.php',
 	 type: 'post',
 	 data: {
 	     formid: fid,
-	     newname: $('#nbtFormName').val()
+	     column: col,
+	     newval: $('#nbtFormMetadata-' + col).val()
 	 },
 	 dataType: 'html'
      }).done ( function (html) {
 
-	 $('#nbtFormNameFeedback').html(html);
+	 $('#nbtFormMetadataFeedback-' + col).html(html);
 
-	 $('#nbtFormNameFeedback').fadeIn(500, function () {
+	 $('#nbtFormMetadataFeedback-' + col).fadeIn(500, function () {
 
-	     $('#nbtFormNameFeedback').fadeOut(500);
-
-	 })
-
-     });
-
- }
-
- function nbtSaveFormDescription ( fid ) {
-
-     $.ajax ({
-	 url: numbaturl + 'forms/changeformdescription.php',
-	 type: 'post',
-	 data: {
-	     formid: fid,
-	     newname: $('#nbtFormDescription').val()
-	 },
-	 dataType: 'html'
-     }).done ( function (html) {
-
-	 $('#nbtFormDescriptionFeedback').html(html);
-
-	 $('#nbtFormDescriptionFeedback').fadeIn(500, function () {
-
-	     $('#nbtFormDescriptionFeedback').fadeOut(500);
+	     $('#nbtFormMetadataFeedback-' + col).fadeOut(500);
 
 	 })
 

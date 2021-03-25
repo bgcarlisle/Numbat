@@ -4253,27 +4253,29 @@ function nbt_get_form_for_id ( $formid ) {
 
 }
 
-function nbt_change_form_name ( $formid, $newname ) {
+function check_for_forms_column ($columnname) {
 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("UPDATE `forms` SET name=:nn WHERE id = :formid LIMIT 1;");
+	$stmt = $dbh->prepare("SHOW COLUMNS FROM `forms` LIKE :column;");
 
-	$stmt->bindParam(':formid', $fid);
-	$stmt->bindParam(':nn', $nn);
+	$stmt->bindParam(':column', $col);
 
-	$fid = $formid;
-	$nn = $newname;
+	$col = $columnname;
 
-	if ( $stmt->execute() ) {
+	$stmt->execute();
 
-	    echo "Changes saved";
-
-	}
+	$result = $stmt->fetchAll();
 
 	$dbh = null;
 
+	if ( count ($result) == 1 ) {
+	    return TRUE;
+	} else {
+	    return FALSE;
+	}
+	
     }
 
     catch (PDOException $e) {
@@ -4281,36 +4283,40 @@ function nbt_change_form_name ( $formid, $newname ) {
 	echo $e->getMessage();
 
     }
-
+    
 }
 
-function nbt_change_form_description ( $formid, $description ) {
+function nbt_change_form_metadata ( $formid, $column, $newval ) {
 
-    try {
+    if ( check_for_forms_column ($column) ) {
+	
+	try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("UPDATE `forms` SET description=:desc WHERE id = :formid LIMIT 1;");
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE `forms` SET " . $column . "=:nv WHERE id = :formid LIMIT 1;");
 
-	$stmt->bindParam(':formid', $fid);
-	$stmt->bindParam(':desc', $desc);
+	    $stmt->bindParam(':formid', $fid);
+	    $stmt->bindParam(':nv', $nv);
 
-	$fid = $formid;
-	$desc = $description;
+	    $fid = $formid;
+	    $nv = $newval;
 
-	if ( $stmt->execute() ) {
+	    if ( $stmt->execute() ) {
 
-	    echo "Changes saved";
+		echo "Changes saved";
+
+	    }
+
+	    $dbh = null;
 
 	}
 
-	$dbh = null;
+	catch (PDOException $e) {
 
-    }
+	    echo $e->getMessage();
 
-    catch (PDOException $e) {
-
-	echo $e->getMessage();
-
+	}
+	
     }
 
 }

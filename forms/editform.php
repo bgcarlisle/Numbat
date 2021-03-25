@@ -11,10 +11,6 @@ $form = nbt_get_form_for_id ($_GET['id']);
 	<p>Name of form</p>
 	<input type="text" id="nbtFormMetadata-name" onblur="nbtSaveFormMetadata(<?php echo $form['id']; ?>, 'name');" value="<?php echo $form['name']; ?>">
 	<p class="nbtFeedback nbtFeedbackGood nbtHidden nbtFinePrint" id="nbtFormMetadataFeedback-name">&nbsp;</p>
-
-	<p>Description</p>
-	<textarea id="nbtFormDescription" onblur="nbtSaveFormDescription(<?php echo $form['id']; ?>);" style="width: 100%; height: 100px;"><?php echo $form['description']; ?></textarea>
-	<p class="nbtFeedback nbtFeedbackGood nbtHidden nbtFinePrint" id="nbtFormDescriptionFeedback">&nbsp;</p>
 	
 	<p>Version</p>
 	<input type="text" id="nbtFormMetadata-version" onblur="nbtSaveFormMetadata(<?php echo $form['id']; ?>, 'version');" value="<?php echo $form['version']; ?>">
@@ -39,6 +35,10 @@ $form = nbt_get_form_for_id ($_GET['id']);
 	<p>Date when this project was designed and carried out</p>
 	<input type="text" id="nbtFormMetadata-protocol" onblur="nbtSaveFormMetadata(<?php echo $form['id']; ?>, 'projectdate');" value="<?php echo $form['projectdate']; ?>">
 	<p class="nbtFeedback nbtFeedbackGood nbtHidden nbtFinePrint" id="nbtFormMetadataFeedback-projectdate">&nbsp;</p>
+
+	<p>Description</p>
+	<textarea id="nbtFormMetadata-description" onblur="nbtSaveFormMetadata(<?php echo $form['id']; ?>, 'description');" style="width: 100%; height: 100px;"><?php echo $form['description']; ?></textarea>
+	<p class="nbtFeedback nbtFeedbackGood nbtHidden nbtFinePrint" id="nbtFormMetadataFeedback-description">&nbsp;</p>
 
 	<hr>
 	
