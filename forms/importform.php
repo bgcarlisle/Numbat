@@ -153,12 +153,15 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				break;
 
 			    case "assignment_editor":
+				nbt_add_assignment_editor ($newformid, $peid, $element['displayname'], $element['codebook'], $element['toggle']);
 				break;
 
 			    case "reference_data":
+				nbt_add_reference_data ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
 				break;
 
 			    case "prev_select":
+				nbt_add_prev_select ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
 				break;
 				
 			}

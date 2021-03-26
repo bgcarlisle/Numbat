@@ -4835,7 +4835,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 
 }
 
-function nbt_add_prev_select ( $formid, $elementid ) {
+function nbt_add_prev_select ( $formid, $elementid, $displayname, $columnname, $codebook, $toggle ) {
 
     // this element is the one immediately before where we want to insert a new element
 
@@ -4883,38 +4883,42 @@ function nbt_add_prev_select ( $formid, $elementid ) {
 
     // find a good name for the new column
 
-    $foundgoodcolumn = FALSE;
+    if ( is_null ($columnname) ) {
 
-    $counter = 1;
+	$foundgoodcolumn = FALSE;
 
-    while ( $foundgoodcolumn == FALSE ) {
+	$counter = 1;
 
-	try {
+	while ( $foundgoodcolumn == FALSE ) {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'prev_select_" . $counter . "';");
+	    try {
 
-	    $stmt->execute();
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'prev_select_" . $counter . "';");
 
-	    $result = $stmt->fetchAll();
+		$stmt->execute();
 
-	    if ( count ( $result ) == 0 ) {
+		$result = $stmt->fetchAll();
 
-		$columnname = "prev_select_" . $counter;
+		if ( count ( $result ) == 0 ) {
 
-		$foundgoodcolumn = TRUE;
+		    $columnname = "prev_select_" . $counter;
+
+		    $foundgoodcolumn = TRUE;
+
+		}
 
 	    }
 
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	    }
+
+	    $counter ++;
+
 	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-
-	$counter ++;
 
     }
 
@@ -4923,17 +4927,23 @@ function nbt_add_prev_select ( $formid, $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname) VALUES (:form, :sort, :type, :column);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
 	$stmt->bindParam(':type', $type);
 	$stmt->bindParam(':column', $col);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':codebook', $cb);
+	$stmt->bindParam(':toggle', $tg);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
 	$type = "prev_select";
 	$col = $columnname;
+	$dn = $displayname;
+	$cb = $codebook;
+	$tg = $toggle;
 
 	$stmt->execute();
 
@@ -14303,7 +14313,7 @@ function nbt_get_setting ( $key ) {
 
 }
 
-function nbt_add_assignment_editor ( $formid, $elementid ) {
+function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $codebook = NULL, $toggle = NULL ) {
 
     // this element is the one immediately before where we want to insert a new element
 
@@ -14354,15 +14364,21 @@ function nbt_add_assignment_editor ( $formid, $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type) VALUES (:form, :sort, :type);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, displayname, codebook, toggle) VALUES (:form, :sort, :type, :displayname, :codebook, :toggle);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
 	$stmt->bindParam(':type', $type);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':codebook', $cb);
+	$stmt->bindParam(':toggle', $tg);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
 	$type = "assignment_editor";
+	$dn = $displayname;
+	$cb = $codebook;
+	$tg = $toggle;
 
 	$stmt->execute();
 
@@ -14376,7 +14392,7 @@ function nbt_add_assignment_editor ( $formid, $elementid ) {
 
 }
 
-function nbt_add_reference_data ( $formid, $elementid ) {
+function nbt_add_reference_data ( $formid, $elementid, $displayname = NULL, $refdata = NULL, $codebook = NULL, $toggle = NULL ) {
 
     // this element is the one immediately before where we want to insert a new element
 
@@ -14427,15 +14443,23 @@ function nbt_add_reference_data ( $formid, $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type) VALUES (:form, :sort, :type);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, displayname, columnname, codebook, toggle) VALUES (:form, :sort, :type, :displayname, :columnname, :codebook, :toggle);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
 	$stmt->bindParam(':type', $type);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':columnname', $cn);
+	$stmt->bindParam(':codebook', $cb);
+	$stmt->bindParam(':toggle', $tg);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
 	$type = "reference_data";
+	$dn = $displayname;
+	$cn = $refdata;
+	$cb = $codebook;
+	$tg = $toggle;
 
 	$stmt->execute();
 
