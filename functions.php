@@ -8963,7 +8963,7 @@ function nbt_update_table_data_column_db ( $columnid, $tableformat, $newcolumnna
 
 }
 
-function nbt_add_country_selector ( $formid, $elementid ) {
+function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL ) {
 
     // this element is the one immediately before where we want to insert a new element
 
@@ -9011,38 +9011,42 @@ function nbt_add_country_selector ( $formid, $elementid ) {
 
     // find a good name for the new column
 
-    $foundgoodcolumn = FALSE;
+    if ( is_null ( $columnname ) ) {
 
-    $counter = 1;
+	$foundgoodcolumn = FALSE;
 
-    while ( $foundgoodcolumn == FALSE ) {
+	$counter = 1;
 
-	try {
+	while ( $foundgoodcolumn == FALSE ) {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'country_" . $counter . "';");
+	    try {
 
-	    $stmt->execute();
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'country_" . $counter . "';");
 
-	    $result = $stmt->fetchAll();
+		$stmt->execute();
 
-	    if ( count ( $result ) == 0 ) {
+		$result = $stmt->fetchAll();
 
-		$columnname = "country_" . $counter;
+		if ( count ( $result ) == 0 ) {
 
-		$foundgoodcolumn = TRUE;
+		    $columnname = "country_" . $counter;
+
+		    $foundgoodcolumn = TRUE;
+
+		}
 
 	    }
 
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	    }
+
+	    $counter ++;
+
 	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-
-	$counter ++;
 
     }
 
@@ -9051,17 +9055,23 @@ function nbt_add_country_selector ( $formid, $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname) VALUES (:form, :sort, :type, :column);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
 	$stmt->bindParam(':type', $type);
 	$stmt->bindParam(':column', $col);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':codebook', $cb);
+	$stmt->bindParam(':toggle', $tg);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
 	$type = "country_selector";
 	$col = $columnname;
+	$dn = $displayname;
+	$cb = $codebook;
+	$tg = $toggle;
 
 	$stmt->execute();
 

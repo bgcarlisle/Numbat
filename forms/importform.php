@@ -137,6 +137,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				break;
 
 			    case "country_selector":
+				nbt_add_country_selector ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
 				break;
 
 			    case "table_data":
