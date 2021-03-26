@@ -4200,6 +4200,31 @@ function nbt_delete_extraction_form ( $formid ) {
 
     }
 
+    // then delete the assignments for that form
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("DELETE FROM `assignments` WHERE formid = :id;");
+
+	$stmt->bindParam(':id', $fid);
+
+	$fid = $formid;
+
+	if ($stmt->execute()) {
+
+	    $dbh = null;
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
     // then remove the form from the list
 
     try {
