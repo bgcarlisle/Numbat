@@ -162,6 +162,27 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				break;
 
 			    case "sub_extraction":
+				$newelementid = nbt_add_sub_extraction ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
+
+				// Loop through all the sub-extraction elements and add them
+				foreach ($subelements as $sel) {
+				    if ($element['id'] == $sel['elementid']) {
+					switch ($sel['type']) {
+					    case "open_text":
+						nbt_add_sub_open_text_field ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						break;
+					    case "date_selector":
+						break;
+					    case "single_select":
+						break;
+					    case "multi_select":
+						break;
+					    case "table_data":
+						break;
+						
+					}
+				    }
+				}
 				break;
 
 			    case "assignment_editor":
