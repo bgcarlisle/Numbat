@@ -172,12 +172,28 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 						nbt_add_sub_open_text_field ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
 						break;
 					    case "date_selector":
+						nbt_add_sub_date_selector ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
 						break;
 					    case "single_select":
+						$newseid = nbt_add_sub_single_select ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+
+						foreach ($selectoptions as $opt) {
+						    if ($sel['id'] == $opt['subelementid']) {
+							nbt_add_sub_single_select_option ($newseid, $opt['displayname'], $opt['dbname'], $opt['toggle']);
+						    }
+						}
 						break;
 					    case "multi_select":
+						$newseid = nbt_add_sub_multi_select ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+
+						foreach ($selectoptions as $opt) {
+						    if ($sel['id'] == $opt['subelementid']) {
+							nbt_add_sub_multi_select_option ($newseid, $opt['displayname'], $opt['dbname'], $opt['toggle']);
+						    }
+						}
 						break;
 					    case "table_data":
+						// This is the only thing left
 						break;
 						
 					}

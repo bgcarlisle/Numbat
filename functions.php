@@ -4606,7 +4606,7 @@ function nbt_get_all_select_options_for_formid ( $formid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid);");
+	$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE (`elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid)) OR (`subelementid` IN (SELECT `id` FROM `subelements` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid))) ORDER BY elementid, subelementid, sortorder ASC;");
 
 	$stmt->bindParam(':fid', $fid);
 
@@ -11677,7 +11677,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " varchar(200) DEFAULT NULL;");
 
 	$stmt->execute();
 
@@ -11694,7 +11694,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " varchar(200) DEFAULT NULL;");
 
 	$stmt->execute();
 
@@ -12240,7 +12240,7 @@ function nbt_move_sub_element ( $subelementid, $direction ) {
 
 }
 
-function nbt_add_sub_single_select ( $elementid ) {
+function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
@@ -12284,38 +12284,42 @@ function nbt_add_sub_single_select ( $elementid ) {
 
     // find a good name for the new column
 
-    $foundgoodcolumn = FALSE;
+    if ( is_null ( $dbname ) ) {
 
-    $counter = 1;
+	$foundgoodcolumn = FALSE;
 
-    while ( $foundgoodcolumn == FALSE ) {
+	$counter = 1;
 
-	try {
+	while ( $foundgoodcolumn == FALSE ) {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'single_select_" . $counter . "';");
+	    try {
 
-	    $stmt->execute();
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'single_select_" . $counter . "';");
 
-	    $result = $stmt->fetchAll();
+		$stmt->execute();
 
-	    if ( count ( $result ) == 0 ) {
+		$result = $stmt->fetchAll();
 
-		$columnname = "single_select_" . $counter;
+		if ( count ( $result ) == 0 ) {
 
-		$foundgoodcolumn = TRUE;
+		    $dbname = "single_select_" . $counter;
+
+		    $foundgoodcolumn = TRUE;
+
+		}
 
 	    }
 
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	    }
+
+	    $counter ++;
+
 	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-
-	$counter ++;
 
     }
 
@@ -12324,19 +12328,42 @@ function nbt_add_sub_single_select ( $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname) VALUES (:element, :sort, :type, :column);");
+	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, copypreviousprompt, codebook, toggle) VALUES (:element, :sort, :type, :column, :displayname, :copypreviousprompt, :codebook, :toggle);");
 
 	$stmt->bindParam(':element', $eid);
 	$stmt->bindParam(':sort', $sort);
 	$stmt->bindParam(':type', $type);
 	$stmt->bindParam(':column', $col);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':copypreviousprompt', $cpp);
+	$stmt->bindParam(':codebook', $cb);
+	$stmt->bindParam(':toggle', $tg);
 
 	$eid = $elementid;
 	$sort = $highestsortorder + 1;
 	$type = "single_select";
-	$col = $columnname;
+	$col = $dbname;
+	$dn = $displayname;
+	$cpp = $copypreviousprompt;
+	$cb = $codebook;
+	$tg = $toggle;
 
-	$stmt->execute();
+	if ($stmt->execute()) {
+
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+	    $stmt2->execute();
+
+	    $result = $stmt2->fetchAll();
+
+	    $dbh = null;
+
+	    foreach ( $result as $row ) {
+
+		$newid = $row['newid']; // This is the auto_increment-generated ID
+
+	    }
+	    
+	}
 
     }
 
@@ -12351,7 +12378,7 @@ function nbt_add_sub_single_select ( $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(50) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " varchar(50) DEFAULT NULL;");
 
 	$stmt->execute();
 
@@ -12368,7 +12395,7 @@ function nbt_add_sub_single_select ( $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " varchar(50) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " varchar(50) DEFAULT NULL;");
 
 	$stmt->execute();
 
@@ -12379,6 +12406,8 @@ function nbt_add_sub_single_select ( $elementid ) {
 	echo $e->getMessage();
 
     }
+
+    return $newid;
 
 }
 
@@ -12409,7 +12438,7 @@ function nbt_get_all_select_options_for_sub_element ( $subelementid ) {
 
 }
 
-function nbt_add_sub_single_select_option ( $subelementid ) {
+function nbt_add_sub_single_select_option ( $subelementid, $displayname = NULL, $dbname = NULL, $toggle = NULL ) {
 
     try {
 
@@ -12452,13 +12481,19 @@ function nbt_add_sub_single_select_option ( $subelementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO selectoptions (subelementid, sortorder) VALUES (:seid, :sort);");
+	$stmt = $dbh->prepare ("INSERT INTO selectoptions (subelementid, sortorder, displayname, dbname, toggle) VALUES (:seid, :sort, :displayname, :dbname, :toggle);");
 
 	$stmt->bindParam(':seid', $seid);
 	$stmt->bindParam(':sort', $sort);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':dbname', $dbn);
+	$stmt->bindParam(':toggle', $tg);
 
 	$seid = $subelementid;
 	$sort = $highestsortorder + 1;
+	$dn = $displayname;
+	$dbn = $dbname;
+	$tg = $toggle;
 
 	$stmt->execute();
 
@@ -12580,8 +12615,7 @@ function nbt_move_sub_select_option ( $selectid, $direction ) {
 
 }
 
-function nbt_add_sub_multi_select ( $elementid ) {
-
+function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
 
     // get the highest sortorder value
 
@@ -12612,7 +12646,6 @@ function nbt_add_sub_multi_select ( $elementid ) {
 
 	}
 
-
     }
 
     catch (PDOException $e) {
@@ -12624,19 +12657,37 @@ function nbt_add_sub_multi_select ( $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname) VALUES (:element, :sort, :type, :column);");
+	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname, displayname, copypreviousprompt, codebook, toggle) VALUES (:element, :sort, :type, :column, :displayname, :copypreviousprompt, :codebook, :toggle);");
 
 	$stmt->bindParam(':element', $eid);
 	$stmt->bindParam(':sort', $sort);
 	$stmt->bindParam(':type', $type);
 	$stmt->bindParam(':column', $col);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':copypreviousprompt', $cpp);
+	$stmt->bindParam(':codebook', $cb);
+	$stmt->bindParam(':toggle', $tg);
 
 	$eid = $elementid;
 	$sort = $highestsortorder + 1;
 	$type = "multi_select";
 	$col = "multi_select";
+	$dn = $displayname;
+	$cpp = $copypreviousprompt;
+	$cb = $codebook;
+	$tg = $toggle;
 
-	$stmt->execute();
+	if ($stmt->execute()) {
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+
+	    $stmt2->execute();
+
+	    $result = $stmt2->fetchAll();
+
+	    foreach ( $result as $row ) {
+		$newid = $row['newid'];
+	    }
+	}
 
     }
 
@@ -12645,6 +12696,8 @@ function nbt_add_sub_multi_select ( $elementid ) {
 	echo $e->getMessage();
 
     }
+
+    return $newid;
 
 }
 
@@ -12908,7 +12961,7 @@ function nbt_change_sub_multi_select_column_prefix ( $subelementid, $newcolumn )
 
 }
 
-function nbt_add_sub_multi_select_option ( $subelementid ) {
+function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $dbname = NULL, $toggle = NULL ) {
 
     // get the highest sortorder
 
@@ -12939,7 +12992,6 @@ function nbt_add_sub_multi_select_option ( $subelementid ) {
 
 	}
 
-
     }
 
     catch (PDOException $e) {
@@ -12954,39 +13006,48 @@ function nbt_add_sub_multi_select_option ( $subelementid ) {
 
     // find a good name for the new column
 
-    $foundgoodcolumn = FALSE;
+    if ( is_null ($dbname) ) {
 
-    $counter = 1;
+	$foundgoodcolumn = FALSE;
 
-    while ( $foundgoodcolumn == FALSE ) {
+	$counter = 1;
 
-	try {
+	while ( $foundgoodcolumn == FALSE ) {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE '" . $subelement['dbname'] . "_" . $counter . "';");
+	    try {
 
-	    $stmt->execute();
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE '" . $subelement['dbname'] . "_" . $counter . "';");
 
-	    $result = $stmt->fetchAll();
+		$stmt->execute();
 
-	    if ( count ( $result ) == 0 ) {
+		$result = $stmt->fetchAll();
 
-		$columnname = $subelement['dbname'] . "_" . $counter;
+		if ( count ( $result ) == 0 ) {
 
-		$foundgoodcolumn = TRUE;
+		    $columnname = $subelement['dbname'] . "_" . $counter;
+
+		    $dbname = $counter;
+		    
+		    $foundgoodcolumn = TRUE;
+
+		}
 
 	    }
 
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	    }
+
+	    $counter ++;
+
 	}
 
-	catch (PDOException $e) {
+    } else {
 
-	    echo $e->getMessage();
-
-	}
-
-	$counter ++;
-
+	$columnname = $subelement['dbname'] . "_" . $dbname;
     }
 
     // then insert a new option into the selectoptions table
@@ -12994,15 +13055,19 @@ function nbt_add_sub_multi_select_option ( $subelementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO `selectoptions` (subelementid, sortorder, dbname) VALUES (:seid, :sort, :column);");
+	$stmt = $dbh->prepare ("INSERT INTO `selectoptions` (subelementid, sortorder, dbname, displayname, toggle) VALUES (:seid, :sort, :column, :displayname, :toggle);");
 
 	$stmt->bindParam(':seid', $seid);
 	$stmt->bindParam(':sort', $sort);
 	$stmt->bindParam(':column', $col);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':toggle', $tg);
 
 	$seid = $subelementid;
 	$sort = $highestsortorder + 1;
-	$col = $counter - 1;
+	$col = $dbname;
+	$dn = $displayname;
+	$tg = $toggle;
 
 	$stmt->execute();
 
@@ -13050,7 +13115,7 @@ function nbt_add_sub_multi_select_option ( $subelementid ) {
 
 }
 
-function nbt_add_sub_date_selector ( $elementid ) {
+function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
@@ -13094,38 +13159,42 @@ function nbt_add_sub_date_selector ( $elementid ) {
 
     // find a good name for the new column
 
-    $foundgoodcolumn = FALSE;
+    if ( ! is_null ($dbname) ) {
 
-    $counter = 1;
+	$foundgoodcolumn = FALSE;
 
-    while ( $foundgoodcolumn == FALSE ) {
+	$counter = 1;
 
-	try {
+	while ( $foundgoodcolumn == FALSE ) {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'date_" . $counter . "';");
+	    try {
 
-	    $stmt->execute();
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'date_" . $counter . "';");
 
-	    $result = $stmt->fetchAll();
+		$stmt->execute();
 
-	    if ( count ( $result ) == 0 ) {
+		$result = $stmt->fetchAll();
 
-		$columnname = "date_" . $counter;
+		if ( count ( $result ) == 0 ) {
 
-		$foundgoodcolumn = TRUE;
+		    $dbname = "date_" . $counter;
+
+		    $foundgoodcolumn = TRUE;
+
+		}
 
 	    }
 
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	    }
+
+	    $counter ++;
+
 	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-
-	$counter ++;
 
     }
 
@@ -13134,17 +13203,25 @@ function nbt_add_sub_date_selector ( $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname) VALUES (:element, :sort, :type, :column);");
+	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname, displayname, copypreviousprompt, codebook, toggle) VALUES (:element, :sort, :type, :column, :displayname, :copypreviousprompt, :codebook, :toggle);");
 
 	$stmt->bindParam(':element', $eid);
 	$stmt->bindParam(':sort', $sort);
 	$stmt->bindParam(':type', $type);
 	$stmt->bindParam(':column', $col);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':copypreviousprompt', $cpp);
+	$stmt->bindParam(':codebook', $cb);
+	$stmt->bindParam(':toggle', $tg);
 
 	$eid = $elementid;
 	$sort = $highestsortorder + 1;
 	$type = "date_selector";
-	$col = $columnname;
+	$col = $dbnname;
+	$dn = $displayname;
+	$cpp = $copypreviousprompt;
+	$cb = $codebook;
+	$tg = $toggle;
 
 	$stmt->execute();
 
@@ -13161,7 +13238,7 @@ function nbt_add_sub_date_selector ( $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " DATE DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " DATE DEFAULT NULL;");
 
 	$stmt->execute();
 
@@ -13178,7 +13255,7 @@ function nbt_add_sub_date_selector ( $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " DATE DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " DATE DEFAULT NULL;");
 
 	$stmt->execute();
 
