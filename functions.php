@@ -7855,49 +7855,38 @@ function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", 
 
     // find a good name for the table
 
-    if ( is_null ($suffix) ) {
-
-	$foundgoodcolumn = FALSE;
-
-	$counter = 1;
-
-	while ( $foundgoodcolumn == FALSE ) {
-
-	    try {
-
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("SHOW TABLES LIKE 'tabledata_" . $counter . "';");
-
-		$stmt->execute();
-
-		$result = $stmt->fetchAll();
-
-		if ( count ( $result ) == 0 ) {
-
-		    $columnname = "tabledata_" . $counter;
-
+    if ( ! is_null ($suffix) ) {
+	// See if this can be made directly
+	if ( ! nbt_table_exists ("tabledata_" . $suffix) ) {
+	    $foundgoodcolumn = TRUE;
+	} else {
+	    $foundgoodcolumn = FALSE;
+	    $counter = 1;
+	    while($foundgoodcolumn == FALSE) {
+		if ( ! nbt_table_exists ("tabledata_" . $suffix . "_"  . $counter) ) {
+		    $columnname = "tabledata_" . $suffix . "_" . $counter;
+		    $suffix = $suffix . "_" . $counter;
 		    $foundgoodcolumn = TRUE;
-
 		} else {
-
-		    $counter ++;
-
+		    $counter++;
 		}
-
 	    }
-
-	    catch (PDOException $e) {
-
-		echo $e->getMessage();
-
+	}
+    } else {
+	$foundgoodcolumn = FALSE;
+	$counter = 1;
+	while ( $foundgoodcolumn == FALSE ) {
+	    if ( ! nbt_table_exists ("tabledata_" . $counter) ) {
+		$columnname = "tabledata_" . $counter;
+		$foundgoodcolumn = TRUE;
+	    } else {
+		$counter++;
 	    }
-
 	}
 
 	$suffix = $counter;
-
     }
-    
+
     // then make a new table
 
     try {
@@ -9503,7 +9492,7 @@ function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
 
 }
 
-function nbt_add_citation_selector ( $formid, $elementid ) {
+function nbt_add_citation_selector ( $formid, $elementid, $displayname = NULL, $suffix = NULL, $codebook = NULL, $toggle = NULL) {
 
     // this element is the one immediately before where we want to insert a new element
 
@@ -9551,49 +9540,44 @@ function nbt_add_citation_selector ( $formid, $elementid ) {
 
     // find a good name for the table
 
-    $foundgoodcolumn = FALSE;
-
-    $counter = 1;
-
-    while ( $foundgoodcolumn == FALSE ) {
-
-	try {
-
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("SHOW TABLES LIKE 'citations_" . $counter . "';");
-
-	    $stmt->execute();
-
-	    $result = $stmt->fetchAll();
-
-	    if ( count ( $result ) == 0 ) {
-
-		$columnname = "citations_" . $counter;
-
-		$foundgoodcolumn = TRUE;
-
-	    } else {
-
-		$counter ++;
-
+    if ( ! is_null ($suffix) ) {
+	// See if this can be made directly
+	if (! nbt_table_exists ("citations_" . $suffix)) {
+	    $foundgoodcolumn = FALSE;
+	} else {
+	    $foundgoodcolumn = FALSE;
+	    $counter = 1;
+	    while ($foundgoodcolumn == FALSE) {
+		if ( ! nbt_table_exists ("citations_" . $suffix . "_" . $counter)) {
+		    $columnname = "citations_" . $suffix . "_" . $counter;
+		    $suffix = $suffix . "_" . $counter;
+		    $foundgoodcolumn = TRUE;
+		} else {
+		    $counter++;
+		}
 	    }
-
+	}
+    } else {
+	$foundgoodcolumn = FALSE;
+	$counter = 1;
+	while ( $foundgoodcolumn == FALSE ) {
+	    if ( ! nbt_table_exists ("citations_" . $counter)) {
+		$columnname = "citations_" . $counter;
+		$foundgoodcolumn = TRUE;
+	    } else {
+		$counter++;
+	    }
 	}
 
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-
+	$suffix = $counter;
     }
-
+    
     // then make a new table
 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("CREATE TABLE `citations_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `citationid` int(11) NOT NULL, `cite_no` int(11) NULL, PRIMARY KEY (`id`), UNIQUE KEY `unique_cite` (`refsetid`,`referenceid`,`userid`,`citationid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+	$stmt = $dbh->prepare("CREATE TABLE `citations_" . $suffix . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `citationid` int(11) NOT NULL, `cite_no` int(11) NULL, PRIMARY KEY (`id`), UNIQUE KEY `unique_cite` (`refsetid`,`referenceid`,`userid`,`citationid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ($stmt->execute()) {
 
@@ -9614,7 +9598,7 @@ function nbt_add_citation_selector ( $formid, $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("CREATE TABLE `mcite_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `citationid` int(11) NOT NULL, `cite_no` int(11) NULL, PRIMARY KEY (`id`), UNIQUE KEY `unique_cite` (`refsetid`,`referenceid`,`citationid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+	$stmt = $dbh->prepare("CREATE TABLE `mcite_" . $suffix . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `citationid` int(11) NOT NULL, `cite_no` int(11) NULL, PRIMARY KEY (`id`), UNIQUE KEY `unique_cite` (`refsetid`,`referenceid`,`citationid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ($stmt->execute()) {
 
@@ -9635,19 +9619,40 @@ function nbt_add_citation_selector ( $formid, $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname) VALUES (:form, :sort, :type, :column);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
 	$stmt->bindParam(':type', $type);
 	$stmt->bindParam(':column', $col);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':codebook', $cb);
+	$stmt->bindParam(':toggle', $tg);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
 	$type = "citations";
-	$col = $counter;
+	$col = $suffix;
+	$dn = $displayname;
+	$cb = $codebook;
+	$tg = $toggle;
 
-	$stmt->execute();
+	if ($stmt->execute()) {
+
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+	    $stmt2->execute();
+
+	    $result = $stmt2->fetchAll();
+
+	    $dbh = null;
+
+	    foreach ( $result as $row ) {
+
+		$newid = $row['newid']; // This is the auto_increment-generated ID for the new row
+
+	    }
+
+	}
 
     }
 
@@ -9656,6 +9661,8 @@ function nbt_add_citation_selector ( $formid, $elementid ) {
 	echo $e->getMessage();
 
     }
+
+    return $newid;
 
 }
 
@@ -9798,7 +9805,7 @@ function nbt_get_all_columns_for_citation_selector ( $elementid ) {
 
 }
 
-function nbt_add_citation_property ( $elementid ) {
+function nbt_add_citation_property ( $elementid, $displayname = NULL, $dbname = NULL, $remind = NULL, $caps = NULL ) {
 
     // get the highest sortorder
 
@@ -9842,41 +9849,47 @@ function nbt_add_citation_property ( $elementid ) {
 
     // find a good name for the new column
 
-    $foundgoodcolumn = FALSE;
+    if ( is_null ($dbname) ) {
 
-    $counter = 1;
+	$foundgoodcolumn = FALSE;
 
-    while ( $foundgoodcolumn == FALSE ) {
+	$counter = 1;
 
-	try {
+	while ( $foundgoodcolumn == FALSE ) {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `citations_" . $element['columnname'] . "` LIKE 'property_" . $counter . "';");
+	    try {
 
-	    $stmt->execute();
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SHOW COLUMNS FROM `citations_" . $element['columnname'] . "` LIKE 'property_" . $counter . "';");
 
-	    $result = $stmt->fetchAll();
+		$stmt->execute();
 
-	    if ( count ( $result ) == 0 ) {
+		$result = $stmt->fetchAll();
 
-		$columnname = "property_" . $counter;
+		if ( count ( $result ) == 0 ) {
 
-		$foundgoodcolumn = TRUE;
+		    $columnname = "property_" . $counter;
 
-	    } else {
+		    $foundgoodcolumn = TRUE;
 
-		$counter ++;
+		} else {
+
+		    $counter ++;
+
+		}
+
+	    }
+
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
 
 	    }
 
 	}
 
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-
+	$dbname = $columnname;
+	
     }
 
     // then insert a new option into the citationscolumns table
@@ -9884,15 +9897,21 @@ function nbt_add_citation_property ( $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO `citationscolumns` (elementid, sortorder, dbname) VALUES (:eid, :sort, :column);");
+	$stmt = $dbh->prepare ("INSERT INTO `citationscolumns` (elementid, sortorder, dbname, displayname, remind, caps) VALUES (:eid, :sort, :column, :displayname, :remind, :caps);");
 
 	$stmt->bindParam(':eid', $eid);
 	$stmt->bindParam(':sort', $sort);
 	$stmt->bindParam(':column', $col);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':remind', $rm);
+	$stmt->bindParam(':caps', $ca);
 
 	$eid = $elementid;
 	$sort = $highestsortorder + 1;
-	$col = "property_" . $counter;
+	$col = $dbname;
+	$dn = $displayname;
+	$rm = $remind;
+	$ca = $caps;
 
 	$stmt->execute();
 
@@ -15586,6 +15605,37 @@ function nbt_clear_finished_extraction_timer ( $formid, $refsetid, $refid, $user
 	} else {
 
 	    return FALSE;
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
+function nbt_table_exists ($tablename) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SHOW TABLES LIKE '" . $tablename . "';");
+
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	if ( count ( $result ) == 0 ) {
+
+	    return FALSE;
+
+	} else {
+
+	    return TRUE;
 
 	}
 

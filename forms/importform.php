@@ -152,6 +152,13 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				break;
 
 			    case "citations":
+				$newelementid = nbt_add_citation_selector ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
+
+				foreach ($citecols as $col) {
+				    if ($element['id'] == $col['elementid']) {
+					nbt_add_citation_property ($newelementid, $col['displayname'], $col['dbname'], $col['remind'], $col['caps']);
+				    }
+				}
 				break;
 
 			    case "sub_extraction":
