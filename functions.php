@@ -9868,7 +9868,7 @@ function nbt_add_citation_property ( $elementid, $displayname = NULL, $dbname = 
 
 		if ( count ( $result ) == 0 ) {
 
-		    $columnname = "property_" . $counter;
+		    $dbname = "property_" . $counter;
 
 		    $foundgoodcolumn = TRUE;
 
@@ -9887,8 +9887,6 @@ function nbt_add_citation_property ( $elementid, $displayname = NULL, $dbname = 
 	    }
 
 	}
-
-	$dbname = $columnname;
 	
     }
 
@@ -9928,7 +9926,7 @@ function nbt_add_citation_property ( $elementid, $displayname = NULL, $dbname = 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `citations_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " VARCHAR(50) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `citations_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " VARCHAR(50) DEFAULT NULL;");
 
 	$stmt->execute();
 
@@ -9945,7 +9943,7 @@ function nbt_add_citation_property ( $elementid, $displayname = NULL, $dbname = 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `mcite_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " VARCHAR(50) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `mcite_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " VARCHAR(50) DEFAULT NULL;");
 
 	$stmt->execute();
 
