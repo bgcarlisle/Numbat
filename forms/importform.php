@@ -141,9 +141,14 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				break;
 
 			    case "table_data":
-				break;
-
 			    case "ltable_data":
+				$newelementid = nbt_add_table_data ($newformid, $peid, $element['type'], $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
+
+				foreach ($tabledatacols as $col) {
+				    if ($element['id'] == $col['elementid']) {
+					nbt_add_table_data_column ($newelementid, $element['type'], FALSE, $col['displayname'], $col['dbname']);
+				    }
+				}
 				break;
 
 			    case "citations":
