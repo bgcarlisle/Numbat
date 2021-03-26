@@ -193,7 +193,13 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 						}
 						break;
 					    case "table_data":
-						// This is the only thing left
+						$newseid = nbt_add_sub_table ($newelementid, $sel['displayname'], $sel['dbname'], $sel['codebook'], $sel['toggle']);
+
+						foreach ($tabledatacols as $col) {
+						    if ($sel['id'] == $col['subelementid']) {
+							nbt_add_table_data_column ($newseid, $sel['type'], TRUE, $col['displayname'], $col['dbname']);
+						    }
+						}
 						break;
 						
 					}

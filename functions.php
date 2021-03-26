@@ -8557,7 +8557,7 @@ function nbt_get_all_table_data_cols_for_formid ( $formid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM `tabledatacolumns` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid);");
+	$stmt = $dbh->prepare("SELECT * FROM `tabledatacolumns` WHERE (`elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid)) OR (`subelementid` IN (SELECT `id` FROM `subelements` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid))) ORDER BY elementid, subelementid, sortorder ASC;");
 
 	$stmt->bindParam(':fid', $fid);
 
@@ -12701,7 +12701,7 @@ function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = N
 
 }
 
-function nbt_add_sub_table ( $elementid ) {
+function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $codebook = NULL, $toggle = NULL ) {
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
@@ -12743,43 +12743,38 @@ function nbt_add_sub_table ( $elementid ) {
 
     }
 
-    // find a good name for the table
+    // find a good suffix for the table
 
-    $foundgoodcolumn = FALSE;
-
-    $counter = 1;
-
-    while ( $foundgoodcolumn == FALSE ) {
-
-	try {
-
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("SHOW TABLES LIKE 'tabledata_" . $counter . "';");
-
-	    $stmt->execute();
-
-	    $result = $stmt->fetchAll();
-
-	    if ( count ( $result ) == 0 ) {
-
-		$columnname = "tabledata_" . $counter;
-
-		$foundgoodcolumn = TRUE;
-
-	    } else {
-
-		$counter ++;
-
+    if ( ! is_null ($suffix) ) {
+	// See if this can be made directly
+	if ( ! nbt_table_exists ("tabledata_" . $suffix) ) {
+	    $foundgoodcolumn = TRUE;
+	} else {
+	    $foundgoodcolumn = FALSE;
+	    $counter = 1;
+	    while($foundgoodcolumn == FALSE) {
+		if ( ! nbt_table_exists ("tabledata_" . $suffix . "_"  . $counter) ) {
+		    $columnname = "tabledata_" . $suffix . "_" . $counter;
+		    $suffix = $suffix . "_" . $counter;
+		    $foundgoodcolumn = TRUE;
+		} else {
+		    $counter++;
+		}
 	    }
-
+	}
+    } else {
+	$foundgoodcolumn = FALSE;
+	$counter = 1;
+	while ( $foundgoodcolumn == FALSE ) {
+	    if ( ! nbt_table_exists ("tabledata_" . $counter) ) {
+		$columnname = "tabledata_" . $counter;
+		$foundgoodcolumn = TRUE;
+	    } else {
+		$counter++;
+	    }
 	}
 
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-
+	$suffix = $counter;
     }
 
     // then make a new table
@@ -12787,7 +12782,7 @@ function nbt_add_sub_table ( $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("CREATE TABLE `tabledata_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `subextractionid` int(11) NOT NULL, `userid` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+	$stmt = $dbh->prepare("CREATE TABLE `tabledata_" . $suffix . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `subextractionid` int(11) NOT NULL, `userid` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ($stmt->execute()) {
 
@@ -12803,12 +12798,12 @@ function nbt_add_sub_table ( $elementid ) {
 
     }
 
-    // then make the master table
+    // then make the final table
 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("CREATE TABLE `mtable_" . $counter . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `subextractionid` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+	$stmt = $dbh->prepare("CREATE TABLE `mtable_" . $suffix . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `subextractionid` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ($stmt->execute()) {
 
@@ -12829,19 +12824,40 @@ function nbt_add_sub_table ( $elementid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname) VALUES (:element, :sort, :type, :column);");
+	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname, displayname, codebook, toggle) VALUES (:element, :sort, :type, :column, :displayname, :codebook, :toggle);");
 
 	$stmt->bindParam(':element', $eid);
 	$stmt->bindParam(':sort', $sort);
 	$stmt->bindParam(':type', $type);
 	$stmt->bindParam(':column', $col);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':codebook', $cb);
+	$stmt->bindParam(':toggle', $tg);
 
 	$eid = $element['id'];
 	$sort = $highestsortorder + 1;
 	$type = "table_data";
-	$col = $counter;
+	$col = $suffix;
+	$dn = $displayname;
+	$cb = $codebook;
+	$tg = $toggle;
 
-	$stmt->execute();
+	if ($stmt->execute()) {
+
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+	    $stmt2->execute();
+
+	    $result = $stmt2->fetchAll();
+
+	    $dbh = null;
+
+	    foreach ( $result as $row ) {
+
+		$newid = $row['newid']; // This is the auto_increment-generated ID
+
+	    }
+	    
+	}
 
     }
 
@@ -12850,6 +12866,8 @@ function nbt_add_sub_table ( $elementid ) {
 	echo $e->getMessage();
 
     }
+
+    return $newid;
 
 }
 
