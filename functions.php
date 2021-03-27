@@ -15618,6 +15618,8 @@ function nbt_get_k_random_referenceids_for_refset_by_user ( $refsetid, $k, $form
 
 function get_incomplete_assignments_for_form_and_refset ( $formid, $refsetid ) {
 
+    $formid = intval($formid);
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -15648,6 +15650,8 @@ function get_incomplete_assignments_for_form_and_refset ( $formid, $refsetid ) {
 }
 
 function nbt_get_times_for_extraction ( $formid, $refsetid, $refid, $userid ) {
+
+    $formid = intval($formid);
 
     try {
 
@@ -15688,6 +15692,8 @@ function nbt_get_times_for_extraction ( $formid, $refsetid, $refid, $userid ) {
 
 function nbt_restart_extraction_timer ( $formid, $refsetid, $refid, $userid ) {
 
+    $formid = intval($formid);
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -15722,6 +15728,8 @@ function nbt_restart_extraction_timer ( $formid, $refsetid, $refid, $userid ) {
 }
 
 function nbt_clear_finished_extraction_timer ( $formid, $refsetid, $refid, $userid ) {
+
+    $formid = intval($formid);
 
     try {
 
@@ -15758,36 +15766,45 @@ function nbt_clear_finished_extraction_timer ( $formid, $refsetid, $refid, $user
 
 function nbt_table_exists ($tablename) {
 
-    if (preg_match("/^[A-Za-z0-9_]+$/", $tablename)) {
+    $tablename = nbt_remove_special ($tablename);
 
-	try {
+    try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("SHOW TABLES LIKE '" . $tablename . "';");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SHOW TABLES LIKE '" . $tablename . "';");
 
-	    $stmt->execute();
+	$stmt->execute();
 
-	    $result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-	    if ( count ( $result ) == 0 ) {
+	if ( count ( $result ) == 0 ) {
 
-		return FALSE;
+	    return FALSE;
 
-	    } else {
+	} else {
 
-		return TRUE;
-
-	    }
-
-	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
+	    return TRUE;
 
 	}
 
     }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
+function nbt_remove_special ($original) {
+
+    $new = preg_replace("/[^A-Za-z0-9_]+/", "_", $original);
+    $new = preg_replace("/__/", "_", $new);
+    $new = preg_replace("/^_/", "", $new);
+    $new = preg_replace("/_$/", "", $new);
+
+    return $new;
     
 }
 
