@@ -2680,7 +2680,7 @@ function nbt_add_manual_ref ( $refset ) {
 
 	    foreach ( $result as $row ) {
 
-		$newid = $row['newid']; // This is the auto_increment-generated ID for the new compare
+		$newid = $row['newid']; // This is the auto_increment-generated ID
 
 	    }
 
