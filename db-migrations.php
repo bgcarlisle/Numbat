@@ -14,39 +14,6 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     echo '<h3>Reference set meta-data</h3>';
 
-    function check_for_referencesets_column ($columnname) {
-
-	try {
-
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `referencesets` LIKE :column;");
-
-	    $stmt->bindParam(':column', $col);
-
-	    $col = $columnname;
-
-	    $stmt->execute();
-
-	    $result = $stmt->fetchAll();
-
-	    $dbh = null;
-
-	    if ( count ($result) == 1 ) {
-		return TRUE;
-	    } else {
-		return FALSE;
-	    }
-	    
-	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-	
-    }
-
     if ( ! check_for_referencesets_column ("title") ) {
 
 	try {
@@ -589,38 +556,9 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     echo '<h3>Add form metadata columns for export and sharing</h3>';
 
-    function check_for_forms_column ($columnname) {
 
-	try {
+    
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `forms` LIKE :column;");
-
-	    $stmt->bindParam(':column', $col);
-
-	    $col = $columnname;
-
-	    $stmt->execute();
-
-	    $result = $stmt->fetchAll();
-
-	    $dbh = null;
-
-	    if ( count ($result) == 1 ) {
-		return TRUE;
-	    } else {
-		return FALSE;
-	    }
-	    
-	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-	
-    }
 
     if ( ! check_for_forms_column("version") ) {
 
