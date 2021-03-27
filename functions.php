@@ -5824,13 +5824,15 @@ function nbt_change_column_name ( $elementid, $newcolumnname, $dbsize = 200 ) {
 
 	}
 
-    if ( $itworked == 3 ) {
+	if ( $itworked == 3 ) {
 
-	echo "Changes saved";
+	    echo "Changes saved";
 
-    } else {
+	} else {
 
-	echo "Error saving—try a different column name";
+	    echo "Error saving—try a different column name";
+
+	}
 
     }
 
