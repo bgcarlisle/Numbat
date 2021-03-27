@@ -15917,9 +15917,7 @@ function nbt_remove_special ($original) {
 	return $new;
 
     } else {
-
 	return NULL;
-
     }
 
 }
