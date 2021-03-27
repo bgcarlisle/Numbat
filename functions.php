@@ -15758,30 +15758,34 @@ function nbt_clear_finished_extraction_timer ( $formid, $refsetid, $refid, $user
 
 function nbt_table_exists ($tablename) {
 
-    try {
+    if (preg_match("/^[A-Za-z0-9_]+$/", $tablename)) {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SHOW TABLES LIKE '" . $tablename . "';");
+	try {
 
-	$stmt->execute();
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("SHOW TABLES LIKE '" . $tablename . "';");
 
-	$result = $stmt->fetchAll();
+	    $stmt->execute();
 
-	if ( count ( $result ) == 0 ) {
+	    $result = $stmt->fetchAll();
 
-	    return FALSE;
+	    if ( count ( $result ) == 0 ) {
 
-	} else {
+		return FALSE;
 
-	    return TRUE;
+	    } else {
+
+		return TRUE;
+
+	    }
 
 	}
 
-    }
+	catch (PDOException $e) {
 
-    catch (PDOException $e) {
+	    echo $e->getMessage();
 
-	echo $e->getMessage();
+	}
 
     }
     
