@@ -4704,6 +4704,10 @@ function nbt_get_column_for_columnid ( $columnid ) {
 
 function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $regex = NULL ) {
 
+    $formid = intval($formid);
+    $elementid = intval($elementid);
+    $columnname = nbt_remove_special($columnname);
+
     // this element is the one immediately before where we want to insert a new element
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
@@ -6642,6 +6646,10 @@ function nbt_move_sub_extraction ( $elementid, $refsetid, $refid, $subextraction
 }
 
 function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL ) {
+
+    $formid = intval($formid);
+    $elementid = intval($elementid);
+    $columnname = nbt_remove_special($columnname);
 
     // this element is the one immediately before where we want to insert a new element
 
