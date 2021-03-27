@@ -5730,7 +5730,7 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
 	    $dbtype = "varchar(200) DEFAULT NULL";
 	    break;
 	case "single_select":
-	    $dbtype = "varchar(50) DEFAULT NULL";
+	    $dbtype = "varchar(200) DEFAULT NULL";
 	    break;
 	case "text_area":
 	    $dbtype = "TEXT DEFAULT NULL";
@@ -6776,7 +6776,7 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(50) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
 
 	$stmt->execute();
 
@@ -6793,7 +6793,7 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(50) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
 
 	$stmt->execute();
 
