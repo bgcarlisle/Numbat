@@ -5729,93 +5729,45 @@ function nbt_change_column_name ( $elementid, $newcolumnname, $dbsize = 200 ) {
 
     $itworked = 0;
 
-    if ( $element['type'] == "text_area" ) {
+    // then alter the column in the extraction table
 
-	// then alter the column in the extraction table
+    try {
 
-	try {
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` RENAME COLUMN " . $element['columnname'] . " TO " . $newcolumnname . ";");
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " TEXT DEFAULT NULL;");
+	if ($stmt->execute()) {
 
-	    if ($stmt->execute()) {
-
-		$itworked ++;
-
-	    }
+	    $itworked ++;
 
 	}
 
-	catch (PDOException $e) {
+    }
 
-	    echo $e->getMessage();
+    catch (PDOException $e) {
 
-	}
+	echo $e->getMessage();
 
-	// then alter the column in the master table
+    }
 
-	try {
+    // then alter the column in the master table
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " TEXT DEFAULT NULL;");
+    try {
 
-	    if ($stmt->execute()) {
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` RENAME COLUMN " . $element['columnname'] . " TO " . $newcolumnname . ";");
 
-		$itworked ++;
+	if ($stmt->execute()) {
 
-	    }
-
-	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
+	    $itworked ++;
 
 	}
 
-    } else {
+    }
 
-	// then alter the column in the extraction table
+    catch (PDOException $e) {
 
-	try {
-
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " varchar(" . $dbsize . ") DEFAULT NULL;");
-
-	    if ($stmt->execute()) {
-
-		$itworked ++;
-
-	    }
-
-	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-
-	// then alter the column in the master table
-
-	try {
-
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " varchar(" . $dbsize . ") DEFAULT NULL;");
-
-	    if ($stmt->execute()) {
-
-		$itworked ++;
-
-	    }
-
-	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
+	echo $e->getMessage();
 
     }
 
@@ -11931,7 +11883,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . " " . $newcolumnname . " varchar(200) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` RENAME COLUMN " . $subelement['dbname'] . " TO " . $newcolumnname . ";");
 
 	if ($stmt->execute()) {
 
@@ -11952,7 +11904,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . " " . $newcolumnname . " varchar(200) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` RENAME COLUMN " . $subelement['dbname'] . " TO " . $newcolumnname . ";");
 
 	if ($stmt->execute()) {
 
