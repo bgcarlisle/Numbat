@@ -5721,10 +5721,32 @@ function nbt_delete_form_element ( $elementid ) {
 
 function nbt_change_column_name ( $elementid, $newcolumnname, $dbsize = 200 ) {
 
-    // get the old column name and the form id
+    // get the old column name and db type
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    switch ( $element['type'] ) {
+	case "open_text":
+	    $dbtype = "varchar(200) DEFAULT NULL";
+	    break;
+	case "single_select":
+	    $dbtype = "varchar(50) DEFAULT NULL";
+	    break;
+	case "text_area":
+	    $dbtype = "TEXT DEFAULT NULL";
+	    break;
+	case "date_selector":
+	    $dbtype = "DATE DEFAULT NULL";
+	    break;
+	case "country_selector":
+	    $dbtype = "varchar(50) DEFAULT NULL";
+	    break;
+	case "prev_select":
+	    $dbtype = "varchar(200) DEFAULT NULL";
+	    break;
+	    
+    }
+    
     // Start a counter to see if everything saved properly
 
     $itworked = 0;
@@ -5734,7 +5756,7 @@ function nbt_change_column_name ( $elementid, $newcolumnname, $dbsize = 200 ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` RENAME COLUMN " . $element['columnname'] . " TO " . $newcolumnname . ";");
+	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " " . $dbtype . ";");
 
 	if ($stmt->execute()) {
 
@@ -5755,7 +5777,7 @@ function nbt_change_column_name ( $elementid, $newcolumnname, $dbsize = 200 ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` RENAME COLUMN " . $element['columnname'] . " TO " . $newcolumnname . ";");
+	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " " . $dbtype . ";");
 
 	if ($stmt->execute()) {
 
@@ -5801,8 +5823,6 @@ function nbt_change_column_name ( $elementid, $newcolumnname, $dbsize = 200 ) {
 	    echo $e->getMessage();
 
 	}
-
-    }
 
     if ( $itworked == 3 ) {
 
