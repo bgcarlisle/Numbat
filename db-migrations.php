@@ -556,10 +556,6 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     echo '<h3>Add form metadata columns for export and sharing</h3>';
 
-
-    
-
-
     if ( ! check_for_forms_column("version") ) {
 
 	try {
@@ -582,6 +578,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
+	
+    } else {
+
+	echo "<p>The forms table already has a 'version' column.</p>";
 	
     }
 
@@ -608,6 +608,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	}
 	
+    } else {
+
+	echo "<p>The forms table already has an 'author' column.</p>";
+	
     }
 
     if ( ! check_for_forms_column("affiliation") ) {
@@ -632,6 +636,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
+	
+    } else {
+
+	echo "<p>The forms table already has an 'affiliation' column.</p>";
 	
     }
 
@@ -658,6 +666,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	}
 	
+    } else {
+
+	echo "<p>The forms table already has a 'project' column.</p>";
+	
     }
 
     if ( ! check_for_forms_column("protocol") ) {
@@ -682,6 +694,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
+	
+    } else {
+
+	echo "<p>The forms table already has a 'protocol' column.</p>";
 	
     }
 
@@ -708,8 +724,15 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	}
 	
+    } else {
+
+	echo "<p>The forms table already has a 'projectdate' column.</p>";
+	
     }
-} else {
+
+    // End
+    
+} else { // Not admin
 
     echo "<p>You are not logged in, or you do not have sufficient privileges to perform database migration</p>";
     
