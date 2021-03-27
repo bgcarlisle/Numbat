@@ -56,6 +56,12 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		
 	    } else { // File is not empty
 
+		// First back up the current instance
+
+		nbt_new_dump_file ();
+
+		// Then proceed with the import
+
 		$filecontent = fread ( $file, $filesize );
 
 		fclose ( $file );
