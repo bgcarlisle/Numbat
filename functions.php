@@ -13200,7 +13200,7 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
 
     // find a good name for the new column
 
-    if ( ! is_null ($dbname) ) {
+    if ( is_null ($dbname) ) {
 
 	$foundgoodcolumn = FALSE;
 
