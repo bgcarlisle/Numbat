@@ -964,6 +964,8 @@
 
  function nbtUpdateSubMultiSelectOptionColumn ( seid, sid, oldcolumn ) {
 
+     nbtRemoveSpecialCharactersFromField ('#nbtMultiSelectColumn' + sid);
+
      $.ajax ({
 	 url: numbaturl + 'forms/updatesubmultiselectoptioncolumn.php',
 	 type: 'post',
@@ -1187,6 +1189,8 @@
  }
 
  function nbtUpdateSubTableDataColumnDB ( seid, cid ) {
+
+     nbtRemoveSpecialCharactersFromField (#nbtTableDataColumnDB' + cid);
 
      $.ajax ({
 	 url: numbaturl + 'forms/updatesubtabledatacolumndb.php',
@@ -3187,6 +3191,8 @@
 
  function nbtChangeSubColumnName ( seid ) {
 
+     nbtRemoveSpecialCharactersFromField ('#nbtSubElementColumnName' + seid);
+
      $.ajax ({
 	 url: numbaturl + 'forms/changesubcolumnname.php',
 	 type: 'post',
@@ -3384,6 +3390,8 @@
  }
 
  function nbtChangeSubMultiSelectColumnPrefix ( seid ) {
+
+     nbtRemoveSpecialCharactersFromField ('#nbtSubElementColumnPrefix' + seid);
 
      $.ajax ({
 	 url: numbaturl + 'forms/changesubmultiselectcolumnprefix.php',
