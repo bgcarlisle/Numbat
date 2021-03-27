@@ -15874,13 +15874,21 @@ function nbt_table_exists ($tablename) {
 
 function nbt_remove_special ($original) {
 
-    $new = preg_replace("/[^A-Za-z0-9_]+/", "_", $original);
-    $new = preg_replace("/__/", "_", $new);
-    $new = preg_replace("/^_/", "", $new);
-    $new = preg_replace("/_$/", "", $new);
+    if ( ! is_null ( $original ) ) {
 
-    return $new;
-    
+	$new = preg_replace("/[^A-Za-z0-9_]+/", "_", $original);
+	$new = preg_replace("/__/", "_", $new);
+	$new = preg_replace("/^_/", "", $new);
+	$new = preg_replace("/_$/", "", $new);
+
+	return $new;
+
+    } else {
+
+	return NULL;
+
+    }
+
 }
 
 ?>
