@@ -13258,7 +13258,7 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
 	$eid = $elementid;
 	$sort = $highestsortorder + 1;
 	$type = "date_selector";
-	$col = $dbnname;
+	$col = $dbname;
 	$dn = $displayname;
 	$cpp = $copypreviousprompt;
 	$cb = $codebook;
