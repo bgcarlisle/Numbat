@@ -4866,6 +4866,10 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 
 function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL ) {
 
+    $formid = intval($formid);
+    $elementid = intval($elementid);
+    $columnname = nbt_remove_special($columnname);
+
     // this element is the one immediately before where we want to insert a new element
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
@@ -5021,6 +5025,10 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
 }
 
 function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL ) {
+
+    $formid = intval($formid);
+    $elementid = intval($elementid);
+    $columnname = nbt_remove_special($columnname);
 
     // this element is the one immediately before where we want to insert a new element
 
@@ -6848,6 +6856,8 @@ function nbt_get_all_select_options_for_element ( $elementid ) {
 
 function nbt_add_single_select_option ( $elementid, $displayname = NULL, $dbname = NULL, $toggle = NULL ) {
 
+    // Already Bobby Tables proof
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -6918,6 +6928,8 @@ function nbt_add_single_select_option ( $elementid, $displayname = NULL, $dbname
 }
 
 function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname = NULL, $toggle = NULL ) {
+
+    $dbname = nbt_remove_special($dbname);
 
     // get the highest sortorder
 
@@ -7313,6 +7325,10 @@ function nbt_update_single_select ( $selectid, $column, $newvalue ) {
 
 function nbt_add_multi_select ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL ) {
 
+    $formid = intval($formid);
+    $elementid = intval($elementid);
+    $columnname = nbt_remove_special($columnname);
+
     // this element is the one immediately before where we want to insert a new element
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
@@ -7434,6 +7450,8 @@ function nbt_increase_element_sortorder ( $elementid ) {
 }
 
 function nbt_add_section_heading ( $formid, $elementid, $displayname = NULL, $codebook = NULL, $toggle = NULL ) {
+
+    // Already Bobby Tables proof
 
     // this element is the one immediately before where we want to insert a new element
 
@@ -7811,6 +7829,8 @@ function nbt_change_multi_select_column_prefix ( $elementid, $newcolumn ) {
 }
 
 function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", $displayname = NULL, $suffix = NULL, $codebook = NULL, $toggle = NULL ) {
+
+    $suffix = nbt_remove_special ($suffix);
 
     // $tableformat can take two values:
     // "table_data" - normal table where columns are VARCHAR200
@@ -8271,6 +8291,8 @@ function nbt_change_sub_table_suffix ( $subelementid, $newsuffix ) {
 }
 
 function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $sub_table = FALSE, $displayname = NULL, $dbname = NULL ) {
+
+    $dbname = nbt_remove_special ($dbname);
 
     // get the highest sortorder
 
@@ -9009,6 +9031,10 @@ function nbt_update_table_data_column_db ( $columnid, $tableformat, $newcolumnna
 
 function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL ) {
 
+    $formid = intval($formid);
+    $elementid = intval($elementid);
+    $columnname = nbt_remove_special($columnname);
+
     // this element is the one immediately before where we want to insert a new element
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
@@ -9248,6 +9274,10 @@ function nbt_add_extraction_timer ( $formid, $elementid, $codebook = NULL, $togg
 }
 
 function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL ) {
+
+    $formid = intval($formid);
+    $elementid = intval($elementid);
+    $columnname = nbt_remove_special($columnname);
 
     // this element is the one immediately before where we want to insert a new element
 
@@ -9500,6 +9530,10 @@ function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
 }
 
 function nbt_add_citation_selector ( $formid, $elementid, $displayname = NULL, $suffix = NULL, $codebook = NULL, $toggle = NULL) {
+
+    $formid = intval($formid);
+    $elementid = intval($elementid);
+    $suffix = nbt_remove_special($suffix);
 
     // this element is the one immediately before where we want to insert a new element
 
@@ -9813,6 +9847,9 @@ function nbt_get_all_columns_for_citation_selector ( $elementid ) {
 }
 
 function nbt_add_citation_property ( $elementid, $displayname = NULL, $dbname = NULL, $remind = NULL, $caps = NULL ) {
+
+    $elementid = intval($elementid);
+    $dbname = nbt_remove_special($dbname);
 
     // get the highest sortorder
 
@@ -11251,6 +11288,10 @@ function nbt_echo_display_name_and_codebook ( $displayname, $codebook ) {
 
 function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suffix = NULL, $codebook = NULL, $toggle = NULL ) {
 
+    $formid = intval($formid);
+    $elementid = intval($elementid);
+    $suffix = nbt_remove_special($suffix);
+
     // this element is the one immediately before where we want to insert a new element
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
@@ -11557,6 +11598,9 @@ function nbt_change_sub_extraction_suffix ( $elementid, $newsuffix ) {
 }
 
 function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname = NULL, $regex = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
+
+    $elementid = intval($elementid);
+    $dbname = nbt_remove_special($dbname);
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
@@ -12260,6 +12304,9 @@ function nbt_move_sub_element ( $subelementid, $direction ) {
 
 function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
 
+    $elementid = intval($elementid);
+    $dbname = nbt_remove_special($dbname);
+
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
     // get the highest sortorder value
@@ -12458,6 +12505,9 @@ function nbt_get_all_select_options_for_sub_element ( $subelementid ) {
 
 function nbt_add_sub_single_select_option ( $subelementid, $displayname = NULL, $dbname = NULL, $toggle = NULL ) {
 
+    $subelementid = intval($subelementid);
+    $dbname = nbt_remove_special($dbname);
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -12635,6 +12685,9 @@ function nbt_move_sub_select_option ( $selectid, $direction ) {
 
 function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
 
+    $elementid = intval($elementid);
+    $dbname = nbt_remove_special($dbname);
+
     // get the highest sortorder value
 
     try {
@@ -12720,6 +12773,9 @@ function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = N
 }
 
 function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $codebook = NULL, $toggle = NULL ) {
+
+    $elementid = intval($elementid);
+    $suffix = nbt_remove_special($suffix);
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
@@ -12999,6 +13055,9 @@ function nbt_change_sub_multi_select_column_prefix ( $subelementid, $newcolumn )
 
 function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $dbname = NULL, $toggle = NULL ) {
 
+    $subelementid = intval($subelementid);
+    $dbname = nbt_remove_special($dbname);
+
     // get the highest sortorder
 
     try {
@@ -13152,6 +13211,9 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
 }
 
 function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
+
+    $elementid = intval($elementid);
+    $dbname = nbt_remove_special($dbname);
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
@@ -14518,6 +14580,8 @@ function nbt_get_setting ( $key ) {
 
 function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $codebook = NULL, $toggle = NULL ) {
 
+    // Already Bobby Tables proof
+    
     // this element is the one immediately before where we want to insert a new element
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
@@ -14596,6 +14660,9 @@ function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $
 }
 
 function nbt_add_reference_data ( $formid, $elementid, $displayname = NULL, $refdata = NULL, $codebook = NULL, $toggle = NULL ) {
+
+    $formid = intval($formid);
+    $elementid = intval($elementid);
 
     // this element is the one immediately before where we want to insert a new element
 
