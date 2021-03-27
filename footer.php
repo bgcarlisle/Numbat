@@ -1190,7 +1190,7 @@
 
  function nbtUpdateSubTableDataColumnDB ( seid, cid ) {
 
-     nbtRemoveSpecialCharactersFromField (#nbtTableDataColumnDB' + cid);
+     nbtRemoveSpecialCharactersFromField ('#nbtTableDataColumnDB' + cid);
 
      $.ajax ({
 	 url: numbaturl + 'forms/updatesubtabledatacolumndb.php',
