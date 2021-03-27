@@ -10,9 +10,20 @@ $elements = nbt_get_elements_for_formid ($_GET['id']);
 echo "---\n";
 
 echo "title: \"" . $form['name'] . "\"\n";
-echo "date: \"" . date("Y-m-d") . "\"\n";
+echo "author:\n";
+echo "- name: \"" . $form['author'] . "\"\n";
+echo "  affiliation: \"" . $form['affiliation'] . "\"\n";
+echo "date: \"" . $form['projectdate'] . "\"\n";
 
 echo "---\n\n";
+
+echo "# Extraction form details\n\n";
+
+echo $form['name'] . " version " . $form['version'] . "\n\n";
+
+echo $form['description'] . "\n\n";
+
+echo "[" . $form['project'] . "](" . $form['protocol'] . ")\n\n";
 
 echo "# Extraction form elements\n\n";
 
@@ -45,6 +56,15 @@ foreach ( $elements as $element ) {
 	    echo "Variable type: Open text field\n\n";
 
 	    echo "Database column name: `" . $element['columnname'] . "`\n\n";
+
+	    if ( $element['regex'] != "" ) {
+
+		echo "This text field used regular expression validation.";
+
+		echo "This field would only be saved if the text entered matched the following regex.\n\n";
+
+		echo "Regex: `" . $element['regex'] . "`\n\n";
+	    }
 
 	    if ( $element['codebook'] != "" ) {
 
@@ -310,6 +330,16 @@ foreach ( $elements as $element ) {
 			echo "Sub-extraction variable type: Open text field\n\n";
 
 			echo "Database column name: `" . $subelement['dbname'] . "`\n\n";
+
+			if ( $subelement['regex'] != "" ) {
+
+			    echo "This text field used regular expression validation.";
+
+			    echo "This field would only be saved if the text entered matched the following regex.\n\n";
+
+			    echo "Regex: `" . $subelement['regex'] . "`\n\n";
+
+			}
 
 			if ( $subelement['codebook'] != "" ) {
 

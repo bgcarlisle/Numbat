@@ -32,7 +32,7 @@ if ( count ( $elements ) > 0 ) {
 						<p class="nbtFinePrint">Maximum entry length: 200 characters</p>
 						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
-						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 200);" maxlength="50"></p>
+						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);" maxlength="50"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
 						<p>Regex validation: <input type="text" id="nbtElementRegex<?php echo $element['id']; ?>" value="<?php echo $element['regex']; ?>" onblur="nbtChangeRegex(<?php echo $element['id']; ?>);" maxlength="500"></p>
 						<p class="nbtFinePrint">Will not save extractor input unless the text matches the regex supplied; leave blank for no regex validation</p>
@@ -47,7 +47,7 @@ if ( count ( $elements ) > 0 ) {
 						<p class="nbtFinePrint">Maximum entry length: 5000 characters</p>
 						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
-						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 5000);" maxlength="50"></p>
+						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);" maxlength="50"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
 
 					break;
@@ -57,7 +57,7 @@ if ( count ( $elements ) > 0 ) {
 						?><h4>Single select <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
 						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
-						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 50);" maxlength="50"></p>
+						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);" maxlength="50"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
 						<p>Options</p>
 						<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet; Other form elements marked with this toggle class will appear only if this element is selected</p>
@@ -156,7 +156,7 @@ if ( count ( $elements ) > 0 ) {
 						?><h4>Country selector <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
 						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form</p>
-						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 50);" maxlength="50"></p>
+						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);" maxlength="50"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p><?php
 
 					break;
@@ -216,7 +216,7 @@ if ( count ( $elements ) > 0 ) {
 					<p class="nbtFinePrint">Maximum entry length: 200 characters; this element acts like an Open text element, except that it also provides a drop-down menu of all the unique entries provided by any extractor from within the same reference set</p>
 					<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 					<p class="nbtFinePrint">Will appear on extraction form</p>
-					<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>, 200);" maxlength="50"></p>
+					<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);" maxlength="50"></p>
 					<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
 					<?php
 

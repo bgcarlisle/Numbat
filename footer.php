@@ -185,55 +185,36 @@
 	     formid: fid
 	 },
 	 dataType: 'html'
-     }).done ( function (html) {
+     }).done ( function (response) {
 
-	 $('#nbtFormsTable').html(html);
-
-     });
-
- }
-
- function nbtSaveFormName ( fid ) {
-
-     $.ajax ({
-	 url: numbaturl + 'forms/changeformname.php',
-	 type: 'post',
-	 data: {
-	     formid: fid,
-	     newname: $('#nbtFormName').val()
-	 },
-	 dataType: 'html'
-     }).done ( function (html) {
-
-	 $('#nbtFormNameFeedback').html(html);
-
-	 $('#nbtFormNameFeedback').fadeIn(500, function () {
-
-	     $('#nbtFormNameFeedback').fadeOut(500);
-
-	 })
+	 if ( response == "Deleted" ) {
+	     $('#nbtFormTableRow' + fid).fadeOut(100, function() {
+		 $('#nbtFormTableRow' + fid).remove();
+	     });
+	 }
 
      });
 
  }
 
- function nbtSaveFormDescription ( fid ) {
+ function nbtSaveFormMetadata ( fid, col ) {
 
      $.ajax ({
-	 url: numbaturl + 'forms/changeformdescription.php',
+	 url: numbaturl + 'forms/changeformmetadata.php',
 	 type: 'post',
 	 data: {
 	     formid: fid,
-	     newname: $('#nbtFormDescription').val()
+	     column: col,
+	     newval: $('#nbtFormMetadata-' + col).val()
 	 },
 	 dataType: 'html'
      }).done ( function (html) {
 
-	 $('#nbtFormDescriptionFeedback').html(html);
+	 $('#nbtFormMetadataFeedback-' + col).html(html);
 
-	 $('#nbtFormDescriptionFeedback').fadeIn(500, function () {
+	 $('#nbtFormMetadataFeedback-' + col).fadeIn(500, function () {
 
-	     $('#nbtFormDescriptionFeedback').fadeOut(500);
+	     $('#nbtFormMetadataFeedback-' + col).fadeOut(500);
 
 	 })
 
@@ -413,7 +394,7 @@
 
  }
 
- function nbtChangeColumnName ( eid, size ) {
+ function nbtChangeColumnName ( eid ) {
 
      nbtRemoveSpecialCharactersFromField ('#nbtElementColumnName' + eid);
 
@@ -422,8 +403,7 @@
 	 type: 'post',
 	 data: {
 	     element: eid,
-	     newcolumnname: $('#nbtElementColumnName' + eid).val(),
-	     dbsize: size
+	     newcolumnname: $('#nbtElementColumnName' + eid).val()
 	 },
 	 dataType: 'html'
      }).done ( function (response) {
@@ -984,6 +964,8 @@
 
  function nbtUpdateSubMultiSelectOptionColumn ( seid, sid, oldcolumn ) {
 
+     nbtRemoveSpecialCharactersFromField ('#nbtMultiSelectColumn' + sid);
+
      $.ajax ({
 	 url: numbaturl + 'forms/updatesubmultiselectoptioncolumn.php',
 	 type: 'post',
@@ -1207,6 +1189,8 @@
  }
 
  function nbtUpdateSubTableDataColumnDB ( seid, cid ) {
+
+     nbtRemoveSpecialCharactersFromField ('#nbtTableDataColumnDB' + cid);
 
      $.ajax ({
 	 url: numbaturl + 'forms/updatesubtabledatacolumndb.php',
@@ -1822,7 +1806,7 @@
 		     eid: elementid,
 		     id: subextractionid,
 		     question: questionid,
-		     answer: html + '-01'
+		     answer: html
 		 },
 		 dataType: 'html'
 	     }).done ( function (html2) {
@@ -3207,6 +3191,8 @@
 
  function nbtChangeSubColumnName ( seid ) {
 
+     nbtRemoveSpecialCharactersFromField ('#nbtSubElementColumnName' + seid);
+
      $.ajax ({
 	 url: numbaturl + 'forms/changesubcolumnname.php',
 	 type: 'post',
@@ -3404,6 +3390,8 @@
  }
 
  function nbtChangeSubMultiSelectColumnPrefix ( seid ) {
+
+     nbtRemoveSpecialCharactersFromField ('#nbtSubElementColumnPrefix' + seid);
 
      $.ajax ({
 	 url: numbaturl + 'forms/changesubmultiselectcolumnprefix.php',

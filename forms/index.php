@@ -22,7 +22,13 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 		    break;
 
-		case "export":
+		case "exportform":
+
+		    include ( ABS_PATH . "forms/exportform.php" );
+
+		    break;
+
+		case "exportcodebook":
 
 		    include ( ABS_PATH . "forms/exportcodebook.php" );
 
@@ -50,7 +56,7 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 }
 
-if ( $_GET['action'] != "export" ) {
+if ( $_GET['action'] != "exportcodebook" & $_GET['action'] != "exportform" ) {
     include ( ABS_PATH . "footer.php" );
 }
 

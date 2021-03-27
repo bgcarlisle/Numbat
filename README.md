@@ -61,15 +61,16 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 
 ## What's new in 2.12
 
-* Bug fixes
+* Bug fixes (many)
 * Button to automate copying of all rows in table to final during reconciliation
-* Export now provides informative name for exported file
+* Markdown codebook export now provides informative name for exported file
 * Import extractions allows user to set status of imported rows
 * Optional regex validation for open text field in main extraction and in sub-extractions
 * Exact dates rather than just months for date selection elements
 * More sophisticated randomization tools for assignment selection
+* Extraction form export and import as .json file
 
-To migrate from Numbat 2.10 or earlier, run `db-migrations.php` while logged in as an administrator.
+To migrate from an earlier version of Numbat, run `db-migrations.php` while logged in as an administrator.
 
 ## How to cite Numbat
 
