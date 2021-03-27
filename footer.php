@@ -394,7 +394,7 @@
 
  }
 
- function nbtChangeColumnName ( eid, size ) {
+ function nbtChangeColumnName ( eid ) {
 
      nbtRemoveSpecialCharactersFromField ('#nbtElementColumnName' + eid);
 
@@ -403,8 +403,7 @@
 	 type: 'post',
 	 data: {
 	     element: eid,
-	     newcolumnname: $('#nbtElementColumnName' + eid).val(),
-	     dbsize: size
+	     newcolumnname: $('#nbtElementColumnName' + eid).val()
 	 },
 	 dataType: 'html'
      }).done ( function (response) {

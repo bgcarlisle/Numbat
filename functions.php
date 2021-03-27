@@ -5719,7 +5719,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 }
 
-function nbt_change_column_name ( $elementid, $newcolumnname, $dbsize = 200 ) {
+function nbt_change_column_name ( $elementid, $newcolumnname ) {
 
     // get the old column name and db type
 
@@ -11896,6 +11896,19 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    switch ( $subelement['type'] ) {
+	case "open_text":
+	    $dbtype = "varchar(200) DEFAULT NULL";
+	    break;
+	case "single_select":
+	    $dbtype = "varchar(200) DEFAULT NULL";
+	    break;
+	case "date_selector":
+	    $dbtype = "DATE DEFAULT NULL";
+	    break;
+	    
+    }
+
     // Start a counter to see if everything saved properly
 
     $itworked = 0;
@@ -11905,7 +11918,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` RENAME COLUMN " . $subelement['dbname'] . " TO " . $newcolumnname . ";");
+	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . " " . $newcolumnname . " " . $dbtype . ";");
 
 	if ($stmt->execute()) {
 
@@ -11926,7 +11939,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` RENAME COLUMN " . $subelement['dbname'] . " TO " . $newcolumnname . ";");
+	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . " " . $newcolumnname . " " . $dbtype . ";");
 
 	if ($stmt->execute()) {
 
