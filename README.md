@@ -59,16 +59,9 @@ You may be able to install Numbat on setups different from what is described bel
 
 Copy the entire file to your web server, and navigate to the Numbat directory with your browser. You will need to know your MySQL server, username and password to complete the installation.
 
-## What's new in 2.12
+## What's new in 2.13
 
-* Bug fixes (many)
-* Button to automate copying of all rows in table to final during reconciliation
-* Markdown codebook export now provides informative name for exported file
-* Import extractions allows user to set status of imported rows
-* Optional regex validation for open text field in main extraction and in sub-extractions
-* Exact dates rather than just months for date selection elements
-* More sophisticated randomization tools for assignment selection
-* Extraction form export and import as .json file
+* Button to automate copying of all rows in table from all users to final during reconciliation
 
 To migrate from an earlier version of Numbat, run `db-migrations.php` while logged in as an administrator.
 
