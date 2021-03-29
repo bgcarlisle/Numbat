@@ -36,15 +36,17 @@
 
 		     ?>
 		<tr>
-		    <td colspan="7"><button onclick="$('#nbtNewReferenceSetInstructions').slideDown();$(this).fadeOut();">Add new reference set</button></td>
+		    <td colspan="7"><button onclick="$('#nbtNewReferenceSetInstructions').slideDown();$(this).fadeOut();" id="nbtShowNewRefsetButton">Add new reference set</button></td>
 		</tr>
 	</table>
 
 	<div class="nbtHidden" id="nbtNewReferenceSetInstructions">
+	    <h3>Add a new reference set</h3>
 	    <p>To make a new reference set, prepare your references as a tab-delimited text file. The first row should include column headings for your reference metadata. You may include any other columns you like. You will be prompted on upload to choose which columns correspond to title, authors, year, journal, abstract metadata for your references.</p>
 	    <form action="<?php echo SITE_URL; ?>references/upload.php" method="post" enctype="multipart/form-data">
 		<input type="file" name="file" id="file">
 		<input type="submit" style="" value="Upload new reference set">
+		<button onclick="event.preventDefault();$('#nbtShowNewRefsetButton').slideDown();$('#nbtNewReferenceSetInstructions').slideUp();">Cancel</button>
 	    </form>
 	</div>
 
