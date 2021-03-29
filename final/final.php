@@ -1484,13 +1484,19 @@ if ( count ( $extractions ) >= 2 ) {
 
 		}
 
+		echo '<button onclick="';
+
+		foreach ($extractions as $extraction) {
+
+		    echo "nbtCopyTableDataAllRows('table_data', " . $extraction['id'] . ", " . $_GET['refset'] . ", " . $_GET['ref'] . ", " . $extraction['userid'] . ");";
+		    
+		}
+		
+		echo '">Copy all rows from all extractors to final</button>';
+
 		echo '<p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final copy table</span></p>';
 
-		echo '<div id="nbtMasterTable';
-
-		echo $element['id'];
-
-		echo '">';
+		echo '<div id="nbtMasterTable' . $element['id'] . '">';
 
 		$nbtMasterTableID = $element['id'];
 		$nbtMasterRefSet = $_GET['refset'];
@@ -1539,6 +1545,16 @@ if ( count ( $extractions ) >= 2 ) {
 		    echo '</div>';
 
 		}
+
+		echo '<button onclick="';
+
+		foreach ($extractions as $extraction) {
+
+		    echo "nbtCopyTableDataAllRows('ltable_data', " . $extraction['id'] . ", " . $_GET['refset'] . ", " . $_GET['ref'] . ", " . $extraction['userid'] . ");";
+		    
+		}
+		
+		echo '">Copy all rows from all extractors to final</button>';
 
 		echo '<p style="margin-bottom: 5px;"><span class="nbtExtractionName">Final copy table</span></p>';
 
