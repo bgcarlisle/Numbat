@@ -4768,6 +4768,7 @@
 
  $('a.nbtstatus').click(function () {
      $('#nbtStatusAtBottomOfExtraction').html($(this).html());
+     $('#nbtStatusAtBottomOfReconciliation').html($(this).html());
  });
 
 </script>

@@ -1744,6 +1744,32 @@ if ( count ( $extractions ) >= 2 ) {
 
     echo '</div>';
 
+    echo "<p>Reconciliation status: <span id=\"nbtStatusAtBottomOfReconciliation\">";
+
+    switch ($extraction['status']) {
+
+	case 0:
+
+	    echo "Not yet started";
+
+	    break;
+
+	case 1:
+
+	    echo "In progress";
+
+	    break;
+
+	case 2:
+
+	    echo "Completed";
+
+	    break;
+	    
+    }
+
+    echo "</span>. (Change this using the selector at the top)</p>";
+
     echo '</div>';
 
     echo '<div style="height: 200px;">&nbsp;</div>';
