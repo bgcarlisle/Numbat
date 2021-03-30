@@ -15569,6 +15569,10 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 	    case "morethan":
 		$comp = ">";
 		break;
+
+	    default:
+		$comp = "";
+		break;
 	}
 
 	switch ( $crit ) {
@@ -15697,12 +15701,86 @@ function nbt_get_k_random_referenceids_for_refset_by_user ( $refsetid, $k, $form
 	    case "notalreadyassigned":
 		$yn = "IS NULL";
 		break;
+
+	    default:
+		$yn = "";
+		break;
 	}
 
 	try {
 
 	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT id FROM `referenceset_" . $refsetid . "` WHERE (SELECT id FROM assignments WHERE refsetid = " . $refsetid . " AND formid = " . $form . " AND userid = " . $user . " AND assignments.referenceid = referenceset_" . $refsetid . ".id) " . $yn . " ORDER BY RAND() LIMIT " . $k . ";");
+
+	    $stmt->execute();
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    return $result;
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+}
+
+function nbt_get_k_random_referenceids_for_refset_by_user_and_users ( $refsetid, $k, $form, $yn, $user, $comp, $n ) {
+
+    switch ( $comp ) {
+
+	case "exactly":
+	    $comp = "=";
+	    break;
+
+	case "fewerthan":
+	    $comp = "<";
+	    break;
+
+	case "morethan":
+	    $comp = ">";
+	    break;
+
+	default:
+	    $comp = "";
+	    break;
+	    
+    }
+
+    if ( $form != "ns") {
+	
+	$refsetid = intval($refsetid);
+	$k = intval($k);
+	$form = intval($form);
+	$user = intval($user);
+	$n = intval($n);
+
+	switch ( $yn ) {
+
+	    case "alreadyassigned":
+		$yn = "IS NOT NULL";
+		break;
+
+	    case "notalreadyassigned":
+		$yn = "IS NULL";
+		break;
+
+	    default:
+		$yn = "";
+		break;
+	}
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("SELECT id FROM `referenceset_" . $refsetid . "` WHERE (SELECT id FROM assignments WHERE refsetid = " . $refsetid . " AND formid = " . $form . " AND userid = " . $user . " AND assignments.referenceid = referenceset_" . $refsetid . ".id) " . $yn . " AND (SELECT COUNT(*) FROM assignments WHERE refsetid = " . $refsetid . " AND formid = " . $form . " AND userid != " . $user . " AND assignments.referenceid = `referenceset_" . $refsetid . "`.`id`) " . $comp . " " . $n . "  ORDER BY RAND() LIMIT " . $k . ";");
 
 	    $stmt->execute();
 

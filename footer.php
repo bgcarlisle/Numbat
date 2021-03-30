@@ -2848,6 +2848,38 @@
      
  }
 
+ function nbtAssignerSelectKRandomByUserAndUsers ( refset ) {
+
+     $.ajax ({
+	 url: numbaturl + 'assignments/selectkrandombyuserandusers.php',
+	 type: 'post',
+	 data: {
+	     rsid: refset,
+	     k: $('#nbtRandomKByUserAndUsersK').val(),
+	     form: $('#nbtRandomKByUserAndUsersForm').val(),
+	     yn: $('#nbtRandomKByUserAndUsersFormYN').val(),
+	     user: $('#nbtRandomKByUserAndUsersUser').val(),
+	     comp: $('#nbtRandomKByUserAndUsersComp').val(),
+	     n: $('#nbtRandomKByUserAndUsersUserN').val()
+	 },
+	 dataType: 'html'
+     }).done(function (response) {
+
+	 // First unselect everything
+	 $('input.nbtAssignSelect').prop('checked', false);
+
+	 rids = JSON.parse(response);
+
+	 for (var key in rids) {
+
+	     $('#nbtAssignSelectRefID' + rids[key][0]).prop('checked', true);
+
+	 }
+
+     });
+     
+ }
+
  function nbtAssign () {
 
      if (

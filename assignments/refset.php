@@ -135,31 +135,73 @@ foreach ($forms as $form) {
 	<button onclick="nbtAssignerSelectKRandomByUser(<?php echo $_GET['refset']; ?>);">Select</button>
     </p>
     <hr>
-    <!-- <p>Select
-	<input type="text" id="nbtRandomKFinal" value="<?php echo floor(count($references) / 2); ?>" style="width: 75px;">
-	random reference(s) from those with
-	<select id="nbtRandomCompFinal">
-	    <option value="exactly">exactly</option>
-	    <option value="fewerthan">fewer than</option>
-	    <option value="morethan">more than</option>
-	</select>
-	<input type="text" id="nbtRandomNFinal" value="2" style="width: 75px;">
-	extraction(s) reconciled with form:
-	<select id="nbtRandomFormFinal">
+    <p>Select
+	<input type="text" id="nbtRandomKByUserAndUsersK" value="<?php echo floor(count($references) / 2); ?>" style="width: 75px;">
+	random reference(s) from those that have the form
+	<select id="nbtRandomKByUserAndUsersForm">
 	    <option value="ns">Choose a form</option>
 	    <?php
 
 	    foreach ($forms as $form) {
 
-	    ?><option value="<?php echo $form['id']; ?>"><?php echo $form['name']; ?></option><?php
-		
+	    ?><option value="<?php echo $form['id']; ?>"><?php echo $form['name']; ?></option>
+	    <?php
+											      
 	    }
 	    
 	    ?>
 	</select>
-	<button onclick="nbtAssignerSelectKRandom(<?php echo $_GET['refset']; ?>, 'Final');">Select</button>
+	<select id="nbtRandomKByUserAndUsersFormYN">
+	    <option value="alreadyassigned">already assigned to</option>
+	    <option value="notalreadyassigned">not already assigned to</option>
+	</select>
+	<select id="nbtRandomKByUserAndUsersUser">
+	    <?php
+
+	    foreach ($users as $user) {
+
+		echo '<option value="' . $user['id'] . '">' . $user['username'] . "</option>";
+		
+	    }
+
+	    ?>
+	</select>
+	and
+	<select id="nbtRandomKByUserAndUsersComp">
+	    <option value="exactly">exactly</option>
+	    <option value="fewerthan">fewer than</option>
+	    <option value="morethan">more than</option>
+	</select>
+	<input type="text" id="nbtRandomKByUserAndUsersUserN" value="1" style="width: 75px;">
+	other extractor(s) assigned
+	<button onclick="nbtAssignerSelectKRandomByUserAndUsers(<?php echo $_GET['refset']; ?>);">Select</button>
     </p>
-    <hr> -->
+    <hr>
+    <!-- <p>Select
+	 <input type="text" id="nbtRandomKFinal" value="<?php echo floor(count($references) / 2); ?>" style="width: 75px;">
+	 random reference(s) from those with
+	 <select id="nbtRandomCompFinal">
+	 <option value="exactly">exactly</option>
+	 <option value="fewerthan">fewer than</option>
+	 <option value="morethan">more than</option>
+	 </select>
+	 <input type="text" id="nbtRandomNFinal" value="2" style="width: 75px;">
+	 extraction(s) reconciled with form:
+	 <select id="nbtRandomFormFinal">
+	 <option value="ns">Choose a form</option>
+	 <?php
+
+	 foreach ($forms as $form) {
+
+	 ?><option value="<?php echo $form['id']; ?>"><?php echo $form['name']; ?></option><?php
+											   
+											   }
+											   
+											   ?>
+	 </select>
+	 <button onclick="nbtAssignerSelectKRandom(<?php echo $_GET['refset']; ?>, 'Final');">Select</button>
+	 </p>
+	 <hr> -->
 
     <p>Select all references where 
 
