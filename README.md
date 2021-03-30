@@ -62,6 +62,7 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 ## What's new in 2.13
 
 * Button to automate copying of all rows in table from all users to final during reconciliation
+* New random references selector options for assignments
 
 To migrate from an earlier version of Numbat, run `db-migrations.php` while logged in as an administrator.
 
