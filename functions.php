@@ -3,6 +3,7 @@
 session_start ();
 
 define('INSTALL_HASH', substr (hash('sha256', SITE_URL), 0, 10));
+define('NUMBAT_VERSION', '2.13');
 
 function nbt_user_is_logged_in () {
 
