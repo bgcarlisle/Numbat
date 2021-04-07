@@ -3579,6 +3579,26 @@
 
  }
 
+ function nbtDeleteRef ( rsid, rid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'references/deleteref.php',
+	 type: 'post',
+	 data: {
+	     refset: rsid,
+	     ref: rid
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtRefRow' + rid).fadeOut(400, function () {
+	     $('#nbtRefRow' + rid).remove();
+	 });
+
+     });
+
+ }
+
  function nbtAddNewReferenceToRefSet ( rsid ) {
 
      $.ajax ({

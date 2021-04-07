@@ -9,6 +9,7 @@ $references = nbt_get_all_references_for_refset ( $_GET['refset'] );
     <p><?php echo count($references); ?> reference(s)</p>
     <table class="nbtTabledData">
 	<tr class="nbtTableHeaders">
+	    <td></td>
 	    <?php
 
 	    foreach ($refsetcols as $col) {
@@ -18,7 +19,7 @@ $references = nbt_get_all_references_for_refset ( $_GET['refset'] );
 		    echo "<td>" . $col[0] . "</td>";
 
 		}
-		    
+		
 	    }
 
 	    ?>
@@ -27,13 +28,19 @@ $references = nbt_get_all_references_for_refset ( $_GET['refset'] );
 
 	foreach ( $references as $ref ) {
 
-	    echo "<tr>";
+	    echo '<tr id="nbtRefRow' . $ref['id'] . '">';
+
+	    echo '<td><button id="nbtReftableRowDeletePrompt' . $ref['id'] . '" onclick="$(\'#nbtReftableRow' . $ref['id'] . '\').slideDown();$(\'#nbtReftableRowDeletePrompt' . $ref['id'] . '\').slideUp();">Delete</button><div class="nbtHidden" id="nbtReftableRow' . $ref['id'] . '"><button onclick="nbtDeleteRef(' . $refset['id'] . ', ' . $ref['id'] . ');">For real</button><button onclick="$(\'#nbtReftableRow' . $ref['id'] . '\').slideUp();$(\'#nbtReftableRowDeletePrompt' . $ref['id'] . '\').slideDown();">Cancel</button></div></td>';
 
 	    foreach ($refsetcols as $col) {
 
 		if ( $col[0] != "id" && $col[0] != "manual" ) {
 
-		    echo "<td>" . $ref[$col[0]] . "</td>";
+		    if ( strlen ($ref[$col[0]]) > 50 ) {
+			echo "<td>" . substr($ref[$col[0]], 0, 50) . "...</td>";
+		    } else {
+			echo "<td>" . $ref[$col[0]] . "</td>";
+		    }
 		    
 		}
 		

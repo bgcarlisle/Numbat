@@ -14162,6 +14162,41 @@ function nbt_delete_refset ( $refsetid ) {
 
 }
 
+function nbt_delete_ref ( $refsetid, $refid ) {
+
+    if (is_numeric ($refsetid)) {
+
+	$refsetid = intval($refsetid);
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("DELETE FROM `referenceset_" . $refsetid . "` WHERE id = :id LIMIT 1;");
+
+	    $stmt->bindParam(':id', $rid);
+
+	    $rid = $refid;
+
+	    if ($stmt->execute()) {
+
+		$dbh = null;
+
+		return TRUE;
+
+	    }
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+    
+}
+
 function nbtQueryReferenceSet ( $refsetid, $query ) {
 
     try {
