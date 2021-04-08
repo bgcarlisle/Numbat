@@ -192,7 +192,7 @@ if ( count ( $elements ) > 0 ) {
 																	       include ('./subextraction.php');
 
 																	       ?></div>
-						<button onclick="$(this).fadeOut(0);$('#nbtNewSubElementSelector<?php echo $subelementid; ?>').fadeIn();">Add new sub-extraction element</button>
+						<div><button onclick="$(this).fadeOut(0);$('#nbtNewSubElementSelector<?php echo $subelementid; ?>').fadeIn();">Add new sub-extraction element</button>
 
 						<div id="nbtNewSubElementSelector<?php echo $subelementid; ?>" class="nbtHidden">
 						    <h3>Add new sub-extraction element</h3>
@@ -201,7 +201,7 @@ if ( count ( $elements ) > 0 ) {
 						    <button onclick="nbtAddNewSubSingleSelect(<?php echo $subelementid; ?>);">Single select</button>
 						    <button onclick="nbtAddNewSubMultiSelect(<?php echo $subelementid; ?>);">Multi select</button>
 						    <button onclick="nbtAddNewSubTable(<?php echo $subelementid; ?>);">Table data</button>
-						</div>
+						</div></div>
 
 
 						<?php
