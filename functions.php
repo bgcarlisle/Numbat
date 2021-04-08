@@ -6154,6 +6154,35 @@ function nbt_update_element_sortorder ( $elementid, $sortorder ) {
     
 }
 
+function nbt_update_subelement_sortorder ( $subelementid, $sortorder ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `subelements` SET `sortorder` = :sort WHERE `id` = :seid");
+
+	$stmt->bindParam(':seid', $seid);
+	$stmt->bindParam(':sort', $sort);
+
+	$seid = $subelementid;
+	$sort = $sortorder;
+
+	if ($stmt->execute()) {
+	    return TRUE;
+	} else {
+	    return FALSE;
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
 function nbt_switch_elements_sortorder ( $element1id, $element2id ) {
 
     // get the original values

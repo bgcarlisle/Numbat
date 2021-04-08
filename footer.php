@@ -5,7 +5,9 @@
  $(document).ready(function () {
 
      $('#nbtFormElements').sortable();
-     
+
+     $('.nbtSubExtractionEditor').sortable();
+
      nbtCheckLogin();
      
  });
@@ -3304,25 +3306,6 @@
 
  }
 
- function nbtMoveSubElement ( eid, seid, dir ) {
-
-     $.ajax ({
-	 url: numbaturl + 'forms/movesubelement.php',
-	 type: 'post',
-	 data: {
-	     element: eid,
-	     subelement: seid,
-	     direction: dir
-	 },
-	 dataType: 'html'
-     }).done ( function (html) {
-
-	 $('#nbtSubExtractionElements' + eid).html(html);
-
-     });
-
- }
-
  function nbtAddNewSubSingleSelect ( eid ) {
 
      $.ajax ({
@@ -4827,7 +4810,6 @@
      elements = JSON.stringify(elements);
      
      // Send that to the server
-
      $.ajax ({
 	 url: numbaturl + '/forms/saveformelementssortorder.php',
 	 type: 'post',
@@ -4846,18 +4828,50 @@
      
  });
 
- $('div#nbtFormElements').on('click', 'h4', function() {
-     $(this).parent().children().not(this).not('button').slideToggle();
-     $(this).children('.nbtDisplayNameHidden').html('(' + $(this).parent().find('.nbtDisplayName').val() + ')');
-     $(this).children('.nbtDisplayNameHidden').fadeToggle();
+ $('.nbtSubExtractionEditor').on('sortupdate', function (event, ui) {
+     // Make an array of the subelements in order
+     subelements = [];
+     $(this).children('.nbtSubElementEditor').each(function () {
+	 if ($(this).attr('subelementid') != '') {
+	     subelements.push($(this).attr('subelementid'));
+	 }
+     });
+     subelements = JSON.stringify(subelements);
+
+     // Send that to the server
+     $.ajax ({
+	 url: numbaturl + '/forms/savesubelementssortorder.php',
+	 type: 'post',
+	 data: {
+	     subelementorder: subelements
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 res = JSON.parse(response);
+
+	 if (!res) {
+	     alert ('Error saving order of sub-extraction elements');
+	 }
+	 
+     });
+ });
+
+ $('div#nbtFormElements').on('click', '.nbtFormEditorCollapse', function() {
+     $(this).parent().children().not('h4').not('button').not('.nbtFormElementDeleterContainer').slideToggle();
+     if ($(this).parent().children().find('.nbtDisplayName').val() != '') {
+	 $(this).parent().children().children('.nbtDisplayNameHidden').html('(' + $(this).parent().children().find('.nbtDisplayName').val() + ')');
+     } else {
+	 $(this).parent().children().children('.nbtDisplayNameHidden').html('');
+     }
+     $(this).parent().children().children('.nbtDisplayNameHidden').fadeToggle();
  });
 
  function collapseAllFormElements () {
-     $('div#nbtFormElements h4').children('.nbtDisplayNameHidden').not(':visible').parent().click();
+     $('div#nbtFormElements .nbtFormEditorCollapse').parent().children().children('.nbtDisplayNameHidden').not(':visible').parent().parent().children('.nbtFormEditorCollapse').click();
  }
 
  function expandAllFormElements () {
-     $('div#nbtFormElements h4').children('.nbtDisplayNameHidden:visible').parent().click();
+     $('div#nbtFormElements .nbtFormEditorCollapse').parent().children().children('.nbtDisplayNameHidden:visible').parent().parent().children('.nbtFormEditorCollapse').click();
  }
 
 </script>

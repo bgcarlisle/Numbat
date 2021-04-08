@@ -12,16 +12,20 @@ if ( count ( $elements ) > 0 ) {
 	echo '<div class="nbtFormEditorElement" id="nbtFormElement' . $element['id'] . '" elementid="' . $element['id'] . '">';
 
 ?>
-			<div style="border: 1px solid #999; border-radius: 3px; padding: 10px; margin: 5px 0 20px 0; background-color: #eee;">
-				<button style="float: right;" onclick="$(this).fadeOut(0);$('#nbtDeleteFormElement<?php echo $element['id']; ?>').fadeIn();">Delete</button>
-				<button class="nbtHidden" id="nbtDeleteFormElement<?php echo $element['id']; ?>" style="float: right;" onclick="nbtDeleteFormElement(<?php echo $element['id']; ?>);">For real</button>
+    <div style="border: 1px solid #999; border-radius: 3px; padding: 10px; margin: 5px 0 20px 0; background-color: #eee;">
+	<button style="float: right;" id="nbtFormEditorElementDelete<?php echo $element['id']; ?>" onclick="$(this).fadeOut(0);$('#nbtDeleteFormElement<?php echo $element['id']; ?>').fadeIn();">Delete</button>
+	<div class="nbtFormElementDeleterContainer nbtHidden" id="nbtDeleteFormElement<?php echo $element['id']; ?>" class="nbtHidden">
+	    <button style="float: right;" onclick="$('#nbtDeleteFormElement<?php echo $element['id']; ?>').fadeOut(0);$('#nbtFormEditorElementDelete<?php echo $element['id']; ?>').fadeIn();">Do not delete</button>
+	    <button style="float: right;" onclick="nbtDeleteFormElement(<?php echo $element['id']; ?>);">Yes, delete</button>
+	</div>
+	<button style="margin: 0 10px; float: right;" class="nbtFormEditorCollapse">Collapse/expand</button>
 				<?php
 
 				switch ( $element['type'] ) {
 
-					case "section_heading":
+				    case "section_heading":
 
-						?><h4>Section heading <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
+				?><h4>Section heading <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
 						<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 						<p class="nbtFinePrint">Will appear on extraction form. This form element is purely aesthetic, and will not appear on the exported spreadsheet.</p><?php
 
@@ -181,13 +185,26 @@ if ( count ( $elements ) > 0 ) {
 						<p>Table suffix: <input type="text" id="nbtTableSuffix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeSubExtractionSuffix(<?php echo $element['id']; ?>);" maxlength="25"></p>
 						<p class="nbtFinePrint">Suffix for table in database</p>
 						<p>Sub-extraction elements</p>
-						<div class="nbtSubExtractionEditor" id="nbtSubExtractionElements<?php echo $element['id']; ?>"><?php
+						<div class="nbtSubExtractionEditor" id="nbtSubExtractionElements<?php echo $element['id']; ?>" style="margin-bottom: 10px;"><?php
 
-						$subelementid = $element['id'];
+																	       $subelementid = $element['id'];
 
-						include ('./subextraction.php');
+																	       include ('./subextraction.php');
 
-						?></div><?php
+																	       ?></div>
+						<button onclick="$(this).fadeOut(0);$('#nbtNewSubElementSelector<?php echo $subelementid; ?>').fadeIn();">Add new sub-extraction element</button>
+
+						<div id="nbtNewSubElementSelector<?php echo $subelementid; ?>" class="nbtHidden">
+						    <h3>Add new sub-extraction element</h3>
+						    <button onclick="nbtAddNewSubOpenText(<?php echo $subelementid; ?>);">Open text</button>
+						    <button onclick="nbtAddNewSubDateSelector(<?php echo $subelementid; ?>);">Date selector</button>
+						    <button onclick="nbtAddNewSubSingleSelect(<?php echo $subelementid; ?>);">Single select</button>
+						    <button onclick="nbtAddNewSubMultiSelect(<?php echo $subelementid; ?>);">Multi select</button>
+						    <button onclick="nbtAddNewSubTable(<?php echo $subelementid; ?>);">Table data</button>
+						</div>
+
+
+						<?php
 
 					break;
 
