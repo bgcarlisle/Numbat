@@ -4051,28 +4051,32 @@
 
  function nbtCheckLogin () {
 
-     $.ajax ({
-	 url: numbaturl + 'timeout.php',
-	 type: 'post',
-	 dataType: 'html'
-     }).done ( function (response) {
+     if ($('.nbtSigninPanel').length == 0) {
+	 
+         $.ajax ({
+	     url: numbaturl + 'timeout.php',
+	     type: 'post',
+	     dataType: 'html'
+	 }).done ( function (response) {
 
-	 if ( response == 1 ) {
+	     if ( response == 1 ) {
 
-	     setTimeout ( function () {
+		 setTimeout ( function () {
 
-		 nbtCheckLogin ();
+		     nbtCheckLogin ();
 
-	     }, 30000);
+		 }, 30000);
 
-	 } else {
+	     } else {
 
-	     alert ('Your session timed out. Log in again to continue working.');
-	     window.open(numbaturl);
+		 alert ('Your session timed out. Log in again to continue working.');
+		 window.location.replace(numbaturl);
 
-	 }
+	     }
 
-     });
+	 });
+
+     }
 
  }
 
