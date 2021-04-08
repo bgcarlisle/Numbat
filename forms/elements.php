@@ -65,7 +65,7 @@ if ( count ( $elements ) > 0 ) {
 						<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);" maxlength="50"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
 						<p>Options</p>
-						<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet; Other form elements marked with this toggle class will appear only if this element is selected</p>
+						<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet</p>
 						<div id="nbtSingleSelectOptionsTable<?php echo $element['id']; ?>"><?php
 
 						$tableelementid = $element['id'];
@@ -84,7 +84,7 @@ if ( count ( $elements ) > 0 ) {
 						<p>Column prefix: <input type="text" id="nbtElementColumnPrefix<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeMultiSelectColumnPrefix(<?php echo $element['id']; ?>);" maxlength="25"></p>
 						<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
 						<p>Options</p>
-						<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet; Other form elements marked with this toggle class will appear only if this element is selected</p>
+						<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet</p>
 						<div id="nbtMultiSelectOptionsTable<?php echo $element['id']; ?>"><?php
 
 						$tableelementid = $element['id'];

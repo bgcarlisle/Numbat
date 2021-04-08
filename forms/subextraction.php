@@ -33,7 +33,7 @@ foreach ( $subelements as $subelement ) {
 				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
 				<p>Prompt extractor to copy value from the previous sub-extraction: <a href="#" id="nbtSubElementPromptCopyFromPrev<?php echo $subelement['id']; ?>" onclick="event.preventDefault();nbtSubElementPromptCopyFromPrevToggle(<?php echo $subelement['id']; ?>);" class="nbtTextOptionSelect<?php if ($subelement['copypreviousprompt'] == 1) { echo " nbtTextOptionChosen"; } ?>">Show prompt</a></p>
 				<p>Options</p>
-				<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet; Other form elements marked with this toggle class will appear only if this element is selected</p>
+				<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet</p>
 				<div id="nbtSubSingleSelectOptionsTable<?php echo $subelement['id']; ?>"><?php
 
 				$tablesubelementid = $subelement['id'];
@@ -53,7 +53,7 @@ foreach ( $subelements as $subelement ) {
 				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
 				<p>Prompt extractor to copy value from the previous sub-extraction: <a href="#" id="nbtSubElementPromptCopyFromPrev<?php echo $subelement['id']; ?>" onclick="event.preventDefault();nbtSubElementPromptCopyFromPrevToggle(<?php echo $subelement['id']; ?>);" class="nbtTextOptionSelect<?php if ($subelement['copypreviousprompt'] == 1) { echo " nbtTextOptionChosen"; } ?>">Show prompt</a></p>
 				<p>Options</p>
-				<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet; Other form elements marked with this toggle class will appear only if this element is selected</p>
+				<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet</p>
 				<div id="nbtSubMultiSelectOptionsTable<?php echo $subelement['id']; ?>"><?php
 
 				$tablesubelementid = $subelement['id'];
