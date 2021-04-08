@@ -4842,7 +4842,7 @@
      
  });
 
- $('div#nbtFormElements h4').on('click', function() {
+ $('div#nbtFormElements').on('click', 'h4', function() {
      $(this).parent().children().not(this).not('button').slideToggle();
      $(this).children('.nbtDisplayNameHidden').html('(' + $(this).parent().find('.nbtDisplayName').val() + ')');
      $(this).children('.nbtDisplayNameHidden').fadeToggle();
