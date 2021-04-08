@@ -2,6 +2,14 @@
 
  var numbaturl = '<?php echo SITE_URL; ?>';
 
+ $(document).ready(function () {
+
+     $('#nbtFormElements').sortable();
+     
+     nbtCheckLogin();
+     
+ });
+
  function nbtClearText (id, originalText) { // This clears the "user name" field when it's clicked on.
 
      if (id.value == originalText) {
@@ -585,25 +593,6 @@
 	     $('#nbtFormElementFeedback' + eid).fadeOut(1500);
 
 	 });
-
-     });
-
- }
-
- function nbtMoveFeedElement ( fid, eid, dir ) {
-
-     $.ajax ({
-	 url: numbaturl + 'forms/moveelement.php',
-	 type: 'post',
-	 data: {
-	     formid: fid,
-	     element: eid,
-	     direction: dir
-	 },
-	 dataType: 'html'
-     }).done ( function (html) {
-
-	 $('#nbtFormElements').html(html);
 
      });
 
@@ -4822,6 +4811,50 @@
      $('#nbtStatusAtBottomOfExtraction').html($(this).html());
      $('#nbtStatusAtBottomOfReconciliation').html($(this).html());
  });
+
+ $('#nbtFormElements').on('sortupdate', function (event, ui) {
+     // Make an array of the elements in order
+     elements = [];
+     $(this).children('.nbtFormEditorElement').each(function () {
+	 if ($(this).attr('elementid') != '') {
+	     elements.push($(this).attr('elementid'));
+	 }
+     });
+     elements = JSON.stringify(elements);
+     
+     // Send that to the server
+
+     $.ajax ({
+	 url: numbaturl + '/forms/saveformelementssortorder.php',
+	 type: 'post',
+	 data: {
+	     elementorder: elements
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 res = JSON.parse(response);
+
+	 if (!res) {
+	     alert ('Error saving order of form elements');
+	 }
+	 
+     });
+     
+ });
+
+ $('div#nbtFormElements h4').on('click', function() {
+     $(this).parent().children().not(this).not('button').slideToggle();
+     $(this).children('.nbtDisplayNameHidden').html('(' + $(this).parent().find('.nbtDisplayName').val() + ')');
+     $(this).children('.nbtDisplayNameHidden').fadeToggle();
+ });
+
+ function collapseAllFormElements () {
+     $('div#nbtFormElements h4').children('.nbtDisplayNameHidden').not(':visible').parent().click();
+ }
+
+ function expandAllFormElements () {
+     $('div#nbtFormElements h4').children('.nbtDisplayNameHidden:visible').parent().click();
+ }
 
 </script>
 </body>

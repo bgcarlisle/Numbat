@@ -8,10 +8,10 @@ if ( count ( $elements ) > 0 ) {
 
     foreach ( $elements as $element ) {
 
-	echo '<div id="nbtFormElement' . $element['id'] . '">';
+	echo '<div class="nbtFormEditorElement" id="nbtFormElement' . $element['id'] . '" elementid="' . $element['id'] . '">';
 
 ?>
-			<div style="border: 1px solid #999; border-radius: 3px; padding: 10px; margin: 5px 0 20px 0;">
+			<div style="border: 1px solid #999; border-radius: 3px; padding: 10px; margin: 5px 0 20px 0; background-color: #eee;">
 				<button style="float: right;" onclick="$(this).fadeOut(0);$('#nbtDeleteFormElement<?php echo $element['id']; ?>').fadeIn();">Delete</button>
 				<button class="nbtHidden" id="nbtDeleteFormElement<?php echo $element['id']; ?>" style="float: right;" onclick="nbtDeleteFormElement(<?php echo $element['id']; ?>);">For real</button>
 				<?php
@@ -235,10 +235,6 @@ if ( count ( $elements ) > 0 ) {
 					<p>Codebook</p>
 					<p class="nbtFinePrint">Will appear on extraction sheet when (?) is clicked</p>
 					<textarea style="width: 100%; height: 80px;" id="nbtElementCodebook<?php echo $element['id']; ?>" onblur="nbtChangeElementCodebook(<?php echo $element['id']; ?>);"><?php echo $element['codebook']; ?></textarea>
-					<p>Toggle: <input type="text" id="nbtElementToggle<?php echo $element['id']; ?>" value="<?php echo $element['toggle']; ?>" onblur="nbtChangeElementToggle(<?php echo $element['id']; ?>);"></p>
-					<p class="nbtFinePrint">If the toggle field is filled in, this form element will be hidden until an extractor clicks a selector marked with the same toggle class. Do not put spaces, #'s or periods here.</p>
-					<button onclick="nbtMoveFeedElement(<?php echo $element['formid']; ?>, <?php echo $element['id']; ?>, 1);">&#8593;</button>
-					<button onclick="nbtMoveFeedElement(<?php echo $element['formid']; ?>, <?php echo $element['id']; ?>, -1);">&#8595;</button>
 					<p id="nbtFormElementFeedback<?php echo $element['id']; ?>" class="nbtHidden nbtFinePrint">&nbsp;</p>
 			</div>
 			<button style="margin-bottom: 10px;" onclick="$(this).fadeOut(0);$('#nbtNewElementSelector<?php echo $element['id']; ?>').fadeIn();">Add new element</button>
@@ -291,18 +287,4 @@ if ( count ( $elements ) > 0 ) {
 
 }
 
-?><script>
-$('div#nbtFormElements h4').on('click', function() {
-      $(this).parent().children().not(this).not('button').slideToggle();
-	$(this).children('.nbtDisplayNameHidden').html('(' + $(this).parent().find('.nbtDisplayName').val() + ')');
-	$(this).children('.nbtDisplayNameHidden').fadeToggle();
-});
-
-function collapseAllFormElements () {
-	$('div#nbtFormElements h4').children('.nbtDisplayNameHidden').not(':visible').parent().click();
-}
-
-function expandAllFormElements () {
-      $('div#nbtFormElements h4').children('.nbtDisplayNameHidden:visible').parent().click();
-}
-</script>
+?>

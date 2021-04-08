@@ -55,9 +55,3 @@ $form = nbt_get_form_for_id ($_GET['id']);
 	</div>
 
 </div>
-
-<script type="text/javascript">
-
-	nbtCheckLogin();
-
-</script>

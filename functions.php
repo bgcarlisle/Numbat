@@ -6125,6 +6125,35 @@ function nbt_change_element_codebook ( $elementid, $newcodebook ) {
 
 }
 
+function nbt_update_element_sortorder ( $elementid, $sortorder ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `formelements` SET `sortorder` = :sort WHERE `id` = :eid");
+
+	$stmt->bindParam(':eid', $eid);
+	$stmt->bindParam(':sort', $sort);
+
+	$eid = $elementid;
+	$sort = $sortorder;
+
+	if ($stmt->execute()) {
+	    return TRUE;
+	} else {
+	    return FALSE;
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
 function nbt_switch_elements_sortorder ( $element1id, $element2id ) {
 
     // get the original values
