@@ -114,6 +114,7 @@
 		    </a>
 		</li>
 	    </ul>
+	    <p class="nbtFinePrint" style="text-align: right;"><a href="https://numbat.bgcarlisle.com" target="_blank">Numbat v <?php echo NUMBAT_VERSION; ?></a></p>
 	</nav>
 	<?php
 
