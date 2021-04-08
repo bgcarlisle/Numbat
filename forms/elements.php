@@ -1,5 +1,6 @@
 <button onclick="collapseAllFormElements();">Collapse all form elements</button>
 <button onclick="expandAllFormElements();">Expand all form elements</button>
+<p>Drag elements to re-order.</p>
 <?php
 
 $elements = nbt_get_elements_for_formid ($_GET['id']);
