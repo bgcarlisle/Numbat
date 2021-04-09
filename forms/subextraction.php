@@ -101,7 +101,7 @@ foreach ( $subelements as $subelement ) {
 		<p>Codebook</p>
 		<p class="nbtFinePrint">Will appear on extraction sheet when (?) is clicked</p>
 		<textarea style="width: 100%; height: 80px;" id="nbtSubElementCodebook<?php echo $subelement['id']; ?>" onblur="nbtChangeSubElementCodebook(<?php echo $subelement['id']; ?>);"><?php echo $subelement['codebook']; ?></textarea>
-	<p id="nbtSubElementFeedback<?php echo $subelement['id']; ?>" class="nbtHidden nbtFinePrint">&nbsp;</p>
+	<p id="nbtSubElementFeedback<?php echo $subelement['id']; ?>" class="nbtHidden">&nbsp;</p>
 	</div><?php
 
 }

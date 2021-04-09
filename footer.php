@@ -2619,29 +2619,29 @@
 
  function nbtUpdateConditionalDisplays () {
 
-     if ( $('#nbtToggles').val() != "" ) {
+     /* if ( $('#nbtToggles').val() != "" ) {
 
-	 toggles = $('#nbtToggles').val().split(" ");
+	toggles = $('#nbtToggles').val().split(" ");
 
-	 for (var i = 0; i < toggles.length; i++) {
+	for (var i = 0; i < toggles.length; i++) {
 
-	     toggle = toggles[i];
+	toggle = toggles[i];
 
-	     selected_toggle = $('[conditionalid=\'' + toggle + '\'].nbtTextOptionSelect.nbtTextOptionChosen').length > 0;
+	selected_toggle = $('[conditionalid=\'' + toggle + '\'].nbtTextOptionSelect.nbtTextOptionChosen').length > 0;
 
-	     if ( selected_toggle ) {
+	if ( selected_toggle ) {
 
-		 $('.' + toggle).slideDown();
-		 
-	     } else {
+	$('.' + toggle).slideDown();
+	
+	} else {
 
-		 $('.' + toggle).slideUp();
-		 
-	     }
-	     
-	 }
+	$('.' + toggle).slideUp();
+	
+	}
+	
+	}
 
-     }
+      * } */
 
  }
 
@@ -4872,6 +4872,154 @@
 
  function expandAllFormElements () {
      $('div#nbtFormElements .nbtFormEditorCollapse').parent().children().children('.nbtDisplayNameHidden:visible').parent().parent().children('.nbtFormEditorCollapse').click();
+ }
+
+ function nbtFormElementToggleStartupVisible (elementid) {
+     
+     $.ajax ({
+	 url: numbaturl + '/forms/elementtogglestartupvisible.php',
+	 type: 'post',
+	 data: {
+	     element: elementid
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+
+	 if ( response == 1 ) {
+	     $('#nbtCondDispStartStatusVisible' + elementid).addClass('nbtTextOptionChosen');
+	     $('#nbtCondDispStartStatusHidden' + elementid).removeClass('nbtTextOptionChosen');
+
+	     $('#nbtCondDispEventsContainer' + elementid).slideUp();
+	     $('#nbtAddConditionalDisplayEvent' + elementid).slideUp();
+	     $('#nbtConditionLogicDescription' + elementid).slideUp();
+	     $('#nbtDestructiveHidingDescription' + elementid).slideUp();
+	 } else {
+	     $('#nbtCondDispStartStatusVisible' + elementid).removeClass('nbtTextOptionChosen');
+	     $('#nbtCondDispStartStatusHidden' + elementid).addClass('nbtTextOptionChosen');
+
+	     $('#nbtCondDispEventsContainer' + elementid).slideDown();
+	     $('#nbtAddConditionalDisplayEvent' + elementid).slideDown();
+	     $('#nbtConditionLogicDescription' + elementid).slideDown();
+	     $('#nbtDestructiveHidingDescription' + elementid).slideDown();
+	 }
+	 
+     });
+     
+ }
+
+ function nbtAddCondDispEvent (elementid) {
+
+     $.ajax ({
+	 url: numbaturl + '/forms/addconddispevent.php',
+	 type: 'post',
+	 data: {
+	     element: elementid
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+
+	 $('#nbtCondDispEventsContainer' + elementid).html(response);
+	 
+     });
+     
+ }
+
+ function nbtRemoveCondDispEvent (elementid, eventid) {
+
+     $.ajax ({
+	 url: numbaturl + '/forms/removeconddispevent.php',
+	 type: 'post',
+	 data: {
+	     event: eventid,
+	     element: elementid
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+
+	 if (response == "Success") {
+	     $('#nbtCondDispEvent' + eventid).slideUp(400, function () {
+		 $('#nbtCondDispEvent' + eventid).remove();
+	     });
+	 } else {
+	     alert (response);
+	 }
+	 
+     });
+     
+ }
+
+ function nbtUpdateCondDispTriggerElement (eventid) {
+
+     $.ajax ({
+	 url: numbaturl + '/forms/updateconddisptriggerelement.php',
+	 type: 'post',
+	 data: {
+	     event: eventid,
+	     trigger_element: $('#nbtCondDispTriggerElement' + eventid).val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 res = JSON.parse(response);
+	 
+	 if (res) {
+	     $('#nbtCondDispTriggerOption' + eventid).html('');
+	     $('#nbtCondDispTriggerOption' + eventid).append('<option value="ns" selected>Choose an option</option>');
+	     for (var i = 0; i < res.length; i++) {
+		 $('#nbtCondDispTriggerOption' + eventid).append('<option value="' + res[i]['id'] + '">' + res[i]['displayname'] + '</option>');
+	     }
+	     nbtUpdateCondDispTriggerOption (eventid);
+	 } else {
+	     alert (response);
+	 }
+     });
+     
+ }
+
+ function nbtUpdateCondDispTriggerOption (eventid) {
+
+     $.ajax ({
+	 url: numbaturl + '/forms/updateconddisptriggeroption.php',
+	 type: 'post',
+	 data: {
+	     event: eventid,
+	     trigger_option: $('#nbtCondDispTriggerOption' + eventid).val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 if (response != 'Success') {
+	     alert(response);
+	 }
+     });
+     
+ }
+
+ function nbtUpdateCondDispType (eventid) {
+
+     $.ajax ({
+	 url: numbaturl + '/forms/updateconddisptype.php',
+	 type: 'post',
+	 data: {
+	     event: eventid,
+	     cd_type: $('#nbtCondDispType' + eventid).val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 if (response == 'Success') {
+	     switch ($('#nbtCondDispType' + eventid).val()) {
+		 case "is":
+		 case "is-not":
+		     $('#nbtCondDispTriggerOption' + eventid).slideDown();
+		     break;
+		 case "has-response":
+		 case "no-response":
+		     $('#nbtCondDispTriggerOption' + eventid).slideUp();
+		     break;
+	     }
+	 } else {
+	     alert(response);
+	 }
+     });
+     
  }
 
 </script>

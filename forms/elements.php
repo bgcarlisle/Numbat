@@ -276,11 +276,31 @@ if ( count ( $elements ) > 0 ) {
 	<p class="nbtFinePrint">Will appear on extraction sheet when (?) is clicked</p>
 	<textarea style="width: 100%; height: 80px;" id="nbtElementCodebook<?php echo $element['id']; ?>" onblur="nbtChangeElementCodebook(<?php echo $element['id']; ?>);"><?php echo $element['codebook']; ?></textarea>
 	<div class="nbtConditionalDisplayEditor" style="border: 1px solid #999; border-radius: 3px; padding: 10px; margin: 5px 0 20px 0; background-color: #eee;">
-	    <p>When the form is first opened, this item should be </p>
+	    <p>When the form is first opened, this item should be:</p>
 	    <a id="nbtCondDispStartStatusVisible<?php echo $element['id']; ?>" class="nbtTextOptionSelect<?php if ($element['startup_visible'] == 1) { echo ' nbtTextOptionChosen'; } ?>" onclick="event.preventDefault();nbtFormElementToggleStartupVisible(<?php echo $element['id']; ?>);">Visible</a>
 	    <a id="nbtCondDispStartStatusHidden<?php echo $element['id']; ?>" class="nbtTextOptionSelect<?php if ($element['startup_visible'] != 1) { echo ' nbtTextOptionChosen'; } ?>" onclick="event.preventDefault();nbtFormElementToggleStartupVisible(<?php echo $element['id']; ?>);">Hidden</a>
-	    <div id="nbtCondDispEventsContainer"></div>
-	    <button>Add conditional display event</button>
+	    <p id="nbtConditionLogicDescription<?php echo $element['id']; ?>" <?php if ($element['startup_visible'] == 1) { echo ' class="nbtHidden"'; } ?>>
+		Show this element when
+		<select>
+		    <option>any</option>
+		    <option>all</option>
+		</select>
+		of the following conditions are met:
+	    </p>
+	    <div id="nbtCondDispEventsContainer<?php echo $element['id']; ?>" <?php if ($element['startup_visible'] == 1) { echo ' class="nbtHidden"'; } ?>>
+		<?php
+		$elementid = $element['id'];
+		include (ABS_PATH . "forms/conditionals.php");
+		?>
+	    </div>
+	    <button id="nbtAddConditionalDisplayEvent<?php echo $element['id']; ?>" style="margin-top: 10px;" onclick="nbtAddCondDispEvent(<?php echo $element['id']; ?>);" <?php if ($element['startup_visible'] == 1) { echo ' class="nbtHidden"'; } ?>>Add condition</button>
+	    <p id="nbtDestructiveHidingDescription<?php echo $element['id']; ?>" <?php if ($element['startup_visible'] == 1) { echo ' class="nbtHidden"'; } ?>>
+		In the case that this element is hidden by a conditional display event after a response has been entered:
+		<select>
+		    <option>Clear response</option>
+		    <option>Preserve response</option>
+		</select>
+	    </p>
 	</div>
 	<p id="nbtFormElementFeedback<?php echo $element['id']; ?>" class="nbtHidden">&nbsp;</p>
 </div>

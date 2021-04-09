@@ -16094,4 +16094,228 @@ function nbt_remove_special ($original) {
 
 }
 
+function nbt_toggle_element_startup_visible ($elementid) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `formelements` SET `startup_visible` = IF(`startup_visible`=1, 0, 1) WHERE `id` = :eid LIMIT 1;");
+	
+	$stmt->bindParam(':eid', $eid);
+
+	$eid = $elementid;
+
+	if ( $stmt->execute() ) {
+
+	    $element = nbt_get_form_element_for_elementid ($elementid);
+
+	    return ($element['startup_visible']);
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
+function nbt_add_conditional_display_event ($elementid) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("INSERT INTO `conditional_display` (`elementid`) VALUES (:eid);");
+	
+	$stmt->bindParam(':eid', $eid);
+
+	$eid = $elementid;
+
+	if ( $stmt->execute() ) {
+
+	    return TRUE;
+
+	} else {
+
+	    return FALSE;
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
+function nbt_remove_conditional_display_event ($eventid) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("DELETE FROM `conditional_display` WHERE `id` = :eid LIMIT 1;");
+	
+	$stmt->bindParam(':eid', $eid);
+
+	$eid = $eventid;
+
+	if ( $stmt->execute() ) {
+
+	    return TRUE;
+
+	} else {
+
+	    return FALSE;
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
+function nbt_get_conditional_events ($elementid) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `conditional_display` WHERE `elementid` = :eid;");
+	
+	$stmt->bindParam(':eid', $eid);
+
+	$eid = $elementid;
+
+	if ( $stmt->execute() ) {
+
+	    $result = $stmt->fetchAll();
+
+	    return $result;
+
+	} else {
+
+	    return FALSE;
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }    
+    
+}
+
+function nbt_update_conditional_display_trigger_element ($eventid, $trigger_element_id) {
+
+    if ($trigger_element_id == "ns") {
+	$trigger_element_id = NULL;
+    }
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `conditional_display` SET `trigger_element` = :teid WHERE `id` = :eventid LIMIT 1;");
+	
+	$stmt->bindParam(':teid', $teid);
+	$stmt->bindParam(':eventid', $eid);
+
+	$teid = $trigger_element_id;
+	$eid = $eventid;
+
+	if ( $stmt->execute() ) {
+	    
+	    return TRUE;
+
+	} else {
+
+	    return FALSE;
+	    
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
+function nbt_update_conditional_display_trigger_option ($eventid, $trigger_option_id) {
+
+    if ($trigger_option_id == "ns") {
+	$trigger_option_id = NULL;
+    }
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `conditional_display` SET `trigger_option` = :topt WHERE `id` = :eventid LIMIT 1;");
+	
+	$stmt->bindParam(':topt', $topt);
+	$stmt->bindParam(':eventid', $eid);
+
+	$topt = $trigger_option_id;
+	$eid = $eventid;
+
+	if ( $stmt->execute() ) {
+	    return TRUE;
+	} else {
+	    return FALSE;
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
+
+function nbt_update_conditional_display_type ($eventid, $cd_type) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `conditional_display` SET `type` = :type WHERE `id` = :eventid LIMIT 1;");
+	
+	$stmt->bindParam(':type', $type);
+	$stmt->bindParam(':eventid', $eid);
+
+	$type = $cd_type;
+	$eid = $eventid;
+
+	if ( $stmt->execute() ) {
+	    return TRUE;
+	} else {
+	    return FALSE;
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
 ?>
