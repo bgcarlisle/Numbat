@@ -730,6 +730,137 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	
     }
 
+    // 8. Add the conditional display columns and table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("CREATE TABLE IF NOT EXISTS `conditional_display` (`id` int(11) NOT NULL, `elementid` int(11) DEFAULT NULL, `trigger_element` int(11) DEFAULT NULL, `trigger_option` int(11) DEFAULT NULL, `type` varchar(50) DEFAULT 'is';");
+
+	if ($stmt->execute()) {
+	    echo "<p>The conditional display table has been created if it did not exist</p>";
+	} else {
+	    echo "<p>Error attempting to create the conditional display table</p>";
+	}
+
+	$dbh = null;
+	
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    function check_for_formelements_column ($columnname) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `formelements` LIKE :column;");
+
+	    $stmt->bindParam(':column', $col);
+
+	    $col = $columnname;
+
+	    $stmt->execute();
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    if ( count ($result) == 1 ) {
+		return TRUE;
+	    } else {
+		return FALSE;
+	    }
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    if (! check_for_formelements_column ("startup_visible")) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `formelements` ADD COLUMN `startup_visible` INT(11) NULL DEFAULT 1 AFTER `toggle`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>Form elements table updated with startup_visible column</p>";
+	    } else {
+		echo "<p>Error updating form elements table with startup_visible column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    if (! check_for_formelements_column ("conditional_logical_operator")) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `formelements` ADD COLUMN `conditional_logical_operator` CHAR(3) NULL DEFAULT 'any' AFTER `startup_visible`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>Form elements table updated with conditional_logical_operator column</p>";
+	    } else {
+		echo "<p>Error updating form elements table with conditional_logical_operator column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    if (! check_for_formelements_column ("destructive_hiding")) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `formelements` ADD COLUMN `destructive_hiding` INT(11) NULL DEFAULT 1 AFTER `conditional_logical_operator`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>Form elements table updated with destructive_hiding column</p>";
+	    } else {
+		echo "<p>Error updating form elements table with destructive_hiding column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
     // End
     
 } else { // Not admin
