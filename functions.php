@@ -16218,6 +16218,39 @@ function nbt_get_conditional_events ($elementid) {
     
 }
 
+function nbt_get_conditional_events_for_formid ($formid) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `conditional_display` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid);");
+	
+	$stmt->bindParam(':fid', $fid);
+
+	$fid = $formid;
+
+	if ( $stmt->execute() ) {
+
+	    $result = $stmt->fetchAll();
+
+	    return $result;
+
+	} else {
+
+	    return FALSE;
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }    
+    
+}
+
 function nbt_update_conditional_display_trigger_element ($eventid, $trigger_element_id) {
 
     if ($trigger_element_id == "ns") {
