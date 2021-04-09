@@ -5,8 +5,161 @@
  $(document).ready(function () {
 
      $('#nbtFormElements').sortable();
-     
+
+     $('.nbtSubExtractionEditor').sortable();
+
      nbtCheckLogin();
+
+     // Here comes the conditional display logic
+     <?php
+
+     if (isset($formelements) & count($formelements) > 0) {
+	 foreach ($formelements as $ele) {
+	     if ($ele['startup_visible'] != 1) {
+		 // We're only interested in elements that are hidden at startup
+		 $cd_events = nbt_get_conditional_events ($ele['id']);
+
+		 // Make a CSS selector for all the things that should
+		 // trigger this
+
+		 $trigger_selectors = [];
+		 foreach ($cd_events as $event) {
+		     $trigger_element = nbt_get_form_element_for_elementid ($event['trigger_element']);
+		     if ( ! in_array (".nbt" . $trigger_element['columnname'], $trigger_selectors) ) {
+			 array_push($trigger_selectors, ".nbt" . $trigger_element['columnname']);
+		     }
+		 }
+		 $trigger_selector = implode(", ", $trigger_selectors);
+
+		 if (count (trigger_selectors) > 0) {
+		     
+		     // Make jQuery expressions for each of the conditions
+		     $event_expressions = [];
+		     foreach ($cd_events as $event) {
+			 $trigger_element = nbt_get_form_element_for_elementid ($event['trigger_element']);
+			 $trigger_options = $options = nbt_get_all_select_options_for_element ($event['trigger_element']);
+			 
+			 switch ($trigger_element['type']) {
+			     case "single_select":
+				 switch ($event['type']) {
+				     case "is":
+					 foreach ($trigger_options as $opt) {
+					     if ($opt['id'] == $event['trigger_option']) {
+						 array_push($event_expressions, "$('#nbtQ" . $trigger_element['columnname'] . "A" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
+					     }
+					 }
+					 break;
+				     case "is-not":
+					 foreach ($trigger_options as $opt) {
+					     if ($opt['id'] == $event['trigger_option']) {
+						 array_push($event_expressions, "! $('#nbtQ" . $trigger_element['columnname'] . "A" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
+					     }
+					 }
+					 break;
+				     case "has-response":
+					 array_push($event_expressions, "$('.nbt" . $trigger_element['columnname'] . "').hasClass('nbtTextOptionChosen')");
+					 break;
+				     case "no-response":
+					 array_push($event_expressions, "! $('.nbt" . $trigger_element['columnname'] . "').hasClass('nbtTextOptionChosen')");
+					 break;
+				 }
+				 break;
+			     case "multi_select":
+				 switch ($event['type']) {
+				     case "is":
+					 foreach ($trigger_options as $opt) {
+					     if ($opt['id'] == $event['trigger_option']) {
+						 array_push($event_expressions, "$('#nbtMS" . $trigger_element['columnname'] . "_" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
+					     }
+					 }
+					 break;
+				     case "is-not":
+					 foreach ($trigger_options as $opt) {
+					     if ($opt['id'] == $event['trigger_option']) {
+						 array_push($event_expressions, "! $('#nbtMS" . $trigger_element['columnname'] . "_" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
+					     }
+					 }
+					 break;
+				     case "has-response":
+					 array_push($event_expressions, "$('.nbt" . $trigger_element['columnname'] . "').hasClass('nbtTextOptionChosen')");
+					 break;
+				     case "no-response":
+					 array_push($event_expressions, "! $('.nbt" . $trigger_element['columnname'] . "').hasClass('nbtTextOptionChosen')");
+					 break;
+				 }
+				 break;
+			 }
+			 
+		     }
+		     
+		     switch ($ele['conditional_logical_operator']) {
+			 case "any":
+			     // Combine jQuery expressions with "OR"
+			     $combined_expression = implode(" | ", $event_expressions);
+			     break;
+			 case "all":
+			     // Combine jQuery expressions with "AND"
+			     $combined_expression = implode(" & ", $event_expressions);
+			     break;
+		     }
+
+		     echo "\n\n$('" . $trigger_selector . "').on('answerChange', function () {\n";
+
+		     echo "  if (" . $combined_expression . ") {\n";
+
+		     echo "    $('#nbtElementContainer" . $ele['id'] . "').slideDown();\n";
+
+		     echo "  } else {\n";
+
+		     echo "    $('#nbtElementContainer" . $ele['id'] . "').slideUp();\n";
+
+		     if ($ele['destructive_hiding'] == 1) {
+			 // Clear the element when hidden
+			 
+			 switch ($ele['type']) {
+			     case "open_text":
+				 echo "    $('#nbtTextField" . $ele['columnname'] . "').val('');\n";
+				 break;
+			     case "text_area":
+				 echo "    $('#nbtTextAreaField" . $ele['columnname'] . "').val('');\n";
+				 break;
+			     case "date_selector":
+				 echo "    $('#nbtDateField" . $ele['columnname'] . "').val('');\n";
+				 break;
+			     case "single_select":
+				 echo "    $('#nbtElementContainer" . $ele['id'] . " .nbtTextOptionChosen').click();\n";
+				 break;
+			     case "multi_select":
+				 $element_options = nbt_get_all_select_options_for_element ($ele['id']);
+				 foreach ($element_options as $ele_opt) {
+				     echo "    nbtClearMultiSelect(" . $ele['formid'] . ", " . $extraction['id'] . ", '" . $ele['columnname'] . "_" . $ele_opt['dbname'] . "', 'nbtMS" . $ele['columnname'] . "_" . $ele_opt['dbname'] . "');\n";
+				 }
+				 break;
+			     case "country_selector":
+				 echo "    $('#nbtCountrySelect" . $ele['columnname'] . "').val('');\n";
+				 break;
+			     case "prev_select":
+				 echo "    $('#nbtTextField" . $ele['columnname'] . "').val('');\n";
+				 break;
+			 }
+		     }
+		     
+		     echo "  }\n";
+
+		     echo "});\n\n";
+
+		     echo "$('.nbtTextOptionSelect').trigger('answerChange');\n\n";
+
+		 }
+
+		 
+	     }
+	 }
+     }
+     
+     ?>
+
+     // End of conditional display logic
      
  });
 
@@ -1891,8 +2044,7 @@
 	 }).done ( function (html) {
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
-
-	     nbtUpdateConditionalDisplays ();
+	     $('.' + classid).trigger('answerChange');
 
 	 });
 
@@ -1912,8 +2064,7 @@
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
 	     $('#' + buttonid).addClass('nbtTextOptionChosen');
-
-	     nbtUpdateConditionalDisplays ();
+	     $('.' + classid).trigger('answerChange');
 
 	     if ( questionlabel == "status" && response == "2" && $('#time_finished').val() == "NaN" ) {
 		 // If the extraction is being marked as complete
@@ -1944,8 +2095,6 @@
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
 
-	     nbtUpdateConditionalDisplays ();
-
 	 });
 
      } else { // It's not already selected
@@ -1964,8 +2113,6 @@
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
 	     $('#' + buttonid).addClass('nbtTextOptionChosen');
-
-	     nbtUpdateConditionalDisplays ();
 
 	 });
 
@@ -1991,8 +2138,6 @@
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
 
-	     nbtUpdateConditionalDisplays ();
-
 	 });
 
      } else { // It's not already selected
@@ -2011,8 +2156,6 @@
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
 	     $('#' + buttonid).addClass('nbtTextOptionChosen');
-
-	     nbtUpdateConditionalDisplays ();
 
 	 });
 
@@ -2034,8 +2177,27 @@
      }).done ( function (html) {
 
 	 $('#' + buttonid).toggleClass('nbtTextOptionChosen');
+	 $('#' + buttonid).trigger('answerChange');
 
-	 nbtUpdateConditionalDisplays ();
+     });
+
+ }
+
+ function nbtClearMultiSelect (formid, extractionid, questionlabel, buttonid) {
+
+     $.ajax ({
+	 url: numbaturl + 'extract/clearfield.php',
+	 type: 'post',
+	 data: {
+	     fid: formid,
+	     id: extractionid,
+	     question: questionlabel
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#' + buttonid).removeClass('nbtTextOptionChosen');
+	 $('#' + buttonid).trigger('answerChange');
 
      });
 
@@ -2056,8 +2218,6 @@
 
 	 $('#' + buttonid).toggleClass('nbtTextOptionChosen');
 
-	 nbtUpdateConditionalDisplays ();
-
      });
 
  }
@@ -2076,8 +2236,6 @@
      }).done ( function (html) {
 
 	 $('#' + buttonid).toggleClass('nbtTextOptionChosen');
-
-	 nbtUpdateConditionalDisplays ();
 
      });
 
@@ -2612,34 +2770,6 @@
 	 }
 
      });
-
- }
-
- function nbtUpdateConditionalDisplays () {
-
-     if ( $('#nbtToggles').val() != "" ) {
-
-	 toggles = $('#nbtToggles').val().split(" ");
-
-	 for (var i = 0; i < toggles.length; i++) {
-
-	     toggle = toggles[i];
-
-	     selected_toggle = $('[conditionalid=\'' + toggle + '\'].nbtTextOptionSelect.nbtTextOptionChosen').length > 0;
-
-	     if ( selected_toggle ) {
-
-		 $('.' + toggle).slideDown();
-		 
-	     } else {
-
-		 $('.' + toggle).slideUp();
-		 
-	     }
-	     
-	 }
-
-     }
 
  }
 
@@ -3299,25 +3429,6 @@
 	     $('#nbtSubElementFeedback' + seid).fadeOut(1500);
 
 	 });
-
-     });
-
- }
-
- function nbtMoveSubElement ( eid, seid, dir ) {
-
-     $.ajax ({
-	 url: numbaturl + 'forms/movesubelement.php',
-	 type: 'post',
-	 data: {
-	     element: eid,
-	     subelement: seid,
-	     direction: dir
-	 },
-	 dataType: 'html'
-     }).done ( function (html) {
-
-	 $('#nbtSubExtractionElements' + eid).html(html);
 
      });
 
@@ -4499,8 +4610,6 @@
 
  if ( $('#nbtExtractionInProgress').val() == 1 ) {
 
-     nbtUpdateConditionalDisplays ();
-
      nbtCheckLogin();
 
      $('.nbtSidebar').draggable().resizable({
@@ -4827,7 +4936,6 @@
      elements = JSON.stringify(elements);
      
      // Send that to the server
-
      $.ajax ({
 	 url: numbaturl + '/forms/saveformelementssortorder.php',
 	 type: 'post',
@@ -4846,18 +4954,234 @@
      
  });
 
- $('div#nbtFormElements').on('click', 'h4', function() {
-     $(this).parent().children().not(this).not('button').slideToggle();
-     $(this).children('.nbtDisplayNameHidden').html('(' + $(this).parent().find('.nbtDisplayName').val() + ')');
-     $(this).children('.nbtDisplayNameHidden').fadeToggle();
+ $('.nbtSubExtractionEditor').on('sortupdate', function (event, ui) {
+     // Make an array of the subelements in order
+     subelements = [];
+     $(this).children('.nbtSubElementEditor').each(function () {
+	 if ($(this).attr('subelementid') != '') {
+	     subelements.push($(this).attr('subelementid'));
+	 }
+     });
+     subelements = JSON.stringify(subelements);
+
+     // Send that to the server
+     $.ajax ({
+	 url: numbaturl + '/forms/savesubelementssortorder.php',
+	 type: 'post',
+	 data: {
+	     subelementorder: subelements
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 res = JSON.parse(response);
+
+	 if (!res) {
+	     alert ('Error saving order of sub-extraction elements');
+	 }
+	 
+     });
+ });
+
+ $('div#nbtFormElements').on('click', '.nbtFormEditorCollapse', function() {
+     $(this).parent().children().not('h4').not('button').not('.nbtFormElementDeleterContainer').slideToggle();
+     if ($(this).parent().children().find('.nbtDisplayName').val() != '') {
+	 $(this).parent().children().children('.nbtDisplayNameHidden').html('(' + $(this).parent().children().find('.nbtDisplayName').val() + ')');
+     } else {
+	 $(this).parent().children().children('.nbtDisplayNameHidden').html('');
+     }
+     $(this).parent().children().children('.nbtDisplayNameHidden').fadeToggle();
  });
 
  function collapseAllFormElements () {
-     $('div#nbtFormElements h4').children('.nbtDisplayNameHidden').not(':visible').parent().click();
+     $('div#nbtFormElements .nbtFormEditorCollapse').parent().children().children('.nbtDisplayNameHidden').not(':visible').parent().parent().children('.nbtFormEditorCollapse').click();
  }
 
  function expandAllFormElements () {
-     $('div#nbtFormElements h4').children('.nbtDisplayNameHidden:visible').parent().click();
+     $('div#nbtFormElements .nbtFormEditorCollapse').parent().children().children('.nbtDisplayNameHidden:visible').parent().parent().children('.nbtFormEditorCollapse').click();
+ }
+
+ function nbtFormElementToggleStartupVisible (elementid) {
+     
+     $.ajax ({
+	 url: numbaturl + '/forms/elementtogglestartupvisible.php',
+	 type: 'post',
+	 data: {
+	     element: elementid
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+
+	 if ( response == 1 ) {
+	     $('#nbtCondDispStartStatusVisible' + elementid).addClass('nbtTextOptionChosen');
+	     $('#nbtCondDispStartStatusHidden' + elementid).removeClass('nbtTextOptionChosen');
+
+	     $('#nbtCondDispEventsContainer' + elementid).slideUp();
+	     $('#nbtAddConditionalDisplayEvent' + elementid).slideUp();
+	     $('#nbtConditionLogicDescription' + elementid).slideUp();
+	     $('#nbtDestructiveHidingDescription' + elementid).slideUp();
+	 } else {
+	     $('#nbtCondDispStartStatusVisible' + elementid).removeClass('nbtTextOptionChosen');
+	     $('#nbtCondDispStartStatusHidden' + elementid).addClass('nbtTextOptionChosen');
+
+	     $('#nbtCondDispEventsContainer' + elementid).slideDown();
+	     $('#nbtAddConditionalDisplayEvent' + elementid).slideDown();
+	     $('#nbtConditionLogicDescription' + elementid).slideDown();
+	     $('#nbtDestructiveHidingDescription' + elementid).slideDown();
+	 }
+	 
+     });
+     
+ }
+
+ function nbtAddCondDispEvent (elementid) {
+
+     $.ajax ({
+	 url: numbaturl + '/forms/addconddispevent.php',
+	 type: 'post',
+	 data: {
+	     element: elementid
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+
+	 $('#nbtCondDispEventsContainer' + elementid).html(response);
+	 
+     });
+     
+ }
+
+ function nbtRemoveCondDispEvent (elementid, eventid) {
+
+     $.ajax ({
+	 url: numbaturl + '/forms/removeconddispevent.php',
+	 type: 'post',
+	 data: {
+	     event: eventid,
+	     element: elementid
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+
+	 if (response == "Success") {
+	     $('#nbtCondDispEvent' + eventid).slideUp(400, function () {
+		 $('#nbtCondDispEvent' + eventid).remove();
+	     });
+	 } else {
+	     alert (response);
+	 }
+	 
+     });
+     
+ }
+
+ function nbtUpdateCondDispTriggerElement (eventid) {
+
+     $.ajax ({
+	 url: numbaturl + '/forms/updateconddisptriggerelement.php',
+	 type: 'post',
+	 data: {
+	     event: eventid,
+	     trigger_element: $('#nbtCondDispTriggerElement' + eventid).val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 res = JSON.parse(response);
+	 
+	 if (res) {
+	     $('#nbtCondDispTriggerOption' + eventid).html('');
+	     $('#nbtCondDispTriggerOption' + eventid).append('<option value="ns" selected>Choose an option</option>');
+	     for (var i = 0; i < res.length; i++) {
+		 $('#nbtCondDispTriggerOption' + eventid).append('<option value="' + res[i]['id'] + '">' + res[i]['displayname'] + '</option>');
+	     }
+	     nbtUpdateCondDispTriggerOption (eventid);
+	 } else {
+	     alert (response);
+	 }
+     });
+     
+ }
+
+ function nbtUpdateCondDispTriggerOption (eventid) {
+
+     $.ajax ({
+	 url: numbaturl + '/forms/updateconddisptriggeroption.php',
+	 type: 'post',
+	 data: {
+	     event: eventid,
+	     trigger_option: $('#nbtCondDispTriggerOption' + eventid).val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 if (response != 'Success') {
+	     alert(response);
+	 }
+     });
+     
+ }
+
+ function nbtUpdateCondDispType (eventid) {
+
+     $.ajax ({
+	 url: numbaturl + '/forms/updateconddisptype.php',
+	 type: 'post',
+	 data: {
+	     event: eventid,
+	     cd_type: $('#nbtCondDispType' + eventid).val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 if (response == 'Success') {
+	     switch ($('#nbtCondDispType' + eventid).val()) {
+		 case "is":
+		 case "is-not":
+		     $('#nbtCondDispTriggerOption' + eventid).slideDown();
+		     break;
+		 case "has-response":
+		 case "no-response":
+		     $('#nbtCondDispTriggerOption' + eventid).slideUp();
+		     break;
+	     }
+	 } else {
+	     alert(response);
+	 }
+     });
+     
+ }
+
+ function nbtUpdateCondDispLogic (elementid) {
+
+     $.ajax ({
+	 url: numbaturl + '/forms/updateconddisplogic.php',
+	 type: 'post',
+	 data: {
+	     element: elementid,
+	     operator: $('#nbtCondDispLogic' + elementid).val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 if (response != 'Success') {
+	     alert(response);
+	 }
+     });
+     
+ }
+
+ function nbtUpdateCondDispHideAction (elementid) {
+
+     $.ajax ({
+	 url: numbaturl + '/forms/updateconddisphideaction.php',
+	 type: 'post',
+	 data: {
+	     element: elementid,
+	     action: $('#nbtCondDispHideAction' + elementid).val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 if (response != 'Success') {
+	     alert(response);
+	 }
+     });
+     
  }
 
 </script>

@@ -10,6 +10,7 @@ $selectoptions = nbt_get_all_select_options_for_formid ($_GET['id']);
 $tabledatacols = nbt_get_all_table_data_cols_for_formid ($_GET['id']);
 $subelements = nbt_get_all_subelements_for_formid ($_GET['id']);
 $citationscols = nbt_get_all_citations_cols_for_formid ($_GET['id']);
+$conditionals = nbt_get_conditional_events_for_formid ($_GET['id']);
 
 $formdata = array(
     "name"          => $form['name'],
@@ -25,7 +26,8 @@ $formdata = array(
     "selectoptions" => json_encode($selectoptions),
     "tabledatacols" => json_encode($tabledatacols),
     "subelements"   => json_encode($subelements),
-    "citationscols" => json_encode($citationscols)
+    "citationscols" => json_encode($citationscols),
+    "conditionals"  => json_encode($conditionals)
 );
 
 echo json_encode($formdata);

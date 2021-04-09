@@ -1,7 +1,6 @@
 <?php
 
 $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
-$alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 ?><button onclick="$('.nbtSidebar').fadeIn(200);$(this).fadeOut(0);$('#nbtExtractionNotes').focus();" id="nbtUnhideSidebar" style="position: fixed; right: 20px; top: 60px;">Show notes</button>
 <div class="nbtSidebar" style="display: none;">
@@ -123,14 +122,6 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 	echo '<div class="nbtContentPanel">';
 	
     }
-
-    $toggles = [];
-    
-    foreach ($alltoggles as $toggle) {
-	array_push($toggles, $toggle['toggle']);
-    }
-
-    echo '<input type="hidden" id="nbtToggles" value="' . implode(" ", $toggles) . '">';
     
     foreach ( $formelements as $element ) {
 
@@ -146,15 +137,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div class="nbtContentPanel';
 
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' nbtHidden ';
-
-		    echo $element['toggle'];
+		    echo ' nbtHidden';
 		    
 		}
 
-		echo '">';
+		echo '" id="nbtElementContainer' . $element['id'] . '">';
 
 		echo '<h3>';
 		
@@ -186,17 +175,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div';
 
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden ';
-
-		    echo $element['toggle'];
-
-		    echo '"';
+		    echo ' class="nbtHidden"';
 
 		}
 
-		echo '>';
+		echo ' id="nbtElementContainer' . $element['id'] . '">';
 
 		nbt_echo_display_name_and_codebook ( "Extraction timer", $element['codebook'] );
 
@@ -233,17 +218,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div';
 
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden ';
-
-		    echo $element['toggle'];
-
-		    echo '"';
+		    echo ' class="nbtHidden"';
 
 		}
 
-		echo '>';
+		echo ' id ="nbtElementContainer' . $element['id'] . '">';
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
@@ -257,17 +238,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div';
 		
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden ';
-
-		    echo $element['toggle'];
-
-		    echo '"';
+		    echo ' class="nbtHidden"';
 
 		}
 
-		echo '>';
+		echo ' id="nbtElementContainer' . $element['id'] . '">';
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
@@ -281,17 +258,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div';
 
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden ';
-
-		    echo $element['toggle'];
-
-		    echo '"';
+		    echo ' class="nbtHidden"';
 		    
 		}
 
-		echo '>';
+		echo ' id="nbtElementContainer' . $element['id'] . '">';
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
@@ -305,17 +278,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div';
 
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden ';
-
-		    echo $element['toggle'];
-
-		    echo '"';
+		    echo ' class="nbtHidden"';
 
 		}
 
-		echo '>';
+		echo ' id="nbtElementContainer' . $element['id'] . '">';
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
@@ -341,17 +310,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div';
 
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden ';
-
-		    echo $element['toggle'];
-
-		    echo '"';
+		    echo ' class="nbtHidden"';
 
 		}
 
-		echo '>';
+		echo ' id="nbtElementContainer' . $element['id'] . '">';
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
@@ -377,17 +342,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div';
 
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden ';
-
-		    echo $element['toggle'];
-
-		    echo '"';
+		    echo ' class="nbtHidden"';
 
 		}
 
-		echo '>';
+		echo ' id="nbtElementContainer' . $element['id'] . '">';
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
@@ -457,17 +418,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div';
 
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden ';
+		    echo ' class="nbtHidden"';
 
-		    echo $element['toggle'];
-
-		    echo '"';
-		    
 		}
 
-		echo '>';
+		echo ' id="nbtElementContainer' . $element['id'] . '">';
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
@@ -495,17 +452,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div';
 
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden ';
-
-		    echo $element['toggle'];
-
-		    echo '"';
+		    echo ' class="nbtHidden"';
 
 		}
 
-		echo '>';
+		echo ' id="nbtElementContainer' . $element['id'] . '">';
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
@@ -533,17 +486,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div';
 
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden ';
-
-		    echo $element['toggle'];
-
-		    echo '"';
+		    echo ' class="nbtHidden"';
 
 		}
 
-		echo '>';
+		echo ' id="nbtElementContainer' . $element['id'] . '">';
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
@@ -640,17 +589,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div';
 
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden ';
-
-		    echo $element['toggle'];
-
-		    echo '"';
+		    echo ' class="nbtHidden"';
 
 		}
 
-		echo '>';
+		echo ' id="nbtElementContainer' . $element['id'] . '">';
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
@@ -680,17 +625,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div';
 
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden ';
-
-		    echo $element['toggle'];
-
-		    echo '"';
+		    echo ' class="nbtHidden"';
 
 		}
 
-		echo '>';
+		echo ' id="nbtElementContainer' . $element['id'] . '">';
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
@@ -766,17 +707,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div';
 
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden ';
-
-		    echo $element['toggle'];
-
-		    echo '"';
+		    echo ' class="nbtHidden"';
 
 		}
 
-		echo '>';
+		echo ' id="nbtElementContainer' . $element['id'] . '">';
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
@@ -809,17 +746,13 @@ $alltoggles = nbt_get_toggles_for_formid ($_GET['form']);
 
 		echo '<div';
 
-		if ( $element['toggle'] != "" ) {
+		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden ';
+		    echo ' class="nbtHidden"';
 
-		    echo $element['toggle'];
-
-		    echo '"';
-		    
 		}
 
-		echo '>';
+		echo ' id="nbtElementContainer' . $element['id'] . '">';
 		
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 

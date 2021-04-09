@@ -465,7 +465,70 @@ foreach ( $elements as $element ) {
 	    
     }
 
-    
+    // Add conditional display here
+
+    if ($element['startup_visible'] != 1) {
+
+	echo "When the extraction form is loaded, this element was hidden. It would be shown if " . $element['conditional_logical_operator'] . " of the following conditions were met:\n\n";
+
+	$events = nbt_get_conditional_events ($element['id']);
+
+	if (count ($events) > 0) {
+
+	    foreach ($events as $event) {
+		
+		foreach ($elements as $ele) {
+		    if ($ele['id'] == $event['trigger_element']) {
+			$trigger_element_name = $ele['displayname'];
+			$trigger_elementid = $ele['id'];
+		    }
+		}
+
+		switch ($event['type']) {
+		    case "is":
+			$trigger_options = nbt_get_all_select_options_for_element ( $trigger_elementid );
+			foreach ( $trigger_options as $topt ) {
+			    if ($topt['id'] == $event['trigger_option']) {
+				$trigger_option_name = $topt['displayname'];
+			    }
+			}
+			echo "* \"" . $trigger_element_name . "\" is: \"" . $trigger_option_name . "\"\n";
+			break;
+		    case "is-not":
+			$trigger_options = nbt_get_all_select_options_for_element ( $trigger_elementid );
+			foreach ( $trigger_options as $topt ) {
+			    if ($topt['id'] == $event['trigger_option']) {
+				$trigger_option_name = $topt['displayname'];
+			    }
+			}
+			echo "* \"" . $trigger_element_name . "\" is not: \"" . $trigger_option_name . "\"\n";
+			break;
+		    case "has-response":
+			echo "* \"" . $trigger_element_name . "\" has a response\n";
+			break;
+		    case "no-response":
+			echo "* \"" . $trigger_element_name . "\" has no response\n";
+			break;
+		}
+
+	    }
+
+	    echo "\n";
+	    
+	} else {
+
+	    echo "No conditions were selected.\n\n";
+	    
+	}
+
+
+	if ($element['destructive_hiding'] == 1) {
+	    echo "In the case that this element was hidden again by a conditional display event after a response was entered, the response would be cleared.\n\n";
+	} else {
+	    echo "In the case that this element was hidden again by a conditional display event after a response was entered, the response would be preserved.\n\n";
+	}
+	
+    }
     
 }
 
