@@ -1894,8 +1894,6 @@
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
 
-	     nbtUpdateConditionalDisplays ();
-
 	 });
 
      } else { // It's not already selected
@@ -1914,8 +1912,6 @@
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
 	     $('#' + buttonid).addClass('nbtTextOptionChosen');
-
-	     nbtUpdateConditionalDisplays ();
 
 	     if ( questionlabel == "status" && response == "2" && $('#time_finished').val() == "NaN" ) {
 		 // If the extraction is being marked as complete
@@ -1946,8 +1942,6 @@
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
 
-	     nbtUpdateConditionalDisplays ();
-
 	 });
 
      } else { // It's not already selected
@@ -1966,8 +1960,6 @@
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
 	     $('#' + buttonid).addClass('nbtTextOptionChosen');
-
-	     nbtUpdateConditionalDisplays ();
 
 	 });
 
@@ -1993,8 +1985,6 @@
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
 
-	     nbtUpdateConditionalDisplays ();
-
 	 });
 
      } else { // It's not already selected
@@ -2013,8 +2003,6 @@
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
 	     $('#' + buttonid).addClass('nbtTextOptionChosen');
-
-	     nbtUpdateConditionalDisplays ();
 
 	 });
 
@@ -2037,8 +2025,6 @@
 
 	 $('#' + buttonid).toggleClass('nbtTextOptionChosen');
 
-	 nbtUpdateConditionalDisplays ();
-
      });
 
  }
@@ -2058,8 +2044,6 @@
 
 	 $('#' + buttonid).toggleClass('nbtTextOptionChosen');
 
-	 nbtUpdateConditionalDisplays ();
-
      });
 
  }
@@ -2078,8 +2062,6 @@
      }).done ( function (html) {
 
 	 $('#' + buttonid).toggleClass('nbtTextOptionChosen');
-
-	 nbtUpdateConditionalDisplays ();
 
      });
 
@@ -2614,34 +2596,6 @@
 	 }
 
      });
-
- }
-
- function nbtUpdateConditionalDisplays () {
-
-     /* if ( $('#nbtToggles').val() != "" ) {
-
-	toggles = $('#nbtToggles').val().split(" ");
-
-	for (var i = 0; i < toggles.length; i++) {
-
-	toggle = toggles[i];
-
-	selected_toggle = $('[conditionalid=\'' + toggle + '\'].nbtTextOptionSelect.nbtTextOptionChosen').length > 0;
-
-	if ( selected_toggle ) {
-
-	$('.' + toggle).slideDown();
-	
-	} else {
-
-	$('.' + toggle).slideUp();
-	
-	}
-	
-	}
-
-      * } */
 
  }
 
@@ -4481,8 +4435,6 @@
  }
 
  if ( $('#nbtExtractionInProgress').val() == 1 ) {
-
-     nbtUpdateConditionalDisplays ();
 
      nbtCheckLogin();
 
