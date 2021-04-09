@@ -281,9 +281,9 @@ if ( count ( $elements ) > 0 ) {
 	    <a id="nbtCondDispStartStatusHidden<?php echo $element['id']; ?>" class="nbtTextOptionSelect<?php if ($element['startup_visible'] != 1) { echo ' nbtTextOptionChosen'; } ?>" onclick="event.preventDefault();nbtFormElementToggleStartupVisible(<?php echo $element['id']; ?>);">Hidden</a>
 	    <p id="nbtConditionLogicDescription<?php echo $element['id']; ?>" <?php if ($element['startup_visible'] == 1) { echo ' class="nbtHidden"'; } ?>>
 		Show this element when
-		<select>
-		    <option>any</option>
-		    <option>all</option>
+		<select id="nbtCondDispLogic<?php echo $element['id']; ?>" onchange="nbtUpdateCondDispLogic(<?php echo $element['id']; ?>);">
+		    <option value="any"<?php if ($element['conditional_logical_operator'] == "any") { echo " selected"; } ?>>any</option>
+		    <option value="all"<?php if ($element['conditional_logical_operator'] == "all") { echo " selected"; } ?>>all</option>
 		</select>
 		of the following conditions are met:
 	    </p>
@@ -296,9 +296,9 @@ if ( count ( $elements ) > 0 ) {
 	    <button id="nbtAddConditionalDisplayEvent<?php echo $element['id']; ?>" style="margin-top: 10px;" onclick="nbtAddCondDispEvent(<?php echo $element['id']; ?>);" <?php if ($element['startup_visible'] == 1) { echo ' class="nbtHidden"'; } ?>>Add condition</button>
 	    <p id="nbtDestructiveHidingDescription<?php echo $element['id']; ?>" <?php if ($element['startup_visible'] == 1) { echo ' class="nbtHidden"'; } ?>>
 		In the case that this element is hidden by a conditional display event after a response has been entered:
-		<select>
-		    <option>Clear response</option>
-		    <option>Preserve response</option>
+		<select id="nbtCondDispHideAction<?php echo $element['id']; ?>" onchange="nbtUpdateCondDispHideAction(<?php echo $element['id']; ?>);">
+		    <option value="1"<?php if ($element['destructive_hiding'] == 1) { echo " selected"; } ?>>Clear response</option>
+		    <option value="0"<?php if ($element['destructive_hiding'] == 0) { echo " selected"; } ?>>Preserve response</option>
 		</select>
 	    </p>
 	</div>

@@ -16318,4 +16318,62 @@ function nbt_update_conditional_display_type ($eventid, $cd_type) {
     
 }
 
+function nbt_update_conditional_display_logic ($elementid, $operator) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `formelements` SET `conditional_logical_operator` = :lopt WHERE `id` = :elementid LIMIT 1;");
+	
+	$stmt->bindParam(':lopt', $lopt);
+	$stmt->bindParam(':elementid', $ele);
+
+	$lopt = $operator;
+	$ele = $elementid;
+
+	if ( $stmt->execute() ) {
+	    return TRUE;
+	} else {
+	    return FALSE;
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
+function nbt_update_conditional_display_destructive_hiding ($elementid, $destructive_hiding) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `formelements` SET `destructive_hiding` = :dh WHERE `id` = :elementid LIMIT 1;");
+	
+	$stmt->bindParam(':dh', $dh);
+	$stmt->bindParam(':elementid', $ele);
+
+	$dh = $destructive_hiding;
+	$ele = $elementid;
+
+	if ( $stmt->execute() ) {
+	    return TRUE;
+	} else {
+	    return FALSE;
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
 ?>

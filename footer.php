@@ -5022,6 +5022,42 @@
      
  }
 
+ function nbtUpdateCondDispLogic (elementid) {
+
+     $.ajax ({
+	 url: numbaturl + '/forms/updateconddisplogic.php',
+	 type: 'post',
+	 data: {
+	     element: elementid,
+	     operator: $('#nbtCondDispLogic' + elementid).val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 if (response != 'Success') {
+	     alert(response);
+	 }
+     });
+     
+ }
+
+ function nbtUpdateCondDispHideAction (elementid) {
+
+     $.ajax ({
+	 url: numbaturl + '/forms/updateconddisphideaction.php',
+	 type: 'post',
+	 data: {
+	     element: elementid,
+	     action: $('#nbtCondDispHideAction' + elementid).val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 if (response != 'Success') {
+	     alert(response);
+	 }
+     });
+     
+ }
+
 </script>
 </body>
 </html>
