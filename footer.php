@@ -9,6 +9,157 @@
      $('.nbtSubExtractionEditor').sortable();
 
      nbtCheckLogin();
+
+     // Here comes the conditional display logic
+     <?php
+
+     if (isset($formelements) & count($formelements) > 0) {
+	 foreach ($formelements as $ele) {
+	     if ($ele['startup_visible'] != 1) {
+		 // We're only interested in elements that are hidden at startup
+		 $cd_events = nbt_get_conditional_events ($ele['id']);
+
+		 // Make a CSS selector for all the things that should
+		 // trigger this
+
+		 $trigger_selectors = [];
+		 foreach ($cd_events as $event) {
+		     $trigger_element = nbt_get_form_element_for_elementid ($event['trigger_element']);
+		     if ( ! in_array (".nbt" . $trigger_element['columnname'], $trigger_selectors) ) {
+			 array_push($trigger_selectors, ".nbt" . $trigger_element['columnname']);
+		     }
+		 }
+		 $trigger_selector = implode(", ", $trigger_selectors);
+
+		 if (count (trigger_selectors) > 0) {
+		     
+		     // Make jQuery expressions for each of the conditions
+		     $event_expressions = [];
+		     foreach ($cd_events as $event) {
+			 $trigger_element = nbt_get_form_element_for_elementid ($event['trigger_element']);
+			 $trigger_options = $options = nbt_get_all_select_options_for_element ($event['trigger_element']);
+			 
+			 switch ($trigger_element['type']) {
+			     case "single_select":
+				 switch ($event['type']) {
+				     case "is":
+					 foreach ($trigger_options as $opt) {
+					     if ($opt['id'] == $event['trigger_option']) {
+						 array_push($event_expressions, "$('#nbtQ" . $trigger_element['columnname'] . "A" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
+					     }
+					 }
+					 break;
+				     case "is-not":
+					 foreach ($trigger_options as $opt) {
+					     if ($opt['id'] == $event['trigger_option']) {
+						 array_push($event_expressions, "! $('#nbtQ" . $trigger_element['columnname'] . "A" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
+					     }
+					 }
+					 break;
+				     case "has-response":
+					 array_push($event_expressions, "$('.nbt" . $trigger_element['columnname'] . "').hasClass('nbtTextOptionChosen')");
+					 break;
+				     case "no-response":
+					 array_push($event_expressions, "! $('.nbt" . $trigger_element['columnname'] . "').hasClass('nbtTextOptionChosen')");
+					 break;
+				 }
+				 break;
+			     case "multi_select":
+				 switch ($event['type']) {
+				     case "is":
+					 foreach ($trigger_options as $opt) {
+					     if ($opt['id'] == $event['trigger_option']) {
+						 array_push($event_expressions, "$('#nbtMS" . $trigger_element['columnname'] . "_" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
+					     }
+					 }
+					 break;
+				     case "is-not":
+					 foreach ($trigger_options as $opt) {
+					     if ($opt['id'] == $event['trigger_option']) {
+						 array_push($event_expressions, "! $('#nbtMS" . $trigger_element['columnname'] . "_" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
+					     }
+					 }
+					 break;
+				     case "has-response":
+					 array_push($event_expressions, "$('.nbt" . $trigger_element['columnname'] . "').hasClass('nbtTextOptionChosen')");
+					 break;
+				     case "no-response":
+					 array_push($event_expressions, "! $('.nbt" . $trigger_element['columnname'] . "').hasClass('nbtTextOptionChosen')");
+					 break;
+				 }
+				 break;
+			 }
+			 
+		     }
+		     
+		     switch ($ele['conditional_logical_operator']) {
+			 case "any":
+			     // Combine jQuery expressions with "OR"
+			     $combined_expression = implode(" | ", $event_expressions);
+			     break;
+			 case "all":
+			     // Combine jQuery expressions with "AND"
+			     $combined_expression = implode(" & ", $event_expressions);
+			     break;
+		     }
+
+		     echo "\n\n$('" . $trigger_selector . "').on('answerChange', function () {\n";
+
+		     echo "  if (" . $combined_expression . ") {\n";
+
+		     echo "    $('#nbtElementContainer" . $ele['id'] . "').slideDown();\n";
+
+		     echo "  } else {\n";
+
+		     echo "    $('#nbtElementContainer" . $ele['id'] . "').slideUp();\n";
+
+		     if ($ele['destructive_hiding'] == 1) {
+			 // Clear the element when hidden
+			 
+			 switch ($ele['type']) {
+			     case "open_text":
+				 echo "    $('#nbtTextField" . $ele['columnname'] . "').val('');\n";
+				 break;
+			     case "text_area":
+				 echo "    $('#nbtTextAreaField" . $ele['columnname'] . "').val('');\n";
+				 break;
+			     case "date_selector":
+				 echo "    $('#nbtDateField" . $ele['columnname'] . "').val('');\n";
+				 break;
+			     case "single_select":
+				 echo "    $('#nbtElementContainer" . $ele['id'] . " .nbtTextOptionChosen').click();\n";
+				 break;
+			     case "multi_select":
+				 $element_options = nbt_get_all_select_options_for_element ($ele['id']);
+				 foreach ($element_options as $ele_opt) {
+				     echo "    nbtClearMultiSelect(" . $ele['formid'] . ", " . $extraction['id'] . ", '" . $ele['columnname'] . "_" . $ele_opt['dbname'] . "', 'nbtMS" . $ele['columnname'] . "_" . $ele_opt['dbname'] . "');\n";
+				 }
+				 break;
+			     case "country_selector":
+				 echo "    $('#nbtCountrySelect" . $ele['columnname'] . "').val('');\n";
+				 break;
+			     case "prev_select":
+				 echo "    $('#nbtTextField" . $ele['columnname'] . "').val('');\n";
+				 break;
+			 }
+		     }
+		     
+		     echo "  }\n";
+
+		     echo "});\n\n";
+
+		     echo "$('.nbtTextOptionSelect').trigger('answerChange');\n\n";
+
+		 }
+
+		 
+	     }
+	 }
+     }
+     
+     ?>
+
+     // End of conditional display logic
      
  });
 
@@ -1893,6 +2044,7 @@
 	 }).done ( function (html) {
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
+	     $('.' + classid).trigger('answerChange');
 
 	 });
 
@@ -1912,6 +2064,7 @@
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
 	     $('#' + buttonid).addClass('nbtTextOptionChosen');
+	     $('.' + classid).trigger('answerChange');
 
 	     if ( questionlabel == "status" && response == "2" && $('#time_finished').val() == "NaN" ) {
 		 // If the extraction is being marked as complete
@@ -2024,6 +2177,27 @@
      }).done ( function (html) {
 
 	 $('#' + buttonid).toggleClass('nbtTextOptionChosen');
+	 $('#' + buttonid).trigger('answerChange');
+
+     });
+
+ }
+
+ function nbtClearMultiSelect (formid, extractionid, questionlabel, buttonid) {
+
+     $.ajax ({
+	 url: numbaturl + 'extract/clearfield.php',
+	 type: 'post',
+	 data: {
+	     fid: formid,
+	     id: extractionid,
+	     question: questionlabel
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#' + buttonid).removeClass('nbtTextOptionChosen');
+	 $('#' + buttonid).trigger('answerChange');
 
      });
 

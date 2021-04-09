@@ -1826,7 +1826,7 @@ function nbt_echo_multi_select ($formid, $extraction, $question, $options, $togg
 
 	echo '<a href="#" class="nbtTextOptionSelect ';
 
-	echo "sig" . $question;
+	echo "nbt" . $question;
 
 	if ( $extraction[$question . "_" . $dbcolumn] == 1 ) {
 
