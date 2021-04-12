@@ -2521,7 +2521,7 @@
      }).done ( function (html) {
 
 	 //$('#nbtTableExtraction' + tableid).html(html);
-	 $('#nbtTableExtraction' + tableid).append(html);
+	 $('#nbtTableExtraction' + tableid + ' table.nbtTabledData').append(html);
 
 	 setTimeout ( function () {
 
