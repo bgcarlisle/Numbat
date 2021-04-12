@@ -2520,7 +2520,8 @@
 	 dataType: 'html'
      }).done ( function (html) {
 
-	 $('#nbtTableExtraction' + tableid).html(html);
+	 //$('#nbtTableExtraction' + tableid).html(html);
+	 $('#nbtTableExtraction' + tableid).append(html);
 
 	 setTimeout ( function () {
 

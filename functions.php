@@ -2506,18 +2506,28 @@ function nbt_add_new_extraction_table_data_row ( $tableid, $refsetid, $refid, $u
 	$rid = $refid;
 	$uid = $userid;
 
-	if ($stmt->execute()) {
+	if ( $stmt->execute() ) {
+
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+	    $stmt2->execute();
+
+	    $result = $stmt2->fetchAll();
 
 	    $dbh = null;
 
-	    return TRUE;
+	    foreach ( $result as $row ) {
+
+		$newid = $row['newid']; // This is the auto_increment-generated ID
+
+	    }
+
+	    return $newid;
 
 	} else {
 
 	    $dbh = null;
 
 	    return FALSE;
-
 	}
 
 
