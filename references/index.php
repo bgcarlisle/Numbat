@@ -10,13 +10,6 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 	    
 	    switch ( $_GET['action'] ) {
 		    
-		case "edit":
-		    
-		    include ( ABS_PATH . "header.php" );
-		    include ( ABS_PATH . "references/edit.php" );
-		    
-		    break;
-
 		case "view":
 
 		    include ( ABS_PATH . "header.php" );

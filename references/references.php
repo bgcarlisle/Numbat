@@ -7,7 +7,6 @@
 		<tr class="nbtTableHeaders">
 		    <td>Reference set</td>
 		    <td>View reference set</td>
-		    <td>Edit reference set</td>
 		    <td>Export reference set</td>
 		    <td>Manually added references</td>
 		    <td>Manage multiples</td>
@@ -22,7 +21,6 @@
 		?><tr id="nbtRefSetRow<?php echo $refset['id']; ?>">
       		    <td><?php echo $refset['name']; ?></td>
 		    <td><a href="<?php echo SITE_URL; ?>references/?action=view&refset=<?php echo $refset['id']; ?>">View</a></td>
- 		    <td><a href="<?php echo SITE_URL; ?>references/?action=edit&refset=<?php echo $refset['id']; ?>">Edit</a></td>
  		    <td><button onclick="nbtExportRefset(<?php echo $refset['id']; ?>);">Export</button></td>
 		    <td><a href="<?php echo SITE_URL; ?>references/manual/?refset=<?php echo $refset['id']; ?>">Manual refs</a></td>
 		    <td><a href="<?php echo SITE_URL; ?>references/multiple/?refset=<?php echo $refset['id']; ?>">Multiples</a></td>
