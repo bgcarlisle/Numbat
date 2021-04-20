@@ -11,6 +11,7 @@ $references = nbt_get_all_references_for_refset ( $_GET['refset'] );
     <span class="nbtFinePrint nbtHidden nbtFeedback" id="nbtNewRefSetNameFeedback">&nbsp;</span>
     <p><?php echo count($references); ?> reference(s)</p>
     <h3>Reference metadata</h3>
+    <p>In order to let extractors know what they are extracting, Numbat will draw four values for each reference and format them as a journal reference and display a fifth as an abstract. Choose the columns that represent these metadata from the reference set columns below.</p>
     <p>Title</p>
     <select id="nbtMetadata-title" onchange="nbtUpdateRefsetMetadata('title', <?php echo $refset['id']; ?>);">
 	<?php
