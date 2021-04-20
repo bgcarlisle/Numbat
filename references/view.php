@@ -11,6 +11,7 @@ $references = nbt_get_all_references_for_refset ( $_GET['refset'] );
     <span class="nbtFinePrint nbtHidden nbtFeedback" id="nbtNewRefSetNameFeedback">&nbsp;</span>
     <p><?php echo count($references); ?> reference(s)</p>
     <h3>Reference metadata</h3>
+    <p>In order to let extractors know what they are extracting, Numbat will draw four values for each reference and format them as a journal reference and display a fifth as an abstract. Choose the columns that represent these metadata from the reference set columns below.</p>
     <p>Title</p>
     <select id="nbtMetadata-title" onchange="nbtUpdateRefsetMetadata('title', <?php echo $refset['id']; ?>);">
 	<?php
@@ -132,6 +133,19 @@ $references = nbt_get_all_references_for_refset ( $_GET['refset'] );
 	?>
     </select>
     <span id="nbtMetadataResponse-abstract">&nbsp;</span>
+
+    <h3>Insert new references into this reference set</h3>
+    <button onclick="$('#nbtNewReferencesInstructions').slideDown();$(this).fadeOut();" id="nbtShowNewRefsButton">Add new references</button>
+
+    <div class="nbtHidden" id="nbtNewReferencesInstructions">
+	<p>To insert new references, prepare a TSV file that includes the data to be uploaded. You will be prompted to indicate which columns in the uploaded TSV correspond to which columns in the already-uploaded reference set. Numbat will try to match columns automatically where they match exactly.</p>
+	<form action="<?php echo SITE_URL; ?>references/upload-additional.php" method="post" enctype="multipart/form-data">
+	    <input type="file" name="file" id="file">
+	    <input type="hidden" name="refset" value="<?php echo $_GET['refset']; ?>">
+	    <input type="submit" value="Upload">
+	    <button onclick="event.preventDefault();$('#nbtShowNewRefsButton').slideDown();$('#nbtNewReferencesInstructions').slideUp();">Cancel</button>
+	</form>
+    </div>
     
     <table class="nbtTabledData" style="margin-top: 20px;">
 	<tr class="nbtTableHeaders">
