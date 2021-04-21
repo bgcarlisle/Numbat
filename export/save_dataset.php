@@ -16,7 +16,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
             if ( $_POST['final'] == 0 ) {
 
-		// echo "extraction";
+		// Export the final copy
+
+		// Get the columns from the reference set
+
+		$rs_cols = nbt_get_columns_for_refset ( $_POST['refsetid'] );
 
 		$filename = $filename . "-form_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-extractions";
 
@@ -26,7 +30,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
             } else {
 
-		// echo "final";
+		// Export the extractions
 
 		$filename = $filename . "-form_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-final";
 
