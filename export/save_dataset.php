@@ -18,10 +18,12 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
     $rscols_to_export = array();
     foreach ($rs_cols as $rs_col) {
-	if ($rs_col[0] == "type") {
-	    $rs_col[0] = "`type`";
+	if ($rs_col[0] != "id" & $rs_col[0] != "manual") {
+	    if ($rs_col[0] == "type") {
+		$rs_col[0] = "`type`";
+	    }
+	    $rscols_to_export[] = $rs_col[0];
 	}
-	$rscols_to_export[] = $rs_col[0];
     }
 
     $rs_cols_string = "referenceset_" . $_POST['refsetid'] . "." . implode(", referenceset_" . $_POST['refsetid'] . ".", $rscols_to_export);
@@ -60,15 +62,22 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		// Put those columns together into a string
 
+		$mcols = array();
+		$mcols[] = "referenceid";
+		$mcols[] = "timestamp_started";
+		$mcols[] = "timestamp_finished";
+
+		$meta_cols_string = "extractions_" . $_POST['formid'] . "." . implode(", extractions_" . $_POST['formid'] . ".", $mcols);
+
 		$form_cols_string = "extractions_" . $_POST['formid'] . "." . implode(", extractions_" . $_POST['formid'] . ".", $fcols);
 
-		$select_cols = $rs_cols_string . ", " . $form_cols_string;
+		$select_cols = $meta_cols_string . ", users.username, " . $rs_cols_string . ", " . $form_cols_string;
 
 		$filename = $filename . "-form_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-extractions";
 
 		echo $filename;
 		
-		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT " . $select_cols . " FROM referenceset_" . $_POST['refsetid'] . ", extractions_" . $_POST['formid'] . " WHERE extractions_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND extractions_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id AND extractions_" . $_POST['formid'] . ".status = 2 ORDER BY extractions_" . $_POST['formid'] . ".timestamp_started ASC;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
+		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT " . $select_cols . " FROM referenceset_" . $_POST['refsetid'] . ", extractions_" . $_POST['formid'] . ", users WHERE extractions_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND extractions_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id AND users.id = extractions_" . $_POST['formid'] . ".userid AND extractions_" . $_POST['formid'] . ".status = 2 ORDER BY extractions_" . $_POST['formid'] . ".timestamp_started ASC;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
 
             } else {
 
@@ -76,15 +85,22 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		// Put those columns together into a string
 
+		$mcols = array();
+		$mcols[] = "referenceid";
+		$mcols[] = "timestamp_started";
+		$mcols[] = "timestamp_finished";
+
+		$meta_cols_string = "m_extractions_" . $_POST['formid'] . "." . implode(", m_extractions_" . $_POST['formid'] . ".", $mcols);
+
 		$form_cols_string = "m_extractions_" . $_POST['formid'] . "." . implode(", m_extractions_" . $_POST['formid'] . ".", $fcols);
 
-		$select_cols = $rs_cols_string . ", " . $form_cols_string;
+		$select_cols = $meta_cols_string . ", " .  $rs_cols_string . ", " . $form_cols_string;
 
 		$filename = $filename . "-form_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-final";
 
 		echo $filename;
 
-		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT " . $select_cols . " FROM referenceset_" . $_POST['refsetid'] . ", m_extractions_" . $_POST['formid'] . " WHERE m_extractions_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND m_extractions_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id AND m_extractions_" . $_POST['formid'] . ".status = 2 ORDER BY m_extractions_" . $_POST['formid'] . ".timestamp_started ASC;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
+		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT " . $select_cols . " FROM referenceset_" . $_POST['refsetid'] . ", m_extractions_" . $_POST['formid'] . ", users WHERE m_extractions_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND m_extractions_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id AND m_extractions_" . $_POST['formid'] . ".status = 2 ORDER BY m_extractions_" . $_POST['formid'] . ".timestamp_started ASC;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
 
             }
 
@@ -119,7 +135,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		$form_cols_string = "sub_" . $_POST['formid'] . "." . implode(", sub_" . $_POST['formid'] . ".", $fcols);
 
-		$select_cols = $rs_cols_string . ", " . $form_cols_string;
+		$select_cols = "sub_" . $_POST['formid'] . ".referenceid, users.username, " . $rs_cols_string . ", " . $form_cols_string;
 
 		// echo "sub";
 
@@ -127,7 +143,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		echo $filename;
 
-		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT " . $select_cols . " FROM referenceset_" . $_POST['refsetid'] . ", sub_" . $_POST['formid'] . " WHERE sub_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND sub_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
+		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT " . $select_cols . " FROM referenceset_" . $_POST['refsetid'] . ", sub_" . $_POST['formid'] . ", users WHERE sub_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND sub_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id AND users.id = sub_" . $_POST['formid'] . ".userid;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
 
 	    } else {
 
@@ -135,7 +151,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		$form_cols_string = "msub_" . $_POST['formid'] . "." . implode(", msub_" . $_POST['formid'] . ".", $fcols);
 
-		$select_cols = $rs_cols_string . ", " . $form_cols_string;
+		$select_cols = "sub_" . $_POST['formid'] . ".referenceid, " . $rs_cols_string . ", " . $form_cols_string;
 
 		// echo sub final;
 
