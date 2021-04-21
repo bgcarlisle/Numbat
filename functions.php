@@ -16419,4 +16419,41 @@ function nbt_update_conditional_display_destructive_hiding ($elementid, $destruc
     
 }
 
+function nbt_get_subextraction_elements_for_subextraction_dbname ($dbname) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `type` = 'sub_extraction' AND `columnname` = :dbname LIMIT 1;");
+
+	$stmt->bindParam(':dbname', $dn);
+
+	$dn = $dbname;
+	
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    return nbt_get_sub_extraction_elements_for_elementid ( $result[0]['id'] );
+
+	} else {
+
+	    echo "MySQL fail";
+
+	    return FALSE;
+
+	}
+
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+}
+
 ?>
