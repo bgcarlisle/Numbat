@@ -234,6 +234,8 @@ foreach ($forms as $form) {
 
     <hr>
 
+    <p>To check that the above selections have been made correctly, you can hide the non-selected references.</p>
+
     <button onclick="$('input:not(input:checked)').parent().parent('tr').slideToggle();">Show or hide non-selected references</button>
 
     <hr>
