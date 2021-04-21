@@ -14,57 +14,55 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
         case "extraction":
 
+	    // Get the columns from the reference set
+
+	    $rs_cols = nbt_get_columns_for_refset ( $_POST['refsetid'] );
+
+	    // Put those columns together into a string
+
+	    $rscols_to_export = array();
+	    foreach ($rs_cols as $rs_col) {
+		if ($rs_col[0] == "type") {
+		    $rs_col[0] = "`type`";
+		}
+		$rscols_to_export[] = $rs_col[0];
+	    }
+
+	    $rs_cols_string = "referenceset_" . $_POST['refsetid'] . "." . implode(", referenceset_" . $_POST['refsetid'] . ".", $rscols_to_export);
+
+	    // Get the columns for the extraction form
+
+	    $elements = nbt_get_elements_for_formid ( $_POST['formid'] );
+
+	    $fcols = array();
+	    foreach ($elements as $ele) {
+		switch ($ele['type']) {
+		    case "open_text":
+		    case "text_area":
+		    case "date_selector":
+		    case "single_select":
+		    case "country_selector":
+		    case "prev_select":
+			$fcols[] = $ele['columnname'];
+			break;
+		    case "multi_select":
+			$selectoptions = nbt_get_all_select_options_for_element ( $ele['id'] );
+			foreach ($selectoptions as $opt) {
+			    $fcols[] = $ele['columnname'] . "_" . $opt['dbname'];
+			}
+			break;
+		}
+	    }
+	    
+	    // Put those columns together into a string
+
+	    $form_cols_string = "extractions_" . $_POST['formid'] . "." . implode(", extractions_" . $_POST['formid'] . ".", $fcols);
+
+	    $select_cols = $rs_cols_string . ", " . $form_cols_string;
+
             if ( $_POST['final'] == 0 ) {
 
 		// Export the extractions
-
-		// Get the columns from the reference set
-
-		$rs_cols = nbt_get_columns_for_refset ( $_POST['refsetid'] );
-
-		// Put those columns together into a string
-
-		$rscols_to_export = array();
-		foreach ($rs_cols as $rs_col) {
-		    if ($rs_col[0] == "type") {
-			$rs_col[0] = "`type`";
-		    }
-		    $rscols_to_export[] = $rs_col[0];
-		}
-
-		$rs_cols_string = "referenceset_" . $_POST['refsetid'] . "." . implode(", referenceset_" . $_POST['refsetid'] . ".", $rscols_to_export);
-
-		// Get the columns for the extraction form
-
-		$elements = nbt_get_elements_for_formid ( $_POST['formid'] );
-
-		$fcols = array();
-		foreach ($elements as $ele) {
-		    switch ($ele['type']) {
-			case "open_text":
-			case "text_area":
-			case "date_selector":
-			case "single_select":
-			case "country_selector":
-			case "prev_select":
-			    $fcols[] = $ele['columnname'];
-			    break;
-			case "multi_select":
-			    $selectoptions = nbt_get_all_select_options_for_element ( $ele['id'] );
-			    foreach ($selectoptions as $opt) {
-				$fcols[] = $ele['columnname'] . "_" . $opt['dbname'];
-			    }
-			    break;
-		    }
-		}
-		
-		// Put those columns together into a string
-
-		$form_cols_string = "extractions_" . $_POST['formid'] . "." . implode(", extractions_" . $_POST['formid'] . ".", $fcols);
-
-		$select_cols = $rs_cols_string . ", " . $form_cols_string;
-
-		// Make a filename
 
 		$filename = $filename . "-form_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-extractions";
 
@@ -80,7 +78,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		echo $filename;
 
-		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT * FROM referenceset_" . $_POST['refsetid'] . ", m_extractions_" . $_POST['formid'] . " WHERE m_extractions_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND m_extractions_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id AND m_extractions_" . $_POST['formid'] . ".status = 2 ORDER BY m_extractions_" . $_POST['formid'] . ".timestamp_started ASC;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
+		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT " . $select_cols . " FROM referenceset_" . $_POST['refsetid'] . ", m_extractions_" . $_POST['formid'] . " WHERE m_extractions_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND m_extractions_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id AND m_extractions_" . $_POST['formid'] . ".status = 2 ORDER BY m_extractions_" . $_POST['formid'] . ".timestamp_started ASC;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
 
             }
 
