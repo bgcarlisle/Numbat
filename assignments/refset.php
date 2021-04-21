@@ -232,6 +232,8 @@ foreach ($forms as $form) {
 
     </p>
 
+    <button onclick="$('input:not(input:checked)').parent().parent('tr').slideToggle();">Show or hide non-selected references</button>
+
     <hr>
 
     <p>With the selected references</p>
