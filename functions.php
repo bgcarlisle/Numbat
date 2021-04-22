@@ -1394,6 +1394,10 @@ function nbt_remove_citation ( $section, $citation ) {
 
 function nbt_update_extraction ( $fid, $id, $column, $value ) {
 
+    if ($value == "") {
+	$value = NULL;
+    }
+
     if ( $column == "status" && $value == 2 ) { // Special case: they're clicking "completed"
 
 	try {

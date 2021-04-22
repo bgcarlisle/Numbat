@@ -1868,7 +1868,7 @@
 	 },
 	 dataType: 'html'
      }).done ( function (html) {
-
+	 
 	 $('#' + textfieldid).val(html);
 
 	 if ( html != 'Bad date format' ) {
@@ -1880,7 +1880,7 @@
 		     fid: formid,
 		     id: extractionid,
 		     question: questionid,
-		     answer: html + '-01'
+		     answer: html
 		 },
 		 dataType: 'html'
 	     }).done ( function (html2) {
