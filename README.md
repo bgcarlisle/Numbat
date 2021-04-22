@@ -66,6 +66,7 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 * Fix bug with table data entry
 * Upload new references into an already-existing reference set
 * Fixed bug where order of columns in data export sometimes doesn't match the order they appear in the extraction form
+* Fixed bug where date selector would save empty fields as 0000-00-00 instead of NULL
 
 To migrate from an earlier version of Numbat, run `db-migrations.php` while logged in as an administrator.
 
