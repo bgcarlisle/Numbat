@@ -16460,4 +16460,50 @@ function nbt_get_subextraction_elements_for_subextraction_dbname ($dbname) {
     }
 }
 
+function nbt_assignments_for_export ($refset) {
+
+    $refset = nbt_get_refset_for_id ($refset);
+
+    $refsetid = $refset['id'];
+
+    // Get the title column for the refset
+
+    $title_col_no = $refset['title'];
+
+    $columns = nbt_get_columns_for_refset ( $refsetid );
+
+    $title_col_name = $columns[4][0];
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT `referenceset_" . $refsetid . "`.`id` as `referenceid`, `referenceset_" . $refsetid . "`.`" . $title_col_name . "` as `title`, `username`, `forms`.`name` as `form` FROM `referenceset_" . $refsetid . "`, `assignments`, `users`, `forms` WHERE `assignments`.`refsetid` = " . $refsetid . " AND `referenceset_" . $refsetid . "`.`id` = `assignments`.`referenceid` AND `users`.`id` = `assignments`.`userid` AND `forms`.`id` = `assignments`.`formid`;");
+	
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    return $result;
+
+	} else {
+
+	    echo "MySQL fail";
+
+	    return FALSE;
+
+	}
+
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+}
+
 ?>

@@ -304,6 +304,10 @@ foreach ($forms as $form) {
     <button onclick="nbtAssign();">Assign to user</button>
     <button onclick="nbtRemoveAssign();">Remove assignments</button>
 
+    <hr>
+
+    <a href="<?php echo SITE_URL; ?>assignments/save-assignments.php?refset=<?php echo $refset['id']; ?>" style="float: right;">Download assignments</a>
+
     <table class="nbtTabledData" style="margin-top: 20px;">
 	<tr class="nbtTableHeaders">
 	    <td colspan="2">Reference</td>
