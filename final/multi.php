@@ -35,6 +35,9 @@ if ( count ( $refsets ) > 0 ) {
 						foreach ( $extractedrefs as $extractedref ) {
 
 							$master = nbt_get_final ( $form['id'], $refset['id'], $extractedref['id'], FALSE );
+						    // All the completed extractions:
+						    $extractions = nbt_get_extractions_for_refset_ref_and_form ($refset['id'], $extractedref['id'], $form['id']);
+
 
 							?><tr<?php
 
@@ -67,7 +70,7 @@ if ( count ( $refsets ) > 0 ) {
 								<td>
 									<?php
 
-									$extractions = nbt_get_extractions_for_refset_ref_and_form ( $refset['id'], $extractedref['id'], $form['id'] );
+									// $extractions = nbt_get_extractions_for_refset_ref_and_form ( $refset['id'], $extractedref['id'], $form['id'] );
 
 									foreach ( $extractions as $extraction ) {
 
