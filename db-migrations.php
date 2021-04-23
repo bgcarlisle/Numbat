@@ -861,6 +861,177 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	
     }
 
+    // Add the conditional display columns for sub-extractions
+
+    function check_for_subelements_column ($columnname) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `subelements` LIKE :column;");
+
+	    $stmt->bindParam(':column', $col);
+
+	    $col = $columnname;
+
+	    $stmt->execute();
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    if ( count ($result) == 1 ) {
+		return TRUE;
+	    } else {
+		return FALSE;
+	    }
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    if (! check_for_subelements_column ("startup_visible")) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `subelements` ADD COLUMN `startup_visible` INT(11) NULL DEFAULT 1 AFTER `toggle`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>Sub-extraction elements table updated with startup_visible column</p>";
+	    } else {
+		echo "<p>Error updating sub-extraction elements table with startup_visible column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    if (! check_for_subelements_column ("conditional_logical_operator")) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `subelements` ADD COLUMN `conditional_logical_operator` CHAR(3) NULL DEFAULT 'any' AFTER `startup_visible`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>Sub-extraction elements table updated with conditional_logical_operator column</p>";
+	    } else {
+		echo "<p>Error updating sub-extraction elements table with conditional_logical_operator column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    if (! check_for_subelements_column ("destructive_hiding")) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `subelements` ADD COLUMN `destructive_hiding` INT(11) NULL DEFAULT '1' AFTER `conditional_logical_operator`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>Sub-extraction elements table updated with destructive_hiding column</p>";
+	    } else {
+		echo "<p>Error updating sub-extraction elements table with destructive_hiding column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    // Add subelementid column to conditional display table
+
+    function check_for_conditional_display_column ($columnname) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `conditional_display` LIKE :column;");
+
+	    $stmt->bindParam(':column', $col);
+
+	    $col = $columnname;
+
+	    $stmt->execute();
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    if ( count ($result) == 1 ) {
+		return TRUE;
+	    } else {
+		return FALSE;
+	    }
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    if (! check_for_conditional_display_column ("subelementid")) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `conditional_display` ADD COLUMN `subelementid` INT(11) NULL DEFAULT NULL AFTER `elementid`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>Conditional display table updated with subelementid column</p>";
+	    } else {
+		echo "<p>Error updating conditional display table with subelementid column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+
     // End
     
 } else { // Not admin
