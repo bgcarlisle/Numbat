@@ -809,6 +809,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	}
 	
+    } else {
+	echo "<p>Form elements table already has a startup_visible column</p>";
     }
 
     if (! check_for_formelements_column ("conditional_logical_operator")) {
@@ -834,6 +836,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	}
 	
+    } else {
+	echo "<p>Form elements table already has a conditional_logical_operator column</p>";
     }
 
     if (! check_for_formelements_column ("destructive_hiding")) {
@@ -859,42 +863,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	}
 	
+    } else {
+	echo "<p>Form elements table already has a destructive_hiding column</p>";
     }
 
     // Add the conditional display columns for sub-extractions
-
-    function check_for_subelements_column ($columnname) {
-
-	try {
-
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `subelements` LIKE :column;");
-
-	    $stmt->bindParam(':column', $col);
-
-	    $col = $columnname;
-
-	    $stmt->execute();
-
-	    $result = $stmt->fetchAll();
-
-	    $dbh = null;
-
-	    if ( count ($result) == 1 ) {
-		return TRUE;
-	    } else {
-		return FALSE;
-	    }
-	    
-	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-	
-    }
 
     if (! check_for_subelements_column ("startup_visible")) {
 
@@ -919,6 +892,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	}
 	
+    } else {
+	echo "<p>Sub-extraction elements table already has a startup_visible column</p>";
     }
 
     if (! check_for_subelements_column ("conditional_logical_operator")) {
@@ -944,6 +919,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	}
 	
+    } else {
+	echo "<p>Sub-extraction elements table already has a conditional_logical_operator column</p>";
     }
 
     if (! check_for_subelements_column ("destructive_hiding")) {
@@ -969,6 +946,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	}
 	
+    } else {
+	echo "<p>Sub-extraction elements table already has a destructive_hiding column</p>";
     }
 
     // Add subelementid column to conditional display table
@@ -1029,8 +1008,9 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	}
 	
+    } else {
+	echo "<p>Conditional display table already has a subelementid column</p>";
     }
-
 
     // End
     
