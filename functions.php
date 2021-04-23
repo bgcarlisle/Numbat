@@ -16197,6 +16197,37 @@ function nbt_add_conditional_display_event ($elementid) {
     
 }
 
+function nbt_add_sub_conditional_display_event ($subelementid) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("INSERT INTO `conditional_display` (`subelementid`) VALUES (:seid);");
+	
+	$stmt->bindParam(':seid', $seid);
+
+	$seid = $subelementid;
+
+	if ( $stmt->execute() ) {
+
+	    return TRUE;
+
+	} else {
+
+	    return FALSE;
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
 function nbt_remove_conditional_display_event ($eventid) {
 
     try {
@@ -16238,6 +16269,39 @@ function nbt_get_conditional_events ($elementid) {
 	$stmt->bindParam(':eid', $eid);
 
 	$eid = $elementid;
+
+	if ( $stmt->execute() ) {
+
+	    $result = $stmt->fetchAll();
+
+	    return $result;
+
+	} else {
+
+	    return FALSE;
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }    
+    
+}
+
+function nbt_get_sub_conditional_events ($subelementid) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `conditional_display` WHERE `subelementid` = :seid;");
+	
+	$stmt->bindParam(':seid', $seid);
+
+	$seid = $subelementid;
 
 	if ( $stmt->execute() ) {
 

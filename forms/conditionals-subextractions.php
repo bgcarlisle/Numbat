@@ -1,10 +1,10 @@
 <?php
 
-$events = nbt_get_conditional_events ($elementid);
+$events = nbt_get_sub_conditional_events ($subelementid);
 
-$element = nbt_get_form_element_for_elementid ($elementid);
+$subelement = nbt_get_sub_element_for_subelementid ($subelementid);
 
-$all_elements = nbt_get_elements_for_formid ($element['formid']);
+$all_elements = nbt_get_sub_extraction_elements_for_elementid ($subelement['elementid']);
 
 if ($events) { foreach ($events as $event) { ?>
 
@@ -15,7 +15,7 @@ if ($events) { foreach ($events as $event) { ?>
 	    <button onclick="$('#nbtRemoveCDEventContainer<?php echo $event['id']; ?>').slideUp(0);$('#nbtRemoveCDEvent<?php echo $event['id']; ?>').slideDown();">Cancel</button>
 	</div>
 
-	<select onchange="nbtUpdateCondDispTriggerElement(<?php echo $event['id']; ?>);" id="nbtCondDispTriggerElement<?php echo $event['id']; ?>">
+	<select onchange="nbtUpdateSubCondDispTriggerElement(<?php echo $event['id']; ?>);" id="nbtSubCondDispTriggerElement<?php echo $event['id']; ?>">
 	    <option value="ns">Choose a form element</option>
 	    <?php
 
@@ -57,7 +57,7 @@ if ($events) { foreach ($events as $event) { ?>
 
 	<?php
 
-	$options = nbt_get_all_select_options_for_element ($selected_trigger_element);
+	$options = nbt_get_all_select_options_for_sub_element ($selected_trigger_element);
 
 	switch ($event['type']) {
 	    case "is":
@@ -72,7 +72,7 @@ if ($events) { foreach ($events as $event) { ?>
 
 	?>
 
-	<select onchange="nbtUpdateCondDispTriggerOption(<?php echo $event['id']; ?>);" id="nbtCondDispTriggerOption<?php echo $event['id']; ?>"<?php if (! $show_trigger_options) { echo ' class="nbtHidden"'; } ?>>
+	<select onchange="nbtUpdateSubCondDispTriggerOption(<?php echo $event['id']; ?>);" id="nbtSubCondDispTriggerOption<?php echo $event['id']; ?>"<?php if (! $show_trigger_options) { echo ' class="nbtHidden"'; } ?>>
 	    <option value="ns">Choose an option</option>
 	    <?php
 

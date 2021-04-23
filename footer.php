@@ -5085,14 +5085,30 @@
      
  }
 
- function nbtRemoveCondDispEvent (elementid, eventid) {
+ function nbtAddCondDispEventSub (subelementid) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/addconddispevent.php',
+	 type: 'post',
+	 data: {
+	     subelement: subelementid
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+
+	 $('#nbtCondDispEventsContainerSub' + subelementid).html(response);
+	 
+     });
+     
+ }
+
+ function nbtRemoveCondDispEvent (eventid) {
 
      $.ajax ({
 	 url: numbaturl + 'forms/removeconddispevent.php',
 	 type: 'post',
 	 data: {
-	     event: eventid,
-	     element: elementid
+	     event: eventid
 	 },
 	 dataType: 'html'
      }).done( function (response) {
@@ -5136,6 +5152,33 @@
      
  }
 
+ function nbtUpdateSubCondDispTriggerElement (eventid) {
+     
+     $.ajax ({
+	 url: numbaturl + 'forms/updatesubconddisptriggerelement.php',
+	 type: 'post',
+	 data: {
+	     event: eventid,
+	     trigger_element: $('#nbtSubCondDispTriggerElement' + eventid).val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 res = JSON.parse(response);
+	 
+	 if (res) {
+	     $('#nbtSubCondDispTriggerOption' + eventid).html('');
+	     $('#nbtSubCondDispTriggerOption' + eventid).append('<option value="ns" selected>Choose an option</option>');
+	     for (var i = 0; i < res.length; i++) {
+		 $('#nbtSubCondDispTriggerOption' + eventid).append('<option value="' + res[i]['id'] + '">' + res[i]['displayname'] + '</option>');
+	     }
+	     nbtUpdateCondDispTriggerOption (eventid);
+	 } else {
+	     alert (response);
+	 }
+     });
+     
+ }
+
  function nbtUpdateCondDispTriggerOption (eventid) {
 
      $.ajax ({
@@ -5144,6 +5187,24 @@
 	 data: {
 	     event: eventid,
 	     trigger_option: $('#nbtCondDispTriggerOption' + eventid).val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 if (response != 'Success') {
+	     alert(response);
+	 }
+     });
+     
+ }
+
+ function nbtUpdateSubCondDispTriggerOption (eventid) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/updateconddisptriggeroption.php',
+	 type: 'post',
+	 data: {
+	     event: eventid,
+	     trigger_option: $('#nbtSubCondDispTriggerOption' + eventid).val()
 	 },
 	 dataType: 'html'
      }).done( function (response) {
@@ -5170,10 +5231,12 @@
 		 case "is":
 		 case "is-not":
 		     $('#nbtCondDispTriggerOption' + eventid).slideDown();
+		     $('#nbtSubCondDispTriggerOption' + eventid).slideDown();
 		     break;
 		 case "has-response":
 		 case "no-response":
 		     $('#nbtCondDispTriggerOption' + eventid).slideUp();
+		     $('#nbtSubCondDispTriggerOption' + eventid).slideUp();
 		     break;
 	     }
 	 } else {

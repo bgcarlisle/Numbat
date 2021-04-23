@@ -119,7 +119,7 @@ foreach ( $subelements as $subelement ) {
 			include (ABS_PATH . "forms/conditionals-subextractions.php");
 			?>
 		    </div>
-		    <button id="nbtAddConditionalDisplayEventSub<?php echo $subelement['id']; ?>" style="margin-top: 10px;" onclick="nbtAddCondDispEvent(<?php echo $subelement['id']; ?>);" <?php if ($subelement['startup_visible'] == 1) { echo ' class="nbtHidden"'; } ?>>Add condition</button>
+		    <button id="nbtAddConditionalDisplayEventSub<?php echo $subelement['id']; ?>" style="margin-top: 10px;" onclick="nbtAddCondDispEventSub(<?php echo $subelement['id']; ?>);" <?php if ($subelement['startup_visible'] == 1) { echo ' class="nbtHidden"'; } ?>>Add condition</button>
 		    <p id="nbtDestructiveHidingDescriptionSub<?php echo $subelement['id']; ?>" <?php if ($subelement['startup_visible'] == 1) { echo ' class="nbtHidden"'; } ?>>
 			In the case that this element is hidden by a conditional display event after a response has been entered:
 			<select id="nbtSubCondDispHideAction<?php echo $subelement['id']; ?>" onchange="nbtUpdateSubCondDispHideAction(<?php echo $subelement['id']; ?>);">
