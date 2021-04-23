@@ -3252,6 +3252,7 @@
      }).done ( function (html) {
 
 	 $('#nbtFormElements').html(html);
+	 $('.nbtSubExtractionEditor').sortable();
 
      });
 
