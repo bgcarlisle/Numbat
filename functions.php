@@ -16137,6 +16137,35 @@ function nbt_toggle_element_startup_visible ($elementid) {
     
 }
 
+function nbt_toggle_subelement_startup_visible ($subelementid) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `subelements` SET `startup_visible` = IF(`startup_visible`=1, 0, 1) WHERE `id` = :seid LIMIT 1;");
+	
+	$stmt->bindParam(':seid', $seid);
+
+	$seid = $subelementid;
+
+	if ( $stmt->execute() ) {
+
+	    $subelement = nbt_get_sub_element_for_subelementid ($subelementid);
+
+	    return ($subelement['startup_visible']);
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
 function nbt_add_conditional_display_event ($elementid) {
 
     try {
@@ -16394,6 +16423,35 @@ function nbt_update_conditional_display_logic ($elementid, $operator) {
     
 }
 
+function nbt_update_sub_conditional_display_logic ($subelementid, $operator) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `subelements` SET `conditional_logical_operator` = :lopt WHERE `id` = :subelementid LIMIT 1;");
+	
+	$stmt->bindParam(':lopt', $lopt);
+	$stmt->bindParam(':subelementid', $sele);
+
+	$lopt = $operator;
+	$sele = $subelementid;
+
+	if ( $stmt->execute() ) {
+	    return TRUE;
+	} else {
+	    return FALSE;
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
 function nbt_update_conditional_display_destructive_hiding ($elementid, $destructive_hiding) {
 
     try {
@@ -16406,6 +16464,35 @@ function nbt_update_conditional_display_destructive_hiding ($elementid, $destruc
 
 	$dh = $destructive_hiding;
 	$ele = $elementid;
+
+	if ( $stmt->execute() ) {
+	    return TRUE;
+	} else {
+	    return FALSE;
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
+function nbt_update_sub_conditional_display_destructive_hiding ($subelementid, $destructive_hiding) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `subelements` SET `destructive_hiding` = :dh WHERE `id` = :seid LIMIT 1;");
+	
+	$stmt->bindParam(':dh', $dh);
+	$stmt->bindParam(':seid', $seid);
+
+	$dh = $destructive_hiding;
+	$seid = $subelementid;
 
 	if ( $stmt->execute() ) {
 	    return TRUE;

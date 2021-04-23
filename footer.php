@@ -4939,7 +4939,7 @@
      
      // Send that to the server
      $.ajax ({
-	 url: numbaturl + '/forms/saveformelementssortorder.php',
+	 url: numbaturl + 'forms/saveformelementssortorder.php',
 	 type: 'post',
 	 data: {
 	     elementorder: elements
@@ -4968,7 +4968,7 @@
 
      // Send that to the server
      $.ajax ({
-	 url: numbaturl + '/forms/savesubelementssortorder.php',
+	 url: numbaturl + 'forms/savesubelementssortorder.php',
 	 type: 'post',
 	 data: {
 	     subelementorder: subelements
@@ -5005,7 +5005,7 @@
  function nbtFormElementToggleStartupVisible (elementid) {
      
      $.ajax ({
-	 url: numbaturl + '/forms/elementtogglestartupvisible.php',
+	 url: numbaturl + 'forms/elementtogglestartupvisible.php',
 	 type: 'post',
 	 data: {
 	     element: elementid
@@ -5035,10 +5035,43 @@
      
  }
 
+ function nbtSubElementToggleStartupVisible (subelementid) {
+     
+     $.ajax ({
+	 url: numbaturl + 'forms/subelementtogglestartupvisible.php',
+	 type: 'post',
+	 data: {
+	     subelement: subelementid
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+
+	 if ( response == 1 ) {
+	     $('#nbtCondDispStartStatusVisibleSub' + subelementid).addClass('nbtTextOptionChosen');
+	     $('#nbtCondDispStartStatusHiddenSub' + subelementid).removeClass('nbtTextOptionChosen');
+
+	     $('#nbtCondDispEventsContainerSub' + subelementid).slideUp();
+	     $('#nbtAddConditionalDisplayEventSub' + subelementid).slideUp();
+	     $('#nbtConditionLogicDescriptionSub' + subelementid).slideUp();
+	     $('#nbtDestructiveHidingDescriptionSub' + subelementid).slideUp();
+	 } else {
+	     $('#nbtCondDispStartStatusVisibleSub' + subelementid).removeClass('nbtTextOptionChosen');
+	     $('#nbtCondDispStartStatusHiddenSub' + subelementid).addClass('nbtTextOptionChosen');
+
+	     $('#nbtCondDispEventsContainerSub' + subelementid).slideDown();
+	     $('#nbtAddConditionalDisplayEventSub' + subelementid).slideDown();
+	     $('#nbtConditionLogicDescriptionSub' + subelementid).slideDown();
+	     $('#nbtDestructiveHidingDescriptionSub' + subelementid).slideDown();
+	 }
+	 
+     });
+     
+ }
+
  function nbtAddCondDispEvent (elementid) {
 
      $.ajax ({
-	 url: numbaturl + '/forms/addconddispevent.php',
+	 url: numbaturl + 'forms/addconddispevent.php',
 	 type: 'post',
 	 data: {
 	     element: elementid
@@ -5055,7 +5088,7 @@
  function nbtRemoveCondDispEvent (elementid, eventid) {
 
      $.ajax ({
-	 url: numbaturl + '/forms/removeconddispevent.php',
+	 url: numbaturl + 'forms/removeconddispevent.php',
 	 type: 'post',
 	 data: {
 	     event: eventid,
@@ -5079,7 +5112,7 @@
  function nbtUpdateCondDispTriggerElement (eventid) {
 
      $.ajax ({
-	 url: numbaturl + '/forms/updateconddisptriggerelement.php',
+	 url: numbaturl + 'forms/updateconddisptriggerelement.php',
 	 type: 'post',
 	 data: {
 	     event: eventid,
@@ -5106,7 +5139,7 @@
  function nbtUpdateCondDispTriggerOption (eventid) {
 
      $.ajax ({
-	 url: numbaturl + '/forms/updateconddisptriggeroption.php',
+	 url: numbaturl + 'forms/updateconddisptriggeroption.php',
 	 type: 'post',
 	 data: {
 	     event: eventid,
@@ -5124,7 +5157,7 @@
  function nbtUpdateCondDispType (eventid) {
 
      $.ajax ({
-	 url: numbaturl + '/forms/updateconddisptype.php',
+	 url: numbaturl + 'forms/updateconddisptype.php',
 	 type: 'post',
 	 data: {
 	     event: eventid,
@@ -5153,7 +5186,7 @@
  function nbtUpdateCondDispLogic (elementid) {
 
      $.ajax ({
-	 url: numbaturl + '/forms/updateconddisplogic.php',
+	 url: numbaturl + 'forms/updateconddisplogic.php',
 	 type: 'post',
 	 data: {
 	     element: elementid,
@@ -5168,14 +5201,50 @@
      
  }
 
+ function nbtUpdateSubCondDispLogic (subelementid) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/updatesubconddisplogic.php',
+	 type: 'post',
+	 data: {
+	     subelement: subelementid,
+	     operator: $('#nbtSubCondDispLogic' + subelementid).val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 if (response != 'Success') {
+	     alert(response);
+	 }
+     });
+     
+ }
+
  function nbtUpdateCondDispHideAction (elementid) {
 
      $.ajax ({
-	 url: numbaturl + '/forms/updateconddisphideaction.php',
+	 url: numbaturl + 'forms/updateconddisphideaction.php',
 	 type: 'post',
 	 data: {
 	     element: elementid,
 	     action: $('#nbtCondDispHideAction' + elementid).val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 if (response != 'Success') {
+	     alert(response);
+	 }
+     });
+     
+ }
+
+ function nbtUpdateSubCondDispHideAction (subelementid) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/updatesubconddisphideaction.php',
+	 type: 'post',
+	 data: {
+	     subelement: subelementid,
+	     action: $('#nbtSubCondDispHideAction' + subelementid).val()
 	 },
 	 dataType: 'html'
      }).done( function (response) {

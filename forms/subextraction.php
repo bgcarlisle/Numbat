@@ -101,7 +101,34 @@ foreach ( $subelements as $subelement ) {
 		<p>Codebook</p>
 		<p class="nbtFinePrint">Will appear on extraction sheet when (?) is clicked</p>
 		<textarea style="width: 100%; height: 80px;" id="nbtSubElementCodebook<?php echo $subelement['id']; ?>" onblur="nbtChangeSubElementCodebook(<?php echo $subelement['id']; ?>);"><?php echo $subelement['codebook']; ?></textarea>
-	<p id="nbtSubElementFeedback<?php echo $subelement['id']; ?>" class="nbtHidden">&nbsp;</p>
+		<div class="nbtConditionalDisplayEditor" style="border: 1px solid #999; border-radius: 3px; padding: 10px; margin: 5px 0 20px 0; background-color: #eee;">
+		    <p>When the form is first opened, this item should be:</p>
+		    <a id="nbtCondDispStartStatusVisibleSub<?php echo $subelement['id']; ?>" class="nbtTextOptionSelect<?php if ($subelement['startup_visible'] == 1) { echo ' nbtTextOptionChosen'; } ?>" onclick="event.preventDefault();nbtSubElementToggleStartupVisible(<?php echo $subelement['id']; ?>);">Visible</a>
+		    <a id="nbtCondDispStartStatusHiddenSub<?php echo $subelement['id']; ?>" class="nbtTextOptionSelect<?php if ($subelement['startup_visible'] != 1) { echo ' nbtTextOptionChosen'; } ?>" onclick="event.preventDefault();nbtSubElementToggleStartupVisible(<?php echo $subelement['id']; ?>);">Hidden</a>
+		    <p id="nbtConditionLogicDescriptionSub<?php echo $subelement['id']; ?>" <?php if ($subelement['startup_visible'] == 1) { echo ' class="nbtHidden"'; } ?>>
+			Show this element when
+			<select id="nbtSubCondDispLogic<?php echo $subelement['id']; ?>" onchange="nbtUpdateSubCondDispLogic(<?php echo $subelement['id']; ?>);">
+			    <option value="any"<?php if ($subelement['conditional_logical_operator'] == "any") { echo " selected"; } ?>>any</option>
+			    <option value="all"<?php if ($subelement['conditional_logical_operator'] == "all") { echo " selected"; } ?>>all</option>
+			</select>
+			of the following conditions are met:
+		    </p>
+		    <div id="nbtCondDispEventsContainerSub<?php echo $subelement['id']; ?>" <?php if ($subelement['startup_visible'] == 1) { echo ' class="nbtHidden"'; } ?>>
+			<?php
+			$subelementid = $subelement['id'];
+			include (ABS_PATH . "forms/conditionals-subextractions.php");
+			?>
+		    </div>
+		    <button id="nbtAddConditionalDisplayEventSub<?php echo $subelement['id']; ?>" style="margin-top: 10px;" onclick="nbtAddCondDispEvent(<?php echo $subelement['id']; ?>);" <?php if ($subelement['startup_visible'] == 1) { echo ' class="nbtHidden"'; } ?>>Add condition</button>
+		    <p id="nbtDestructiveHidingDescriptionSub<?php echo $subelement['id']; ?>" <?php if ($subelement['startup_visible'] == 1) { echo ' class="nbtHidden"'; } ?>>
+			In the case that this element is hidden by a conditional display event after a response has been entered:
+			<select id="nbtSubCondDispHideAction<?php echo $subelement['id']; ?>" onchange="nbtUpdateSubCondDispHideAction(<?php echo $subelement['id']; ?>);">
+			    <option value="1"<?php if ($subelement['destructive_hiding'] == 1) { echo " selected"; } ?>>Clear response</option>
+			    <option value="0"<?php if ($subelement['destructive_hiding'] == 0) { echo " selected"; } ?>>Preserve response</option>
+			</select>
+		    </p>
+		</div>
+		<p id="nbtSubElementFeedback<?php echo $subelement['id']; ?>" class="nbtHidden">&nbsp;</p>
 	</div><?php
 
 }
