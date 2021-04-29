@@ -4,7 +4,7 @@
 
 The source code for Numbat is available on [Github](https://github.com/bgcarlisle/Numbat "Numbat Github").
 
-Numbat is free software first developed by PhD student Benjamin Carlisle in 2014 for use by the STREAM research group[^1] in the Biomedical Ethics Unit at McGill University to facilitate systematic review work for the *Animals, Humans and the Continuity of Evidence* grant as well as the *Signals, Safety and Success* grant. This work was funded by the Canadian Institutes of Health Research (MOP 119574), and it is released as free and open-source under the GNU AGPL v 3.
+Numbat is free software first developed by Benjamin Carlisle in 2014 for use by the STREAM research group[^1] in the Biomedical Ethics Unit at McGill University to facilitate systematic review work for the *Animals, Humans and the Continuity of Evidence* grant as well as the *Signals, Safety and Success* grant. This work was funded by the Canadian Institutes of Health Research (MOP 119574), and it is released as free and open-source under the GNU AGPL v 3.
 
 It is named after the numbat, because numbats feed on termites by extracting them from their hiding places with very long and flexible tongues.
 
@@ -18,11 +18,11 @@ Numbat is a piece of software designed for managing the extraction of large volu
 
 The following are the intended uses of Numbat.
 
-* Manage large databases of references
+* Manage large databases of references ("large" here means: in the hundreds to thousands range)
 * Different levels of extraction (e.g. title-and-abstract vs full extraction)
 * Multiple extraction forms / codebooks
-* Multiple users, with an assignment manager
-* Can generate reference networks among the publications in the database
+* Double, triple or n extractors, with an assignment manager
+* Generate reference networks among the publications in the database
 
 ### What Numbat doesn't do
 
@@ -47,7 +47,7 @@ The following are the intended uses of Numbat.
 * No good, built-in way to reconcile multiple extractions
 * Built-in blinding from other extractors' work to minimise validity threats to your systematic review work
 * Built-in assignment manager
-* Google Forms do not accommodate certain data structures, like table data and reference networks
+* Google Forms do not accommodate certain data structures, like table data and citation networks
 
 ## Installation requirements
 
