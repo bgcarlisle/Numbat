@@ -103,6 +103,10 @@
 			     break;
 		     }
 
+		     if ($combined_expression == "") {
+			 $combined_expression = "false";
+		     }
+
 		     echo "\n\n$('" . $trigger_selector . "').on('answerChange', function () {\n";
 
 		     echo "  if (" . $combined_expression . ") {\n";
