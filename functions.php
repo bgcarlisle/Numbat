@@ -1872,15 +1872,23 @@ function nbt_echo_multi_select ($formid, $extraction, $question, $options, $togg
 
 }
 
-function nbt_echo_subextraction_multi_select ($elementid, $subextraction, $question, $options, $toggles = NULL ) {
+function nbt_echo_subextraction_multi_select ($elementid, $subelementid, $subextraction, $question, $options, $toggles = NULL ) {
 
     // $options must be an array of the names of the column in the db
 
     foreach ( $options as $dbcolumn => $plaintext ) {
 
-	echo '<a href="#" class="nbtTextOptionSelect ';
+	echo '<a href="#" ';
+
+	echo 'subextractionid="' . $subextraction['id'] . '" ';
+
+	echo 'class="nbtTextOptionSelect ';
 
 	echo "nbt" . $question;
+
+	echo " nbtCDSubelement" . $subelementid;
+
+	echo " nbtSubCDSubextraction" . $subextraction['id'];
 
 	echo " nbtSub" . $subextraction['id'] . "-" . $question;
 
@@ -2047,7 +2055,7 @@ function nbt_echo_single_select ($formid, $extraction, $question, $answers, $tog
 
 }
 
-function nbt_echo_subextraction_single_select ($elementid, $subextraction, $question, $answers, $toggles = NULL) {
+function nbt_echo_subextraction_single_select ($elementid, $subelementid, $subextraction, $question, $answers, $toggles = NULL) {
 
     // $question must be the name of the column in the db
     // $answers must be an array of the answer entered in the db and the plain text version displayed
@@ -2057,6 +2065,10 @@ function nbt_echo_subextraction_single_select ($elementid, $subextraction, $ques
 	echo '<a href="#" class="nbtTextOptionSelect';
 
 	echo " nbtSub" . $subextraction['id'] . "-" . $question;
+
+	echo " nbtCDSubelement" . $subelementid;
+
+	echo " nbtSubCDSubextraction" . $subextraction['id'];
 
 	if ( ! is_null ( $subextraction[$question] ) ) { // This is because PHP will say that 0 and NULL are the same
 
@@ -2070,7 +2082,7 @@ function nbt_echo_subextraction_single_select ($elementid, $subextraction, $ques
 
 	$buttonid = "nbtSub" . $elementid . "-" . $subextraction['id'] . "Q" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
 
-?>" id="<?php echo $buttonid; ?>" onclick="event.preventDefault();nbtSaveSubExtractionSingleSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbtSub<?php echo $subextraction['id'] . "-" . $question; ?>');" conditionalid="<?php echo $toggles[$dbanswer]; ?>_sub<?php echo $subextraction['id']; ?>"><?php echo $ptanswer; ?></a>
+?>" id="<?php echo $buttonid; ?>" subextractionid="<?php echo $subextraction['id']; ?>" onclick="event.preventDefault();nbtSaveSubExtractionSingleSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbtSub<?php echo $subextraction['id'] . "-" . $question; ?>');" conditionalid="<?php echo $toggles[$dbanswer]; ?>_sub<?php echo $subextraction['id']; ?>"><?php echo $ptanswer; ?></a>
 <?php }
 
 }

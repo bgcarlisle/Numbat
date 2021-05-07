@@ -19,15 +19,7 @@ foreach ( $subextractions as $subextraction ) {
 
 				case "open_text":
 
-					?><div<?php
-
-					if ( $subelement['toggle'] != "" ) {
-
-						?> class="nbtHidden <?php echo $subelement['toggle']; ?>_sub<?php echo $subextraction['id']; ?>"<?php
-
-					}
-
-					?>><?php
+					?><div id="nbtSubelementContainer<?php echo $subelement['id'] ?>-<?php echo $subextraction['id']; ?>"<?php if ($subelement['startup_visible'] != 1) { echo ' class="nbtHidden"'; } ?>><?php
 
 						nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
 
@@ -45,15 +37,7 @@ foreach ( $subextractions as $subextraction ) {
 
 				case "date_selector":
 
-					?><div<?php
-
-					if ( $subelement['toggle'] != "" ) {
-
-						?> class="nbtHidden <?php echo $subelement['toggle']; ?>_sub<?php echo $subextraction['id']; ?>"<?php
-
-					}
-
-					?>><?php
+					?><div id="nbtSubelementContainer<?php echo $subelement['id']; ?>-<?php echo $subextraction['id']; ?>"<?php if ($subelement['startup_visible'] != 1) { echo ' class="nbtHidden"'; } ?>><?php
 
 						nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
 
@@ -71,15 +55,7 @@ foreach ( $subextractions as $subextraction ) {
 
 				case "single_select":
 
-					?><div<?php
-
-					if ( $subelement['toggle'] != "" ) {
-
-						?> class="nbtHidden <?php echo $subelement['toggle']; ?>_sub<?php echo $subextraction['id']; ?>"<?php
-
-					}
-
-					?>><?php
+					?><div id="nbtSubelementContainer<?php echo $subelement['id']; ?>-<?php echo $subextraction['id']; ?>"<?php if ($subelement['startup_visible'] != 1) { echo ' class="nbtHidden"'; } ?>><?php
 
 						nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
 
@@ -95,7 +71,7 @@ foreach ( $subextractions as $subextraction ) {
 
 						}
 
-						nbt_echo_subextraction_single_select ( $nbtSubExtractionElementID, $subextraction, $subelement['dbname'], $answers, $toggles );
+						nbt_echo_subextraction_single_select ( $nbtSubExtractionElementID, $subelement['id'], $subextraction, $subelement['dbname'], $answers, $toggles );
 
 						if ( $previous != NULL & $subelement['copypreviousprompt'] == 1 ) {
 
@@ -109,15 +85,7 @@ foreach ( $subextractions as $subextraction ) {
 
 				case "multi_select":
 
-					?><div<?php
-
-					if ( $subelement['toggle'] != "" ) {
-
-						?> class="nbtHidden <?php echo $subelement['toggle']; ?>_sub<?php echo $subextraction['id']; ?>"<?php
-
-					}
-
-					?>><?php
+					?><div id="nbtSubelementContainer<?php echo $subelement['id']; ?>-<?php echo $subextraction['id']; ?>"<?php if ($subelement['startup_visible'] != 1) { echo ' class="nbtHidden"'; } ?>><?php
 
 						nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
 
@@ -133,7 +101,7 @@ foreach ( $subextractions as $subextraction ) {
 
 						}
 
-						nbt_echo_subextraction_multi_select ($nbtSubExtractionElementID, $subextraction, $subelement['dbname'], $answers, $toggles );
+						nbt_echo_subextraction_multi_select ($nbtSubExtractionElementID, $subelement['id'], $subextraction, $subelement['dbname'], $answers, $toggles );
 
 						if ( $previous != NULL & $subelement['copypreviousprompt'] == 1 ) {
 
@@ -147,15 +115,7 @@ foreach ( $subextractions as $subextraction ) {
 
 				case "table_data":
 
-					?><div<?php
-
-					if ( $subelement['toggle'] != "" ) {
-
-						?> class="nbtHidden <?php echo $subelement['toggle']; ?>_sub<?php echo $subextraction['id']; ?>"<?php
-
-					}
-
-					?>><?php
+					?><div id="nbtSubelementContainer<?php echo $subelement['id']; ?>-<?php echo $subextraction['id']; ?>"<?php if ($subelement['startup_visible'] != 1) { echo ' class="nbtHidden"'; } ?>><?php
 
 						nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
 

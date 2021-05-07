@@ -37,7 +37,7 @@
 		     $event_expressions = [];
 		     foreach ($cd_events as $event) {
 			 $trigger_element = nbt_get_form_element_for_elementid ($event['trigger_element']);
-			 $trigger_options = $options = nbt_get_all_select_options_for_element ($event['trigger_element']);
+			 $trigger_options = nbt_get_all_select_options_for_element ($event['trigger_element']);
 			 
 			 switch ($trigger_element['type']) {
 			     case "single_select":
@@ -155,7 +155,138 @@
 		     echo "$('.nbtTextOptionSelect').trigger('answerChange');\n\n";
 
 		 }
+		 
+	     }
 
+	     // Add conditional display logic for each sub-extraction
+	     
+	     if ($ele['type'] == "sub_extraction") {
+
+		 // Get all the subelements
+
+		 $subelements = nbt_get_sub_extraction_elements_for_elementid ( $ele['id'] );
+
+		 foreach ($subelements as $sele) {
+		     if ($sele['startup_visible'] != 1) {
+			 // We're only interested in subelements that are hidden at startup
+			 $sub_cd_events = nbt_get_sub_conditional_events ($sele['id']);
+
+			 // Make a CSS selector for all the things that should
+			 // trigger this
+
+			 $sub_trigger_selectors = [];
+			 foreach ($sub_cd_events as $event) {
+			     $trigger_element = nbt_get_sub_element_for_subelementid ($event['trigger_element']);
+
+			     if (! in_array (".nbtCDSubelement" . $trigger_element['id'], $sub_trigger_selectors) ) {
+				 array_push($sub_trigger_selectors, ".nbtCDSubelement" . $trigger_element['id']);
+			     }
+			     
+			 }
+			 $sub_trigger_selector = implode(", ", $sub_trigger_selectors);
+
+			 if (count ($sub_trigger_selectors) > 0) {
+
+			     // Make jQuery expressions for each of the conditions
+			     $sub_event_expressions = [];
+			     foreach ($sub_cd_events as $event) {
+				 $trigger_element = nbt_get_sub_element_for_subelementid ($event['trigger_element']);
+				 $trigger_options = nbt_get_all_select_options_for_sub_element ($event['trigger_element']);
+
+				 switch ($trigger_element['type']) {
+				     case "single_select":
+					 switch ($event['type']) {
+					     case "is":
+						 foreach ($trigger_options as $opt) {
+						     if ($opt['id'] == $event['trigger_option']) {
+							 array_push($sub_event_expressions, "$('#nbtSub" . $trigger_element['elementid'] . "-' + subexid + 'Q" . $trigger_element['dbname'] . "A" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
+						     }
+						 }
+						 break;
+					     case "is-not":
+						 foreach ($trigger_options as $opt) {
+						     if ($opt['id'] == $event['trigger_option']) {
+							 array_push($sub_event_expressions, "! $('#nbtSub" . $trigger_element['elementid'] . "-' + subexid + 'Q" . $trigger_element['dbname'] . "A" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
+						     }
+						 }
+						 break;
+					     case "has-response":
+						 array_push($sub_event_expressions, "$('.nbtSubCDSubextraction' + subexid + '.nbtCDSubelement" . $trigger_element['elementid'] . "').hasClass('nbtTextOptionChosen')");
+						 break;
+					     case "no-response":
+						 array_push($sub_event_expressions, "! $('.nbtSubCDSubextraction' + subexid + '.nbtCDSubelement" . $trigger_element['elementid'] . "').hasClass('nbtTextOptionChosen')");
+						 break;
+					 }
+					 break;
+				     case "multi_select":
+					 switch ($event['type']) {
+					     case "is":
+						 foreach ($trigger_options as $opt) {
+						     if ($opt['id'] == $event['trigger_option']) {
+							 array_push($sub_event_expressions, "$('#nbtSub" . $trigger_element['elementid'] . "-' + subexid + 'MS" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
+						     }
+						 }
+						 break;
+					     case "is-not":
+						 foreach ($trigger_options as $opt) {
+						     if ($opt['id'] == $event['trigger_option']) {
+							 array_push($sub_event_expressions, "! $('#nbtSub" . $trigger_element['elementid'] . "-' + subexid + 'MS" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
+						     }
+						 }
+						 break;
+					     case "has-response":
+						 array_push($sub_event_expressions, "$('.nbtSubCDSubextraction' + subexid + '.nbtCDSubelement" . $trigger_element['id'] . "').hasClass('nbtTextOptionChosen')");
+						 break;
+					     case "no-response":
+						 array_push($sub_event_expressions, "! $('.nbtSubCDSubextraction' + subexid + '.nbtCDSubelement" . $trigger_element['id'] . "').hasClass('nbtTextOptionChosen')");
+						 break;
+					 }
+					 break;
+				 }
+			     }
+
+			     switch ($sele['conditional_logical_operator']) {
+				 case "any":
+				     // Combine jQuery expressions with "OR"
+				     $sub_combined_expression = implode(" | ", $sub_event_expressions);
+				     break;
+				 case "all":
+				     // Combine jQuery expressions with "AND"
+				     $sub_combined_expression = implode(" & ", $sub_event_expressions);
+				     break;
+			     }
+
+			     if ($sub_combined_expression == "") {
+				 $sub_combined_expression = "false";
+			     }
+
+			     echo "\n\n$('" . $sub_trigger_selector . "').on('answerChange', function () {\n";
+
+			     echo "  var subexid = $(this).attr('subextractionid');\n";
+			     
+			     echo "  if (" . $sub_combined_expression . ") {\n";
+			     
+			     echo "    $('#nbtSubelementContainer" . $sele['id'] . "-' + subexid).slideDown();\n";
+			     echo "    console.log('showtime');\n";
+
+			     echo "  } else {\n";
+
+			     echo "    $('#nbtSubelementContainer" . $sele['id'] . "-' + subexid).slideUp();\n";
+			     echo "    console.log('hidetime');\n";
+
+			     // Add destructive hiding part here
+			     
+			     echo "  }\n";
+
+			     echo "});\n\n";
+
+			     echo "$('.nbtTextOptionSelect').trigger('answerChange');\n\n";
+			     
+			 }
+			 
+		     }
+
+		 }
 		 
 	     }
 	 }
@@ -2098,6 +2229,7 @@
 	 }).done ( function (html) {
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
+	     $('.' + classid).trigger('answerChange');
 
 	 });
 
@@ -2117,6 +2249,7 @@
 
 	     $('.' + classid).removeClass('nbtTextOptionChosen');
 	     $('#' + buttonid).addClass('nbtTextOptionChosen');
+	     $('.' + classid).trigger('answerChange');
 
 	 });
 
@@ -2221,6 +2354,7 @@
      }).done ( function (html) {
 
 	 $('#' + buttonid).toggleClass('nbtTextOptionChosen');
+	 $('#' + buttonid).trigger('answerChange');
 
      });
 
