@@ -267,14 +267,34 @@
 			     echo "  if (" . $sub_combined_expression . ") {\n";
 			     
 			     echo "    $('#nbtSubelementContainer" . $sele['id'] . "-' + subexid).slideDown();\n";
-			     echo "    console.log('showtime');\n";
 
 			     echo "  } else {\n";
 
 			     echo "    $('#nbtSubelementContainer" . $sele['id'] . "-' + subexid).slideUp();\n";
-			     echo "    console.log('hidetime');\n";
 
 			     // Add destructive hiding part here
+
+			     if ($sele['destructive_hiding'] == 1) {
+				 switch ($sele['type']) {
+				     case "open_text":
+					 echo "    $('#nbtSub' + subexid + 'TextField" . $sele['dbname'] . "').val('').blur();\n";
+					 break;
+				     case "date_selector":
+					 echo "    $('#nbtSub' + subexid + 'DateField" . $sele['dbname'] . "').val('').blur();\n";
+					 break;
+				     case "single_select":
+					 echo "    $('.nbtCDSubelement" . $sele['id'] . ".nbtSubCDSubextraction' + subexid + '.nbtTextOptionChosen').click();\n";
+					 break;
+				     case "multi_select":
+					 $sub_element_options = nbt_get_all_select_options_for_sub_element ($sele['id']);
+					 foreach ($sub_element_options as $sele_opt) {
+					     echo "    nbtClearSubextractionMultiSelect (" . $sele['elementid'] . ", subexid, '" . $sele['dbname'] . "_" . $sele_opt['dbname'] . "', 'nbtSub" . $sele['elementid'] . "-' + subexid + 'MS" . $sele_opt['dbname'] . "');\n";
+					 }
+					 break;
+
+				 }
+				 
+			     }
 			     
 			     echo "  }\n";
 
@@ -2329,6 +2349,26 @@
 	     fid: formid,
 	     id: extractionid,
 	     question: questionlabel
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#' + buttonid).removeClass('nbtTextOptionChosen');
+	 $('#' + buttonid).trigger('answerChange');
+
+     });
+
+ }
+
+ function nbtClearSubextractionMultiSelect (elementid, subextractionid, column, buttonid) {
+
+     $.ajax ({
+	 url: numbaturl + 'extract/subclearfield.php',
+	 type: 'post',
+	 data: {
+	     eid: elementid,
+	     seid: subextractionid,
+	     col: column
 	 },
 	 dataType: 'html'
      }).done ( function (html) {
