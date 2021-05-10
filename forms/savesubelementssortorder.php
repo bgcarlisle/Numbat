@@ -4,7 +4,7 @@ include_once ("../config.php");
 
 if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) == 4 ) {
 
-    $subelements = json_decode($_POST['subelementorder']);
+    $subelements = json_decode ($_POST['subelementorder']);
 
     $successes = 0;
     $sortorder = 1;
