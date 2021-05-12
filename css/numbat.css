@@ -100,10 +100,13 @@ span#nbtTopBannerRight {
 	font-size: 10px;
 }
 input[type=text] {
-	width: 100%;
+	width: 200px;
 	margin-bottom: 4px;
 	border: 1px solid #999;
 	padding: 2px 4px 2px 4px;
+}
+.nbtElementContainer input[type=text] {
+    width: 100%;
 }
 table input[type=text] {
 	padding: 1px;

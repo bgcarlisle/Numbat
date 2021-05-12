@@ -135,7 +135,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		}
 
-		echo '<div class="nbtContentPanel';
+		echo '<div class="nbtContentPanel nbtElementContainer';
 
 		if ( $element['startup_visible'] != 1 ) {
 
@@ -177,8 +177,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden"';
+		    echo ' class="nbtElementContainer nbtHidden"';
 
+		} else {
+
+		    echo ' class="nbtElementContainer"';
 		}
 
 		echo ' id="nbtElementContainer' . $element['id'] . '">';
@@ -220,8 +223,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden"';
+		    echo ' class="nbtElementContainer nbtHidden"';
 
+		} else {
+
+		    echo ' class="nbtElementContainer"';
 		}
 
 		echo ' id ="nbtElementContainer' . $element['id'] . '">';
@@ -240,8 +246,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		
 		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden"';
+		    echo ' class="nbtElementContainer nbtHidden"';
 
+		} else {
+
+		    echo ' class="nbtElementContainer"';
 		}
 
 		echo ' id="nbtElementContainer' . $element['id'] . '">';
@@ -260,8 +269,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden"';
-		    
+		    echo ' class="nbtElementContainer nbtHidden"';
+
+		} else {
+
+		    echo ' class="nbtElementContainer"';
 		}
 
 		echo ' id="nbtElementContainer' . $element['id'] . '">';
@@ -280,8 +292,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden"';
+		    echo ' class="nbtElementContainer nbtHidden"';
 
+		} else {
+
+		    echo ' class="nbtElementContainer"';
 		}
 
 		echo ' id="nbtElementContainer' . $element['id'] . '">';
@@ -312,8 +327,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden"';
+		    echo ' class="nbtElementContainer nbtHidden"';
 
+		} else {
+
+		    echo ' class="nbtElementContainer"';
 		}
 
 		echo ' id="nbtElementContainer' . $element['id'] . '">';
@@ -344,8 +362,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden"';
+		    echo ' class="nbtElementContainer nbtHidden"';
 
+		} else {
+
+		    echo ' class="nbtElementContainer"';
 		}
 
 		echo ' id="nbtElementContainer' . $element['id'] . '">';
@@ -420,8 +441,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden"';
+		    echo ' class="nbtElementContainer nbtHidden"';
 
+		} else {
+
+		    echo ' class="nbtElementContainer"';
 		}
 
 		echo ' id="nbtElementContainer' . $element['id'] . '">';
@@ -454,8 +478,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden"';
+		    echo ' class="nbtElementContainer nbtHidden"';
 
+		} else {
+
+		    echo ' class="nbtElementContainer"';
 		}
 
 		echo ' id="nbtElementContainer' . $element['id'] . '">';
@@ -488,8 +515,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden"';
+		    echo ' class="nbtElementContainer nbtHidden"';
 
+		} else {
+
+		    echo ' class="nbtElementContainer"';
 		}
 
 		echo ' id="nbtElementContainer' . $element['id'] . '">';
@@ -591,8 +621,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden"';
+		    echo ' class="nbtElementContainer nbtHidden"';
 
+		} else {
+
+		    echo ' class="nbtElementContainer"';
 		}
 
 		echo ' id="nbtElementContainer' . $element['id'] . '">';
@@ -627,8 +660,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden"';
+		    echo ' class="nbtElementContainer nbtHidden"';
 
+		} else {
+
+		    echo ' class="nbtElementContainer"';
 		}
 
 		echo ' id="nbtElementContainer' . $element['id'] . '">';
@@ -709,8 +745,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden"';
+		    echo ' class="nbtElementContainer nbtHidden"';
 
+		} else {
+
+		    echo ' class="nbtElementContainer"';
 		}
 
 		echo ' id="nbtElementContainer' . $element['id'] . '">';
@@ -748,8 +787,11 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		if ( $element['startup_visible'] != 1 ) {
 
-		    echo ' class="nbtHidden"';
+		    echo ' class="nbtElementContainer nbtHidden"';
 
+		} else {
+
+		    echo ' class="nbtElementContainer"';
 		}
 
 		echo ' id="nbtElementContainer' . $element['id'] . '">';
