@@ -1041,6 +1041,10 @@ function nbt_get_columns_for_refset ( $refsetid ) {
 
 function nbt_update_refset_metadata ( $refset, $column, $newvalue ) {
 
+    if ($newvalue == "NULL") {
+	$newvalue = NULL;
+    }
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));

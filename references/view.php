@@ -14,15 +14,17 @@ $references = nbt_get_all_references_for_refset ( $_GET['refset'] );
     <p>In order to let extractors know what they are extracting, Numbat will draw four values for each reference and format them as a journal reference and display a fifth as an abstract. Choose the columns that represent these metadata from the reference set columns below.</p>
     <p>Title</p>
     <select id="nbtMetadata-title" onchange="nbtUpdateRefsetMetadata('title', <?php echo $refset['id']; ?>);">
+	<option value="NULL"<?php if (is_null($refset['title'])) { echo " selected"; } ?>>None selected</option>
 	<?php
 
 	$colcount = 0;
 
 	foreach ( $refsetcols as $col ) {
 
-	    if ( $colcount == $refset['title'] ) {
+	    if ( ! is_null($refset['title']) & $colcount == $refset['title'] ) {
 
 		echo "<option value=\"" . $colcount . "\" selected>" . $col[0] . "</option>";
+		
 	    } else {
 
 		echo "<option value=\"" . $colcount . "\">" . $col[0] . "</option>";
@@ -38,13 +40,14 @@ $references = nbt_get_all_references_for_refset ( $_GET['refset'] );
     
     <p>Authors</p>
     <select id="nbtMetadata-authors" onchange="nbtUpdateRefsetMetadata('authors', <?php echo $refset['id']; ?>);">
+	<option value="NULL"<?php if (is_null($refset['authors'])) { echo " selected"; } ?>>None selected</option>
 	<?php
 
 	$colcount = 0;
 
 	foreach ( $refsetcols as $col ) {
 
-	    if ( $colcount == $refset['authors'] ) {
+	    if ( ! is_null($refset['authors']) & $colcount == $refset['authors'] ) {
 
 		echo "<option value=\"" . $colcount . "\" selected>" . $col[0] . "</option>";
 	    } else {
@@ -63,13 +66,14 @@ $references = nbt_get_all_references_for_refset ( $_GET['refset'] );
     
     <p>Year</p>
     <select id="nbtMetadata-year" onchange="nbtUpdateRefsetMetadata('year', <?php echo $refset['id']; ?>);">
+	<option value="NULL"<?php if (is_null($refset['year'])) { echo " selected"; } ?>>None selected</option>
 	<?php
 
 	$colcount = 0;
 
 	foreach ( $refsetcols as $col ) {
 
-	    if ( $colcount == $refset['year'] ) {
+	    if ( ! is_null($refset['year']) & $colcount == $refset['year'] ) {
 
 		echo "<option value=\"" . $colcount . "\" selected>" . $col[0] . "</option>";
 	    } else {
@@ -88,13 +92,14 @@ $references = nbt_get_all_references_for_refset ( $_GET['refset'] );
     
     <p>Journal</p>
     <select id="nbtMetadata-journal" onchange="nbtUpdateRefsetMetadata('journal', <?php echo $refset['id']; ?>);">
+	<option value="NULL"<?php if (is_null($refset['journal'])) { echo " selected"; } ?>>None selected</option>
 	<?php
 
 	$colcount = 0;
 
 	foreach ( $refsetcols as $col ) {
 
-	    if ( $colcount == $refset['journal'] ) {
+	    if ( ! is_null($refset['journal']) & $colcount == $refset['journal'] ) {
 
 		echo "<option value=\"" . $colcount . "\" selected>" . $col[0] . "</option>";
 	    } else {
@@ -112,13 +117,14 @@ $references = nbt_get_all_references_for_refset ( $_GET['refset'] );
     
     <p>Abstract</p>
     <select id="nbtMetadata-abstract" onchange="nbtUpdateRefsetMetadata('abstract', <?php echo $refset['id']; ?>);">
+	<option value="NULL"<?php if (is_null($refset['abstract'])) { echo " selected"; } ?>>None selected</option>
 	<?php
 
 	$colcount = 0;
 
 	foreach ( $refsetcols as $col ) {
 
-	    if ( $colcount == $refset['abstract'] ) {
+	    if ( ! is_null($refset['abstract']) & $colcount == $refset['abstract'] ) {
 
 		echo "<option value=\"" . $colcount . "\" selected>" . $col[0] . "</option>";
 	    } else {
