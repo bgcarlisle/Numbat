@@ -141,7 +141,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	    if ($allblank) {
 		//empty
-		$coltype = "varchar50";
+		$coltype = "text";
 	    } else {
 		if ($alldates) {
 		    // it's a date
@@ -151,27 +151,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 			// it's an int
 			$coltype = "int";
 		    } else {
-			// treat it as a varchar
-			switch (true) {
-			    case $maxstrcount <= 20:
-				$coltype = "varchar20";
-				break;
-			    case $maxstrcount <= 50:
-				$coltype = "varchar50";
-				break;
-			    case $maxstrcount <= 100:
-				$coltype = "varchar100";
-				break;
-			    case $maxstrcount <= 500:
-				$coltype = "varchar500";
-				break;
-			    case $maxstrcount <= 1000:
-				$coltype = "varchar1000";
-				break;
-			    case $maxstrcount <= 6000:
-				$coltype = "varchar6000";
-				break;
-			}
+			// treat it as text
+			$coltype = "text";
 		    }
 		}
 	    }

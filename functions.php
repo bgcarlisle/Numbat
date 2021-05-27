@@ -13803,36 +13803,9 @@ function nbt_add_column_to_refset_table ( $refsetid, $columnname, $columntype ) 
 
 	    break;
 
+	case "text":
 
-	case "varchar20":
-
-	    $sqltype = "varchar(20) DEFAULT NULL";
-
-	    break;
-	case "varchar50":
-
-	    $sqltype = "varchar(50) DEFAULT NULL";
-
-	    break;
-	case "varchar100":
-	    $sqltype = "varchar(100) DEFAULT NULL";
-	    break;
-
-	case "varchar500":
-
-	    $sqltype = "varchar(500) DEFAULT NULL";
-
-	    break;
-
-	case "varchar1000":
-
-	    $sqltype = "varchar(1000) DEFAULT NULL";
-
-	    break;
-
-	case "varchar6000":
-
-	    $sqltype = "varchar(6000) DEFAULT NULL";
+	    $sqltype = "TEXT DEFAULT NULL";
 
 	    break;
 
