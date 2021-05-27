@@ -35,6 +35,11 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 					$filecontent = fread ( $file, $filesize );
 
+					$encoding = mb_detect_encoding ($filecontent, ["UTF-8"]);
+
+					if ($encoding != "UTF-8") {
+							  $filecontent = mb_convert_encoding ($filecontent, "UTF-8", "UTF-16");
+					}
 					fclose ( $file );
 
 					$counter = 0;
