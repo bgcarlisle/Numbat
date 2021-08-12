@@ -2084,7 +2084,7 @@ function nbt_echo_subextraction_single_select ($elementid, $subelementid, $subex
 
 	}
 
-	$buttonid = "nbtSub" . $elementid . "-" . $subextraction['id'] . "Q" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
+	$buttonid = "nbtSub" . $subelementid . "-" . $subextraction['id'] . "Q" . $question . "A" . str_replace ( "/", "_", str_replace (" ", "_", $dbanswer) );
 
 ?>" id="<?php echo $buttonid; ?>" subextractionid="<?php echo $subextraction['id']; ?>" onclick="event.preventDefault();nbtSaveSubExtractionSingleSelect(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $question; ?>', '<?php echo $dbanswer; ?>', '<?php echo $buttonid; ?>', 'nbtSub<?php echo $subextraction['id'] . "-" . $question; ?>');" conditionalid="<?php echo $toggles[$dbanswer]; ?>_sub<?php echo $subextraction['id']; ?>"><?php echo $ptanswer; ?></a>
 <?php }

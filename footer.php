@@ -199,22 +199,22 @@
 					     case "is":
 						 foreach ($trigger_options as $opt) {
 						     if ($opt['id'] == $event['trigger_option']) {
-							 array_push($sub_event_expressions, "$('#nbtSub" . $trigger_element['elementid'] . "-' + subexid + 'Q" . $trigger_element['dbname'] . "A" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
+							 array_push($sub_event_expressions, "$('#nbtSub" . $trigger_element['id'] . "-' + subexid + 'Q" . $trigger_element['dbname'] . "A" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
 						     }
 						 }
 						 break;
 					     case "is-not":
 						 foreach ($trigger_options as $opt) {
 						     if ($opt['id'] == $event['trigger_option']) {
-							 array_push($sub_event_expressions, "! $('#nbtSub" . $trigger_element['elementid'] . "-' + subexid + 'Q" . $trigger_element['dbname'] . "A" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
+							 array_push($sub_event_expressions, "! $('#nbtSub" . $trigger_element['id'] . "-' + subexid + 'Q" . $trigger_element['dbname'] . "A" . $opt['dbname'] . "').hasClass('nbtTextOptionChosen')");
 						     }
 						 }
 						 break;
 					     case "has-response":
-						 array_push($sub_event_expressions, "$('.nbtSubCDSubextraction' + subexid + '.nbtCDSubelement" . $trigger_element['elementid'] . "').hasClass('nbtTextOptionChosen')");
+						 array_push($sub_event_expressions, "$('.nbtSubCDSubextraction' + subexid + '.nbtCDSubelement" . $trigger_element['id'] . "').hasClass('nbtTextOptionChosen')");
 						 break;
 					     case "no-response":
-						 array_push($sub_event_expressions, "! $('.nbtSubCDSubextraction' + subexid + '.nbtCDSubelement" . $trigger_element['elementid'] . "').hasClass('nbtTextOptionChosen')");
+						 array_push($sub_event_expressions, "! $('.nbtSubCDSubextraction' + subexid + '.nbtCDSubelement" . $trigger_element['id'] . "').hasClass('nbtTextOptionChosen')");
 						 break;
 					 }
 					 break;
