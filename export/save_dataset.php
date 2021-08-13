@@ -69,7 +69,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		$meta_cols_string = "extractions_" . $_POST['formid'] . "." . implode(", extractions_" . $_POST['formid'] . ".", $mcols);
 
-		$form_cols_string = "extractions_" . $_POST['formid'] . "." . implode(", extractions_" . $_POST['formid'] . ".", $fcols);
+		foreach ($fcols as $key => $value) {
+		    $fcols[$key] = "REPLACE(REPLACE(REPLACE(extractions_" . $_POST['formid'] . "." . $value . ", '\"', '\\\"'), '\\r', '\\\\n'), '\\n', '\\\\n') as '" . $value . "'";
+		}
+
+		$form_cols_string = implode(", ", $fcols);
 
 		$select_cols = $meta_cols_string . ", users.username, " . $rs_cols_string . ", " . $form_cols_string;
 
@@ -92,7 +96,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		$meta_cols_string = "m_extractions_" . $_POST['formid'] . "." . implode(", m_extractions_" . $_POST['formid'] . ".", $mcols);
 
-		$form_cols_string = "m_extractions_" . $_POST['formid'] . "." . implode(", m_extractions_" . $_POST['formid'] . ".", $fcols);
+		foreach ($fcols as $key => $value) {
+		    $fcols[$key] = "REPLACE(REPLACE(REPLACE(m_extractions_" . $_POST['formid'] . "." . $value . ", '\"', '\\\"'), '\\r', '\\\\n'), '\\n', '\\\\n') as '" . $value . "'";
+		}
+
+		$form_cols_string = implode(", ", $fcols);
 
 		$select_cols = $meta_cols_string . ", " .  $rs_cols_string . ", " . $form_cols_string;
 
