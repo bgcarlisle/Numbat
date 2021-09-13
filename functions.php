@@ -16211,7 +16211,7 @@ function nbt_copy_conditional_display_event ($elementid, $subelementid, $trigger
 	$stmt->bindParam(':seid', $seid);
 	$stmt->bindParam(':teid', $teid);
 	$stmt->bindParam(':to', $to);
-	$stmt->bindParam(':type', $ty);
+	$stmt->bindParam(':ty', $ty);
 
 	$eid = $elementid;
 	$seid = $subelementid;
