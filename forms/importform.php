@@ -237,7 +237,6 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 			break;
 
 		    case "2.13":
-
 			
 			// Make a new extraction form with the imported metadata
 			$newformid = nbt_new_extraction_form (
@@ -258,7 +257,13 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 			$tabledatacols = json_decode($import['tabledatacols'], true);
 			$subelements = json_decode($import['subelements'], true);
 			$citecols = json_decode($import['citationscols'], true);
+			$conditionals = json_decode($import['conditionals'], true);
 
+			// Make a lookup array for the old => new
+			// element id's and subelement id's
+			$elementid_lup = [];
+			$subelement_lup = [];
+			
 			// Loop through all the imported elements and re-create
 			// them in the current Numbat instance individually
 			$peid = 0;
@@ -266,6 +271,9 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 			    // Get the highest element id in the form
 			    $peid = nbt_get_highest_eid_in_form ( $newformid );
+
+			    // Add the old and new element id's to the lookup array
+			    $elementid_lup[$element['id']] = $peid + 1;
 
 			    switch ( $element['type'] ) {
 
@@ -342,13 +350,16 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 					if ($element['id'] == $sel['elementid']) {
 					    switch ($sel['type']) {
 						case "open_text":
-						    nbt_add_sub_open_text_field ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $newseid = nbt_add_sub_open_text_field ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $subelement_lup[$sel['id']] = $newseid;
 						    break;
 						case "date_selector":
-						    nbt_add_sub_date_selector ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $newseid = nbt_add_sub_date_selector ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $subelement_lup[$sel['id']] = $newseid;
 						    break;
 						case "single_select":
 						    $newseid = nbt_add_sub_single_select ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $subelement_lup[$sel['id']] = $newseid;
 
 						    foreach ($selectoptions as $opt) {
 							if ($sel['id'] == $opt['subelementid']) {
@@ -358,6 +369,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 						    break;
 						case "multi_select":
 						    $newseid = nbt_add_sub_multi_select ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $subelement_lup[$sel['id']] = $newseid;
 
 						    foreach ($selectoptions as $opt) {
 							if ($sel['id'] == $opt['subelementid']) {
@@ -367,6 +379,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 						    break;
 						case "table_data":
 						    $newseid = nbt_add_sub_table ($newelementid, $sel['displayname'], $sel['dbname'], $sel['codebook'], $sel['toggle']);
+						    $subelement_lup[$sel['id']] = $newseid;
 
 						    foreach ($tabledatacols as $col) {
 							if ($sel['id'] == $col['subelementid']) {
@@ -394,6 +407,12 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				    break;
 				    
 			    }
+			    
+			}
+
+			foreach ($conditionals as $conditional) {
+
+			    nbt_copy_conditional_display_event ($element_lup[$conditional['elementid']], $subelement_lup[$conditional['subelementid']], $conditional['trigger_element'], $conditional['trigger_option'], $conditional['type']);
 			    
 			}
 

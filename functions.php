@@ -11833,7 +11833,12 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 	$cb = $codebook;
 	$tg = $toggle;
 
-	$stmt->execute();
+	if ($stmt->execute()) {
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+	    $stmt2->execute();
+	    $result = $stmt2->fetchAll();
+	    $newid = $result[0]['newid'];
+	}
 
     }
 
@@ -11876,6 +11881,8 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 	echo $e->getMessage();
 
     }
+
+    return ($newid);
 
 }
 
@@ -13443,7 +13450,12 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
 	$cb = $codebook;
 	$tg = $toggle;
 
-	$stmt->execute();
+	if ($stmt->execute()) {
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+	    $stmt2->execute();
+	    $result = $stmt2->fetchAll();
+	    $newid = $result[0]['newid'];
+	}
 
     }
 
@@ -13486,6 +13498,8 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
 	echo $e->getMessage();
 
     }
+
+    return ($newid);
 
 }
 
@@ -16165,6 +16179,45 @@ function nbt_add_conditional_display_event ($elementid) {
 	$stmt->bindParam(':eid', $eid);
 
 	$eid = $elementid;
+
+	if ( $stmt->execute() ) {
+
+	    return TRUE;
+
+	} else {
+
+	    return FALSE;
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+    
+}
+
+function nbt_copy_conditional_display_event ($elementid, $subelementid, $triggerelementid, $triggeroption, $type) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("INSERT INTO `conditional_display` (`elementid`, `subelementid`, `trigger_element`, `trigger_option`, `type`) VALUES (:eid, :seid, :teid, :to, :ty);");
+	
+	$stmt->bindParam(':eid', $eid);
+	$stmt->bindParam(':seid', $seid);
+	$stmt->bindParam(':teid', $teid);
+	$stmt->bindParam(':to', $to);
+	$stmt->bindParam(':type', $ty);
+
+	$eid = $elementid;
+	$seid = $subelementid;
+	$teid = $triggerelementid;
+	$to = $triggeroption;
+	$ty = $type;
 
 	if ( $stmt->execute() ) {
 
