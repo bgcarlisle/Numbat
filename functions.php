@@ -4199,7 +4199,7 @@ function nbt_new_extraction_form ( $formname = "New extraction form", $descripti
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("CREATE TABLE `m_extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `status` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+	$stmt = $dbh->prepare("CREATE TABLE `m_extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `timestamp_finished` timestamp NULL DEFAULT NULL, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `status` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ($stmt->execute()) {
 
