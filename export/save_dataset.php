@@ -20,7 +20,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
     foreach ($rs_cols as $rs_col) {
 	if ($rs_col[0] != "id" & $rs_col[0] != "manual") {
 	    if ($rs_col[0] == "type") {
-		$rs_col[0] = "`type`";
+		$rs_col[0] = "\`type\`";
 	    }
 	    $rscols_to_export[] = $rs_col[0];
 	}
@@ -70,7 +70,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 		$meta_cols_string = "extractions_" . $_POST['formid'] . "." . implode(", extractions_" . $_POST['formid'] . ".", $mcols);
 
 		foreach ($fcols as $key => $value) {
-		    $fcols[$key] = "REPLACE(REPLACE(REPLACE(extractions_" . $_POST['formid'] . "." . $value . ", '\"', '\\\"'), '\\r', '\\\\n'), '\\n', '\\\\n') as '" . $value . "'";
+		    $fcols[$key] = "REPLACE(REPLACE(REPLACE(extractions_" . $_POST['formid'] . "." . $value . ", '\\\"', '&quot;'), '\\r', '\\\\n'), '\\n', '\\\\n') as '" . $value . "'";
 		}
 
 		$form_cols_string = implode(", ", $fcols);
@@ -80,7 +80,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 		$filename = $filename . "-form_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-extractions";
 
 		echo $filename;
-		
+
 		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT " . $select_cols . " FROM referenceset_" . $_POST['refsetid'] . ", extractions_" . $_POST['formid'] . ", users WHERE extractions_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND extractions_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id AND users.id = extractions_" . $_POST['formid'] . ".userid AND extractions_" . $_POST['formid'] . ".status = 2 ORDER BY extractions_" . $_POST['formid'] . ".timestamp_started ASC;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
 
             } else {
@@ -97,7 +97,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 		$meta_cols_string = "m_extractions_" . $_POST['formid'] . "." . implode(", m_extractions_" . $_POST['formid'] . ".", $mcols);
 
 		foreach ($fcols as $key => $value) {
-		    $fcols[$key] = "REPLACE(REPLACE(REPLACE(m_extractions_" . $_POST['formid'] . "." . $value . ", '\"', '\\\"'), '\\r', '\\\\n'), '\\n', '\\\\n') as '" . $value . "'";
+		    $fcols[$key] = "REPLACE(REPLACE(REPLACE(m_extractions_" . $_POST['formid'] . "." . $value . ", '\\\"', '&quot;'), '\\r', '\\\\n'), '\\n', '\\\\n') as '" . $value . "'";
 		}
 
 		$form_cols_string = implode(", ", $fcols);
