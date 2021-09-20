@@ -4462,7 +4462,10 @@ function nbt_get_elements_for_formid ( $formid ) {
 
 }
 
-function nbt_get_highest_eid_in_form ( $formid ) {
+function nbt_get_next_eid_in_form ( $formid ) {
+    // This returns the highest element id for a given form id
+    // Or if there are no elements in the form, return the
+    // number just before the AUTO_INCREMENT value
 
     try {
 
@@ -4479,7 +4482,43 @@ function nbt_get_highest_eid_in_form ( $formid ) {
 
 	    $dbh = null;
 
-	    return $result[0]['id'];
+	    if (count ($result) > 0) {
+
+		return $result[0]['id'];
+
+	    }
+
+	} else {
+
+	    echo "MySQL fail";
+
+	}
+
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT AUTO_INCREMENT FROM information_schema.`TABLES` where TABLE_SCHEMA = 'numbat2dev' and TABLE_NAME = 'formelements';");
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    if (count ($result) > 0) {
+
+		return $result[0]['AUTO_INCREMENT'] - 1;
+
+	    }
 
 	} else {
 
@@ -4766,7 +4805,7 @@ function nbt_get_column_for_columnid ( $columnid ) {
 
 }
 
-function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $regex = NULL ) {
+function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $regex = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $formid = intval($formid);
     $elementid = intval($elementid);
@@ -4862,7 +4901,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, regex) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :regex);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding, regex) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding, :regex);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
@@ -4871,6 +4910,9 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 	$stmt->bindParam(':displayname', $dn);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
 	$stmt->bindParam(':regex', $rx);
 
 	$fid = $formid;
@@ -4880,6 +4922,9 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 	$dn = $displayname;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 	$rx = $regex;
 
 	$stmt->execute();
@@ -4928,7 +4973,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 
 }
 
-function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $formid = intval($formid);
     $elementid = intval($elementid);
@@ -5024,7 +5069,7 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
@@ -5033,6 +5078,9 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
 	$stmt->bindParam(':displayname', $dn);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
@@ -5041,6 +5089,9 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
 	$dn = $displayname;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	$stmt->execute();
 
@@ -5088,7 +5139,7 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
 
 }
 
-function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $formid = intval($formid);
     $elementid = intval($elementid);
@@ -5184,7 +5235,7 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
@@ -5193,6 +5244,9 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
 	$stmt->bindParam(':displayname', $dn);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
@@ -5201,6 +5255,9 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
 	$dn = $displayname;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	$stmt->execute();
 
@@ -6775,7 +6832,7 @@ function nbt_move_sub_extraction ( $elementid, $refsetid, $refid, $subextraction
 
 }
 
-function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $formid = intval($formid);
     $elementid = intval($elementid);
@@ -6871,7 +6928,7 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
@@ -6880,6 +6937,9 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
 	$stmt->bindParam(':displayname', $dn);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
@@ -6888,6 +6948,9 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
 	$dn = $displayname;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	if ($stmt->execute()) {
 	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
@@ -7035,7 +7098,16 @@ function nbt_add_single_select_option ( $elementid, $displayname = NULL, $dbname
 	$db = $dbname;
 	$tg = $toggle;
 
-	$stmt->execute();
+	if ($stmt->execute()) {
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+
+	    $stmt2->execute();
+
+	    $result = $stmt2->fetchAll();
+
+	    return $result[0]['newid'];
+
+	}
 
 	$dbh = null;
 
@@ -7160,7 +7232,16 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
 	$dn = $displayname;
 	$tg = $toggle;
 
-	$stmt->execute();
+	if ($stmt->execute()) {
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+
+	    $stmt2->execute();
+
+	    $result = $stmt2->fetchAll();
+
+	    $newid = $result[0]['newid'];
+
+	}
 
     }
 
@@ -7203,6 +7284,8 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
 	echo $e->getMessage();
 
     }
+
+    return $newid;
 
 }
 
@@ -7445,7 +7528,7 @@ function nbt_update_single_select ( $selectid, $column, $newvalue ) {
 
 }
 
-function nbt_add_multi_select ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_multi_select ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $formid = intval($formid);
     $elementid = intval($elementid);
@@ -7502,7 +7585,7 @@ function nbt_add_multi_select ( $formid, $elementid, $displayname = NULL, $colum
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
@@ -7511,6 +7594,9 @@ function nbt_add_multi_select ( $formid, $elementid, $displayname = NULL, $colum
 	$stmt->bindParam(':displayname', $dn);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
@@ -7519,6 +7605,9 @@ function nbt_add_multi_select ( $formid, $elementid, $displayname = NULL, $colum
 	$dn = $displayname;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	if ($stmt->execute()) {
 	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
@@ -7571,7 +7660,7 @@ function nbt_increase_element_sortorder ( $elementid ) {
 
 }
 
-function nbt_add_section_heading ( $formid, $elementid, $displayname = NULL, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_section_heading ( $formid, $elementid, $displayname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     // Already Bobby Tables proof
 
@@ -7624,7 +7713,7 @@ function nbt_add_section_heading ( $formid, $elementid, $displayname = NULL, $co
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, displayname, codebook, toggle) VALUES (:form, :sort, :type, :displayname, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
@@ -7632,6 +7721,9 @@ function nbt_add_section_heading ( $formid, $elementid, $displayname = NULL, $co
 	$stmt->bindParam(':displayname', $dn);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
@@ -7639,6 +7731,9 @@ function nbt_add_section_heading ( $formid, $elementid, $displayname = NULL, $co
 	$dn = $displayname;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	$stmt->execute();
 
@@ -7950,7 +8045,7 @@ function nbt_change_multi_select_column_prefix ( $elementid, $newcolumn ) {
 
 }
 
-function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", $displayname = NULL, $suffix = NULL, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", $displayname = NULL, $suffix = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $suffix = nbt_remove_special ($suffix);
 
@@ -8083,7 +8178,7 @@ function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
@@ -8092,6 +8187,9 @@ function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", 
 	$stmt->bindParam(':displayname', $dn);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
@@ -8100,6 +8198,9 @@ function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", 
 	$dn = $displayname;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	if ($stmt->execute()) {
 
@@ -9151,7 +9252,7 @@ function nbt_update_table_data_column_db ( $columnid, $tableformat, $newcolumnna
 
 }
 
-function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $formid = intval($formid);
     $elementid = intval($elementid);
@@ -9247,7 +9348,7 @@ function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $c
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
@@ -9256,6 +9357,10 @@ function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $c
 	$stmt->bindParam(':displayname', $dn);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
@@ -9264,6 +9369,9 @@ function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $c
 	$dn = $displayname;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	$stmt->execute();
 
@@ -9319,7 +9427,7 @@ function nbt_new_dump_file () {
 
 }
 
-function nbt_add_extraction_timer ( $formid, $elementid, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_extraction_timer ( $formid, $elementid, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     // this element is the one immediately before where we want to insert a new element
 
@@ -9369,19 +9477,25 @@ function nbt_add_extraction_timer ( $formid, $elementid, $codebook = NULL, $togg
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, codebook, toggle) VALUES (:form, :sort, :type, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
 	$stmt->bindParam(':type', $type);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
 	$type = "timer";
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	$stmt->execute();
 
@@ -9395,7 +9509,7 @@ function nbt_add_extraction_timer ( $formid, $elementid, $codebook = NULL, $togg
 
 }
 
-function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $formid = intval($formid);
     $elementid = intval($elementid);
@@ -9490,7 +9604,7 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
@@ -9499,6 +9613,9 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
 	$stmt->bindParam(':displayname', $dn);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
@@ -9507,6 +9624,9 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
 	$dn = $displayname;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	$stmt->execute();
 
@@ -9651,7 +9771,7 @@ function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
 
 }
 
-function nbt_add_citation_selector ( $formid, $elementid, $displayname = NULL, $suffix = NULL, $codebook = NULL, $toggle = NULL) {
+function nbt_add_citation_selector ( $formid, $elementid, $displayname = NULL, $suffix = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $formid = intval($formid);
     $elementid = intval($elementid);
@@ -9782,7 +9902,7 @@ function nbt_add_citation_selector ( $formid, $elementid, $displayname = NULL, $
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
@@ -9791,6 +9911,9 @@ function nbt_add_citation_selector ( $formid, $elementid, $displayname = NULL, $
 	$stmt->bindParam(':displayname', $dn);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
@@ -9799,6 +9922,9 @@ function nbt_add_citation_selector ( $formid, $elementid, $displayname = NULL, $
 	$dn = $displayname;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	if ($stmt->execute()) {
 
@@ -11408,7 +11534,7 @@ function nbt_echo_display_name_and_codebook ( $displayname, $codebook ) {
 
 }
 
-function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suffix = NULL, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suffix = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $formid = intval($formid);
     $elementid = intval($elementid);
@@ -11539,7 +11665,7 @@ function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suf
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
@@ -11548,6 +11674,9 @@ function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suf
 	$stmt->bindParam(':displayname', $dn);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
@@ -11556,6 +11685,9 @@ function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suf
 	$dn = $displayname;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	if ($stmt->execute()) {
 
@@ -11566,11 +11698,7 @@ function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suf
 
 	    $dbh = null;
 
-	    foreach ( $result as $row ) {
-
-		$newid = $row['newid']; // This is the auto_increment-generated ID for the new row
-
-	    }
+	    $newid = $result[0]['newid'];
 
 	}
 
@@ -14722,7 +14850,7 @@ function nbt_get_setting ( $key ) {
 
 }
 
-function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     // Already Bobby Tables proof
     
@@ -14775,7 +14903,7 @@ function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, displayname, codebook, toggle) VALUES (:form, :sort, :type, :displayname, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :displayname, :codebook, :toggle, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
@@ -14783,6 +14911,9 @@ function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $
 	$stmt->bindParam(':displayname', $dn);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
@@ -14790,6 +14921,9 @@ function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $
 	$dn = $displayname;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	$stmt->execute();
 
@@ -14803,7 +14937,7 @@ function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $
 
 }
 
-function nbt_add_reference_data ( $formid, $elementid, $displayname = NULL, $refdata = NULL, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_reference_data ( $formid, $elementid, $displayname = NULL, $refdata = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $formid = intval($formid);
     $elementid = intval($elementid);
@@ -14857,7 +14991,7 @@ function nbt_add_reference_data ( $formid, $elementid, $displayname = NULL, $ref
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, displayname, columnname, codebook, toggle) VALUES (:form, :sort, :type, :displayname, :columnname, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, displayname, columnname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :displayname, :columnname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
@@ -14866,6 +15000,9 @@ function nbt_add_reference_data ( $formid, $elementid, $displayname = NULL, $ref
 	$stmt->bindParam(':columnname', $cn);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
@@ -14874,6 +15011,9 @@ function nbt_add_reference_data ( $formid, $elementid, $displayname = NULL, $ref
 	$cn = $refdata;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	$stmt->execute();
 
