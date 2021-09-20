@@ -100,7 +100,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 			foreach ( $elements as $element ) {
 
 			    // Get the highest element id in the form
-			    $peid = nbt_get_highest_eid_in_form ( $newformid );
+			    $peid = nbt_get_next_eid_in_form ( $newformid );
 
 			    switch ( $element['type'] ) {
 
@@ -259,10 +259,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 			$citecols = json_decode($import['citationscols'], true);
 			$conditionals = json_decode($import['conditionals'], true);
 
-			// Make a lookup array for the old => new
-			// element id's and subelement id's
+			// Make lookup arrays for the old => new
+			// element id's, subelement id's and select-options
 			$elementid_lup = [];
-			$subelement_lup = [];
+			$subelementid_lup = [];
+			$selopt_lup = [];
 			
 			// Loop through all the imported elements and re-create
 			// them in the current Numbat instance individually
@@ -270,7 +271,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 			foreach ( $elements as $element ) {
 
 			    // Get the highest element id in the form
-			    $peid = nbt_get_highest_eid_in_form ( $newformid );
+			    $peid = nbt_get_next_eid_in_form ( $newformid );
 
 			    // Add the old and new element id's to the lookup array
 			    $elementid_lup[$element['id']] = $peid + 1;
@@ -278,52 +279,54 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 			    switch ( $element['type'] ) {
 
 				case "section_heading":
-				    nbt_add_section_heading ($newformid, $peid, $element['displayname'], $element['codebook'], $element['toggle']);
+				    nbt_add_section_heading ($newformid, $peid, $element['displayname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 				    break;
 
 				case "timer":
-				    nbt_add_extraction_timer($newformid, $peid, $element['codebook'], $element['toggle']);
+				    nbt_add_extraction_timer($newformid, $peid, $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 				    break;
 
 				case "open_text":
-				    nbt_add_open_text_field ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['regex']);
+				    nbt_add_open_text_field ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['regex'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 				    break;
 
 				case "text_area":
-				    nbt_add_text_area_field ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
+				    nbt_add_text_area_field ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 				    break;
 
 				case "date_selector":
-				    nbt_add_date_selector ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
+				    nbt_add_date_selector ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 				    break;
 
 				case "single_select":
-				    $newelementid = nbt_add_single_select ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
+				    $newelementid = nbt_add_single_select ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 
 				    foreach ($selectoptions as $opt) {
 					if ($element['id'] == $opt['elementid']) {
-					    nbt_add_single_select_option ($newelementid, $opt['displayname'], $opt['dbname'], $opt['toggle']);
+					    $newselectoptid = nbt_add_single_select_option ($newelementid, $opt['displayname'], $opt['dbname'], $opt['toggle']);
+					    $selopt_lup[$opt['id']] = $newselectoptid;
 					}
 				    }
 				    break;
 
 				case "multi_select":
-				    $newelementid = nbt_add_multi_select ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
+				    $newelementid = nbt_add_multi_select ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 
 				    foreach ($selectoptions as $opt) {
 					if ($element['id'] == $opt['elementid']) {
-					    nbt_add_multi_select_option ($newelementid, $opt['displayname'], $opt['dbname'], $opt['toggle']);
+					    $newselectoptid = nbt_add_multi_select_option ($newelementid, $opt['displayname'], $opt['dbname'], $opt['toggle']);
+					    $selopt_lup[$opt['id']] = $newselectoptid;
 					}
 				    }
 				    break;
 
 				case "country_selector":
-				    nbt_add_country_selector ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
+				    nbt_add_country_selector ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 				    break;
 
 				case "table_data":
 				case "ltable_data":
-				    $newelementid = nbt_add_table_data ($newformid, $peid, $element['type'], $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
+				    $newelementid = nbt_add_table_data ($newformid, $peid, $element['type'], $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 
 				    foreach ($tabledatacols as $col) {
 					if ($element['id'] == $col['elementid']) {
@@ -333,7 +336,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				    break;
 
 				case "citations":
-				    $newelementid = nbt_add_citation_selector ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
+				    $newelementid = nbt_add_citation_selector ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 
 				    foreach ($citecols as $col) {
 					if ($element['id'] == $col['elementid']) {
@@ -343,7 +346,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				    break;
 
 				case "sub_extraction":
-				    $newelementid = nbt_add_sub_extraction ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
+				    $newelementid = nbt_add_sub_extraction ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 
 				    // Loop through all the sub-extraction elements and add them
 				    foreach ($subelements as $sel) {
@@ -351,35 +354,37 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 					    switch ($sel['type']) {
 						case "open_text":
 						    $newseid = nbt_add_sub_open_text_field ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
-						    $subelement_lup[$sel['id']] = $newseid;
+						    $subelementid_lup[$sel['id']] = $newseid;
 						    break;
 						case "date_selector":
 						    $newseid = nbt_add_sub_date_selector ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
-						    $subelement_lup[$sel['id']] = $newseid;
+						    $subelementid_lup[$sel['id']] = $newseid;
 						    break;
 						case "single_select":
 						    $newseid = nbt_add_sub_single_select ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
-						    $subelement_lup[$sel['id']] = $newseid;
+						    $subelementid_lup[$sel['id']] = $newseid;
 
 						    foreach ($selectoptions as $opt) {
 							if ($sel['id'] == $opt['subelementid']) {
-							    nbt_add_sub_single_select_option ($newseid, $opt['displayname'], $opt['dbname'], $opt['toggle']);
+							    $newselectoptid = nbt_add_sub_single_select_option ($newseid, $opt['displayname'], $opt['dbname'], $opt['toggle']);
+							    $selopt_lup[$opt['id']] = $newselectoptid;
 							}
 						    }
 						    break;
 						case "multi_select":
 						    $newseid = nbt_add_sub_multi_select ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
-						    $subelement_lup[$sel['id']] = $newseid;
+						    $subelementid_lup[$sel['id']] = $newseid;
 
 						    foreach ($selectoptions as $opt) {
 							if ($sel['id'] == $opt['subelementid']) {
-							    nbt_add_sub_multi_select_option ($newseid, $opt['displayname'], $opt['dbname'], $opt['toggle']);
+							    $newselectoptid = nbt_add_sub_multi_select_option ($newseid, $opt['displayname'], $opt['dbname'], $opt['toggle']);
+							    $selopt_lup[$opt['id']] = $newselectoptid;
 							}
 						    }
 						    break;
 						case "table_data":
 						    $newseid = nbt_add_sub_table ($newelementid, $sel['displayname'], $sel['dbname'], $sel['codebook'], $sel['toggle']);
-						    $subelement_lup[$sel['id']] = $newseid;
+						    $subelementid_lup[$sel['id']] = $newseid;
 
 						    foreach ($tabledatacols as $col) {
 							if ($sel['id'] == $col['subelementid']) {
@@ -394,25 +399,40 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				    break;
 
 				case "assignment_editor":
-				    nbt_add_assignment_editor ($newformid, $peid, $element['displayname'], $element['codebook'], $element['toggle']);
+				    nbt_add_assignment_editor ($newformid, $peid, $element['displayname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 				    break;
 
 				    
 				case "reference_data":
-				    nbt_add_reference_data ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
+				    nbt_add_reference_data ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 				    break;
 
 				case "prev_select":
-				    nbt_add_prev_select ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
+				    nbt_add_prev_select ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 				    break;
 				    
 			    }
 			    
 			}
 
+			echo count($conditionals) . " conditionals<br>";
+
 			foreach ($conditionals as $conditional) {
 
-			    nbt_copy_conditional_display_event ($element_lup[$conditional['elementid']], $subelement_lup[$conditional['subelementid']], $conditional['trigger_element'], $conditional['trigger_option'], $conditional['type']);
+			    if ( ! is_null ($conditional['elementid']) ) {
+				
+				if (! nbt_copy_conditional_display_event ($elementid_lup[$conditional['elementid']], NULL, $elementid_lup[$conditional['trigger_element']], $selopt_lup[$conditional['trigger_option']], $conditional['type'])) {
+				    echo "Error importing element " . $conditional['elementid'] . "<br>";
+				}
+			    }
+
+			    if ( ! is_null ($conditional['subelementid']) ) {
+				
+				if (! nbt_copy_conditional_display_event (NULL, $subelementid_lup[$conditional['subelementid']], $subelementid_lup[$conditional['trigger_element']], $selopt_lup[$conditional['trigger_option']], $conditional['type'])) {
+				    echo "Error importing element " . $conditional['elementid'] . "<br>";
+				}
+			    }
+			    
 			    
 			}
 
