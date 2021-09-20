@@ -12820,7 +12820,18 @@ function nbt_add_sub_single_select_option ( $subelementid, $displayname = NULL, 
 	$dbn = $dbname;
 	$tg = $toggle;
 
-	$stmt->execute();
+	if ($stmt->execute()) {
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+
+	    $stmt2->execute();
+
+	    $result = $stmt2->fetchAll();
+
+	    $newid = $result[0]['newid'];
+
+	    return $newid;
+	    
+	}
 
 	$dbh = null;
 
@@ -13012,9 +13023,8 @@ function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = N
 
 	    $result = $stmt2->fetchAll();
 
-	    foreach ( $result as $row ) {
-		$newid = $row['newid'];
-	    }
+	    $newid = $result[0]['newid'];
+	    
 	}
 
     }
@@ -13421,7 +13431,16 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
 	$dn = $displayname;
 	$tg = $toggle;
 
-	$stmt->execute();
+	if ($stmt->execute()) {
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+
+	    $stmt2->execute();
+
+	    $result = $stmt2->fetchAll();
+
+	    $newid = $result[0]['newid'];
+	    
+	}
 
     }
 
@@ -13464,6 +13483,8 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
 	echo $e->getMessage();
 
     }
+
+    return $newid;
 
 }
 
@@ -16512,7 +16533,7 @@ function nbt_get_conditional_events_for_formid ($formid) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM `conditional_display` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid);");
+	$stmt = $dbh->prepare("SELECT * FROM `conditional_display` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid) OR `subelementid` IN (SELECT `id` FROM `subelements` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid));");
 	
 	$stmt->bindParam(':fid', $fid);
 

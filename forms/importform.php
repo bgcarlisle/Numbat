@@ -259,7 +259,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 			$citecols = json_decode($import['citationscols'], true);
 			$conditionals = json_decode($import['conditionals'], true);
 
-			// Make a lookup array for the old => new
+			// Make lookup arrays for the old => new
 			// element id's, subelement id's and select-options
 			$elementid_lup = [];
 			$subelementid_lup = [];
@@ -366,7 +366,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 						    foreach ($selectoptions as $opt) {
 							if ($sel['id'] == $opt['subelementid']) {
-							    nbt_add_sub_single_select_option ($newseid, $opt['displayname'], $opt['dbname'], $opt['toggle']);
+							    $newselectoptid = nbt_add_sub_single_select_option ($newseid, $opt['displayname'], $opt['dbname'], $opt['toggle']);
+							    $selopt_lup[$opt['id']] = $newselectoptid;
 							}
 						    }
 						    break;
@@ -376,7 +377,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 						    foreach ($selectoptions as $opt) {
 							if ($sel['id'] == $opt['subelementid']) {
-							    nbt_add_sub_multi_select_option ($newseid, $opt['displayname'], $opt['dbname'], $opt['toggle']);
+							    $newselectoptid = nbt_add_sub_multi_select_option ($newseid, $opt['displayname'], $opt['dbname'], $opt['toggle']);
+							    $selopt_lup[$opt['id']] = $newselectoptid;
 							}
 						    }
 						    break;
@@ -413,11 +415,24 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 			    
 			}
 
+			echo count($conditionals) . " conditionals<br>";
+
 			foreach ($conditionals as $conditional) {
 
-			    if (!nbt_copy_conditional_display_event ($elementid_lup[$conditional['elementid']], $subelementid_lup[$conditional['subelementid']], $elementid_lup[$conditional['trigger_element']], $selopt_lup[$conditional['trigger_option']], $conditional['type'])) {
-				echo "Error importing element " . $conditional['elementid'] . "<br>";
+			    if ( ! is_null ($conditional['elementid']) ) {
+				
+				if (! nbt_copy_conditional_display_event ($elementid_lup[$conditional['elementid']], NULL, $elementid_lup[$conditional['trigger_element']], $selopt_lup[$conditional['trigger_option']], $conditional['type'])) {
+				    echo "Error importing element " . $conditional['elementid'] . "<br>";
+				}
 			    }
+
+			    if ( ! is_null ($conditional['subelementid']) ) {
+				
+				if (! nbt_copy_conditional_display_event (NULL, $subelementid_lup[$conditional['subelementid']], $subelementid_lup[$conditional['trigger_element']], $selopt_lup[$conditional['trigger_option']], $conditional['type'])) {
+				    echo "Error importing element " . $conditional['elementid'] . "<br>";
+				}
+			    }
+			    
 			    
 			}
 
