@@ -2159,7 +2159,7 @@
 		 eid: elementid,
 		 id: subextractionid,
 		 question: questionid,
-		 answer: html + '-01'
+		 answer: html
 	     },
 	     dataType: 'html'
 	 }).done ( function (html2) {
