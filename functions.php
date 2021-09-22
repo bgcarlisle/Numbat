@@ -4938,7 +4938,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
 
@@ -4955,7 +4955,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
 
@@ -5104,7 +5104,7 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
 
@@ -5121,7 +5121,7 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
 
@@ -5856,7 +5856,7 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
 
     switch ( $element['type'] ) {
 	case "open_text":
-	    $dbtype = "varchar(200) DEFAULT NULL";
+	    $dbtype = "TEXT DEFAULT NULL";
 	    break;
 	case "single_select":
 	    $dbtype = "varchar(200) DEFAULT NULL";
@@ -5871,7 +5871,7 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
 	    $dbtype = "varchar(50) DEFAULT NULL";
 	    break;
 	case "prev_select":
-	    $dbtype = "varchar(200) DEFAULT NULL";
+	    $dbtype = "TEXT DEFAULT NULL";
 	    break;
 	    
     }
@@ -10313,7 +10313,7 @@ function nbt_update_citation_property_db ( $columnid, $newcolumnname ) {
 
     }
 
-    // then alter the column in the master table
+    // then alter the column in the final table
 
     try {
 
@@ -11977,7 +11977,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " varchar(200) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
 
@@ -11994,7 +11994,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " varchar(200) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
 
@@ -12203,7 +12203,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
 
     switch ( $subelement['type'] ) {
 	case "open_text":
-	    $dbtype = "varchar(200) DEFAULT NULL";
+	    $dbtype = "TEXT DEFAULT NULL";
 	    break;
 	case "single_select":
 	    $dbtype = "varchar(200) DEFAULT NULL";
