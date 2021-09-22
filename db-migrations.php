@@ -1012,6 +1012,176 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	echo "<p>Conditional display table already has a subelementid column</p>";
     }
 
+    // Make all open text into TEXT on the database backend
+
+    function get_all_open_text_fields () {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `type` = 'open_text' OR `type` = 'prev_select';");
+
+	    $stmt->execute();
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    return $result;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    function get_all_subextraction_open_text_fields () {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `type` = 'open_text';");
+
+	    $stmt->execute();
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    return $result;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    $ot_fields = get_all_open_text_fields ();
+
+    foreach ($ot_fields as $otf) {
+
+	// Change the extraction table
+
+	$tablename = "extractions_" . $otf['formid'];
+	$columnname = $otf['columnname'];
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `" . $tablename . "` MODIFY `" . $columnname . "` TEXT;");
+
+	    $stmt->execute();
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    return $result;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+
+	// Change the final table
+
+	$tablename = "m_extractions_" . $otf['formid'];
+	$columnname = $otf['columnname'];
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `" . $tablename . "` MODIFY `" . $columnname . "` TEXT;");
+
+	    $stmt->execute();
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    return $result;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
+    $sub_ot_fields = get_all_subextraction_open_text_fields ();
+
+    foreach ($sub_ot_fields as $otf) {
+
+	$element = nbt_get_form_element_for_elementid ($otf['elementid']);
+
+	// Change the sub extraction table
+
+	$tablename = "sub_" . $element['columnname'];
+	$columnname = $otf['dbname'];
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `" . $tablename . "` MODIFY `" . $columnname . "` TEXT;");
+
+	    $stmt->execute();
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    return $result;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+
+	// Change the final sub extraction table
+
+	$tablename = "msub_" . $element['columnname'];
+	$columnname = $otf['dbname'];
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `" . $tablename . "` MODIFY `" . $columnname . "` TEXT;");
+
+	    $stmt->execute();
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    return $result;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+
     // End
     
 } else { // Not admin
