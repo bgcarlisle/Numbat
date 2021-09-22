@@ -2119,7 +2119,7 @@ function nbt_echo_msubextraction_single_select ($elementid, $subextraction, $que
 
 }
 
-function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $maxlength, $allcaps = FALSE, $regex = NULL) {
+function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $allcaps = FALSE, $regex = NULL) {
 
     echo '<input type="text" value="';
 
@@ -2153,11 +2153,7 @@ function nbt_echo_text_field ($formid, $extraction, $dbcolumn, $maxlength, $allc
 
     echo $regex;
 
-    echo '\');" maxlength="';
-
-    echo $maxlength;
-
-    echo '"';
+    echo '\');"';
 
     if ( $allcaps ) {
 
