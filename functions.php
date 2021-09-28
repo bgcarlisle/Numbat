@@ -3510,6 +3510,12 @@ function nbt_copy_multi_select_to_master ( $formid, $refsetid, $reference, $extr
 
 	    }
 
+	    if (is_null($value)) {
+
+		$value = 0;
+		
+	    }
+
 	}
 
 	catch (PDOException $e) {
