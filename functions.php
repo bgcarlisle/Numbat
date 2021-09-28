@@ -3409,7 +3409,42 @@ function nbt_copy_to_master ( $formid, $refsetid, $reference, $row, $extrid ) {
 
     }
 
-    // Set the other extraction to that value
+    // Check whether the element is a single select
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("SELECT * FROM `formelements` WHERE `formid` = :fid AND `columnname` = :cname LIMIT 1;");
+
+	$stmt->bindParam(':fid', $fid);
+	$stmt->bindParam(':cname', $cname);
+
+	$fid = $formid;
+	$cname = $row;
+
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	if ($result[0]['type'] == "single_select") {
+
+	    if (is_null ($value)) {
+		$value = "";
+	    }
+	    
+	}
+	
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // Set the final copy to that value
 
     try {
 
@@ -3473,6 +3508,12 @@ function nbt_copy_multi_select_to_master ( $formid, $refsetid, $reference, $extr
 
 		}
 
+	    }
+
+	    if (is_null($value)) {
+
+		$value = 0;
+		
 	    }
 
 	}

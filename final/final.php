@@ -1062,7 +1062,13 @@ if ( count ( $extractions ) >= 2 ) {
 
 			    foreach ( $selectoptions as $option ) {
 
-				if ( $extraction[$element['columnname'] . "_" . $option['dbname']] != $master[$element['columnname'] . "_" . $option['dbname']] ) {
+				if ( $extraction[$element['columnname'] . "_" . $option['dbname']] == 1 & $master[$element['columnname'] . "_" . $option['dbname']] == 0 ) {
+
+				    $same_as_master = 0;
+
+				}
+
+				if ( $extraction[$element['columnname'] . "_" . $option['dbname']] == 0 & $master[$element['columnname'] . "_" . $option['dbname']] == 1 ) {
 
 				    $same_as_master = 0;
 
