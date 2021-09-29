@@ -15092,7 +15092,7 @@ function nbt_set_master_status ( $formid, $masterid, $newstatus ) {
 	try {
 
 	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `timestamp_finished` = NOW() WHERE id = :fid and `timestamp_finished` IS NULL LIMIT 1;");
+	    $stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `timestamp_finished` = NOW() WHERE id = :fid LIMIT 1;");
 
 	    $stmt->bindParam(':fid', $fid);
 
