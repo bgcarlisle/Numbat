@@ -1748,7 +1748,7 @@ if ( count ( $extractions ) >= 2 ) {
 
     echo "<p>Reconciliation status: <span id=\"nbtStatusAtBottomOfReconciliation\">";
 
-    switch ($extraction['status']) {
+    switch ($master['status']) {
 
 	case 0:
 
