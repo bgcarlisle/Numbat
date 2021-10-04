@@ -1166,6 +1166,36 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	
     }
 
+    // Add tagprompts column to formelements table
+    echo '<h3>Add tag prompts column</h3>';
+
+    if (! check_for_formelements_column ("tagprompts")) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `formelements` ADD COLUMN `tagprompts` TEXT NULL DEFAULT NULL AFTER `regex`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>Form elements table updated with tagprompts column</p>";
+	    } else {
+		echo "<p>Error updating form elements table with tagprompts column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    } else {
+	echo "<p>Form elements table already has a tag prompts column</p>";
+    }
+
     // End
     
 } else { // Not admin
