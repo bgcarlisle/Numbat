@@ -824,6 +824,26 @@
      });
  }
 
+ function nbtSearchTagsPrompts ( eid ) {
+
+     query = $('#TagSearch' + eid).val();
+
+     if ( query == '' ) {
+	 $('.TagPrompts' + eid).fadeOut(0);
+     } else {
+	 $('.TagPrompts' + eid).fadeOut(0);
+
+	 $('#TagPrompts' + eid + ' TagPromptRow td').each( function (index) {
+	     cell_value = $(this).html();
+
+	     if (cell_value.toLowerCase().search(query.toLowerCase()) != -1) {
+		 $(this).parent().fadeIn(0);
+	     }
+	 });
+     }
+     
+ }
+
  function nbtChangeSubElementRegex ( seid ) {
 
      $.ajax ({
