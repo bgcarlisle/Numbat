@@ -6080,6 +6080,9 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
 	case "prev_select":
 	    $dbtype = "TEXT DEFAULT NULL";
 	    break;
+	case "tags":
+	    $dbtype = "TEXT DEFAULT NULL";
+	    break;
 	    
     }
     
