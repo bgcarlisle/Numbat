@@ -5010,6 +5010,172 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 
 }
 
+function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
+
+    $formid = intval($formid);
+    $elementid = intval($elementid);
+    $columnname = nbt_remove_special($columnname);
+
+    // this element is the one immediately before where we want to insert a new element
+
+    $element = nbt_get_form_element_for_elementid ( $elementid );
+
+    // get all the elements after this one and increase their sortorder value by 1
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
+
+	$stmt->bindParam(':fid', $fid);
+	$stmt->bindParam(':sort', $sort);
+
+	$fid = $formid;
+	$sort = $element['sortorder'];
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    foreach ( $result as $row ) {
+
+		nbt_increase_element_sortorder ( $row['id'] );
+
+	    }
+
+	} else {
+
+	    echo "MySQL fail";
+
+	}
+
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // find a good name for the new column
+
+    if ( is_null ($columnname) ) {
+
+	$foundgoodcolumn = FALSE;
+
+	$counter = 1;
+
+	while ( $foundgoodcolumn == FALSE ) {
+
+	    try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'tags_" . $counter . "';");
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		if ( count ( $result ) == 0 ) {
+
+		    $columnname = "tags_" . $counter;
+
+		    $foundgoodcolumn = TRUE;
+
+		}
+
+	    }
+
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	    }
+
+	    $counter ++;
+
+	}
+
+    }
+
+    // then insert a new element into the form elements table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
+
+	$stmt->bindParam(':form', $fid);
+	$stmt->bindParam(':sort', $sort);
+	$stmt->bindParam(':type', $type);
+	$stmt->bindParam(':column', $col);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':codebook', $cb);
+	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
+
+	$fid = $formid;
+	$sort = $element['sortorder'] + 1;
+	$type = "tags";
+	$col = $columnname;
+	$dn = $displayname;
+	$cb = $codebook;
+	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
+
+	$stmt->execute();
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // then, add a column to the extractions table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
+
+	$stmt->execute();
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // then, add the column to the final table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
+
+	$stmt->execute();
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+}
+
 function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $formid = intval($formid);
