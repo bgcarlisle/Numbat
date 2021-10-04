@@ -265,7 +265,7 @@ if ( count ( $elements ) > 0 ) {
 	case "tags":
 
 	?><h4>Tags <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
-	<p class="nbtFinePrint">Extractors will be prompted a searchable list of text tags that can be selected from, or added to on the fly. You may optionally pre-populate the list of tag prompts by adding a semicolon-delimited list in the box below, or you can generate this list at the point of extraction. Tags may not contain semicolons or line breaks.</p>
+	<p class="nbtFinePrint">Extractors will be prompted a searchable list of text tags that can be selected from, or added to on the fly. You may optionally pre-populate the list of tag prompts by adding a semicolon-delimited list in the box below, or you can generate this list at the point of extraction. Tags may not be empty, and may not contain semicolons or line breaks.</p>
 	<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 	<p class="nbtFinePrint">Will appear on extraction form</p>
 	<p>Semicolon-delimited tag prompts:</p>
