@@ -321,7 +321,7 @@ if ( count ( $elements ) > 0 ) {
     <button onclick="nbtAddNewAssignmentEditor(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Assignment editor</button>
     <button onclick="nbtAddNewRefdata(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Reference data prompt</button>
     <button onclick="nbtAddNewPrevSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Previously extracted entry selector</button>
-    <button onclick="nbtAddNewTags(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Tags</button>
+    <button onclick="nbtAddNewTagsElement(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Tags</button>
     <button onclick="nbtAddNewExtractionTimer(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Extraction timer</button>
 </div>
     <?php
@@ -352,7 +352,7 @@ if ( count ( $elements ) > 0 ) {
 	    <button onclick="nbtAddNewAssignmentEditor(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>);">Assignment editor</button>
 	    <button onclick="nbtAddNewRefdata(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Reference data prompt</button>
 	    <button onclick="nbtAddNewPrevSelect(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Previously extracted entry selector</button>
-	    <button onclick="nbtAddNewTags(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Tags</button>
+	    <button onclick="nbtAddNewTagsElement(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Tags</button>
 	    <button onclick="nbtAddNewExtractionTimer(<?php echo $_GET['id']; ?>, <?php echo $element['id']; ?>)">Extraction timer</button>
 	</div>
     <?php
