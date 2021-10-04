@@ -801,6 +801,29 @@
      });
  }
 
+ function nbtChangeTagsPrompts ( eid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/changetagsprompts.php',
+	 type: 'post',
+	 data: {
+	     element: eid,
+	     newtagsprompts: $('#nbtElementTagsPrompts' + eid).val()
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtFormElementFeedback' + eid).html(html);
+
+	 $('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+
+	     $('#nbtFormElementFeedback' + eid).fadeOut(1500);
+
+	 });
+
+     });
+ }
+
  function nbtChangeSubElementRegex ( seid ) {
 
      $.ajax ({
