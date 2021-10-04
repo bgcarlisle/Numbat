@@ -574,6 +574,24 @@
 
  }
 
+ function nbtAddNewTagsElement ( fid, eid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/addtagselement.php',
+	 type: 'post',
+	 data: {
+	     formid: fid,
+	     elementid: eid
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtFormElements').html(html);
+
+     });
+
+ }
+
  function nbtAddNewTextArea ( fid, eid ) {
 
      $.ajax ({
