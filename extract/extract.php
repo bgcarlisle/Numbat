@@ -853,6 +853,24 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 	    case "tags":
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+
+		$tagprompts = explode(";", $element['tagprompts']);
+
+		echo '<table class="nbtTabledData">';
+
+		echo '<tr class="nbtTableHeaders"><td colspan="2">Search tags: <input id="TagSearch' . $element['id'] . '" type="text" onkeyup="nbtSearchTagsPrompts(' . $element['id'] . ');"></td></tr>';
+		echo '<tr><td colspan="2"><button onclick="$(\'.TagPromptRow\').fadeIn(0);">Show all</button> <button onclick="$(\'.TagPromptRow\').fadeOut(0);">Show none</button></td></tr>';
+
+		foreach ($tagprompts as $tagprompt) {
+		    echo '<tr class="TagPromptRow TagPrompts' . $element['id'] . '">';
+
+		    echo "<td>" . trim($tagprompt) . "</td>";
+		    echo '<td style="text-align: right;"><button>Copy tag</button></td>';
+
+		    echo "</tr>";
+		}
+
+		echo "</table>";
 		
 		break;
 
