@@ -262,6 +262,20 @@ if ( count ( $elements ) > 0 ) {
 
 	break;
 
+	case "tags":
+
+	?><h4>Tags <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
+	<p class="nbtFinePrint">Maximum entry length: 200 characters; this element acts like an Open text element, except that it also provides a drop-down menu of all the unique entries provided by any extractor from within the same reference set</p>
+	<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
+	<p>Semicolon-delimited tag prompts:</p>
+	<textarea style="width: 100%; height: 80px;" id="nbtElementColumnName<?php echo $element['id']; ?>" onblur="nbtChangeTagsPrompts(<?php echo $element['id']; ?>);" maxlength="2500"><?php echo $element['columnname']; ?></textarea>
+	<p class="nbtFinePrint">Will appear on extraction form</p>
+	<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);" maxlength="50"></p>
+	<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
+	<?php
+	
+	break;
+
 	case "timer":
 
 	echo '<h4>Extraction timer <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>';
