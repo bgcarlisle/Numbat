@@ -850,6 +850,12 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		break;
 
+	    case "tags":
+
+		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+		
+		break;
+
 	}
 
     }
