@@ -914,10 +914,12 @@
 
 	 if (selectedtags[key].toLowerCase().trim() == "") {
 	     selectedtags.splice(key, 1);
-	 }
+	 } else {
 
-	 if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
-	     found = 1;
+	     if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
+		 found = 1;
+	     }
+	     
 	 }
 	 
      }
@@ -946,10 +948,12 @@
 
 	 if (selectedtags[key].toLowerCase().trim() == "") {
 	     selectedtags.splice(key, 1);
-	 }
+	 } else {
 
-	 if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
-	     selectedtags.splice(key, 1);
+	     if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
+		 selectedtags.splice(key, 1);
+	     }
+
 	 }
 	 
      }
