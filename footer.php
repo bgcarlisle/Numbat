@@ -833,7 +833,7 @@
      } else {
 	 $('.TagPrompts' + eid).fadeOut(0);
 
-	 $('#TagPrompts' + eid + ' TagPromptRow td').each( function (index) {
+	 $('.TagPrompts' + eid + ' td.TagPromptCell').each( function (index) {
 	     cell_value = $(this).html();
 
 	     if (cell_value.toLowerCase().search(query.toLowerCase()) != -1) {
@@ -842,6 +842,130 @@
 	 });
      }
      
+ }
+
+ function nbtUpdateSelectedTagsTable ( eid, rid, form, columnname ) {
+
+     selectedtagstext = $('#SelectedTagsText' + eid).val();
+     selectedtags = selectedtagstext.split(";");
+     selectedtags = selectedtags.map(s => s.trim());
+     selectedtags = selectedtags.sort();
+
+     tagpromptstext = $('#nbtElementTagsPrompts' + eid).val();
+     tagprompts = tagpromptstext.split(";");
+     tagprompts = tagprompts.map(s => s.trim());
+     tagprompts = tagprompts.sort();
+     
+     $('#SelectedTagsTable' + eid + ' tr:not(.nbtTableHeaders)').remove();
+
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key] != '') {
+
+	     if ( tagprompts.includes(selectedtags[key])) {
+		 addtopromptsbutton = '';
+	     } else {
+		 addtopromptsbutton = '<button onclick="nbtAddTagToPrompts(' + eid + ', $(this));">Add to prompts</button> ';
+	     }
+
+	     $('#SelectedTagsTable' + eid).append('<tr><td><input type="text" value="' + selectedtags[key] + '" onblur="nbtRemoveTagFromSelected(' + eid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\');nbtAddTagToSelected(' + eid + ', $(this).val(), ' + rid + ', ' + form + ', \'' + columnname + '\');"></td><td style="text-align: right;">' + addtopromptsbutton + '<button onclick="nbtRemoveTagFromSelected(' + eid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\', ' + rid + ', ' + form + ', \'' + columnname + '\');">Remove</button></td></tr>');
+	     
+	 }
+	 
+     }
+     
+     $('#SelectedTagsTable' + eid).append('<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddTagToSelected(' + eid + ', $(this).val(), ' + rid + ', ' + form + ', \'' + columnname + '\');" onkeyup="if (event.keyCode == 13) {nbtAddTagToSelected(' + eid + ', $(this).val(), ' + rid + ', ' + form + ', \'' + columnname + '\');}"></td><td>&nbsp;</td></tr>');
+
+     // Update the database
+     $.ajax ({
+	 url: numbaturl + 'extract/updateextraction.php',
+	 type: 'post',
+	 data: {
+	     fid: form,
+	     id: rid,
+	     question: columnname,
+	     answer: selectedtags.join(";")
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+
+	 $('#TagFeedback' + eid).html(response);
+	 $('#TagFeedback' + eid).slideDown(400);
+
+	 setTimeout( function () {
+	     $('#TagFeedback' + eid).slideUp(400);
+	 }, 2000);
+	 
+     });
+     
+ }
+
+ function nbtAddTagToSelected ( eid, tagval, rid, form, columnname ) {
+
+     tagval = tagval.replace(";", "_");
+
+     selectedtagstext = $('#SelectedTagsText' + eid).val();
+
+     selectedtags = selectedtagstext.split(";");
+
+     found = 0;
+     
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
+	     found = 1;
+	 }
+	 
+     }
+
+     if (found == 0) {
+	 if (tagval != '') {
+	     selectedtags.push(tagval.trim());
+	 }
+	 selectedtagstext = selectedtags.sort().join(";");
+	 $('#SelectedTagsText' + eid).val(selectedtagstext);
+     }
+
+     nbtUpdateSelectedTagsTable ( eid, rid, form, columnname );
+
+ }
+
+ function nbtRemoveTagFromSelected ( eid, tagval, rid, form, columnname ) {
+
+     selectedtagstext = $('#SelectedTagsText' + eid).val();
+
+     selectedtags = selectedtagstext.split(";");
+
+     found = 0;
+     
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
+	     selectedtags.splice(key, 1);
+	 }
+	 
+     }
+
+     selectedtagstext = selectedtags.sort().join(";");
+     $('#SelectedTagsText' + eid).val(selectedtagstext);
+
+     nbtUpdateSelectedTagsTable ( eid, rid, form, columnname );
+     
+ }
+
+ function nbtAddTagToPrompts ( eid, button ) {
+
+     tagpromptstext = $('#nbtElementTagsPrompts' + eid).val();
+     tagprompts = tagpromptstext.split(";");
+     tagprompts = tagprompts.map(s => s.trim());
+     newtag = button.parent().parent().children().find('input').val().trim();
+     tagprompts.push(newtag);
+     tagprompts = tagprompts.sort();
+     $('#nbtElementTagsPrompts' + eid).val(tagprompts.join(";"));
+     button.replaceWith('<span>Added to tag prompts</span>');
+
+     nbtChangeTagsPrompts (eid);
+
  }
 
  function nbtChangeSubElementRegex ( seid ) {

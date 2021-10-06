@@ -852,25 +852,76 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 	    case "tags":
 
+		echo '<div';
+
+		if ( $element['startup_visible'] != 1 ) {
+
+		    echo ' class="nbtElementContainer nbtHidden"';
+
+		} else {
+
+		    echo ' class="nbtElementContainer"';
+		}
+
+		echo ' id="nbtElementContainer' . $element['id'] . '">';
+
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
 		$tagprompts = explode(";", $element['tagprompts']);
+		$tagprompts = array_map('trim', $tagprompts);
 
+		echo '<p>Tag prompts</p>';
+
+		echo '<input type="hidden" id="nbtElementTagsPrompts' . $element['id'] . '" value="' . $element['tagprompts'] . '">';
+		
 		echo '<table class="nbtTabledData">';
 
-		echo '<tr class="nbtTableHeaders"><td colspan="2">Search tags: <input id="TagSearch' . $element['id'] . '" type="text" onkeyup="nbtSearchTagsPrompts(' . $element['id'] . ');"></td></tr>';
-		echo '<tr><td colspan="2"><button onclick="$(\'.TagPromptRow\').fadeIn(0);">Show all</button> <button onclick="$(\'.TagPromptRow\').fadeOut(0);">Show none</button></td></tr>';
+		echo '<tr class="nbtTableHeaders"><td colspan="2"><input id="TagSearch' . $element['id'] . '" type="text" onkeyup="nbtSearchTagsPrompts(' . $element['id'] . ');" placeholder="Search tag prompts"></td></tr>';
+		echo '<tr><td colspan="2"><button onclick="$(\'.TagPromptRow\').fadeIn(0);$(\'#TagSearch' . $element['id'] . '\').val(\'\');">Show all</button> <button onclick="$(\'.TagPromptRow\').fadeOut(0);$(\'#TagSearch' . $element['id'] . '\').val(\'\');">Show none</button></td></tr>';
 
 		foreach ($tagprompts as $tagprompt) {
 		    echo '<tr class="TagPromptRow TagPrompts' . $element['id'] . '">';
 
-		    echo "<td>" . trim($tagprompt) . "</td>";
-		    echo '<td style="text-align: right;"><button>Copy tag</button></td>';
+		    echo '<td class="TagPromptCell">' . $tagprompt . '</td>';
+		    echo '<td style="text-align: right;"><button onclick="nbtAddTagToSelected(' . $element['id'] . ', $(this).parent().parent().find(\'.TagPromptCell\').html(), ' . $_GET['ref'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');">Copy tag</button></td>';
 
 		    echo "</tr>";
 		}
 
 		echo "</table>";
+
+		echo '<input id="SelectedTagsText' . $element['id'] . '" type="hidden" value="' . $extraction[$element['columnname']] . '">';
+
+		$selectedtags = explode(";", $extraction[$element['columnname']]);
+		$selectedtags = array_map('trim', $selectedtags);
+
+		echo '<table class="nbtTabledData" id="SelectedTagsTable' . $element['id'] . '">';
+
+		echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags</td></tr>';
+		
+		foreach ($selectedtags as $selectedtag) {
+
+		    if ($selectedtag != "") {
+
+			if ( in_array($selectedtag, $tagprompts) ) {
+			    $addtopromptsbutton = "";
+			} else {
+			    $addtopromptsbutton = '<button onclick="nbtAddTagToPrompts(' . $element['id'] . ', $(this));">Add to prompts</button> ';
+			}
+
+			echo '<tr><td><input type="text" value="' . $selectedtag . '" onblur="nbtRemoveTagFromSelected(' . $element['id'] . ', \'' . addslashes($selectedtag) . '\', ' . $_GET['ref'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');nbtAddTagToSelected(' . $element['id'] . ', $(this).val(), ' . $_GET['ref'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');"></td><td style="text-align: right;">' . $addtopromptsbutton . '<button onclick="nbtRemoveTagFromSelected(' . $element['id'] . ', \'' . addslashes($selectedtag) . '\', ' . $_GET['ref'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');">Remove</button></td></tr>';
+			
+		    }
+		    
+		}
+
+		echo '<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddTagToSelected(' . $element['id'] . ', $(this).val(), ' . $_GET['ref'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');" onkeyup="if (event.keyCode == 13) {nbtAddTagToSelected(' . $element['id'] . ', $(this).val(), ' . $_GET['ref'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');}"></td><td>&nbsp;</td></tr>';
+		
+		echo '</table>';
+
+		echo '<div id="TagFeedback' . $element['id'] . '" class="nbtHidden"></div>';
+
+		echo '</div>';
 		
 		break;
 
