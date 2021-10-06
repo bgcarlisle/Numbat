@@ -970,10 +970,18 @@
      tagprompts.push(newtag);
      tagprompts = tagprompts.sort();
      $('#nbtElementTagsPrompts' + eid).val(tagprompts.join(";"));
-     button.replaceWith('<span>Added to tag prompts for future extractions</span>');
 
-     nbtChangeTagsPrompts (eid);
-
+     $.ajax ({
+	 url: numbaturl + 'extract/changetagsprompts.php',
+	 type: 'post',
+	 data: {
+	     element: eid,
+	     newtagsprompts: $('#nbtElementTagsPrompts' + eid).val()
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+	 button.replaceWith('<span>Added to tag prompts for future extractions</span>');
+     });
  }
 
  function nbtChangeSubElementRegex ( seid ) {
