@@ -883,7 +883,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		    echo '<tr class="TagPromptRow TagPrompts' . $element['id'] . '">';
 
 		    echo '<td class="TagPromptCell">' . $tagprompt . '</td>';
-		    echo '<td style="text-align: right;"><button onclick="nbtAddTagToSelected(' . $element['id'] . ', $(this).parent().parent().find(\'.TagPromptCell\').html(), ' . $_GET['ref'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');">Copy tag</button></td>';
+		    echo '<td style="text-align: right;"><button onclick="nbtAddTagToSelected(' . $element['id'] . ', $(this).parent().parent().find(\'.TagPromptCell\').html(), ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');">Copy tag</button></td>';
 
 		    echo "</tr>";
 		}
@@ -909,13 +909,13 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 			    $addtopromptsbutton = '<button onclick="nbtAddTagToPrompts(' . $element['id'] . ', $(this));">Add to prompts</button> ';
 			}
 
-			echo '<tr><td><input type="text" value="' . $selectedtag . '" onblur="nbtRemoveTagFromSelected(' . $element['id'] . ', \'' . addslashes($selectedtag) . '\', ' . $_GET['ref'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');nbtAddTagToSelected(' . $element['id'] . ', $(this).val(), ' . $_GET['ref'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');"></td><td style="text-align: right;">' . $addtopromptsbutton . '<button onclick="nbtRemoveTagFromSelected(' . $element['id'] . ', \'' . addslashes($selectedtag) . '\', ' . $_GET['ref'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');">Remove</button></td></tr>';
+			echo '<tr><td><input type="text" value="' . $selectedtag . '" onblur="nbtRemoveTagFromSelected(' . $element['id'] . ', \'' . addslashes($selectedtag) . '\', ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');nbtAddTagToSelected(' . $element['id'] . ', $(this).val(), ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');"></td><td style="text-align: right;">' . $addtopromptsbutton . '<button onclick="nbtRemoveTagFromSelected(' . $element['id'] . ', \'' . addslashes($selectedtag) . '\', ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');">Remove</button></td></tr>';
 			
 		    }
 		    
 		}
 
-		echo '<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddTagToSelected(' . $element['id'] . ', $(this).val(), ' . $_GET['ref'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');" onkeyup="if (event.keyCode == 13) {nbtAddTagToSelected(' . $element['id'] . ', $(this).val(), ' . $_GET['ref'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');}"></td><td>&nbsp;</td></tr>';
+		echo '<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddTagToSelected(' . $element['id'] . ', $(this).val(), ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');" onkeyup="if (event.keyCode == 13) {nbtAddTagToSelected(' . $element['id'] . ', $(this).val(), ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');}"></td><td>&nbsp;</td></tr>';
 		
 		echo '</table>';
 
