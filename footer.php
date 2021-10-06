@@ -962,7 +962,7 @@
      tagprompts.push(newtag);
      tagprompts = tagprompts.sort();
      $('#nbtElementTagsPrompts' + eid).val(tagprompts.join(";"));
-     button.replaceWith('<span>Added to tag prompts</span>');
+     button.replaceWith('<span>Added to tag prompts for future extractions</span>');
 
      nbtChangeTagsPrompts (eid);
 
