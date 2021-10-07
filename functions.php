@@ -5010,7 +5010,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 
 }
 
-function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
+function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1, tagprompts = NULL ) {
 
     $formid = intval($formid);
     $elementid = intval($elementid);
@@ -5106,7 +5106,7 @@ function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $colum
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding, tagprompts) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding, :tagprompts);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
@@ -5118,6 +5118,7 @@ function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $colum
 	$stmt->bindParam(':startup_visible', $sv);
 	$stmt->bindParam(':conditional_logical_operator', $clo);
 	$stmt->bindParam(':destructive_hiding', $dh);
+	$stmt->bindParam(':tagprompts', $tp);
 
 	$fid = $formid;
 	$sort = $element['sortorder'] + 1;
@@ -5129,6 +5130,7 @@ function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $colum
 	$sv = $startup_visible;
 	$clo = $conditional_logical_operator;
 	$dh = $destructive_hiding;
+	$tp = $tagprompts;
 
 	$stmt->execute();
 

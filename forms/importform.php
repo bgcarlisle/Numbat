@@ -410,6 +410,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				case "prev_select":
 				    nbt_add_prev_select ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 				    break;
+
+				case "tags":
+				    nbt_add_tags_element ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding'], $element['tagprompts']);
+				    break;
 				    
 			    }
 			    
