@@ -5010,7 +5010,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 
 }
 
-function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1, tagprompts = NULL ) {
+function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1, $tagprompts = NULL ) {
 
     $formid = intval($formid);
     $elementid = intval($elementid);
