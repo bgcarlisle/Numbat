@@ -322,6 +322,362 @@ if ( count ( $extractions ) >= 2 ) {
 
 		break;
 
+	    case "tags":
+
+		
+		if ( ! is_null ($master[$element['columnname']]) ) { // If the final copy is non-NULL
+
+		    // Test for equality
+
+		    $values = array();
+
+		    foreach ( $extractions as $extraction ) {
+			array_push ( $values, $extraction[$element['columnname']] );
+		    }
+
+		    if ( count ( array_unique ($values) ) == 1 ) { // If all the extractors got the same result
+
+			echo '<div class="nbtFeedbackGood nbtDoubleResult" id="nbtTagsContainer' . $element['id'] .'">';
+
+			nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+
+			// First, give the tag prompts
+			
+			$tagprompts = explode(";", $element['tagprompts']);
+			$tagprompts = array_map('trim', $tagprompts);
+			
+			echo '<table class="nbtTabledData">';
+
+			echo '<tr class="nbtTableHeaders"><td colspan="2"><input id="TagSearch' . $element['id'] . '" type="text" onkeyup="nbtSearchTagsPrompts(' . $element['id'] . ');" placeholder="Search tag prompts"></td></tr>';
+			echo '<tr><td colspan="2"><button onclick="$(\'.TagPromptRow\').fadeIn(0);$(\'#TagSearch' . $element['id'] . '\').val(\'\');">Show all</button> <button onclick="$(\'.TagPromptRow\').fadeOut(0);$(\'#TagSearch' . $element['id'] . '\').val(\'\');">Show none</button></td></tr>';
+
+			foreach ($tagprompts as $tagprompt) {
+			    echo '<tr class="TagPromptRow TagPrompts' . $element['id'] . '">';
+
+			    echo '<td class="TagPromptCell">' . $tagprompt . '</td>';
+			    echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($tagprompt) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
+
+			    echo "</tr>";
+			}
+			
+			echo '</table>';
+
+			// Print the extracted tags
+
+			echo '<table class="nbtTabledData">';
+
+			echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (all extractors)</td></tr>';
+			
+			$extractedtags = explode(";", $extractions[0][$element['columnname']]);
+			$extractedtags = array_map('trim', $extractedtags);
+			
+			foreach ($extractedtags as $extractedtag) {
+			    echo '<tr>';
+			    echo '<td>' . $extractedtag . '</td>';
+			    echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($extractedtag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
+			    echo '</tr>';
+			}
+			
+			echo '</table>';
+			
+			echo '<span class="nbtExtractionName">All extractors</span>';
+
+			// Print the final copy
+
+			echo '<input type="hidden" id="nbtFinalSelectedTags' . $element['id'] . '" value="' . $master[$element['columnname']] . '">';
+
+			echo '<table id="nbtFinalTagsTable' . $element['id'] . '" class="nbtTabledData" style="margin-top: 20px;">';
+
+			echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (final copy)</td></tr>';
+
+			if ( $master[$element['columnname']] != "") {
+			
+			    $finaltags = explode(";", $master[$element['columnname']]);
+			    $finaltags = array_map('trim', $finaltags);
+			    
+			    foreach ($finaltags as $finaltag) {
+				echo '<tr class="nbtFinalTagRow' . $element['id'] . '"><td>' . $finaltag . '</td>';
+				echo '<td style="text-align: right;"><button onclick="nbtRemoveTagFromFinal(\'' . addslashes($finaltag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Remove</button></td></tr>';
+			    }
+			    
+			}
+			
+			echo '<tr class="nbtFinalTagRow' . $element['id'] . '"><td colspan="2"><input type="text" placeholder="Add new tag" onblur="nbtCopyTagToFinal($(this).val(), ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');" onkeyup="if (event.keyCode == 13) { nbtCopyTagToFinal($(this).val(), ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\'); }"></td></tr>';
+			
+			echo '</table>';
+			
+			echo '<span class="nbtExtractionName">Final copy</span>';
+
+			echo '</div>';
+			
+		    } else { // If not all the extractions are the same
+
+			echo '<div class="nbtFeedbackGood nbtDoubleResult" id="nbtTagsContainer' . $element['id'] .'">';
+
+			nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+
+			// First, give the tag prompts
+			
+			$tagprompts = explode(";", $element['tagprompts']);
+			$tagprompts = array_map('trim', $tagprompts);
+			
+			echo '<table class="nbtTabledData">';
+
+			echo '<tr class="nbtTableHeaders"><td colspan="2"><input id="TagSearch' . $element['id'] . '" type="text" onkeyup="nbtSearchTagsPrompts(' . $element['id'] . ');" placeholder="Search tag prompts"></td></tr>';
+			echo '<tr><td colspan="2"><button onclick="$(\'.TagPromptRow\').fadeIn(0);$(\'#TagSearch' . $element['id'] . '\').val(\'\');">Show all</button> <button onclick="$(\'.TagPromptRow\').fadeOut(0);$(\'#TagSearch' . $element['id'] . '\').val(\'\');">Show none</button></td></tr>';
+
+			foreach ($tagprompts as $tagprompt) {
+			    echo '<tr class="TagPromptRow TagPrompts' . $element['id'] . '">';
+
+			    echo '<td class="TagPromptCell">' . $tagprompt . '</td>';
+			    echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($tagprompt) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
+
+			    echo "</tr>";
+			}
+			
+			echo '</table>';
+
+			// Print the extracted tags
+
+			foreach ($extractions as $extraction) {
+
+			    echo '<table class="nbtTabledData" style="margin-top: 20px;">';
+
+			    echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (' . $extraction['username'] . ')</td></tr>';
+			    
+			    $extractedtags = explode(";", $extraction[$element['columnname']]);
+			    $extractedtags = array_map('trim', $extractedtags);
+			    
+			    foreach ($extractedtags as $extractedtag) {
+				echo '<tr>';
+				echo '<td>' . $extractedtag . '</td>';
+				echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($extractedtag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
+				echo '</tr>';
+			    }
+			    
+			    echo '</table>';
+			    
+			    echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
+			    
+			}
+
+			// Print the final copy
+
+			echo '<input type="hidden" id="nbtFinalSelectedTags' . $element['id'] . '" value="' . $master[$element['columnname']] . '">';
+
+			echo '<table id="nbtFinalTagsTable' . $element['id'] . '" class="nbtTabledData" style="margin-top: 20px;">';
+
+			echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (final copy)</td></tr>';
+
+			if ( $master[$element['columnname']] != "") {
+			
+			    $finaltags = explode(";", $master[$element['columnname']]);
+			    $finaltags = array_map('trim', $finaltags);
+			    
+			    foreach ($finaltags as $finaltag) {
+				echo '<tr class="nbtFinalTagRow' . $element['id'] . '"><td>' . $finaltag . '</td>';
+				echo '<td style="text-align: right;"><button onclick="nbtRemoveTagFromFinal(\'' . addslashes($finaltag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Remove</button></td></tr>';
+			    }
+			    
+			}
+			
+			echo '<tr class="nbtFinalTagRow' . $element['id'] . '"><td colspan="2"><input type="text" placeholder="Add new tag" onblur="nbtCopyTagToFinal($(this).val(), ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');" onkeyup="if (event.keyCode == 13) { nbtCopyTagToFinal($(this).val(), ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\'); }"></td></tr>';
+			
+			echo '</table>';
+			
+			echo '<span class="nbtExtractionName">Final copy</span>';
+
+			echo '</div>';
+			
+		    }
+
+		} else { // The final copy is NULL
+
+		    // Test for equality
+		    
+		    $values = array ();
+
+		    foreach ( $extractions as $extraction ) {
+
+			array_push ( $values, $extraction[$element['columnname']] );
+
+		    }
+
+		    
+		    if ( count ( array_unique ( $values ) ) == 1 ) { // If all the extractions got the same result
+
+			nbt_copy_to_master ( $_GET['form'], $_GET['refset'], $_GET['ref'], $element['columnname'], $extractions[0]['id'] );
+
+			$master[$element['columnname']] = $extractions[0][$element['columnname']];
+
+			echo '<div class="nbtFeedbackGood nbtDoubleResult" id="nbtTagsContainer' . $element['id'] .'">';
+
+			nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+
+			// First, give the tag prompts
+			
+			$tagprompts = explode(";", $element['tagprompts']);
+			$tagprompts = array_map('trim', $tagprompts);
+			
+			echo '<table class="nbtTabledData">';
+
+			echo '<tr class="nbtTableHeaders"><td colspan="2"><input id="TagSearch' . $element['id'] . '" type="text" onkeyup="nbtSearchTagsPrompts(' . $element['id'] . ');" placeholder="Search tag prompts"></td></tr>';
+			echo '<tr><td colspan="2"><button onclick="$(\'.TagPromptRow\').fadeIn(0);$(\'#TagSearch' . $element['id'] . '\').val(\'\');">Show all</button> <button onclick="$(\'.TagPromptRow\').fadeOut(0);$(\'#TagSearch' . $element['id'] . '\').val(\'\');">Show none</button></td></tr>';
+
+			foreach ($tagprompts as $tagprompt) {
+			    echo '<tr class="TagPromptRow TagPrompts' . $element['id'] . '">';
+
+			    echo '<td class="TagPromptCell">' . $tagprompt . '</td>';
+			    echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($tagprompt) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
+
+			    echo "</tr>";
+			}
+			
+			echo '</table>';
+
+			// Print the extracted tags
+
+			echo '<table class="nbtTabledData">';
+
+			echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (all extractors)</td></tr>';
+			
+			$extractedtags = explode(";", $extractions[0][$element['columnname']]);
+			$extractedtags = array_map('trim', $extractedtags);
+			
+			foreach ($extractedtags as $extractedtag) {
+			    echo '<tr>';
+			    echo '<td>' . $extractedtag . '</td>';
+			    echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($extractedtag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
+			    echo '</tr>';
+			}
+			
+			echo '</table>';
+			
+			echo '<span class="nbtExtractionName">All extractors</span>';
+
+			// Print the final copy
+
+			echo '<input type="hidden" id="nbtFinalSelectedTags' . $element['id'] . '" value="' . $master[$element['columnname']] . '">';
+
+			echo '<table id="nbtFinalTagsTable' . $element['id'] . '" class="nbtTabledData" style="margin-top: 20px;">';
+
+			echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (final copy)</td></tr>';
+
+			if ( $master[$element['columnname']] != "") {
+			
+			    $finaltags = explode(";", $master[$element['columnname']]);
+			    $finaltags = array_map('trim', $finaltags);
+			    
+			    foreach ($finaltags as $finaltag) {
+				echo '<tr class="nbtFinalTagRow' . $element['id'] . '"><td>' . $finaltag . '</td>';
+				echo '<td style="text-align: right;"><button onclick="nbtRemoveTagFromFinal(\'' . addslashes($finaltag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Remove</button></td></tr>';
+			    }
+			    
+			}
+			
+			echo '<tr class="nbtFinalTagRow' . $element['id'] . '"><td colspan="2"><input type="text" placeholder="Add new tag" onblur="nbtCopyTagToFinal($(this).val(), ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');" onkeyup="if (event.keyCode == 13) { nbtCopyTagToFinal($(this).val(), ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\'); }"></td></tr>';
+			
+			echo '</table>';
+			
+			echo '<span class="nbtExtractionName">Final copy</span>';
+
+			echo '</div>';
+			
+		    } else { // If not all the extractions are the same
+
+			echo '<div class="nbtFeedbackBad nbtDoubleResult" id="nbtTagsContainer' . $element['id'] .'">';
+
+			nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
+
+			// First, give the tag prompts
+			
+			$tagprompts = explode(";", $element['tagprompts']);
+			$tagprompts = array_map('trim', $tagprompts);
+			
+			echo '<table class="nbtTabledData">';
+
+			echo '<tr class="nbtTableHeaders"><td colspan="2"><input id="TagSearch' . $element['id'] . '" type="text" onkeyup="nbtSearchTagsPrompts(' . $element['id'] . ');" placeholder="Search tag prompts"></td></tr>';
+			echo '<tr><td colspan="2"><button onclick="$(\'.TagPromptRow\').fadeIn(0);$(\'#TagSearch' . $element['id'] . '\').val(\'\');">Show all</button> <button onclick="$(\'.TagPromptRow\').fadeOut(0);$(\'#TagSearch' . $element['id'] . '\').val(\'\');">Show none</button></td></tr>';
+
+			foreach ($tagprompts as $tagprompt) {
+			    echo '<tr class="TagPromptRow TagPrompts' . $element['id'] . '">';
+
+			    echo '<td class="TagPromptCell">' . $tagprompt . '</td>';
+			    echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($tagprompt) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
+
+			    echo "</tr>";
+			}
+			
+			echo '</table>';
+
+			// Print the extracted tags
+
+			foreach ($extractions as $extraction) {
+
+			    echo '<table class="nbtTabledData" style="margin-top: 20px;">';
+
+			    echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (' . $extraction['username'] . ')</td></tr>';
+			    
+			    $extractedtags = explode(";", $extraction[$element['columnname']]);
+			    $extractedtags = array_map('trim', $extractedtags);
+			    
+			    foreach ($extractedtags as $extractedtag) {
+				echo '<tr>';
+				echo '<td>' . $extractedtag . '</td>';
+				echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($extractedtag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
+				echo '</tr>';
+			    }
+			    
+			    echo '</table>';
+			    
+			    echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
+			    
+			}
+
+			// Print the final copy
+
+			echo '<input type="hidden" id="nbtFinalSelectedTags' . $element['id'] . '" value="' . $master[$element['columnname']] . '">';
+
+			echo '<table id="nbtFinalTagsTable' . $element['id'] . '" class="nbtTabledData" style="margin-top: 20px;">';
+
+			echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (final copy)</td></tr>';
+
+			if ( $master[$element['columnname']] != "") {
+			
+			    $finaltags = explode(";", $master[$element['columnname']]);
+			    $finaltags = array_map('trim', $finaltags);
+			    
+			    foreach ($finaltags as $finaltag) {
+				echo '<tr class="nbtFinalTagRow' . $element['id'] . '"><td>' . $finaltag . '</td>';
+				echo '<td style="text-align: right;"><button onclick="nbtRemoveTagFromFinal(\'' . addslashes($finaltag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Remove</button></td></tr>';
+			    }
+			    
+			}
+			
+			echo '<tr class="nbtFinalTagRow' . $element['id'] . '"><td colspan="2"><input type="text" placeholder="Add new tag" onblur="nbtCopyTagToFinal($(this).val(), ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');" onkeyup="if (event.keyCode == 13) { nbtCopyTagToFinal($(this).val(), ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\'); }"></td></tr>';
+			
+			echo '</table>';
+			
+			echo '<span class="nbtExtractionName">Final copy</span>';
+
+			echo '</div>';
+
+
+		    }
+
+		}
+
+		// In any case
+
+		// Show the final copy
+
+		echo '<input id="FinalTagsText' . $element['id'] . '" type="hidden" value="' . $master[$element['columnname']] . '">';
+		
+		$finaltags = explode(";", $master[$element['columnname']]);
+		$finaltags = array_map('trim', $selectedtags);
+
+		break;
+
 	    case "text_area":
 
 		// See if there is a value in the final copy

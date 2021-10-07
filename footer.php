@@ -4347,6 +4347,113 @@
 
  }
 
+ function nbtCopyTagToFinal ( newtag, eid, formid, refset, refid, col ) {
+
+     finaltagstext = $('#nbtFinalSelectedTags' + eid ).val();
+     finaltags = finaltagstext.split(";");
+     finaltags = finaltags.map(s => s.trim());
+     finaltags.push(newtag.trim());
+     finaltags = finaltags.sort();
+
+     function onlyUnique(value, index, self) {
+	 return self.indexOf(value) === index;
+     }
+     finaltags = finaltags.filter(onlyUnique);
+
+     for (var key in finaltags) {
+
+	 if (finaltags[key].toLowerCase().trim() == "") {
+	     finaltags.splice(key, 1);
+	 }
+	 
+     }
+
+     $.ajax ({
+	 url: numbaturl + 'final/updatecolumn.php',
+	 type: 'post',
+	 data: {
+	     newvalue: finaltags.join(";"),
+	     fid: formid,
+	     rsid: refset,
+	     rid: refid,
+	     column: col
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+	 $('#nbtFinalSelectedTags' + eid).val(finaltags.join(";"));
+	 nbtUpdateFinalTagsTable (eid, formid, refset, refid, col);
+     });
+     
+ }
+
+ function nbtRemoveTagFromFinal ( tagval, eid, formid, refset, refid, col ) {
+
+     finaltagstext = $('#nbtFinalSelectedTags' + eid ).val();
+
+     if (finaltagstext != "") {
+	 
+	 finaltags = finaltagstext.split(";");
+	 finaltags = finaltags.map(s => s.trim());
+	 finaltags = finaltags.sort();
+
+	 function onlyUnique(value, index, self) {
+	     return self.indexOf(value) === index;
+	 }
+	 finaltags = finaltags.filter(onlyUnique);
+
+	 for (var key in finaltags) {
+
+	     if (finaltags[key].toLowerCase().trim() == "") {
+		 finaltags.splice(key, 1);
+	     }
+	     
+	     if (finaltags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
+		 finaltags.splice(key, 1);
+	     }
+	 }
+	 
+     } else {
+	 finaltags = [];
+     }
+
+     $.ajax ({
+	 url: numbaturl + 'final/updatecolumn.php',
+	 type: 'post',
+	 data: {
+	     newvalue: finaltags.join(";"),
+	     fid: formid,
+	     rsid: refset,
+	     rid: refid,
+	     column: col
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+	 $('#nbtFinalSelectedTags' + eid).val(finaltags.join(";"));
+	 nbtUpdateFinalTagsTable (eid, formid, refset, refid, col);
+     });
+     
+ }
+
+ function nbtUpdateFinalTagsTable (eid, formid, refset, refid, col) {
+
+     $('#nbtTagsContainer' + eid).removeClass('nbtFeedbackBad').addClass('nbtFeedbackGood');
+
+     finaltagstext = $('#nbtFinalSelectedTags' + eid ).val();
+     finaltags = finaltagstext.split(";");
+     finaltags = finaltags.map(s => s.trim());
+
+     $('.nbtFinalTagRow' + eid).remove();
+
+     if (finaltagstext != "") {
+	 for (var key in finaltags) {
+	     $('#nbtFinalTagsTable' + eid).append('<tr class="nbtFinalTagRow' + eid + '"><td>' + finaltags[key] + '</td><td style="text-align: right;"><button onclick="nbtRemoveTagFromFinal(\'' + finaltags[key].replace(/\'/g, '\\\'') + '\', ' + eid + ', ' + formid + ', ' + refset + ', ' + refid + ', \'' + col + '\');">Remove</button></td></tr>');
+	 }
+     }
+
+     $('#nbtFinalTagsTable' + eid).append('<tr class="nbtFinalTagRow' + eid + '"><td colspan="2"><input type="text" placeholder="Add new tag" onblur="nbtCopyTagToFinal($(this).val(), ' + eid + ', ' + formid + ', ' + refset +', ' + refid + ', \'' + col + '\');" onkeyup="if (event.keyCode == 13) { nbtCopyTagToFinal($(this).val(), ' + eid + ', ' + formid + ', ' + refset +', ' + refid + ', \'' + col + '\'); }"></td></tr>');
+     
+ }
+
  function nbtCopyMultiSelectToMaster ( fid, rsid, refid, exid, eid, uid ) {
 
      $.ajax ({
@@ -4459,7 +4566,7 @@
      });
 
  }
-
+ 
  function nbtPasswordCheck () {
      if ( $('#nbtSignUpPassword1').val() == "" ) {
 	 $('#nbtChangePassButton').attr('disabled', true);
