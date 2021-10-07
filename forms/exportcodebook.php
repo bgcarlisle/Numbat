@@ -292,6 +292,36 @@ foreach ( $elements as $element ) {
 	    
 	    break;
 
+	case "tags":
+
+	    echo "### " . $element['displayname'] . "\n\n";
+
+	    echo "Variable type: Categorical (multiple selection allowed)\n\n";
+
+	    echo "Extractors were presented with a list of editable tags to select one or more of the following options. Selected tags could be added to the list of tag prompts for future extractions.\n\n";
+
+	    $tagprompts = explode(";", $element['tagprompts']);
+	    $tagprompts = array_map('trim', $tagprompts);
+
+	    echo "| Tag        |\n";
+	    echo "|:-----------|\n";
+
+	    foreach ($tagprompts as $tagprompt) {
+		echo "| " . $tagprompt . " |\n";
+	    }
+
+	    echo "\n";
+
+	    echo "Database column name: `" . $element['columnname'] . "`\n\n";
+
+	    if ( $element['codebook'] != "" ) {
+
+		echo "Extractor prompt: " . $element['codebook'] . "\n\n";
+		
+	    }
+	    
+	    break;
+
 	case "assignment_editor":
 
 	    echo "### " . $element['displayname'] . "\n\n";
