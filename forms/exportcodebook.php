@@ -298,7 +298,7 @@ foreach ( $elements as $element ) {
 
 	    echo "Variable type: Categorical (multiple selection allowed)\n\n";
 
-	    echo "Extractors were presented with a list of editable tags to select one or more of the following options. Selected tags could be added to the list of tag prompts for future extractions.\n\n";
+	    echo "Extractors were presented with a list of editable tags to select. Selected tags could be added to the list of tag prompts for future extractions.\n\n";
 
 	    $tagprompts = explode(";", $element['tagprompts']);
 	    $tagprompts = array_map('trim', $tagprompts);
