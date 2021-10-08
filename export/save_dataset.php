@@ -159,7 +159,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		$form_cols_string = "msub_" . $_POST['formid'] . "." . implode(", msub_" . $_POST['formid'] . ".", $fcols);
 
-		$select_cols = "sub_" . $_POST['formid'] . ".referenceid, " . $rs_cols_string . ", " . $form_cols_string;
+		$select_cols = "msub_" . $_POST['formid'] . ".referenceid, " . $rs_cols_string . ", " . $form_cols_string;
 
 		// echo sub final;
 
