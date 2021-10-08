@@ -877,7 +877,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		echo '<table class="nbtTabledData">';
 
 		echo '<tr class="nbtTableHeaders"><td colspan="2"><input id="TagSearch' . $element['id'] . '" type="text" onkeyup="nbtSearchTagsPrompts(' . $element['id'] . ');" placeholder="Search tag prompts"></td></tr>';
-		echo '<tr><td colspan="2"><button onclick="$(\'.TagPromptRow\').fadeIn(0);$(\'#TagSearch' . $element['id'] . '\').val(\'\');">Show all</button> <button onclick="$(\'.TagPromptRow\').fadeOut(0);$(\'#TagSearch' . $element['id'] . '\').val(\'\');">Show none</button></td></tr>';
+		echo '<tr><td colspan="2"><button onclick="$(\'.TagPromptRow.TagPrompts' . $element['id'] . '\').fadeIn(0);$(\'#TagSearch' . $element['id'] . '\').val(\'\');">Show all</button> <button onclick="$(\'.TagPromptRow.TagPrompts' . $element['id'] . '\').fadeOut(0);$(\'#TagSearch' . $element['id'] . '\').val(\'\');">Show none</button></td></tr>';
 
 		foreach ($tagprompts as $tagprompt) {
 		    echo '<tr class="TagPromptRow TagPrompts' . $element['id'] . '">';
