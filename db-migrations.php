@@ -1167,7 +1167,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
     }
 
     // Add tagprompts column to formelements table
-    echo '<h3>Add tag prompts column</h3>';
+    echo '<h3>Add tag prompts columns</h3>';
 
     if (! check_for_formelements_column ("tagprompts")) {
 
@@ -1196,16 +1196,44 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	echo "<p>Form elements table already has a tag prompts column</p>";
     }
 
-    // End
-    
-} else { // Not admin
+    // Add tagprompts column to subelements table
+    if (! check_for_subelements_column ("tagprompts")) {
 
-    echo "<p>You are not logged in, or you do not have sufficient privileges to perform database migration</p>";
-    
-}
+	try {
 
-echo '</div>';
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `subelements` ADD COLUMN `tagprompts` TEXT NULL DEFAULT NULL AFTER `copypreviousprompt`;");
 
-include_once ("./footer.php");
+	    if ($stmt->execute()) {
+		echo "<p>Sub-elements table updated with tagprompts column</p>";
+	    } else {
+		echo "<p>Error updating sub-elements table with tagprompts column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    } else {
+	echo "<p>Sub-elements table already has a tag prompts column</p>";
+    }
+
+	// End
+	
+    } else { // Not admin
+
+	echo "<p>You are not logged in, or you do not have sufficient privileges to perform database migration</p>";
+	
+    }
+
+    echo '</div>';
+
+    include_once ("./footer.php");
 
 ?>
