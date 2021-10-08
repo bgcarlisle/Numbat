@@ -867,6 +867,26 @@
      
  }
 
+ function nbtSearchSubTagsPrompts ( seid, subexid ) {
+
+     query = $('#nbtSubelementContainer' + seid + '-' + subexid + ' .TagSearch' + seid).val();
+
+     if ( query == '' ) {
+	 $('#nbtSubelementContainer' + seid + '-' + subexid + ' .TagPrompts' + seid).fadeOut(0);
+     } else {
+	 $('#nbtSubelementContainer' + seid + '-' + subexid + ' .TagPrompts' + seid).fadeOut(0);
+
+	 $('#nbtSubelementContainer' + seid + '-' + subexid + ' .TagPrompts' + seid + ' td.TagPromptCell').each( function (index) {
+	     cell_value = $(this).html();
+
+	     if (cell_value.toLowerCase().search(query.toLowerCase()) != -1) {
+		 $(this).parent().fadeIn(0);
+	     }
+	 });
+     }
+     
+ }
+
  function nbtUpdateSelectedTagsTable ( eid, exid, form, columnname ) {
 
      selectedtagstext = $('#SelectedTagsText' + eid).val();
@@ -2414,10 +2434,10 @@
 
      if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // If it's already selected
 
-	 $.ajax ({
-	     url: numbaturl + 'extract/updateextraction.php',
-	     type: 'post',
-	     data: {
+	     $.ajax ({
+		 url: numbaturl + 'extract/updateextraction.php',
+		 type: 'post',
+		 data: {
 		 fid: formid,
 		 id: extractionid,
 		 question: questionlabel,
