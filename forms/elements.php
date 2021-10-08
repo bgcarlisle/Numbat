@@ -219,6 +219,7 @@ if ( count ( $elements ) > 0 ) {
 		<button onclick="nbtAddNewSubDateSelector(<?php echo $element['id']; ?>);">Date selector</button>
 		<button onclick="nbtAddNewSubSingleSelect(<?php echo $element['id']; ?>);">Single select</button>
 		<button onclick="nbtAddNewSubMultiSelect(<?php echo $element['id']; ?>);">Multi select</button>
+		<button onclick="nbtAddNewSubTagsElement(<?php echo $element['id']; ?>);">Tags</button>
 		<button onclick="nbtAddNewSubTable(<?php echo $element['id']; ?>);">Table data</button>
 	    </div>
 	</div>

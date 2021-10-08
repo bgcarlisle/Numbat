@@ -824,6 +824,29 @@
      });
  }
 
+ function nbtChangeSubTagsPrompts ( seid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/changesubtagsprompts.php',
+	 type: 'post',
+	 data: {
+	     subelement: seid,
+	     newtagsprompts: $('#nbtSubElementTagsPrompts' + seid).val()
+	 },
+	 dataType: 'html'
+     }).done ( function (response) {
+
+	 $('#nbtSubElementFeedback' + seid).html(response);
+
+	 $('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
+
+	     $('#nbtSubElementFeedback' + seid).fadeOut(1500);
+
+	 });
+
+     });
+ }
+
  function nbtSearchTagsPrompts ( eid ) {
 
      query = $('#TagSearch' + eid).val();
@@ -3972,6 +3995,23 @@
 
      $.ajax ({
 	 url: numbaturl + 'forms/addsubdateselector.php',
+	 type: 'post',
+	 data: {
+	     elementid: eid
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtSubExtractionElements' + eid).html(html);
+
+     });
+
+ }
+
+ function nbtAddNewSubTagsElement ( eid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/addsubtagselement.php',
 	 type: 'post',
 	 data: {
 	     elementid: eid

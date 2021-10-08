@@ -4,66 +4,90 @@ $subelements = nbt_get_sub_extraction_elements_for_elementid ( $subelementid );
 
 foreach ( $subelements as $subelement ) {
 
-	?><div style="border: 1px solid #999; border-radius: 3px; padding: 10px; margin: 5px 0 20px 0; background: #ddd;" id="nbtSubElement<?php echo $subelement['id']; ?>" class="nbtSubElementEditor" subelementid="<?php echo $subelement['id']; ?>">
-		<button style="float: right;" onclick="$(this).fadeOut(0);$('#nbtDeleteSubElement<?php echo $subelement['id']; ?>').fadeIn();">Delete</button>
-		<button class="nbtHidden" id="nbtDeleteSubElement<?php echo $subelement['id']; ?>" style="float: right;" onclick="nbtDeleteSubElement(<?php echo $subelement['id']; ?>);">For real</button>
-		<?php
+?><div style="border: 1px solid #999; border-radius: 3px; padding: 10px; margin: 5px 0 20px 0; background: #ddd;" id="nbtSubElement<?php echo $subelement['id']; ?>" class="nbtSubElementEditor" subelementid="<?php echo $subelement['id']; ?>">
+    <button style="float: right;" onclick="$(this).fadeOut(0);$('#nbtDeleteSubElement<?php echo $subelement['id']; ?>').fadeIn();">Delete</button>
+    <button class="nbtHidden" id="nbtDeleteSubElement<?php echo $subelement['id']; ?>" style="float: right;" onclick="nbtDeleteSubElement(<?php echo $subelement['id']; ?>);">For real</button>
+    <?php
 
-		switch ( $subelement['type'] ) {
+    switch ( $subelement['type'] ) {
 
-			case "open_text":
+	case "open_text":
 
-				?><h4>Open text field</h4>
-				<p>Display name: <input type="text" id="nbtSubElementDisplayName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['displayname']; ?>" onblur="nbtChangeSubDisplayName(<?php echo $subelement['id']; ?>);"></p>
-				<p class="nbtFinePrint">Will appear on extraction form</p>
-				<p>Column name: <input type="text" id="nbtSubElementColumnName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubColumnName(<?php echo $subelement['id']; ?>);"></p>
-				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
+	    echo '<h4>Open text field</h4>';
+	    echo '<p>Display name: <input type="text" id="nbtSubElementDisplayName' . $subelement['id'] . '" value="' . $subelement['displayname'] . '" onblur="nbtChangeSubDisplayName(' . $subelement['id'] . ');"></p>';
+    ?>
+	<p class="nbtFinePrint">Will appear on extraction form</p>
+	<p>Column name: <input type="text" id="nbtSubElementColumnName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubColumnName(<?php echo $subelement['id']; ?>);"></p>
+	<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
 
-				<p>Regex validation: <input type="text" id="nbtSubElementRegex<?php echo $subelement['id']; ?>" value="<?php echo $subelement['regex']; ?>" onblur="nbtChangeSubElementRegex(<?php echo $subelement['id']; ?>);" maxlength="500"></p>
-				<p class="nbtFinePrint">Will not save extractor input unless the text matches the regex supplied; leave blank for no regex validation</p>
-				<p>Prompt extractor to copy value from the previous sub-extraction: <a href="#" id="nbtSubElementPromptCopyFromPrev<?php echo $subelement['id']; ?>" onclick="event.preventDefault();nbtSubElementPromptCopyFromPrevToggle(<?php echo $subelement['id']; ?>);" class="nbtTextOptionSelect<?php if ($subelement['copypreviousprompt'] == 1) { echo " nbtTextOptionChosen"; } ?>">Show prompt</a></p><?php							       
-			break;
+	<p>Regex validation: <input type="text" id="nbtSubElementRegex<?php echo $subelement['id']; ?>" value="<?php echo $subelement['regex']; ?>" onblur="nbtChangeSubElementRegex(<?php echo $subelement['id']; ?>);" maxlength="500"></p>
+	<p class="nbtFinePrint">Will not save extractor input unless the text matches the regex supplied; leave blank for no regex validation</p>
+	<p>Prompt extractor to copy value from the previous sub-extraction: <a href="#" id="nbtSubElementPromptCopyFromPrev<?php echo $subelement['id']; ?>" onclick="event.preventDefault();nbtSubElementPromptCopyFromPrevToggle(<?php echo $subelement['id']; ?>);" class="nbtTextOptionSelect<?php if ($subelement['copypreviousprompt'] == 1) { echo " nbtTextOptionChosen"; } ?>">Show prompt</a></p>
+	<?php							       
+	break;
 
-																					 case "single_select":
+	case "single_select":
 
-																					 ?><h4>Single select</h4>
-				<p>Display name: <input type="text" id="nbtSubElementDisplayName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['displayname']; ?>" onblur="nbtChangeSubDisplayName(<?php echo $subelement['id']; ?>);"></p>
-				<p class="nbtFinePrint">Will appear on extraction form</p>
-				<p>Column name: <input type="text" id="nbtSubElementColumnName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubColumnName(<?php echo $subelement['id']; ?>);"></p>
-				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
-				<p>Prompt extractor to copy value from the previous sub-extraction: <a href="#" id="nbtSubElementPromptCopyFromPrev<?php echo $subelement['id']; ?>" onclick="event.preventDefault();nbtSubElementPromptCopyFromPrevToggle(<?php echo $subelement['id']; ?>);" class="nbtTextOptionSelect<?php if ($subelement['copypreviousprompt'] == 1) { echo " nbtTextOptionChosen"; } ?>">Show prompt</a></p>
-				<p>Options</p>
-				<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet</p>
-				<div id="nbtSubSingleSelectOptionsTable<?php echo $subelement['id']; ?>"><?php
+	?><h4>Single select</h4>
+	<p>Display name: <input type="text" id="nbtSubElementDisplayName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['displayname']; ?>" onblur="nbtChangeSubDisplayName(<?php echo $subelement['id']; ?>);"></p>
+	<p class="nbtFinePrint">Will appear on extraction form</p>
+	<p>Column name: <input type="text" id="nbtSubElementColumnName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubColumnName(<?php echo $subelement['id']; ?>);"></p>
+	<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
+	<p>Prompt extractor to copy value from the previous sub-extraction: <a href="#" id="nbtSubElementPromptCopyFromPrev<?php echo $subelement['id']; ?>" onclick="event.preventDefault();nbtSubElementPromptCopyFromPrevToggle(<?php echo $subelement['id']; ?>);" class="nbtTextOptionSelect<?php if ($subelement['copypreviousprompt'] == 1) { echo " nbtTextOptionChosen"; } ?>">Show prompt</a></p>
+	<p>Options</p>
+	<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet</p>
+	<div id="nbtSubSingleSelectOptionsTable<?php echo $subelement['id']; ?>">
+	    <?php
 
-				$tablesubelementid = $subelement['id'];
+	    $tablesubelementid = $subelement['id'];
 
-				include ('./subsingleselectoptionstable.php');
+	    include ('./subsingleselectoptionstable.php');
 
-				?></div><?php
+	    ?>
+	</div>
+	<?php
 
-			break;
+	break;
 
-			case "multi_select":
+	case "multi_select":
 
-				?><h4>Multi select</h4>
-				<p>Display name: <input type="text" id="nbtSubElementDisplayName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['displayname']; ?>" onblur="nbtChangeSubDisplayName(<?php echo $subelement['id']; ?>);"></p>
-				<p class="nbtFinePrint">Will appear on extraction form</p>
-				<p>Column prefix: <input type="text" id="nbtSubElementColumnPrefix<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubMultiSelectColumnPrefix(<?php echo $subelement['id']; ?>);"></p>
-				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
-				<p>Prompt extractor to copy value from the previous sub-extraction: <a href="#" id="nbtSubElementPromptCopyFromPrev<?php echo $subelement['id']; ?>" onclick="event.preventDefault();nbtSubElementPromptCopyFromPrevToggle(<?php echo $subelement['id']; ?>);" class="nbtTextOptionSelect<?php if ($subelement['copypreviousprompt'] == 1) { echo " nbtTextOptionChosen"; } ?>">Show prompt</a></p>
-				<p>Options</p>
-				<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet</p>
-				<div id="nbtSubMultiSelectOptionsTable<?php echo $subelement['id']; ?>"><?php
+	?><h4>Multi select</h4>
+	<p>Display name: <input type="text" id="nbtSubElementDisplayName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['displayname']; ?>" onblur="nbtChangeSubDisplayName(<?php echo $subelement['id']; ?>);"></p>
+	<p class="nbtFinePrint">Will appear on extraction form</p>
+	<p>Column prefix: <input type="text" id="nbtSubElementColumnPrefix<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubMultiSelectColumnPrefix(<?php echo $subelement['id']; ?>);"></p>
+	<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
+	<p>Prompt extractor to copy value from the previous sub-extraction: <a href="#" id="nbtSubElementPromptCopyFromPrev<?php echo $subelement['id']; ?>" onclick="event.preventDefault();nbtSubElementPromptCopyFromPrevToggle(<?php echo $subelement['id']; ?>);" class="nbtTextOptionSelect<?php if ($subelement['copypreviousprompt'] == 1) { echo " nbtTextOptionChosen"; } ?>">Show prompt</a></p>
+	<p>Options</p>
+	<p class="nbtFinePrint">Display name will appear on extraction form; DB name will appear on exported spreadsheet</p>
+	<div id="nbtSubMultiSelectOptionsTable<?php echo $subelement['id']; ?>">
+	    <?php
 
-				$tablesubelementid = $subelement['id'];
+	    $tablesubelementid = $subelement['id'];
 
-				include ('./submultiselectoptionstable.php');
+	    include ('./submultiselectoptionstable.php');
 
-				?></div><?php
+	    ?>
+	</div>
+	<?php
 
-			break;
+	break;
 
+	case "tags":
+
+	echo '<h4>Tags</h4>';
+	echo '<p class="nbtFinePrint">Extractors will be prompted a searchable list of text tags that can be selected from, or added to on the fly. You may optionally pre-populate the list of tag prompts by adding a semicolon-delimited list in the box below, or you can generate this list at the point of extraction. Tags may not be empty, and may not contain semicolons or line breaks.</p>';
+	
+	echo '<p>Display name: <input type="text" id="nbtSubElementDisplayName' . $subelement['id'] . '" value="' . $subelement['displayname'] . '" onblur="nbtChangeSubDisplayName(' . $subelement['id'] . ');"></p>';
+	echo '<p class="nbtFinePrint">Will appear on extraction form</p>';
+
+	echo '<p>Semicolon-delimited tag prompts:</p>';
+	echo '<textarea style="width: 100%; height: 80px;" id="nbtSubElementTagsPrompts' . $subelement['id']. '" onblur="nbtChangeSubTagsPrompts(' . $subelement['id'] . ');">' . $subelement['tagprompts'] . '</textarea>';
+	
+	echo '<p>Column name: <input type="text" id="nbtSubElementColumnName' . $subelement['id'] . '" value="' . $subelement['dbname'] . '" onblur="nbtChangeSubColumnName(' . $subelement['id'] . ');"></p>';
+	echo '<p class="nbtFinePrint">Will appear on exported spreadsheet</p>';
+	
+	break;
+					
 			case "date_selector":
 
 				?><h4>Date selector</h4>
