@@ -107,6 +107,7 @@ input[type=text] {
 }
 .nbtElementContainer input[type=text] {
     width: 100%;
+    padding: 2px 0;
 }
 table input[type=text] {
 	padding: 1px;
