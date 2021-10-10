@@ -58,7 +58,7 @@ foreach ( $subextractions as $subextraction ) {
 
 		echo '<p>Tag prompts</p>';
 
-		echo '<input type="hidden" id="nbtElementTagsPrompts' . $element['id'] . '" value="' . $element['tagprompts'] . '">';
+		echo '<input type="hidden" class="nbtSubElementTagsPrompts' . $subelement['id'] . '" value="' . $subelement['tagprompts'] . '">';
 		
 		echo '<table class="nbtTabledData">';
 
@@ -76,6 +76,36 @@ foreach ( $subextractions as $subextraction ) {
 
 		echo "</table>";
 
+		echo '<input id="SelectedSubTagsText' . $subelement['id'] . '-' . $subextraction['id'] . '" type="hidden" value="' . $subextraction[$subelement['dbname']] . '">';
+
+		$selectedtags = explode(";", $subextraction[$subelement['dbname']]);
+		$selectedtags = array_map('trim', $selectedtags);
+
+		echo '<table class="nbtTabledData" id="SelectedSubTagsTable' . $subelement['id'] . '-' . $subextraction['id'] . '">';
+
+		echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags</td></tr>';
+		
+		foreach ($selectedtags as $selectedtag) {
+
+		    if ($selectedtag != "") {
+
+			if ( in_array($selectedtag, $tagprompts) ) {
+			    $addtopromptsbutton = "";
+			} else {
+			    $addtopromptsbutton = '<button onclick="nbtAddSubTagToPrompts(' . $subelement['id'] . ', ' . $subextraction['id'] . ', $(this));">Add to prompts</button> ';
+			}
+
+			echo '<tr><td><input type="text" value="' . $selectedtag . '" onblur="nbtRemoveSubTagFromSelected(' . $element['id'] . ', \'' . addslashes($selectedtag) . '\', ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');nbtAddSubTagToSelected(' . $element['id'] . ', $(this).val(), ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');"></td><td style="text-align: right;">' . $addtopromptsbutton . '<button onclick="nbtRemoveSubTagFromSelected(' . $element['id'] . ', \'' . addslashes($selectedtag) . '\', ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');">Remove</button></td></tr>';
+			
+		    }
+		    
+		}
+
+		echo '<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddSubTagToSelected(' . $element['id'] . ', $(this).val(), ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');" onkeyup="if (event.keyCode == 13) {nbtAddSubTagToSelected(' . $element['id'] . ', $(this).val(), ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');}"></td><td>&nbsp;</td></tr>';
+		
+		echo '</table>';
+
+		echo '<div id="TagFeedback' . $element['id'] . '" class="nbtHidden"></div>';
 		
 
 		echo '</div>';
