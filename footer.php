@@ -943,6 +943,62 @@
      
  }
 
+ function nbtUpdateSelectedSubTagsTable ( eid, seid, subexid, form, columnname ) {
+
+     selectedtagstext = $('#SelectedSubTagsText' + seid + '-' + subexid).val();
+     selectedtags = selectedtagstext.split(";");
+     selectedtags = selectedtags.map(s => s.trim());
+     selectedtags = selectedtags.sort();
+
+     tagpromptstext = $('.nbtSubElementTagsPrompts' + seid).val();
+     tagprompts = tagpromptstext.split(";");
+     tagprompts = tagprompts.map(s => s.trim());
+     tagprompts = tagprompts.sort();
+     
+     $('#SelectedSubTagsTable' + seid + '-' + subexid + ' tr:not(.nbtTableHeaders)').remove();
+
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key] != '') {
+
+	     if ( tagprompts.includes(selectedtags[key])) {
+		 addtopromptsbutton = '';
+	     } else {
+		 addtopromptsbutton = '<button onclick="nbtAddSubTagToPrompts(' + seid + ', $(this));">Add to prompts</button> ';
+	     }
+
+	     $('#SelectedSubTagsTable' + seid + '-' + subexid).append('<tr><td><input type="text" value="' + selectedtags[key] + '" onblur="nbtRemoveTagFromSelected(' + seid + ', ' + subexid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\');nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', ' + form + ', \'' + columnname + '\');"></td><td style="text-align: right;">' + addtopromptsbutton + '<button onclick="nbtRemoveSubTagFromSelected(' + eid + ', ' + seid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\', ' + subexid + ', ' + form + ', \'' + columnname + '\');">Remove</button></td></tr>');
+	     
+	 }
+	 
+     }
+     
+     $('#SelectedSubTagsTable' + seid + '-' + subexid).append('<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', ' + form + ', \'' + columnname + '\');" onkeyup="if (event.keyCode == 13) {nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', ' + form + ', \'' + columnname + '\');}"></td><td>&nbsp;</td></tr>');
+
+     // Update the database
+     $.ajax ({
+	 url: numbaturl + 'extract/updatesubextraction.php',
+	 type: 'post',
+	 data: {
+	     eid: eid,
+	     id: subexid,
+	     question: columnname,
+	     answer: selectedtags.join(";")
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+
+	 $('#TagFeedback' + eid).html(response);
+	 $('#TagFeedback' + eid).slideDown(400);
+
+	 setTimeout( function () {
+	     $('#TagFeedback' + eid).slideUp(400);
+	 }, 2000);
+	 
+     });
+     
+ }
+
  function nbtAddTagToSelected ( eid, tagval, exid, form, columnname ) {
 
      tagval = tagval.replace(";", "_");
@@ -979,6 +1035,42 @@
 
  }
 
+function nbtAddSubTagToSelected ( eid, seid, tagval, subexid, form, columnname ) {
+
+     tagval = tagval.replace(";", "_");
+
+     selectedtagstext = $('#SelectedSubTagsText' + seid + '-' + subexid).val();
+
+     selectedtags = selectedtagstext.split(";");
+
+     found = 0;
+     
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key].toLowerCase().trim() == "") {
+	     selectedtags.splice(key, 1);
+	 } else {
+
+	     if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
+		 found = 1;
+	     }
+	     
+	 }
+	 
+     }
+
+     if (found == 0) {
+	 if (tagval != '') {
+	     selectedtags.push(tagval.trim());
+	 }
+	 selectedtagstext = selectedtags.sort().join(";");
+	 $('#SelectedSubTagsText' + seid + '-' + subexid).val(selectedtagstext);
+     }
+
+     nbtUpdateSelectedSubTagsTable ( eid, seid, subexid, form, columnname );
+
+ }
+
  function nbtRemoveTagFromSelected ( eid, tagval, exid, form, columnname ) {
 
      selectedtagstext = $('#SelectedTagsText' + eid).val();
@@ -1008,6 +1100,35 @@
      
  }
 
+ function nbtRemoveSubTagFromSelected ( eid, seid, tagval, subexid, form, columnname ) {
+
+     selectedtagstext = $('#SelectedSubTagsText' + seid + '-' + subexid).val();
+
+     selectedtags = selectedtagstext.split(";");
+
+     found = 0;
+     
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key].toLowerCase().trim() == "") {
+	     selectedtags.splice(key, 1);
+	 } else {
+
+	     if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
+		 selectedtags.splice(key, 1);
+	     }
+
+	 }
+	 
+     }
+
+     selectedtagstext = selectedtags.sort().join(";");
+     $('#SelectedSubTagsText' + seid + '-' + subexid).val(selectedtagstext);
+
+     nbtUpdateSelectedSubTagsTable ( eid, seid, subexid, form, columnname );
+     
+ }
+
  function nbtAddTagToPrompts ( eid, button ) {
 
      tagpromptstext = $('#nbtElementTagsPrompts' + eid).val();
@@ -1024,6 +1145,29 @@
 	 data: {
 	     element: eid,
 	     newtagsprompts: $('#nbtElementTagsPrompts' + eid).val()
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+	 button.replaceWith('<span>Added to tag prompts for future extractions</span>');
+     });
+ }
+
+ function nbtAddSubTagToPrompts ( seid, button ) {
+
+     tagpromptstext = $('.nbtSubElementTagsPrompts' + seid).val();
+     tagprompts = tagpromptstext.split(";");
+     tagprompts = tagprompts.map(s => s.trim());
+     newtag = button.parent().parent().children().find('input').val().trim();
+     tagprompts.push(newtag);
+     tagprompts = tagprompts.sort();
+     $('.nbtSubElementTagsPrompts' + seid).val(tagprompts.join(";"));
+
+     $.ajax ({
+	 url: numbaturl + 'extract/changesubtagsprompts.php',
+	 type: 'post',
+	 data: {
+	     subelement: seid,
+	     newtagsprompts: $('.nbtSubElementTagsPrompts' + seid).val()
 	 },
 	 dataType: 'html'
      }).done ( function (html) {
