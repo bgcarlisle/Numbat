@@ -2,6 +2,8 @@
 
 $subelements = nbt_get_sub_extraction_elements_for_elementid ( $nbtSubExtractionElementID );
 
+$element = nbt_get_form_element_for_elementid ( $nbtSubExtractionElementID );
+
 $subextractions = nbt_get_sub_extractions ( $nbtSubExtractionElementID, $nbtExtractRefSet, $nbtExtractRefID, $_SESSION[INSTALL_HASH . '_nbt_userid'] );
 
 foreach ( $subextractions as $subextraction ) {
@@ -69,7 +71,7 @@ foreach ( $subextractions as $subextraction ) {
 		    echo '<tr class="TagPromptRow TagPrompts' . $subelement['id'] . '">';
 
 		    echo '<td class="TagPromptCell">' . $tagprompt . '</td>';
-		    echo '<td style="text-align: right;"><button onclick="nbtAddSubTagToSelected(' . $element['id'] . ', ' . $subelement['id'] . ', $(this).parent().parent().find(\'.TagPromptCell\').html(), ' . $subextraction['id'] . ', ' . $_GET['form'] . ', \'' . $subelement['dbname'] . '\');">Copy tag</button></td>';
+		    echo '<td style="text-align: right;"><button onclick="nbtAddSubTagToSelected(' . $element['id'] . ', ' . $subelement['id'] . ', $(this).parent().parent().find(\'.TagPromptCell\').html(), ' . $subextraction['id'] . ', \'' . $subelement['dbname'] . '\');">Copy tag</button></td>';
 
 		    echo "</tr>";
 		}
@@ -95,13 +97,13 @@ foreach ( $subextractions as $subextraction ) {
 			    $addtopromptsbutton = '<button onclick="nbtAddSubTagToPrompts(' . $subelement['id'] . ', $(this));">Add to prompts</button> ';
 			}
 
-			echo '<tr><td><input type="text" value="' . $selectedtag . '" onblur="nbtRemoveSubTagFromSelected(' . $element['id'] . ', ' . $subelement['id'] . ', \'' . addslashes($selectedtag) . '\', ' . $subextraction['id'] . ', ' . $_GET['form'] . ', \'' . $subelement['dbname'] . '\');nbtAddSubTagToSelected(' . $element['id'] . ', ' . $subelement['id'] . ', $(this).val(), ' . $subextraction['id'] . ', ' . $_GET['form'] . ', \'' . $subelement['dbname'] . '\');"></td><td style="text-align: right;">' . $addtopromptsbutton . '<button onclick="nbtRemoveSubTagFromSelected(' . $element['id'] . ', ' . $subelement['id'] . ', \'' . addslashes($selectedtag) . '\', ' . $subextraction['id'] . ', ' . $_GET['form'] . ', \'' . $subelement['dbname'] . '\');">Remove</button></td></tr>';
+			echo '<tr><td><input type="text" value="' . $selectedtag . '" onblur="nbtRemoveSubTagFromSelected(' . $element['id'] . ', ' . $subelement['id'] . ', \'' . addslashes($selectedtag) . '\', ' . $subextraction['id'] . ', \'' . $subelement['dbname'] . '\');nbtAddSubTagToSelected(' . $element['id'] . ', ' . $subelement['id'] . ', $(this).val(), ' . $subextraction['id'] . ', \'' . $subelement['dbname'] . '\');"></td><td style="text-align: right;">' . $addtopromptsbutton . '<button onclick="nbtRemoveSubTagFromSelected(' . $element['id'] . ', ' . $subelement['id'] . ', \'' . addslashes($selectedtag) . '\', ' . $subextraction['id'] . ', \'' . $subelement['dbname'] . '\');">Remove</button></td></tr>';
 			
 		    }
 		    
 		}
 
-		echo '<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddSubTagToSelected(' . $element['id'] . ', ' . $subelement['id'] . ', $(this).val(), ' . $subextraction['id'] . ', ' . $_GET['form'] . ', \'' . $subelement['dbname'] . '\');" onkeyup="if (event.keyCode == 13) {nbtAddSubTagToSelected(' . $element['id'] . ', ' . $subelement['id'] . ', $(this).val(), ' . $subextraction['id'] . ', ' . $_GET['form'] . ', \'' . $subelement['dbname'] . '\');}"></td><td>&nbsp;</td></tr>';
+		echo '<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddSubTagToSelected(' . $element['id'] . ', ' . $subelement['id'] . ', $(this).val(), ' . $subextraction['id'] . ', \'' . $subelement['dbname'] . '\');" onkeyup="if (event.keyCode == 13) {nbtAddSubTagToSelected(' . $element['id'] . ', ' . $subelement['id'] . ', $(this).val(), ' . $subextraction['id'] . ', \'' . $subelement['dbname'] . '\');}"></td><td>&nbsp;</td></tr>';
 		
 		echo '</table>';
 

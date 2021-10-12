@@ -945,7 +945,7 @@
      
  }
 
- function nbtUpdateSelectedSubTagsTable ( eid, seid, subexid, form, columnname ) {
+ function nbtUpdateSelectedSubTagsTable ( eid, seid, subexid, columnname ) {
 
      selectedtagstext = $('#SelectedSubTagsText' + seid + '-' + subexid).val();
      selectedtags = selectedtagstext.split(";");
@@ -969,13 +969,13 @@
 		 addtopromptsbutton = '<button onclick="nbtAddSubTagToPrompts(' + seid + ', $(this));">Add to prompts</button> ';
 	     }
 
-	     $('#SelectedSubTagsTable' + seid + '-' + subexid).append('<tr><td><input type="text" value="' + selectedtags[key] + '" onblur="nbtRemoveTagFromSelected(' + seid + ', ' + subexid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\');nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', ' + form + ', \'' + columnname + '\');"></td><td style="text-align: right;">' + addtopromptsbutton + '<button onclick="nbtRemoveSubTagFromSelected(' + eid + ', ' + seid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\', ' + subexid + ', ' + form + ', \'' + columnname + '\');">Remove</button></td></tr>');
+	     $('#SelectedSubTagsTable' + seid + '-' + subexid).append('<tr><td><input type="text" value="' + selectedtags[key] + '" onblur="nbtRemoveTagFromSelected(' + seid + ', ' + subexid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\');nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');"></td><td style="text-align: right;">' + addtopromptsbutton + '<button onclick="nbtRemoveSubTagFromSelected(' + eid + ', ' + seid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\', ' + subexid + ', \'' + columnname + '\');">Remove</button></td></tr>');
 	     
 	 }
 	 
      }
      
-     $('#SelectedSubTagsTable' + seid + '-' + subexid).append('<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', ' + form + ', \'' + columnname + '\');" onkeyup="if (event.keyCode == 13) {nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', ' + form + ', \'' + columnname + '\');}"></td><td>&nbsp;</td></tr>');
+     $('#SelectedSubTagsTable' + seid + '-' + subexid).append('<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');" onkeyup="if (event.keyCode == 13) {nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');}"></td><td>&nbsp;</td></tr>');
 
      // Update the database
      $.ajax ({
@@ -1037,7 +1037,7 @@
 
  }
 
-function nbtAddSubTagToSelected ( eid, seid, tagval, subexid, form, columnname ) {
+function nbtAddSubTagToSelected ( eid, seid, tagval, subexid, columnname ) {
 
      tagval = tagval.replace(";", "_");
 
@@ -1069,7 +1069,7 @@ function nbtAddSubTagToSelected ( eid, seid, tagval, subexid, form, columnname )
 	 $('#SelectedSubTagsText' + seid + '-' + subexid).val(selectedtagstext);
      }
 
-     nbtUpdateSelectedSubTagsTable ( eid, seid, subexid, form, columnname );
+     nbtUpdateSelectedSubTagsTable ( eid, seid, subexid, columnname );
 
  }
 
@@ -1102,7 +1102,7 @@ function nbtAddSubTagToSelected ( eid, seid, tagval, subexid, form, columnname )
      
  }
 
- function nbtRemoveSubTagFromSelected ( eid, seid, tagval, subexid, form, columnname ) {
+ function nbtRemoveSubTagFromSelected ( eid, seid, tagval, subexid, columnname ) {
 
      selectedtagstext = $('#SelectedSubTagsText' + seid + '-' + subexid).val();
 
@@ -1127,7 +1127,7 @@ function nbtAddSubTagToSelected ( eid, seid, tagval, subexid, form, columnname )
      selectedtagstext = selectedtags.sort().join(";");
      $('#SelectedSubTagsText' + seid + '-' + subexid).val(selectedtagstext);
 
-     nbtUpdateSelectedSubTagsTable ( eid, seid, subexid, form, columnname );
+     nbtUpdateSelectedSubTagsTable ( eid, seid, subexid, columnname );
      
  }
 
