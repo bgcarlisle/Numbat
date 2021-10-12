@@ -867,22 +867,24 @@
      
  }
 
- function nbtSearchSubTagsPrompts ( seid, subexid ) {
+ function nbtSearchSubTagsPrompts ( inputelement ) {
 
-     query = $('#nbtSubelementContainer' + seid + '-' + subexid + ' .TagSearch' + seid).val();
+     query = inputelement.val();
 
      if ( query == '' ) {
-	 $('#nbtSubelementContainer' + seid + '-' + subexid + ' .TagPrompts' + seid).fadeOut(0);
+	 inputelement.parent().parent().parent().find('.TagPromptRow').fadeOut(0);
      } else {
-	 $('#nbtSubelementContainer' + seid + '-' + subexid + ' .TagPrompts' + seid).fadeOut(0);
+	 inputelement.parent().parent().parent().find('.TagPromptRow').fadeOut(0);
 
-	 $('#nbtSubelementContainer' + seid + '-' + subexid + ' .TagPrompts' + seid + ' td.TagPromptCell').each( function (index) {
+	 
+	 inputelement.parent().parent().parent().find('.TagPromptRow td.TagPromptCell').each( function (index) {
 	     cell_value = $(this).html();
 
 	     if (cell_value.toLowerCase().search(query.toLowerCase()) != -1) {
 		 $(this).parent().fadeIn(0);
 	     }
 	 });
+	 
      }
      
  }

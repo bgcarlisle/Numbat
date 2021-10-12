@@ -62,8 +62,8 @@ foreach ( $subextractions as $subextraction ) {
 		
 		echo '<table class="nbtTabledData">';
 
-		echo '<tr class="nbtTableHeaders"><td colspan="2"><input class="TagSearch' . $subelement['id'] . '-' . $subextraction['id'] . '" type="text" onkeyup="nbtSearchSubTagsPrompts(' . $subelement['id'] . ', ' . $subextraction['id'] . ');" placeholder="Search tag prompts"></td></tr>';
-		echo '<tr><td colspan="2"><button onclick="$(\'#nbtSubExtractionInstance' . $element['id'] . '-' . $subextraction['id'] . ' .TagPromptRow.TagPrompts' . $subelement['id'] . '\').fadeIn(0);$(\'#nbtSubExtractionInstance' . $element['id'] . '-' . $subextraction['id'] . ' .TagSearch' . $subelement['id'] . '-' . $subextraction['id'] . '\').val(\'\');">Show all</button> <button onclick="$(\'#nbtSubExtractionInstance' . $element['id'] . '-' . $subextraction['id'] . ' .TagPromptRow.TagPrompts' . $subelement['id'] . '\').fadeOut(0);$(\'.TagSearch' . $subelement['id'] . '-' . $subextraction['id'] . '\').val(\'\');">Show none</button></td></tr>';
+		echo '<tr class="nbtTableHeaders"><td colspan="2"><input class="SubTagSearch TagSearch' . $subelement['id'] . '-' . $subextraction['id'] . '" type="text" onkeyup="nbtSearchSubTagsPrompts($(this));" placeholder="Search tag prompts"></td></tr>';
+		echo '<tr><td colspan="2"><button onclick="$(this).parent().parent().parent().find(\'.SubTagSearch\').val(\'\');$(this).parent().parent().parent().find(\'.TagPromptRow\').fadeIn(0);">Show all</button> <button onclick="$(this).parent().parent().parent().find(\'.SubTagSearch\').val(\'\');$(this).parent().parent().parent().find(\'.TagPromptRow\').fadeOut(0);">Show none</button></td></tr>';
 
 		foreach ($tagprompts as $tagprompt) {
 		    echo '<tr class="TagPromptRow TagPrompts' . $subelement['id'] . '">';
