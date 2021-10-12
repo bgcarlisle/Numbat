@@ -364,21 +364,29 @@ if ( count ( $extractions ) >= 2 ) {
 
 			// Print the extracted tags
 
-			echo '<table class="nbtTabledData">';
-
-			echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (all extractors)</td></tr>';
+		
 			
 			$extractedtags = explode(";", $extractions[0][$element['columnname']]);
 			$extractedtags = array_map('trim', $extractedtags);
-			
-			foreach ($extractedtags as $extractedtag) {
-			    echo '<tr>';
-			    echo '<td>' . $extractedtag . '</td>';
-			    echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($extractedtag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
-			    echo '</tr>';
+
+			if ( $extractions[0][$element['columnname']] != "" ) {
+
+			    echo '<table class="nbtTabledData">';
+
+			    echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (all extractors)</td></tr>';
+			    
+			    foreach ($extractedtags as $extractedtag) {
+				echo '<tr>';
+				echo '<td>' . $extractedtag . '</td>';
+				echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($extractedtag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
+				echo '</tr>';
+			    }
+
+			    echo '</table>';
+			    
+			} else {
+			    echo '<p>[No tags selected]</p>';
 			}
-			
-			echo '</table>';
 			
 			echo '<span class="nbtExtractionName">All extractors</span>';
 
@@ -391,7 +399,7 @@ if ( count ( $extractions ) >= 2 ) {
 			echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (final copy)</td></tr>';
 
 			if ( $master[$element['columnname']] != "") {
-			
+			    
 			    $finaltags = explode(";", $master[$element['columnname']]);
 			    $finaltags = array_map('trim', $finaltags);
 			    
@@ -441,21 +449,29 @@ if ( count ( $extractions ) >= 2 ) {
 
 			foreach ($extractions as $extraction) {
 
-			    echo '<table class="nbtTabledData" style="margin-top: 20px;">';
-
-			    echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (' . $extraction['username'] . ')</td></tr>';
+			    
 			    
 			    $extractedtags = explode(";", $extraction[$element['columnname']]);
 			    $extractedtags = array_map('trim', $extractedtags);
+
+			    if ( $extraction[$element['columnname']] != "" ) {
+
+				echo '<table class="nbtTabledData" style="margin-top: 20px;">';
+
+				echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (' . $extraction['username'] . ')</td></tr>';
+				
+				foreach ($extractedtags as $extractedtag) {
+				    echo '<tr>';
+				    echo '<td>' . $extractedtag . '</td>';
+				    echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($extractedtag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
+				    echo '</tr>';
+				}
 			    
-			    foreach ($extractedtags as $extractedtag) {
-				echo '<tr>';
-				echo '<td>' . $extractedtag . '</td>';
-				echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($extractedtag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
-				echo '</tr>';
+				echo '</table>';
+				
+			    } else {
+				echo '<p>[No tags selected]</p>';
 			    }
-			    
-			    echo '</table>';
 			    
 			    echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
 			    
@@ -470,7 +486,7 @@ if ( count ( $extractions ) >= 2 ) {
 			echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (final copy)</td></tr>';
 
 			if ( $master[$element['columnname']] != "") {
-			
+			    
 			    $finaltags = explode(";", $master[$element['columnname']]);
 			    $finaltags = array_map('trim', $finaltags);
 			    
@@ -536,22 +552,28 @@ if ( count ( $extractions ) >= 2 ) {
 			echo '</table>';
 
 			// Print the extracted tags
-
-			echo '<table class="nbtTabledData">';
-
-			echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (all extractors)</td></tr>';
 			
 			$extractedtags = explode(";", $extractions[0][$element['columnname']]);
 			$extractedtags = array_map('trim', $extractedtags);
+
+			if ( $extractions[0][$element['columnname']] != "" ) {
+
+			    echo '<table class="nbtTabledData">';
+
+			    echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (all extractors)</td></tr>';
+			    
+			    foreach ($extractedtags as $extractedtag) {
+				echo '<tr>';
+				echo '<td>' . $extractedtag . '</td>';
+				echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($extractedtag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
+				echo '</tr>';
+			    }
 			
-			foreach ($extractedtags as $extractedtag) {
-			    echo '<tr>';
-			    echo '<td>' . $extractedtag . '</td>';
-			    echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($extractedtag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
-			    echo '</tr>';
+			    echo '</table>';
+
+			} else {
+			    echo '<p>[No tags selected]</p>';
 			}
-			
-			echo '</table>';
 			
 			echo '<span class="nbtExtractionName">All extractors</span>';
 
@@ -564,7 +586,7 @@ if ( count ( $extractions ) >= 2 ) {
 			echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (final copy)</td></tr>';
 
 			if ( $master[$element['columnname']] != "") {
-			
+			    
 			    $finaltags = explode(";", $master[$element['columnname']]);
 			    $finaltags = array_map('trim', $finaltags);
 			    
@@ -613,22 +635,28 @@ if ( count ( $extractions ) >= 2 ) {
 			// Print the extracted tags
 
 			foreach ($extractions as $extraction) {
-
-			    echo '<table class="nbtTabledData" style="margin-top: 20px;">';
-
-			    echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (' . $extraction['username'] . ')</td></tr>';
 			    
 			    $extractedtags = explode(";", $extraction[$element['columnname']]);
 			    $extractedtags = array_map('trim', $extractedtags);
+
+			    if ( $extraction[$element['columnname']] != "" ) {
+
+				echo '<table class="nbtTabledData" style="margin-top: 20px;">';
+
+				echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (' . $extraction['username'] . ')</td></tr>';
+				
+				foreach ($extractedtags as $extractedtag) {
+				    echo '<tr>';
+				    echo '<td>' . $extractedtag . '</td>';
+				    echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($extractedtag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
+				    echo '</tr>';
+				}
 			    
-			    foreach ($extractedtags as $extractedtag) {
-				echo '<tr>';
-				echo '<td>' . $extractedtag . '</td>';
-				echo '<td style="text-align: right;"><button onclick="nbtCopyTagToFinal(\'' . addslashes($extractedtag) . '\', ' . $element['id'] . ', ' . $_GET['form'] . ', ' . $_GET['refset'] . ', ' . $_GET['ref'] . ', \'' . $element['columnname'] . '\');">Copy to final</button></td>';
-				echo '</tr>';
+				echo '</table>';
+				
+			    } else {
+				echo '<p>[No tags selected]</p>';
 			    }
-			    
-			    echo '</table>';
 			    
 			    echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
 			    
@@ -643,7 +671,7 @@ if ( count ( $extractions ) >= 2 ) {
 			echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags (final copy)</td></tr>';
 
 			if ( $master[$element['columnname']] != "") {
-			
+			    
 			    $finaltags = explode(";", $master[$element['columnname']]);
 			    $finaltags = array_map('trim', $finaltags);
 			    
