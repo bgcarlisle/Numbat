@@ -356,6 +356,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 						    $newseid = nbt_add_sub_open_text_field ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
 						    $subelementid_lup[$sel['id']] = $newseid;
 						    break;
+						case "tags":
+						    $newseid = nbt_add_sub_tags_element ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $subelementid_lup[$sel['id']] = $newseid;
+						    break;
 						case "date_selector":
 						    $newseid = nbt_add_sub_date_selector ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
 						    $subelementid_lup[$sel['id']] = $newseid;
@@ -409,6 +413,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 				case "prev_select":
 				    nbt_add_prev_select ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
+				    break;
+
+				case "tags":
+				    nbt_add_tags_element ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding'], $element['tagprompts']);
 				    break;
 				    
 			    }

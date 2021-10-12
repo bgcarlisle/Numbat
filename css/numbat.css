@@ -107,6 +107,7 @@ input[type=text] {
 }
 .nbtElementContainer input[type=text] {
     width: 100%;
+    padding: 2px 0;
 }
 table input[type=text] {
 	padding: 1px;
@@ -538,4 +539,7 @@ textarea.finalOverride {
     border-radius: 3px;
     padding: 0 8px 8px 8px;
     margin: 4px 0;
+}
+.TagPromptRow {
+    display: none;
 }

@@ -574,6 +574,24 @@
 
  }
 
+ function nbtAddNewTagsElement ( fid, eid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/addtagselement.php',
+	 type: 'post',
+	 data: {
+	     formid: fid,
+	     elementid: eid
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtFormElements').html(html);
+
+     });
+
+ }
+
  function nbtAddNewTextArea ( fid, eid ) {
 
      $.ajax ({
@@ -780,6 +798,492 @@
 
 	 });
 
+     });
+ }
+
+ function nbtChangeTagsPrompts ( eid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/changetagsprompts.php',
+	 type: 'post',
+	 data: {
+	     element: eid,
+	     newtagsprompts: $('#nbtElementTagsPrompts' + eid).val()
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtFormElementFeedback' + eid).html(html);
+
+	 $('#nbtFormElementFeedback' + eid).fadeIn(500, function () {
+
+	     $('#nbtFormElementFeedback' + eid).fadeOut(1500);
+
+	 });
+
+     });
+ }
+
+ function nbtChangeSubTagsPrompts ( seid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/changesubtagsprompts.php',
+	 type: 'post',
+	 data: {
+	     subelement: seid,
+	     newtagsprompts: $('#nbtSubElementTagsPrompts' + seid).val()
+	 },
+	 dataType: 'html'
+     }).done ( function (response) {
+
+	 $('#nbtSubElementFeedback' + seid).html(response);
+
+	 $('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
+
+	     $('#nbtSubElementFeedback' + seid).fadeOut(1500);
+
+	 });
+
+     });
+ }
+
+ function nbtSearchTagsPrompts ( eid ) {
+
+     query = $('#TagSearch' + eid).val();
+
+     if ( query == '' ) {
+	 $('.TagPrompts' + eid).fadeOut(0);
+     } else {
+	 $('.TagPrompts' + eid).fadeOut(0);
+
+	 $('.TagPrompts' + eid + ' td.TagPromptCell').each( function (index) {
+	     cell_value = $(this).html();
+
+	     if (cell_value.toLowerCase().search(query.toLowerCase()) != -1) {
+		 $(this).parent().fadeIn(0);
+	     }
+	 });
+     }
+     
+ }
+
+ function nbtSearchSubTagsPrompts ( inputelement ) {
+
+     query = inputelement.val();
+
+     if ( query == '' ) {
+	 inputelement.parent().parent().parent().find('.TagPromptRow').fadeOut(0);
+     } else {
+	 inputelement.parent().parent().parent().find('.TagPromptRow').fadeOut(0);
+
+	 
+	 inputelement.parent().parent().parent().find('.TagPromptRow td.TagPromptCell').each( function (index) {
+	     cell_value = $(this).html();
+
+	     if (cell_value.toLowerCase().search(query.toLowerCase()) != -1) {
+		 $(this).parent().fadeIn(0);
+	     }
+	 });
+	 
+     }
+     
+ }
+
+ function nbtUpdateSelectedTagsTable ( eid, exid, form, columnname ) {
+
+     selectedtagstext = $('#SelectedTagsText' + eid).val();
+     selectedtags = selectedtagstext.split(";");
+     selectedtags = selectedtags.map(s => s.trim());
+     selectedtags = selectedtags.sort();
+
+     tagpromptstext = $('#nbtElementTagsPrompts' + eid).val();
+     tagprompts = tagpromptstext.split(";");
+     tagprompts = tagprompts.map(s => s.trim());
+     tagprompts = tagprompts.sort();
+     
+     $('#SelectedTagsTable' + eid + ' tr:not(.nbtTableHeaders)').remove();
+
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key] != '') {
+
+	     if ( tagprompts.includes(selectedtags[key])) {
+		 addtopromptsbutton = '';
+	     } else {
+		 addtopromptsbutton = '<button onclick="nbtAddTagToPrompts(' + eid + ', $(this));">Add to prompts</button> ';
+	     }
+
+	     $('#SelectedTagsTable' + eid).append('<tr><td><input type="text" value="' + selectedtags[key] + '" onblur="nbtRemoveTagFromSelected(' + eid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\');nbtAddTagToSelected(' + eid + ', $(this).val(), ' + exid + ', ' + form + ', \'' + columnname + '\');"></td><td style="text-align: right;">' + addtopromptsbutton + '<button onclick="nbtRemoveTagFromSelected(' + eid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\', ' + exid + ', ' + form + ', \'' + columnname + '\');">Remove</button></td></tr>');
+	     
+	 }
+	 
+     }
+     
+     $('#SelectedTagsTable' + eid).append('<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddTagToSelected(' + eid + ', $(this).val(), ' + exid + ', ' + form + ', \'' + columnname + '\');" onkeyup="if (event.keyCode == 13) {nbtAddTagToSelected(' + eid + ', $(this).val(), ' + exid + ', ' + form + ', \'' + columnname + '\');}"></td><td>&nbsp;</td></tr>');
+
+     // Update the database
+     $.ajax ({
+	 url: numbaturl + 'extract/updateextraction.php',
+	 type: 'post',
+	 data: {
+	     fid: form,
+	     id: exid,
+	     question: columnname,
+	     answer: selectedtags.join(";")
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+
+	 $('#TagFeedback' + eid).html(response);
+	 $('#TagFeedback' + eid).slideDown(400);
+
+	 setTimeout( function () {
+	     $('#TagFeedback' + eid).slideUp(400);
+	 }, 2000);
+	 
+     });
+     
+ }
+
+ function nbtUpdateSelectedSubTagsTable ( eid, seid, subexid, columnname ) {
+
+     selectedtagstext = $('#SelectedSubTagsText' + seid + '-' + subexid).val();
+     selectedtags = selectedtagstext.split(";");
+     selectedtags = selectedtags.map(s => s.trim());
+     selectedtags = selectedtags.sort();
+
+     tagpromptstext = $('.nbtSubElementTagsPrompts' + seid).val();
+     tagprompts = tagpromptstext.split(";");
+     tagprompts = tagprompts.map(s => s.trim());
+     tagprompts = tagprompts.sort();
+     
+     $('#SelectedSubTagsTable' + seid + '-' + subexid + ' tr:not(.nbtTableHeaders)').remove();
+
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key] != '') {
+
+	     if ( tagprompts.includes(selectedtags[key])) {
+		 addtopromptsbutton = '';
+	     } else {
+		 addtopromptsbutton = '<button onclick="nbtAddSubTagToPrompts(' + seid + ', $(this));">Add to prompts</button> ';
+	     }
+
+	     $('#SelectedSubTagsTable' + seid + '-' + subexid).append('<tr><td><input type="text" value="' + selectedtags[key] + '" onblur="nbtRemoveSubTagFromSelected(' + seid + ', ' + subexid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\');nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');"></td><td style="text-align: right;">' + addtopromptsbutton + '<button onclick="nbtRemoveSubTagFromSelected(' + eid + ', ' + seid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\', ' + subexid + ', \'' + columnname + '\');">Remove</button></td></tr>');
+	     
+	 }
+	 
+     }
+     
+     $('#SelectedSubTagsTable' + seid + '-' + subexid).append('<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');" onkeyup="if (event.keyCode == 13) {nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');}"></td><td>&nbsp;</td></tr>');
+
+     // Update the database
+     $.ajax ({
+	 url: numbaturl + 'extract/updatesubextraction.php',
+	 type: 'post',
+	 data: {
+	     eid: eid,
+	     id: subexid,
+	     question: columnname,
+	     answer: selectedtags.join(";")
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+
+	 $('#TagFeedback' + eid).html(response);
+	 $('#TagFeedback' + eid).slideDown(400);
+
+	 setTimeout( function () {
+	     $('#TagFeedback' + eid).slideUp(400);
+	 }, 2000);
+	 
+     });
+     
+ }
+
+ function nbtUpdateSelectedFinalSubTagsTable ( eid, seid, subexid, columnname ) {
+
+     selectedtagstext = $('#SelectedSubTagsText' + seid + '-' + subexid).val();
+     selectedtags = selectedtagstext.split(";");
+     selectedtags = selectedtags.map(s => s.trim());
+     selectedtags = selectedtags.sort();
+     
+     $('#SelectedSubTagsTable' + seid + '-' + subexid + ' tr:not(.nbtTableHeaders)').remove();
+
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key] != '') {
+
+	     $('#SelectedSubTagsTable' + seid + '-' + subexid).append('<tr><td><input type="text" value="' + selectedtags[key] + '" onblur="nbtRemoveSubTagFromSelectedFinal(' + seid + ', ' + subexid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\');nbtAddSubTagToSelectedFinal(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');"></td><td style="text-align: right;"><button onclick="nbtRemoveSubTagFromSelectedFinal(' + eid + ', ' + seid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\', ' + subexid + ', \'' + columnname + '\');">Remove</button></td></tr>');
+	     
+	 }
+	 
+     }
+     
+     $('#SelectedSubTagsTable' + seid + '-' + subexid).append('<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddSubTagToSelectedFinal(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');" onkeyup="if (event.keyCode == 13) {nbtAddSubTagToSelectedFinal(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');}"></td><td>&nbsp;</td></tr>');
+
+     // Update the database
+     $.ajax ({
+	 url: numbaturl + 'final/updatesubextraction.php',
+	 type: 'post',
+	 data: {
+	     eid: eid,
+	     id: subexid,
+	     question: columnname,
+	     answer: selectedtags.join(";")
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+
+	 $('#TagFeedback' + seid + '-' + subexid).html(response);
+	 $('#TagFeedback' + seid + '-' + subexid).slideDown(400);
+
+	 setTimeout( function () {
+	     $('#TagFeedback' + seid + '-' + subexid).slideUp(400);
+	 }, 2000);
+	 
+     });
+     
+ }
+
+ function nbtAddTagToSelected ( eid, tagval, exid, form, columnname ) {
+
+     tagval = tagval.replace(";", "_");
+
+     selectedtagstext = $('#SelectedTagsText' + eid).val();
+
+     selectedtags = selectedtagstext.split(";");
+
+     found = 0;
+     
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key].toLowerCase().trim() == "") {
+	     selectedtags.splice(key, 1);
+	 } else {
+
+	     if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
+		 found = 1;
+	     }
+	     
+	 }
+	 
+     }
+
+     if (found == 0) {
+	 if (tagval != '') {
+	     selectedtags.push(tagval.trim());
+	 }
+	 selectedtagstext = selectedtags.sort().join(";");
+	 $('#SelectedTagsText' + eid).val(selectedtagstext);
+     }
+
+     nbtUpdateSelectedTagsTable ( eid, exid, form, columnname );
+
+ }
+
+function nbtAddSubTagToSelected ( eid, seid, tagval, subexid, columnname ) {
+
+     tagval = tagval.replace(";", "_");
+
+     selectedtagstext = $('#SelectedSubTagsText' + seid + '-' + subexid).val();
+
+     selectedtags = selectedtagstext.split(";");
+
+     found = 0;
+     
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key].toLowerCase().trim() == "") {
+	     selectedtags.splice(key, 1);
+	 } else {
+
+	     if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
+		 found = 1;
+	     }
+	     
+	 }
+	 
+     }
+
+     if (found == 0) {
+	 if (tagval != '') {
+	     selectedtags.push(tagval.trim());
+	 }
+	 selectedtagstext = selectedtags.sort().join(";");
+	 $('#SelectedSubTagsText' + seid + '-' + subexid).val(selectedtagstext);
+     }
+
+     nbtUpdateSelectedSubTagsTable ( eid, seid, subexid, columnname );
+
+ }
+
+function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) {
+
+     tagval = tagval.replace(";", "_");
+
+     selectedtagstext = $('#SelectedSubTagsText' + seid + '-' + subexid).val();
+
+     selectedtags = selectedtagstext.split(";");
+
+     found = 0;
+     
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key].toLowerCase().trim() == "") {
+	     selectedtags.splice(key, 1);
+	 } else {
+
+	     if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
+		 found = 1;
+	     }
+	     
+	 }
+	 
+     }
+
+     if (found == 0) {
+	 if (tagval != '') {
+	     selectedtags.push(tagval.trim());
+	 }
+	 selectedtagstext = selectedtags.sort().join(";");
+	 $('#SelectedSubTagsText' + seid + '-' + subexid).val(selectedtagstext);
+     }
+
+     nbtUpdateSelectedFinalSubTagsTable ( eid, seid, subexid, columnname );
+
+ }
+
+ function nbtRemoveTagFromSelected ( eid, tagval, exid, form, columnname ) {
+
+     selectedtagstext = $('#SelectedTagsText' + eid).val();
+
+     selectedtags = selectedtagstext.split(";");
+
+     found = 0;
+     
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key].toLowerCase().trim() == "") {
+	     selectedtags.splice(key, 1);
+	 } else {
+
+	     if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
+		 selectedtags.splice(key, 1);
+	     }
+
+	 }
+	 
+     }
+
+     selectedtagstext = selectedtags.sort().join(";");
+     $('#SelectedTagsText' + eid).val(selectedtagstext);
+
+     nbtUpdateSelectedTagsTable ( eid, exid, form, columnname );
+     
+ }
+
+ function nbtRemoveSubTagFromSelected ( eid, seid, tagval, subexid, columnname ) {
+
+     selectedtagstext = $('#SelectedSubTagsText' + seid + '-' + subexid).val();
+
+     selectedtags = selectedtagstext.split(";");
+
+     found = 0;
+     
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key].toLowerCase().trim() == "") {
+	     selectedtags.splice(key, 1);
+	 } else {
+
+	     if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
+		 selectedtags.splice(key, 1);
+	     }
+
+	 }
+	 
+     }
+
+     selectedtagstext = selectedtags.sort().join(";");
+     $('#SelectedSubTagsText' + seid + '-' + subexid).val(selectedtagstext);
+
+     nbtUpdateSelectedSubTagsTable ( eid, seid, subexid, columnname );
+     
+ }
+
+ function nbtRemoveSubTagFromSelectedFinal ( eid, seid, tagval, subexid, columnname ) {
+
+     selectedtagstext = $('#SelectedSubTagsText' + seid + '-' + subexid).val();
+
+     selectedtags = selectedtagstext.split(";");
+
+     found = 0;
+     
+     for (var key in selectedtags) {
+
+	 if (selectedtags[key].toLowerCase().trim() == "") {
+	     selectedtags.splice(key, 1);
+	 } else {
+
+	     if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
+		 selectedtags.splice(key, 1);
+	     }
+
+	 }
+	 
+     }
+
+     selectedtagstext = selectedtags.sort().join(";");
+     $('#SelectedSubTagsText' + seid + '-' + subexid).val(selectedtagstext);
+
+     nbtUpdateSelectedFinalSubTagsTable ( eid, seid, subexid, columnname );
+     
+ }
+
+ function nbtAddTagToPrompts ( eid, button ) {
+
+     tagpromptstext = $('#nbtElementTagsPrompts' + eid).val();
+     tagprompts = tagpromptstext.split(";");
+     tagprompts = tagprompts.map(s => s.trim());
+     newtag = button.parent().parent().children().find('input').val().trim();
+     tagprompts.push(newtag);
+     tagprompts = tagprompts.sort();
+     $('#nbtElementTagsPrompts' + eid).val(tagprompts.join(";"));
+
+     $.ajax ({
+	 url: numbaturl + 'extract/changetagsprompts.php',
+	 type: 'post',
+	 data: {
+	     element: eid,
+	     newtagsprompts: $('#nbtElementTagsPrompts' + eid).val()
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+	 button.replaceWith('<span>Added to tag prompts for future extractions</span>');
+     });
+ }
+
+ function nbtAddSubTagToPrompts ( seid, button ) {
+
+     tagpromptstext = $('.nbtSubElementTagsPrompts' + seid).val();
+     tagprompts = tagpromptstext.split(";");
+     tagprompts = tagprompts.map(s => s.trim());
+     newtag = button.parent().parent().children().find('input').val().trim();
+     tagprompts.push(newtag);
+     tagprompts = tagprompts.sort();
+     $('.nbtSubElementTagsPrompts' + seid).val(tagprompts.join(";"));
+
+     $.ajax ({
+	 url: numbaturl + 'extract/changesubtagsprompts.php',
+	 type: 'post',
+	 data: {
+	     subelement: seid,
+	     newtagsprompts: $('.nbtSubElementTagsPrompts' + seid).val()
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+	 button.replaceWith('<span>Added to tag prompts for future extractions</span>');
      });
  }
 
@@ -2186,10 +2690,10 @@
 
      if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // If it's already selected
 
-	 $.ajax ({
-	     url: numbaturl + 'extract/updateextraction.php',
-	     type: 'post',
-	     data: {
+	     $.ajax ({
+		 url: numbaturl + 'extract/updateextraction.php',
+		 type: 'post',
+		 data: {
 		 fid: formid,
 		 id: extractionid,
 		 question: questionlabel,
@@ -3780,6 +4284,23 @@
 
  }
 
+ function nbtAddNewSubTagsElement ( eid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/addsubtagselement.php',
+	 type: 'post',
+	 data: {
+	     elementid: eid
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtSubExtractionElements' + eid).html(html);
+
+     });
+
+ }
+
  function nbtNewSubExtraction (eid, rsid, rid, uid) {
 
      $.ajax ({
@@ -4142,6 +4663,113 @@
 
  }
 
+ function nbtCopyTagToFinal ( newtag, eid, formid, refset, refid, col ) {
+
+     finaltagstext = $('#nbtFinalSelectedTags' + eid ).val();
+     finaltags = finaltagstext.split(";");
+     finaltags = finaltags.map(s => s.trim());
+     finaltags.push(newtag.trim());
+     finaltags = finaltags.sort();
+
+     function onlyUnique(value, index, self) {
+	 return self.indexOf(value) === index;
+     }
+     finaltags = finaltags.filter(onlyUnique);
+
+     for (var key in finaltags) {
+
+	 if (finaltags[key].toLowerCase().trim() == "") {
+	     finaltags.splice(key, 1);
+	 }
+	 
+     }
+
+     $.ajax ({
+	 url: numbaturl + 'final/updatecolumn.php',
+	 type: 'post',
+	 data: {
+	     newvalue: finaltags.join(";"),
+	     fid: formid,
+	     rsid: refset,
+	     rid: refid,
+	     column: col
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+	 $('#nbtFinalSelectedTags' + eid).val(finaltags.join(";"));
+	 nbtUpdateFinalTagsTable (eid, formid, refset, refid, col);
+     });
+     
+ }
+
+ function nbtRemoveTagFromFinal ( tagval, eid, formid, refset, refid, col ) {
+
+     finaltagstext = $('#nbtFinalSelectedTags' + eid ).val();
+
+     if (finaltagstext != "") {
+	 
+	 finaltags = finaltagstext.split(";");
+	 finaltags = finaltags.map(s => s.trim());
+	 finaltags = finaltags.sort();
+
+	 function onlyUnique(value, index, self) {
+	     return self.indexOf(value) === index;
+	 }
+	 finaltags = finaltags.filter(onlyUnique);
+
+	 for (var key in finaltags) {
+
+	     if (finaltags[key].toLowerCase().trim() == "") {
+		 finaltags.splice(key, 1);
+	     }
+	     
+	     if (finaltags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
+		 finaltags.splice(key, 1);
+	     }
+	 }
+	 
+     } else {
+	 finaltags = [];
+     }
+
+     $.ajax ({
+	 url: numbaturl + 'final/updatecolumn.php',
+	 type: 'post',
+	 data: {
+	     newvalue: finaltags.join(";"),
+	     fid: formid,
+	     rsid: refset,
+	     rid: refid,
+	     column: col
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+	 $('#nbtFinalSelectedTags' + eid).val(finaltags.join(";"));
+	 nbtUpdateFinalTagsTable (eid, formid, refset, refid, col);
+     });
+     
+ }
+
+ function nbtUpdateFinalTagsTable (eid, formid, refset, refid, col) {
+
+     $('#nbtTagsContainer' + eid).removeClass('nbtFeedbackBad').addClass('nbtFeedbackGood');
+
+     finaltagstext = $('#nbtFinalSelectedTags' + eid ).val();
+     finaltags = finaltagstext.split(";");
+     finaltags = finaltags.map(s => s.trim());
+
+     $('.nbtFinalTagRow' + eid).remove();
+
+     if (finaltagstext != "") {
+	 for (var key in finaltags) {
+	     $('#nbtFinalTagsTable' + eid).append('<tr class="nbtFinalTagRow' + eid + '"><td>' + finaltags[key] + '</td><td style="text-align: right;"><button onclick="nbtRemoveTagFromFinal(\'' + finaltags[key].replace(/\'/g, '\\\'') + '\', ' + eid + ', ' + formid + ', ' + refset + ', ' + refid + ', \'' + col + '\');">Remove</button></td></tr>');
+	 }
+     }
+
+     $('#nbtFinalTagsTable' + eid).append('<tr class="nbtFinalTagRow' + eid + '"><td colspan="2"><input type="text" placeholder="Add new tag" onblur="nbtCopyTagToFinal($(this).val(), ' + eid + ', ' + formid + ', ' + refset +', ' + refid + ', \'' + col + '\');" onkeyup="if (event.keyCode == 13) { nbtCopyTagToFinal($(this).val(), ' + eid + ', ' + formid + ', ' + refset +', ' + refid + ', \'' + col + '\'); }"></td></tr>');
+     
+ }
+
  function nbtCopyMultiSelectToMaster ( fid, rsid, refid, exid, eid, uid ) {
 
      $.ajax ({
@@ -4254,7 +4882,7 @@
      });
 
  }
-
+ 
  function nbtPasswordCheck () {
      if ( $('#nbtSignUpPassword1').val() == "" ) {
 	 $('#nbtChangePassButton').attr('disabled', true);

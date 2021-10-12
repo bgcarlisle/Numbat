@@ -5010,6 +5010,174 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 
 }
 
+function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1, $tagprompts = NULL ) {
+
+    $formid = intval($formid);
+    $elementid = intval($elementid);
+    $columnname = nbt_remove_special($columnname);
+
+    // this element is the one immediately before where we want to insert a new element
+
+    $element = nbt_get_form_element_for_elementid ( $elementid );
+
+    // get all the elements after this one and increase their sortorder value by 1
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
+
+	$stmt->bindParam(':fid', $fid);
+	$stmt->bindParam(':sort', $sort);
+
+	$fid = $formid;
+	$sort = $element['sortorder'];
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    foreach ( $result as $row ) {
+
+		nbt_increase_element_sortorder ( $row['id'] );
+
+	    }
+
+	} else {
+
+	    echo "MySQL fail";
+
+	}
+
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // find a good name for the new column
+
+    if ( is_null ($columnname) ) {
+
+	$foundgoodcolumn = FALSE;
+
+	$counter = 1;
+
+	while ( $foundgoodcolumn == FALSE ) {
+
+	    try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'tags_" . $counter . "';");
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		if ( count ( $result ) == 0 ) {
+
+		    $columnname = "tags_" . $counter;
+
+		    $foundgoodcolumn = TRUE;
+
+		}
+
+	    }
+
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	    }
+
+	    $counter ++;
+
+	}
+
+    }
+
+    // then insert a new element into the form elements table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding, tagprompts) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding, :tagprompts);");
+
+	$stmt->bindParam(':form', $fid);
+	$stmt->bindParam(':sort', $sort);
+	$stmt->bindParam(':type', $type);
+	$stmt->bindParam(':column', $col);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':codebook', $cb);
+	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':startup_visible', $sv);
+	$stmt->bindParam(':conditional_logical_operator', $clo);
+	$stmt->bindParam(':destructive_hiding', $dh);
+	$stmt->bindParam(':tagprompts', $tp);
+
+	$fid = $formid;
+	$sort = $element['sortorder'] + 1;
+	$type = "tags";
+	$col = $columnname;
+	$dn = $displayname;
+	$cb = $codebook;
+	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
+	$tp = $tagprompts;
+
+	$stmt->execute();
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // then, add a column to the extractions table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
+
+	$stmt->execute();
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // then, add the column to the final table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
+
+	$stmt->execute();
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+}
+
 function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $columnname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $formid = intval($formid);
@@ -5380,6 +5548,44 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    // remove it from the master table
+
+	    try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
+
+		$stmt->execute();
+
+	    }
+
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	    }
+
+	    break;
+
+	case "tags":
+
+	    // remove the column from the extractions table
+
+	    try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
+
+		$stmt->execute();
+
+	    }
+
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	    }
+
+	    // remove it from the final table
 
 	    try {
 
@@ -5914,6 +6120,9 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
 	case "prev_select":
 	    $dbtype = "TEXT DEFAULT NULL";
 	    break;
+	case "tags":
+	    $dbtype = "TEXT DEFAULT NULL";
+	    break;
 	    
     }
     
@@ -6053,6 +6262,130 @@ function nbt_change_regex ( $elementid, $newregex ) {
 	    if ($stmt->execute()) {
 
 		echo "Regex saved";
+
+	    }
+
+	    $dbh = null;
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+    
+}
+
+function nbt_change_tags_prompts ( $elementid, $newtagprompts ) {
+
+    if ( $newtagprompts == "" ) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE `formelements` SET `tagprompts`= NULL WHERE `id` = :eid");
+
+	    $stmt->bindParam(':eid', $eid);
+
+	    $eid = $elementid;
+
+	    if ($stmt->execute()) {
+
+		echo "Tag prompts saved";
+
+	    }
+
+	    $dbh = null;
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    } else {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE `formelements` SET `tagprompts`=:newtp WHERE `id` = :eid");
+
+	    $stmt->bindParam(':eid', $eid);
+	    $stmt->bindParam(':newtp', $ntp);
+
+	    $eid = $elementid;
+	    $ntp = $newtagprompts;
+
+	    if ($stmt->execute()) {
+
+		echo "Tag prompts saved";
+
+	    }
+
+	    $dbh = null;
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    }
+    
+}
+
+function nbt_change_sub_tags_prompts ( $subelementid, $newtagprompts ) {
+
+    if ( $newtagprompts == "" ) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE `subelements` SET `tagprompts`= NULL WHERE `id` = :seid");
+
+	    $stmt->bindParam(':seid', $seid);
+
+	    $seid = $subelementid;
+
+	    if ($stmt->execute()) {
+
+		echo "Tag prompts saved";
+
+	    }
+
+	    $dbh = null;
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    } else {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE `subelements` SET `tagprompts`=:newtp WHERE `id` = :seid");
+
+	    $stmt->bindParam(':seid', $seid);
+	    $stmt->bindParam(':newtp', $ntp);
+
+	    $seid = $subelementid;
+	    $ntp = $newtagprompts;
+
+	    if ($stmt->execute()) {
+
+		echo "Tag prompts saved";
 
 	    }
 
@@ -12051,6 +12384,173 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 
 }
 
+function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = NULL, $regex = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
+
+    $elementid = intval($elementid);
+    $dbname = nbt_remove_special($dbname);
+
+    $element = nbt_get_form_element_for_elementid ( $elementid );
+
+    // get the highest sortorder value
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
+
+	$stmt->bindParam(':eid', $eid);
+
+	$eid = $elementid;
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    foreach ( $result as $row ) {
+
+		$highestsortorder = $row['sortorder'];
+
+	    }
+
+	} else {
+
+	    echo "MySQL fail";
+
+	}
+
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // find a good name for the new column
+
+    if ( is_null ($dbname) ) {
+	
+	$foundgoodcolumn = FALSE;
+
+	$counter = 1;
+
+	while ( $foundgoodcolumn == FALSE ) {
+
+	    try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'tags_" . $counter . "';");
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		if ( count ( $result ) == 0 ) {
+
+		    $dbname = "tags_" . $counter;
+
+		    $foundgoodcolumn = TRUE;
+
+		}
+
+	    }
+
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	    }
+
+	    $counter ++;
+
+	}
+	
+    }
+
+
+    // then insert a new element into the form elements table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, regex, copypreviousprompt, codebook, toggle) VALUES (:element, :sort, :type, :dbname, :displayname, :regex, :copypreviousprompt, :codebook, :toggle);");
+
+	$stmt->bindParam(':element', $eid);
+	$stmt->bindParam(':sort', $sort);
+	$stmt->bindParam(':type', $type);
+	$stmt->bindParam(':dbname', $dbn);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':regex', $rx);
+	$stmt->bindParam(':copypreviousprompt', $cpp);
+	$stmt->bindParam(':codebook', $cb);
+	$stmt->bindParam(':toggle', $tg);
+
+	$eid = $elementid;
+	$sort = $highestsortorder + 1;
+	$type = "tags";
+	$dbn = $dbname;
+	$dn = $displayname;
+	$rx = $regex;
+	$cpp = $copypreviousprompt;
+	$cb = $codebook;
+	$tg = $toggle;
+
+	if ($stmt->execute()) {
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+	    $stmt2->execute();
+	    $result = $stmt2->fetchAll();
+	    $newid = $result[0]['newid'];
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // then, add a column to the extractions table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
+
+	$stmt->execute();
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // then add a column to the final table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
+
+	$stmt->execute();
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    return ($newid);
+
+}
+
 function nbt_delete_sub_element ( $subelementid ) {
 
     // first get the form element to be removed
@@ -12248,6 +12748,9 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
 	    break;
 	case "single_select":
 	    $dbtype = "varchar(200) DEFAULT NULL";
+	    break;
+	case "tags":
+	    $dbtype = "TEXT DEFAULT NULL";
 	    break;
 	case "date_selector":
 	    $dbtype = "DATE DEFAULT NULL";
@@ -14707,6 +15210,8 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 	    case "open_text": // intentionally blank
 
 	    case "date_selector": // intentionally blank
+
+	    case "tags": // intentionally blank
 
 	    case "single_select":
 

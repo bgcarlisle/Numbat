@@ -45,6 +45,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 		    case "single_select":
 		    case "country_selector":
 		    case "prev_select":
+		    case "tags":
 			$fcols[] = $ele['columnname'];
 			break;
 		    case "multi_select":
@@ -125,6 +126,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 		switch ($se['type']) {
 		    case "open_text":
 		    case "date_selector":
+		    case "tags":
 		    case "single_select":
 			$fcols[] = $se['dbname'];
 			break;
