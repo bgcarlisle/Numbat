@@ -15211,6 +15211,8 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 
 	    case "date_selector": // intentionally blank
 
+	    case "tags": // intentionally blank
+
 	    case "single_select":
 
 		try {
