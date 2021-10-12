@@ -6,7 +6,7 @@
 	<title>Numbat: <?php echo nbt_get_setting ( "project_name" ); ?></title>
 
 	<!-- jQuery -->
-	<script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.js">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js">
 	</script>
 	<!-- / jQuery -->
 
