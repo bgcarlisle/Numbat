@@ -356,6 +356,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 						    $newseid = nbt_add_sub_open_text_field ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
 						    $subelementid_lup[$sel['id']] = $newseid;
 						    break;
+						case "tags":
+						    $newseid = nbt_add_sub_tags_element ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $subelementid_lup[$sel['id']] = $newseid;
+						    break;
 						case "date_selector":
 						    $newseid = nbt_add_sub_date_selector ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
 						    $subelementid_lup[$sel['id']] = $newseid;
