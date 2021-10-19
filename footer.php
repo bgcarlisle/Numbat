@@ -260,7 +260,7 @@
 				 $sub_combined_expression = "false";
 			     }
 
-			     echo "\n\n$('" . $sub_trigger_selector . "').on('answerChange', function () {\n";
+			     echo "\n\n$('.nbtSubExtraction').on('answerChange', '" . $sub_trigger_selector . "', function () {\n";
 
 			     echo "  var subexid = $(this).attr('subextractionid');\n";
 			     
@@ -4316,6 +4316,8 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
      }).done ( function (html) {
 
 	 $('#nbtSubExtraction' + eid + '-' + uid).html(html);
+
+	 $('.nbtTextOptionSelect').trigger('answerChange');
 
      });
 
