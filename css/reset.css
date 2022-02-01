@@ -1,5 +1,17 @@
+@font-face {
+    font-family: 'Atkinson Hyperlegible';
+    src url('../font/Atkinson-Hyperlegible-Regular-102.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Atkinson Hyperlegible';
+    src url('../font/Atkinson-Hyperlegible-Bold-102.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
 /* `XHTML, HTML4, HTML5 Reset
-----------------------------------------------------------------------------------------------------*/
+    ----------------------------------------------------------------------------------------------------*/
 
 a,
 abbr,
@@ -91,15 +103,15 @@ ul,
 var,
 video,
 xmp {
-  border: 0;
-  margin: 0;
-  padding: 0;
-  font-size: 100%;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 100%;
 }
 
 html,
 body {
-  font-family: 'Oxygen', sans-serif;
+  font-family: 'Atkinson Hyperlegible', sans-serif;
   font-size: 16px;
 }
 
