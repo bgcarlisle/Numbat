@@ -70,6 +70,7 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 * Removed unnecessary rows showing references without complete extractions from final table
 * Implemented import/export of conditional display logic in extraction forms
 * Implemented a new "tags" element for extractions and sub-extractions
+* Removed Google Font, replaced with [Atkinson Hyperlegible](https://brailleinstitute.org/freefont)
 
 To migrate from an earlier version of Numbat, run `db-migrations.php` while logged in as an administrator.
 
