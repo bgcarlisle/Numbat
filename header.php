@@ -15,10 +15,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 	<!-- / jQuery UI -->
 
-	<!-- Google Fonts -->
-	<link href='https://fonts.googleapis.com/css?family=Fenix|Oxygen' rel='stylesheet' type='text/css'>
-	<!-- / Google Fonts -->
-
 	<!-- CSS -->
 	<link rel="stylesheet" href="<?php echo SITE_URL; ?>css/reset.css" />
 	<link rel="stylesheet" href="<?php echo SITE_URL; ?>css/numbat.css" />
