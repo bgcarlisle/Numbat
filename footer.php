@@ -152,7 +152,6 @@
 
 		     echo "});\n\n";
 
-		     echo "$('.nbtTextOptionSelect').trigger('answerChange');\n\n";
 
 		 }
 		 
@@ -303,8 +302,6 @@
 			     echo "  }\n";
 
 			     echo "});\n\n";
-
-			     echo "$('.nbtTextOptionSelect').trigger('answerChange');\n\n";
 			     
 			 }
 			 
@@ -315,6 +312,8 @@
 	     }
 	 }
      }
+
+     echo "$('.nbtTextOptionSelect').trigger('answerChange');\n\n";
      
      ?>
 
