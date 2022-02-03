@@ -152,7 +152,6 @@
 
 		     echo "});\n\n";
 
-		     echo "$('.nbtTextOptionSelect').trigger('answerChange');\n\n";
 
 		 }
 		 
@@ -277,10 +276,14 @@
 			     if ($sele['destructive_hiding'] == 1) {
 				 switch ($sele['type']) {
 				     case "open_text":
-					 echo "    $('#nbtSub' + subexid + 'TextField" . $sele['dbname'] . "').val('').blur();\n";
+					 echo "    if ($('#nbtSub' + subexid + 'TextField" . $sele['dbname'] . "').val() != '') {\n";
+					 echo "      $('#nbtSub' + subexid + 'TextField" . $sele['dbname'] . "').val('').blur();\n";
+					 echo "    }";
 					 break;
 				     case "date_selector":
-					 echo "    $('#nbtSub' + subexid + 'DateField" . $sele['dbname'] . "').val('').blur();\n";
+					 echo "    if ($('#nbtSub' + subexid + 'DateField" . $sele['dbname'] . "').val() != '') {\n";
+					 echo "      $('#nbtSub' + subexid + 'DateField" . $sele['dbname'] . "').val('').blur();\n";
+					 echo "    }";
 					 break;
 				     case "single_select":
 					 echo "    $('.nbtCDSubelement" . $sele['id'] . ".nbtSubCDSubextraction' + subexid + '.nbtTextOptionChosen').click();\n";
@@ -299,8 +302,6 @@
 			     echo "  }\n";
 
 			     echo "});\n\n";
-
-			     echo "$('.nbtTextOptionSelect').trigger('answerChange');\n\n";
 			     
 			 }
 			 
@@ -311,6 +312,8 @@
 	     }
 	 }
      }
+
+     echo "$('.nbtTextOptionSelect').trigger('answerChange');\n\n";
      
      ?>
 
@@ -2866,21 +2869,26 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 
  function nbtClearSubextractionMultiSelect (elementid, subextractionid, column, buttonid) {
 
-     $.ajax ({
-	 url: numbaturl + 'extract/subclearfield.php',
-	 type: 'post',
-	 data: {
-	     eid: elementid,
-	     seid: subextractionid,
-	     col: column
-	 },
-	 dataType: 'html'
-     }).done ( function (html) {
+     if ($('#' + buttonid + '.nbtTextOptionChosen').length) {
+	 // Only contact the server if there is one selected,
+	 // otherwise do nothing
 
-	 $('#' + buttonid).removeClass('nbtTextOptionChosen');
-	 $('#' + buttonid).trigger('answerChange');
+	 $.ajax ({
+	     url: numbaturl + 'extract/subclearfield.php',
+	     type: 'post',
+	     data: {
+		 eid: elementid,
+		 seid: subextractionid,
+		 col: column
+	     },
+	     dataType: 'html'
+	 }).done ( function (html) {
 
-     });
+	     $('#' + buttonid).removeClass('nbtTextOptionChosen');
+	     $('#' + buttonid).trigger('answerChange');
+
+	 });
+     }
 
  }
 
