@@ -12712,6 +12712,29 @@ function nbt_delete_sub_element ( $subelementid ) {
 
     }
 
+    // remove conditional display triggers
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("DELETE FROM `conditional_display` WHERE `subelementid` = :id;");
+
+	$stmt->bindParam(':id', $seid);
+
+	$seid = $subelementid;
+
+	$stmt->execute();
+
+	$dbh = null;
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
 }
 
 function nbt_change_sub_element_display_name ( $subelementid, $newdisplayname ) {
