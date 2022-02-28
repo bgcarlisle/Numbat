@@ -6068,6 +6068,31 @@ function nbt_delete_form_element ( $elementid ) {
 
     }
 
+    // then remove conditional display triggers
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("DELETE FROM `conditional_display` WHERE elementid = :eid;");
+
+	$stmt->bindParam(':eid', $eid);
+
+	$eid = $elementid;
+
+	if ($stmt->execute()) {
+
+	    $dbh = null;
+
+	}
+	
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
     // then remove the element from the formelement table
 
     try {
