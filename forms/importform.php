@@ -423,7 +423,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 			    
 			}
 
-			echo count($conditionals) . " conditionals<br>";
+			// echo count($conditionals) . " conditionals<br>";
 
 			foreach ($conditionals as $conditional) {
 
