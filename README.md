@@ -27,8 +27,10 @@ The following are the intended uses of Numbat.
 ### What Numbat doesn't do
 
 * Statistical analysis of results
-* Calculating Cohen's/Fleiss' kappa (but I have an *R* script for that, contact me)
-* Semantic analysis of papers to extract (you have to read the papers yourself)
+* Calculating inter-rater reliability estimates (but it will export
+  extractions in a format that the `irr` *R* package expects!)
+* Semantic analysis of papers to extract (you have to read the papers
+  yourself)
 * Magic
 
 ### Values for the Numbat project
@@ -61,16 +63,29 @@ Copy the entire file to your web server, and navigate to the Numbat directory wi
 
 ## What's new in 2.13
 
-* Button to automate copying of all rows in table from all users to final during reconciliation
+* Button to automate copying of all rows in table from all users to
+  final during reconciliation
 * New random references selector options for assignments
 * Fix bug with table data entry
 * Upload new references into an already-existing reference set
-* Fixed bug where order of columns in data export sometimes doesn't match the order they appear in the extraction form
-* Fixed bug where date selector would save empty fields as "0000-00-00" instead of NULL
-* Removed unnecessary rows showing references without complete extractions from final table
-* Implemented import/export of conditional display logic in extraction forms
+* Fixed bug where order of columns in data export sometimes doesn't
+  match the order they appear in the extraction form
+* Fixed bug where date selector would save empty fields as
+  "0000-00-00" instead of NULL
+* Removed unnecessary rows showing references without complete
+  extractions from final table
+* Implemented import/export of conditional display logic in extraction
+  forms
 * Implemented a new "tags" element for extractions and sub-extractions
-* Removed Google Font, replaced with [Atkinson Hyperlegible](https://brailleinstitute.org/freefont)
+* Removed Google Font, replaced with [Atkinson
+  Hyperlegible](https://brailleinstitute.org/freefont)
+* Fixed bug where deleting elements would fail to also delete their
+  child conditional display triggers, resulting in unexpected
+  behaviour
+* Added IRR (inter-rater reliability, e.g. Cohen's kappa) export to
+  allow users to export all extractions of a single element in a
+  format that would be expected by many of the functions in the `irr`
+  *R* package
 
 To migrate from an earlier version of Numbat, run `db-migrations.php` while logged in as an administrator.
 
