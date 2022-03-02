@@ -1226,10 +1226,13 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     // Get rid of conditional display triggers with no parent element
 
+    echo "<h3>Conditional display element maintenance</h3>";
+
+    // Elements
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("DELETE FROM `conditional_display` WHERE `elementid` NOT IN (SELECT `id` FROM `formelements`);");
+	$stmt = $dbh->prepare("DELETE FROM `conditional_display` WHERE `subelementid` IS NULL AND `elementid` NOT IN (SELECT `id` FROM `formelements`);");
 
 	if ($stmt->execute()) {
 	    echo "<p>Cleared conditional display triggers with no parent element, if any</p>";
@@ -1245,6 +1248,25 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     }
 
+    // Sub-elements
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("DELETE FROM `conditional_display` WHERE `elementid` IS NULL AND `subelementid` NOT IN (SELECT `id` FROM `subelements`);");
+
+	if ($stmt->execute()) {
+	    echo "<p>Cleared conditional display triggers with no parent sub-element, if any</p>";
+	}
+
+	$dbh = null;
+	
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
     
 
     // End
