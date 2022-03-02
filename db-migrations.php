@@ -1224,16 +1224,39 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	echo "<p>Sub-elements table already has a tag prompts column</p>";
     }
 
-	// End
-	
-    } else { // Not admin
+    // Get rid of conditional display triggers with no parent element
 
-	echo "<p>You are not logged in, or you do not have sufficient privileges to perform database migration</p>";
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("DELETE FROM `conditional_display` WHERE `elementid` NOT IN (SELECT `id` FROM `formelements`);");
+
+	if ($stmt->execute()) {
+	    echo "<p>Cleared conditional display triggers with no parent element, if any</p>";
+	}
+
+	$dbh = null;
 	
     }
 
-    echo '</div>';
+    catch (PDOException $e) {
 
-    include_once ("./footer.php");
+	echo $e->getMessage();
+
+    }
+
+    
+
+    // End
+    
+} else { // Not admin
+
+    echo "<p>You are not logged in, or you do not have sufficient privileges to perform database migration</p>";
+    
+}
+
+echo '</div>';
+
+include_once ("./footer.php");
 
 ?>
