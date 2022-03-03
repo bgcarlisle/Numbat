@@ -5385,13 +5385,23 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 dataType: 'html'
      }).done ( function (response) {
 
-	 $('#nbtThinkyLinky').attr('href', numbaturl + 'export/' + response + '.tsv')
+	 $('#nbtThinkyLinky').attr('href', numbaturl + 'export/' + response + '.tsv');
 
 	 $('#nbtCoverup').fadeIn();
 	 $('#nbtThinky').fadeIn();
 
 
      });
+
+ }
+
+ function nbtExportIRR (fid, rid) {
+
+     if ($('#nbtIRR' + fid).val() != 'ns') {
+	 
+	 window.location.href = numbaturl + 'export/save_irr.php?formid=' + fid + '&refset=' + rid + '&elementid=' + $('#nbtIRR' + fid).val();
+
+     }
 
  }
 

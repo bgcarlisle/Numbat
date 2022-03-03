@@ -32,6 +32,8 @@ if ( count ( $refsets ) > 0 ) {
 
 	    if ( count ( $extractedrefs ) > 0 ) {
 
+		// Button for the full form
+
 		echo "<button onclick=\"nbtExportData('extraction', ";
 
 		echo $refset['id'];
@@ -44,7 +46,55 @@ if ( count ( $refsets ) > 0 ) {
 		
 		echo $form['name'];
 
-		echo "\" extractions</button>";
+		echo "\" extractions (full form)</button>";
+
+		// Drop-down for IRR options
+
+		$formelements = nbt_get_elements_for_formid ( $form['id'] );
+
+		$form_has_irr_eligible_element = FALSE;
+
+		foreach ($formelements as $element) {
+		    switch ($element['type']) {
+			case "single_select":
+			    $form_has_irr_eligible_element = TRUE;
+			    break;
+			default:
+			    // Do nothing
+			    break;
+		    }
+		}
+
+		if ($form_has_irr_eligible_element) {
+		    echo '<br><br><select id="nbtIRR' . $form['id'] . '">';
+
+		    echo '<option value="ns">Choose a single element to export for IRR analysis</option>';
+
+		    foreach ($formelements as $element) {
+
+			switch ($element['type']) {
+			    case "single_select":
+
+				echo '<option value="' . $element['id'] . '">';
+
+				echo $element['displayname'];
+
+				echo "</option>";
+				
+				break;
+
+			    default:
+				// Do nothing
+				break;
+			}
+			
+		    }
+
+		    echo "</select>";
+
+		    echo ' <button onclick="nbtExportIRR(' . $form['id'] . ', ' . $refset['id'] . ');">Export</button>';
+		    
+		}
 
 	    } else {
 
@@ -70,7 +120,7 @@ if ( count ( $refsets ) > 0 ) {
 
 		echo $form['name'];
 
-		echo "\" final</button>";
+		echo "\" final (full form)</button>";
 
 	    } else {
 
