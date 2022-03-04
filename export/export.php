@@ -6,12 +6,10 @@ $forms = nbt_get_all_extraction_forms ();
 
 if ( count ( $refsets ) > 0 ) {
 
-    echo "<h2>Export extractions</h2>";
-
     foreach ( $refsets as $refset ) {
 
 	echo "<div class=\"nbtContentPanel nbtGreyGradient\">";
-	echo '<h2>' . $refset['name'] . '</h2>';
+	echo '<h2>Export extractions: ' . $refset['name'] . '</h2>';
 
 	echo '<table class="nbtTabledData">';
 	echo '<tr class="nbtTableHeaders">';

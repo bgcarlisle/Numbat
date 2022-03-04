@@ -16,7 +16,7 @@ if ( count ( $extractions ) >= 2 ) {
 
     echo '<div class="nbtContentPanel">';
 
-    echo '<h2>' . $ref[$refset['title']] . '</h2>';
+    echo '<h2>Reconcile: ' . $ref[$refset['title']] . '</h2>';
 
     echo '<p>' . $ref[$refset['authors']] . '</p>';
 

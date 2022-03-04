@@ -1,7 +1,7 @@
 <div class="nbtContentPanel nbtGreyGradient">
     <h2>
 	<img src="<?php echo SITE_URL; ?>images/extract.png" class="nbtTitleImage">
-	Your extractions
+	Do extractions
     </h2>
     <button onclick="$('.nbtCompleteAssignment').fadeToggle();">Show / hide complete</button>
     <button onclick="$('.nbtInProgressAssignment').fadeToggle();">Show / hide in progress</button>
