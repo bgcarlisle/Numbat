@@ -11,7 +11,7 @@ if ( count ( $refsets ) > 0 ) {
 		$refs = nbt_get_all_references_for_refset ( $refset['id'] );
 
 		?><div class="nbtContentPanel nbtGreyGradient">
-			<h2><?php echo $refset['name']; ?></h2>
+			<h2>Reconcile: <?php echo $refset['name']; ?></h2>
 			<button onclick="$('.nbtMasterNotYetStarted<?php echo $refset['id']; ?>').fadeToggle();">Show / hide not yet started </button>
 			<button onclick="$('.nbtMasterInProgress<?php echo $refset['id']; ?>').fadeToggle();">Show / hide in progress</button>
 			<button onclick="$('.nbtMasterCompleted<?php echo $refset['id']; ?>').fadeToggle();">Show / hide complete</button><?php
