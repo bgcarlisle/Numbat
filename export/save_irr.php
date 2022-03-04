@@ -75,6 +75,64 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 	    }
 	    
 	    break;
+
+	case "multi_select":
+
+	    // Get the select options for the multi select
+	    $selectoptions = nbt_get_all_select_options_for_element ( $element['id'] );
+
+	    // Print the extractor names as column headings
+	    echo implode("\t", $extractor_names) . "\n";
+
+	    // Loop through each extracted reference
+	    foreach ($refs as $ref) {
+
+		$ref_responses = [];
+
+		// Loop through extractors
+		foreach ($extractors as $extractor) {
+
+		    $extraction_found = FALSE;
+
+		    foreach ($extractions as $extraction) {
+
+			if ($extraction['userid'] == $extractor & $extraction['referenceid'] == $ref) {
+
+			    $combined_response = [];
+
+			    foreach ($selectoptions as $selectoption) {
+
+				if ($extraction[$element['columnname'] . "_" . $selectoption['dbname']] === NULL) {
+				    $combined_response[] = 0;
+				} else {
+				    $combined_response[] = $extraction[$element['columnname'] . "_" . $selectoption['dbname']];
+				}
+				
+			    }
+
+			    $ref_responses[] = implode(" ", $combined_response);
+
+			    $extraction_found = TRUE;
+			    
+			}
+			
+		    }
+
+		    if (! $extraction_found) {
+			$ref_responses[] = "NA";
+		    }
+
+		}
+
+		echo implode("\t", $ref_responses) . "\n";
+
+	    }
+
+	    break;
+
+	default:
+	    // Do nothing
+	    break;
 	    
     }
 
