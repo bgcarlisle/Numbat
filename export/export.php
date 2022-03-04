@@ -66,9 +66,10 @@ if ( count ( $refsets ) > 0 ) {
 		}
 
 		if ($form_has_irr_eligible_element) {
-		    echo '<br><br><select id="nbtIRR' . $form['id'] . '">';
+		    echo '<p>Export extractions for a single element</p>';
+		    echo '<select id="nbtIRR' . $form['id'] . '">';
 
-		    echo '<option value="ns">Choose a single element to export for IRR analysis</option>';
+		    echo '<option value="ns">Choose an element for IRR analysis</option>';
 
 		    foreach ($formelements as $element) {
 
