@@ -36,6 +36,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
     switch ($element['type']) {
 
 	case "single_select":
+	case "open_text":
 
 	    // Print the extractor names as column headings
 	    echo implode("\t", $extractor_names) . "\n";

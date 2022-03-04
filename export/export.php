@@ -57,6 +57,7 @@ if ( count ( $refsets ) > 0 ) {
 		foreach ($formelements as $element) {
 		    switch ($element['type']) {
 			case "single_select":
+			case "open_text":
 			    $form_has_irr_eligible_element = TRUE;
 			    break;
 			default:
@@ -75,6 +76,7 @@ if ( count ( $refsets ) > 0 ) {
 
 			switch ($element['type']) {
 			    case "single_select":
+			    case "open_text":
 
 				echo '<option value="' . $element['id'] . '">';
 
