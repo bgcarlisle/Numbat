@@ -105,10 +105,10 @@ username and password to complete the installation.
 * Fixed bug where deleting elements would fail to also delete their
   child conditional display triggers, resulting in unexpected
   behaviour
-* Added IRR (inter-rater reliability, e.g. Cohen's kappa) export to
-  allow users to export all extractions of a single element in a
-  format that would be expected by many of the functions in the `irr`
-  *R* package
+* Added IRR (inter-rater reliability, e.g. Cohen's kappa) export for
+  open text, single select and multi select elements to allow users to
+  export all extractions of a single element in a format that would be
+  expected by many of the functions in the `irr` *R* package
 
 To migrate from an earlier version of Numbat, run `db-migrations.php`
 while logged in as an administrator.
