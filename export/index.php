@@ -27,6 +27,7 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 }
 
+unset($formelements);
 include ( ABS_PATH . "footer.php" );
 
 ?>
