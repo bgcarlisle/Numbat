@@ -15514,7 +15514,7 @@ function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :displayname, :codebook, :toggle, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
+	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
 	$stmt->bindParam(':sort', $sort);
