@@ -3637,15 +3637,24 @@ function sigUseDoubleCitation ( $id, $drugid, $reference, $section, $citation, $
 
 }
 
-function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "whenassigned" ) {
+function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "whenassigned", $sortdirection = "DESC" ) {
+
+    if ($sortdirection == "ASC") {
+	$sd = " ASC;";
+    } else {
+	$sd = " DESC;";
+    }
 
     switch ($sort) {
 	case "referenceid":
-	    $sortquery = "ORDER BY `referenceid` DESC;";
+	    $sortquery = "ORDER BY `referenceid`" . $sd;
+	    break;
+	case "formid":
+	    $sortquery = "ORDER BY `formid`" . $sd;
 	    break;
 	case "whenassigned":
 	default:
-	    $sortquery = "ORDER BY `whenassigned` DESC;";
+	    $sortquery = "ORDER BY `whenassigned`" . $sd;
 	    break;
     }
 

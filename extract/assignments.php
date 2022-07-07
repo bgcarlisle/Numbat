@@ -10,8 +10,13 @@
     <p>Sort extractions by:</p>
     <form action="<?php echo SITE_URL; ?>extract/" method="get">
 	<select name="sort">
-	    <option value="whenassigned"<?php if ($_GET['sort'] == "whenassigned") echo " selected"; ?>>Assignment date</option>
+	    <option value="whenassigned"<?php if ($_GET['sort'] == "whenassigned" | $_GET['sort'] == "") echo " selected"; ?>>Assignment date</option>
+	    <option value="whenassigned"<?php if ($_GET['sort'] == "formid") echo " selected"; ?>>Form</option>
 	    <option value="referenceid"<?php if ($_GET['sort'] == "referenceid") echo " selected"; ?>>Reference</option>
+	</select>
+	<select name="sortdirection">
+	    <option value="whenassigned"<?php if ($_GET['sortdirection'] == "whenassigned") echo " selected"; ?>>Ascending</option>
+	    <option value="referenceid"<?php if ($_GET['sortdirection'] == "referenceid" | $_GET['sort'] == "") echo " selected"; ?>>Descending</option>
 	</select>
 	<button>Sort</button>
     </form>
@@ -21,7 +26,7 @@
 
     foreach ( $referencesets as $refset ) {
 
-	$assignments = nbt_get_assignments_for_user_and_refset ( $_SESSION[INSTALL_HASH . '_nbt_userid'], $refset['id'], $_GET['sort'] );
+	$assignments = nbt_get_assignments_for_user_and_refset ( $_SESSION[INSTALL_HASH . '_nbt_userid'], $refset['id'], $_GET['sort'], $_GET['sortdirection'] );
 
 	if ( count ( $assignments ) > 0 ) {
 
