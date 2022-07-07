@@ -15,8 +15,8 @@
 	    <option value="referenceid"<?php if ($_GET['sort'] == "referenceid") echo " selected"; ?>>Reference</option>
 	</select>
 	<select name="sortdirection">
-	    <option value="whenassigned"<?php if ($_GET['sortdirection'] == "whenassigned") echo " selected"; ?>>Ascending</option>
-	    <option value="referenceid"<?php if ($_GET['sortdirection'] == "referenceid" | $_GET['sort'] == "") echo " selected"; ?>>Descending</option>
+	    <option value="whenassigned"<?php if ($_GET['sortdirection'] == "ASC") echo " selected"; ?>>Ascending</option>
+	    <option value="referenceid"<?php if ($_GET['sortdirection'] == "DESC" | $_GET['sortdirection'] == "") echo " selected"; ?>>Descending</option>
 	</select>
 	<button>Sort</button>
     </form>
