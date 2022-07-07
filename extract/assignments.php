@@ -7,13 +7,21 @@
     <button onclick="$('.nbtInProgressAssignment').fadeToggle();">Show / hide in progress</button>
     <button onclick="$('.nbtNotStartedAssignment').fadeToggle();">Show / hide not yet started</button>
     <p class="nbtFinePrint">Complete assignments are hidden automatically. Click the button above to show them.</p>
+    <p>Sort extractions by:</p>
+    <form action="<?php echo SITE_URL; ?>extract/" method="get">
+	<select name="sort">
+	    <option value="whenassigned"<?php if ($_GET['sort'] == "whenassigned") echo " selected"; ?>>Assignment date</option>
+	    <option value="referenceid"<?php if ($_GET['sort'] == "referenceid") echo " selected"; ?>>Reference</option>
+	</select>
+	<button>Sort</button>
+    </form>
     <?php
 
     $referencesets = nbt_get_all_ref_sets ();
 
     foreach ( $referencesets as $refset ) {
 
-	$assignments = nbt_get_assignments_for_user_and_refset ( $_SESSION[INSTALL_HASH . '_nbt_userid'], $refset['id'] );
+	$assignments = nbt_get_assignments_for_user_and_refset ( $_SESSION[INSTALL_HASH . '_nbt_userid'], $refset['id'], $_GET['sort'] );
 
 	if ( count ( $assignments ) > 0 ) {
 

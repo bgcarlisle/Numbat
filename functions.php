@@ -3637,12 +3637,22 @@ function sigUseDoubleCitation ( $id, $drugid, $reference, $section, $citation, $
 
 }
 
-function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid ) {
+function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "whenassigned" ) {
+
+    switch ($sort) {
+	case "referenceid":
+	    $sortquery = "ORDER BY `referenceid` DESC;";
+	    break;
+	case "whenassigned":
+	default:
+	    $sortquery = "ORDER BY `whenassigned` DESC;";
+	    break;
+    }
 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("SELECT *, (SELECT `id` FROM `forms` WHERE `id` LIKE `formid`) as `formid`, (SELECT `name` FROM `forms` WHERE `id` LIKE `formid`) as `formname` FROM `assignments`, `referenceset_" . $refsetid . "` WHERE `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() ORDER BY `whenassigned` DESC;");
+	$stmt = $dbh->prepare ("SELECT *, (SELECT `id` FROM `forms` WHERE `id` LIKE `formid`) as `formid`, (SELECT `name` FROM `forms` WHERE `id` LIKE `formid`) as `formname` FROM `assignments`, `referenceset_" . $refsetid . "` WHERE `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() " . $sortquery);
 
 	$stmt->bindParam(':userid', $uid);
 
