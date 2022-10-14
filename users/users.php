@@ -1,7 +1,7 @@
 <div class="nbtContentPanel nbtGreyGradient">
     <h2>
 	<img src="<?php echo SITE_URL; ?>images/useradmin.png" class="nbtTitleImage">
-	User adminstration
+	User administration
     </h2>
     <table class="nbtTabledData">
 	<tr class="nbtTableHeaders">
