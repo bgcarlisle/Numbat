@@ -112,6 +112,7 @@ username and password to complete the installation.
 * Added drop-down selector for sorting extractions to be done on the
   "Do extractions" page by reference, form and assignment date
   (previously, extractions were sorted by assignment date only)
+* Added `whenassigned` and `status` columns to assignment export
 
 To migrate from an earlier version of Numbat, run `db-migrations.php`
 while logged in as an administrator.
