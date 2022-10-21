@@ -17440,7 +17440,7 @@ function nbt_assignments_for_export ($refset) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT `referenceset_" . $refsetid . "`.`id` as `referenceid`, `referenceset_" . $refsetid . "`.`" . $title_col_name . "` as `title`, `username`, `forms`.`name` as `form` FROM `referenceset_" . $refsetid . "`, `assignments`, `users`, `forms` WHERE `assignments`.`refsetid` = " . $refsetid . " AND `referenceset_" . $refsetid . "`.`id` = `assignments`.`referenceid` AND `users`.`id` = `assignments`.`userid` AND `forms`.`id` = `assignments`.`formid`;");
+	$stmt = $dbh->prepare("SELECT `whenassigned`, `referenceset_" . $refsetid . "`.`id` as `referenceid`, `referenceset_" . $refsetid . "`.`" . $title_col_name . "` as `title`, `users`.`id` as `userid`, `username`, `forms`.`name` as `form` FROM `referenceset_" . $refsetid . "`, `assignments`, `users`, `forms` WHERE `assignments`.`refsetid` = " . $refsetid . " AND `referenceset_" . $refsetid . "`.`id` = `assignments`.`referenceid` AND `users`.`id` = `assignments`.`userid` AND `forms`.`id` = `assignments`.`formid`;");
 	
 	if ($stmt->execute()) {
 
@@ -17458,6 +17458,40 @@ function nbt_assignments_for_export ($refset) {
 
 	}
 
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+}
+
+function nbt_get_completions_for_assignment_export ($refsetid) {
+    
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT `formid` FROM `assignments` WHERE `refsetid` = :rsid GROUP BY `formid`");
+
+	$stmt->bindParam(':rsid', $rsid);
+
+	$rsid = $refsetid;
+	
+	if ($stmt->execute()) {
+
+	    $forms = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	} else {
+
+	    echo "MySQL fail";
+
+	    return FALSE;
+
+	}
 
     }
 
@@ -17466,6 +17500,49 @@ function nbt_assignments_for_export ($refset) {
 	echo $e->getMessage();
 
     }
+
+    $completions = [];
+
+    foreach ($forms as $form) {
+
+	$fid = $form['formid'];
+	  
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("SELECT `referenceid`, `userid`, `status` FROM `extractions_" . $fid . "` WHERE `refsetid` = :rsid");
+
+	    $stmt->bindParam(':rsid', $rsid);
+
+	    $rsid = $refsetid;
+	    
+	    if ($stmt->execute()) {
+
+		$form_completions = $stmt->fetchAll();
+
+		$dbh = null;
+
+	    } else {
+
+		echo "MySQL fail";
+
+		return FALSE;
+
+	    }
+
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+
+	$completions = array_merge($completions, $form_completions);
+	
+    }
+
+    return $completions;
 
 }
 
