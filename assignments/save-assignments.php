@@ -34,8 +34,6 @@ foreach ($assignments as $as) {
 		$timestamp_finished = $comp['timestamp_finished'];
 	    }
 
-	    $status = $comp['status'];
-
 	}
 
     }
