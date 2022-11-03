@@ -17435,12 +17435,12 @@ function nbt_assignments_for_export ($refset) {
 
     $columns = nbt_get_columns_for_refset ( $refsetid );
 
-    $title_col_name = $columns[4][0];
+    $title_col_name = $columns[$title_col_no][0];
 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT `whenassigned`, `referenceset_" . $refsetid . "`.`id` as `referenceid`, `referenceset_" . $refsetid . "`.`" . $title_col_name . "` as `title`, `users`.`id` as `userid`, `username`, `forms`.`name` as `form` FROM `referenceset_" . $refsetid . "`, `assignments`, `users`, `forms` WHERE `assignments`.`refsetid` = " . $refsetid . " AND `referenceset_" . $refsetid . "`.`id` = `assignments`.`referenceid` AND `users`.`id` = `assignments`.`userid` AND `forms`.`id` = `assignments`.`formid`;");
+	$stmt = $dbh->prepare("SELECT `whenassigned`, `referenceset_" . $refsetid . "`.`id` as `referenceid`, `referenceset_" . $refsetid . "`.`" . $title_col_name . "` as `title`, `users`.`id` as `userid`, `username`, `forms`.`id` as `formid`, `forms`.`name` as `form` FROM `referenceset_" . $refsetid . "`, `assignments`, `users`, `forms` WHERE `assignments`.`refsetid` = " . $refsetid . " AND `referenceset_" . $refsetid . "`.`id` = `assignments`.`referenceid` AND `users`.`id` = `assignments`.`userid` AND `forms`.`id` = `assignments`.`formid`;");
 	
 	if ($stmt->execute()) {
 
@@ -17510,7 +17510,7 @@ function nbt_get_completions_for_assignment_export ($refsetid) {
 	try {
 
 	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("SELECT `referenceid`, `userid`, `status` FROM `extractions_" . $fid . "` WHERE `refsetid` = :rsid");
+	    $stmt = $dbh->prepare("SELECT `referenceid`, `userid`, `timestamp_finished`, `status`, '" . $fid . "' as `formid` FROM `extractions_" . $fid . "` WHERE `refsetid` = :rsid");
 
 	    $stmt->bindParam(':rsid', $rsid);
 
