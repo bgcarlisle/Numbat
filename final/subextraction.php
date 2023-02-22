@@ -19,6 +19,7 @@ foreach ( $subextractions as $subextraction ) {
 	switch ( $subelement['type'] ) {
 
 	    case "open_text":
+	    case "text_area":
 
 		echo $subextraction[$subelement['dbname']];
 

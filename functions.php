@@ -2186,6 +2186,15 @@ function nbt_echo_subextraction_text_field ($elementid, $subextraction, $dbcolum
 
 }
 
+function nbt_echo_subextraction_text_area ($elementid, $subextraction, $dbcolumn) {
+
+?>
+    <textarea style="width: 100%; height: 150px;" id="nbtSub<?php echo $subextraction['id']; ?>TextArea" onblur="nbtSaveSubExtractionTextField(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextArea', 'nbtSub<?php echo $subextraction['id']; ?>TextAreaField<?php echo $dbcolumn; ?>Feedback');"><?php echo $subextraction[$dbcolumn]; ?></textarea>
+    <p class="nbtInputFeedback" id="nbtSub<?php echo $subextraction['id']; ?>TextAreaField<?php echo $dbcolumn; ?>Feedback">&nbsp;</p>
+<?php
+
+}
+
 function nbt_echo_msubextraction_text_field ($elementid, $subextraction, $dbcolumn, $maxlength, $allcaps = FALSE) {
 
     echo '<input type="text" value="';
@@ -2193,6 +2202,15 @@ function nbt_echo_msubextraction_text_field ($elementid, $subextraction, $dbcolu
     echo $subextraction[$dbcolumn];
 
 ?>" id="nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>" onblur="nbtSaveMasterSubExtractionTextField(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>Feedback');" maxlength="<?php echo $maxlength; ?>"<?php if ( $allcaps ) { echo " style=\"text-transform: uppercase\""; } ?>><span class="nbtInputFeedback" id="nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $dbcolumn; ?>Feedback">&nbsp;</span>
+<?php
+
+}
+
+function nbt_echo_msubextraction_text_area ($elementid, $subextraction, $dbcolumn) {
+
+?>
+    <textarea style="width: 100%; height: 150px;" id="nbtSub<?php echo $subextraction['id']; ?>TextArea" onblur="nbtSaveMasterSubExtractionTextField(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextArea', 'nbtSub<?php echo $subextraction['id']; ?>TextAreaField<?php echo $dbcolumn; ?>Feedback');"><?php echo $subextraction[$dbcolumn]; ?></textarea>
+    <p class="nbtInputFeedback" id="nbtSub<?php echo $subextraction['id']; ?>TextAreaField<?php echo $dbcolumn; ?>Feedback">&nbsp;</p>
 <?php
 
 }
@@ -12428,6 +12446,173 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 
 }
 
+function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname = NULL, $regex = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
+
+    $elementid = intval($elementid);
+    $dbname = nbt_remove_special($dbname);
+
+    $element = nbt_get_form_element_for_elementid ( $elementid );
+
+    // get the highest sortorder value
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
+
+	$stmt->bindParam(':eid', $eid);
+
+	$eid = $elementid;
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    foreach ( $result as $row ) {
+
+		$highestsortorder = $row['sortorder'];
+
+	    }
+
+	} else {
+
+	    echo "MySQL fail";
+
+	}
+
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // find a good name for the new column
+
+    if ( is_null ($dbname) ) {
+	
+	$foundgoodcolumn = FALSE;
+
+	$counter = 1;
+
+	while ( $foundgoodcolumn == FALSE ) {
+
+	    try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'textarea_" . $counter . "';");
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		if ( count ( $result ) == 0 ) {
+
+		    $dbname = "textarea_" . $counter;
+
+		    $foundgoodcolumn = TRUE;
+
+		}
+
+	    }
+
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	    }
+
+	    $counter ++;
+
+	}
+	
+    }
+
+
+    // then insert a new element into the form elements table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, regex, copypreviousprompt, codebook, toggle) VALUES (:element, :sort, :type, :dbname, :displayname, :regex, :copypreviousprompt, :codebook, :toggle);");
+
+	$stmt->bindParam(':element', $eid);
+	$stmt->bindParam(':sort', $sort);
+	$stmt->bindParam(':type', $type);
+	$stmt->bindParam(':dbname', $dbn);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':regex', $rx);
+	$stmt->bindParam(':copypreviousprompt', $cpp);
+	$stmt->bindParam(':codebook', $cb);
+	$stmt->bindParam(':toggle', $tg);
+
+	$eid = $elementid;
+	$sort = $highestsortorder + 1;
+	$type = "text_area";
+	$dbn = $dbname;
+	$dn = $displayname;
+	$rx = $regex;
+	$cpp = $copypreviousprompt;
+	$cb = $codebook;
+	$tg = $toggle;
+
+	if ($stmt->execute()) {
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+	    $stmt2->execute();
+	    $result = $stmt2->fetchAll();
+	    $newid = $result[0]['newid'];
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // then add a column to the extractions table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
+
+	$stmt->execute();
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // then add a column to the merged table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
+
+	$stmt->execute();
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    return ($newid);
+
+}
+
 function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = NULL, $regex = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
 
     $elementid = intval($elementid);
@@ -12811,6 +12996,9 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
 
     switch ( $subelement['type'] ) {
 	case "open_text":
+	    $dbtype = "TEXT DEFAULT NULL";
+	    break;
+	case "text_area":
 	    $dbtype = "TEXT DEFAULT NULL";
 	    break;
 	case "single_select":
@@ -15275,6 +15463,8 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 		break;
 
 	    case "open_text": // intentionally blank
+
+	    case "text_area": // intentionally blank
 
 	    case "date_selector": // intentionally blank
 

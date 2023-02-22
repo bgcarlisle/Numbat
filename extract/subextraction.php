@@ -43,6 +43,24 @@ foreach ( $subextractions as $subextraction ) {
 
 		break;
 
+	    case "text_area":
+
+		     echo '<div id="nbtSubelementContainer' . $subelement['id'] . '-' . $subextraction['id'] . '"';
+
+		if ($subelement['startup_visible'] != 1) {
+		    echo ' class="nbtHidden"';
+		}
+
+		echo '>';
+
+		nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
+
+		nbt_echo_subextraction_text_area ($nbtSubExtractionElementID, $subextraction, $subelement['dbname']); // Needs fixin'
+
+		echo '</div>';
+
+		break;
+
 	    case "tags":
 
 		echo '<div id="nbtSubelementContainer' . $subelement['id'] . '-' . $subextraction['id'] . '"';

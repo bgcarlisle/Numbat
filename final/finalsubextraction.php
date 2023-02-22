@@ -21,8 +21,14 @@ foreach ( $subextractions as $subextraction ) {
 	switch ( $subelement['type'] ) {
 
 	    case "open_text":
-
+		
 		nbt_echo_msubextraction_text_field ($nbtMasterSubExtrID, $subextraction, $subelement['dbname'], 500, FALSE);
+
+		break;
+		
+	    case "text_area":
+		
+		nbt_echo_msubextraction_text_area ($nbtMasterSubExtrID, $subextraction, $subelement['dbname']);
 
 		break;
 

@@ -26,6 +26,20 @@ foreach ( $subelements as $subelement ) {
 	<?php							       
 	break;
 
+	case "text_area":
+
+	echo '<h4>Text area field</h4>';
+	echo '<p>Display name: <input type="text" id="nbtSubElementDisplayName' . $subelement['id'] . '" value="' . $subelement['displayname'] . '" onblur="nbtChangeSubDisplayName(' . $subelement['id'] . ');"></p>';
+
+	?>
+	<p class="nbtFinePrint">Will appear on extraction form</p>
+	<p>Column name: <input type="text" id="nbtSubElementColumnName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubColumnName(<?php echo $subelement['id']; ?>);"></p>
+	<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
+	
+	<?php
+	
+	break;
+
 	case "single_select":
 
 	?><h4>Single select</h4>

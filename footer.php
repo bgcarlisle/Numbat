@@ -3991,6 +3991,23 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 
  }
 
+ function nbtAddNewSubTextArea ( eid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/addsubtextarea.php',
+	 type: 'post',
+	 data: {
+	     elementid: eid
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtSubExtractionElements' + eid).html(html);
+
+     });
+
+ }
+
  function nbtDeleteSubElement ( seid ) {
 
      $.ajax ({

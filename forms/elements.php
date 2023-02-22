@@ -216,6 +216,7 @@ if ( count ( $elements ) > 0 ) {
 	    <div id="nbtNewSubElementSelector<?php echo $element['id']; ?>" class="nbtHidden">
 		<h3>Add new sub-extraction element</h3>
 		<button onclick="nbtAddNewSubOpenText(<?php echo $element['id']; ?>);">Open text</button>
+		<button onclick="nbtAddNewSubTextArea(<?php echo $element['id']; ?>);">Text area</button>
 		<button onclick="nbtAddNewSubDateSelector(<?php echo $element['id']; ?>);">Date selector</button>
 		<button onclick="nbtAddNewSubSingleSelect(<?php echo $element['id']; ?>);">Single select</button>
 		<button onclick="nbtAddNewSubMultiSelect(<?php echo $element['id']; ?>);">Multi select</button>
