@@ -64,6 +64,8 @@ The following are the intended uses of Numbat.
 ### Why not just use a Google Form?
 
 * Google has a bad record for keeping private data private
+* Google has an *extremely* bad habit of closing services regardless
+  of whether users are still using them (remember Google Reader?)
 * No good, built-in way to reconcile multiple extractions
 * Built-in blinding from other extractors' work to minimise validity
   threats to your systematic review work
