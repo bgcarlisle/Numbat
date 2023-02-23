@@ -143,7 +143,7 @@ foreach ( $subelements as $subelement ) {
 				<p>Column name: <input type="text" id="nbtSubElementColumnName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubColumnName(<?php echo $subelement['id']; ?>);"></p>
 				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
 				<p>Reference data:</p>
-				<textarea style="width: 100%; height: 80px;" id="nbtElementColumnName<?php echo $subelement['id']; ?>" onblur="nbtChangeSubRefdataFormat(<?php echo $subelement['id']; ?>);" maxlength="2500"><?php echo $subelement['reference_data_format']; ?></textarea>
+				<textarea style="width: 100%; height: 80px;" id="nbtSubRefdataFormat<?php echo $subelement['id']; ?>" onblur="nbtChangeSubRefdataFormat(<?php echo $subelement['id']; ?>);" maxlength="2500"><?php echo $subelement['reference_data_format']; ?></textarea>
 				<p class="nbtFinePrint">The text `$data` (without the quotes) will be replaced with the reference data.</p>
 <?php
 

@@ -788,7 +788,7 @@
 	 type: 'post',
 	 data: {
 	     subelement: seid,
-	     newcolumnname: $('#nbtElementColumnName' + seid).val()
+	     newcolumnname: $('#nbtSubRefdataFormat' + seid).val()
 	 },
 	 dataType: 'html'
      }).done ( function (html) {
