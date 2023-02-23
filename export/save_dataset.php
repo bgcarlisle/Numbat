@@ -74,9 +74,13 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 		    $fcols[$key] = "REPLACE(REPLACE(REPLACE(extractions_" . $_POST['formid'] . "." . $value . ", '\\\"', '&quot;'), '\\r', '\\\\n'), '\\n', '\\\\n') as '" . $value . "'";
 		}
 
-		$form_cols_string = implode(", ", $fcols);
+		$form_cols_string = ", " . implode(", ", $fcols);
 
-		$select_cols = $meta_cols_string . ", users.username, " . $rs_cols_string . ", " . $form_cols_string;
+		if (count($cols) == 0) {
+		    $form_cols_string = "";
+		}
+		
+		$select_cols = $meta_cols_string . ", users.username, " . $rs_cols_string . $form_cols_string;
 
 		$filename = $filename . "-form_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-extractions";
 
@@ -101,9 +105,13 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 		    $fcols[$key] = "REPLACE(REPLACE(REPLACE(m_extractions_" . $_POST['formid'] . "." . $value . ", '\\\"', '&quot;'), '\\r', '\\\\n'), '\\n', '\\\\n') as '" . $value . "'";
 		}
 
-		$form_cols_string = implode(", ", $fcols);
+		$form_cols_string = ", " . implode(", ", $fcols);
 
-		$select_cols = $meta_cols_string . ", " .  $rs_cols_string . ", " . $form_cols_string;
+		if (count($cols) == 0) {
+		    $form_cols_string = "";
+		}
+
+		$select_cols = $meta_cols_string . ", " .  $rs_cols_string . $form_cols_string;
 
 		$filename = $filename . "-form_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-final";
 
