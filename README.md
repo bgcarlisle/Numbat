@@ -116,6 +116,7 @@ username and password to complete the installation.
   (previously, extractions were sorted by assignment date only)
 * Added `whenassigned` and `status` columns to assignment export
 * Added new text area sub-extraction element
+* Added new reference data sub-extraction element
 
 To migrate from an earlier version of Numbat, run `db-migrations.php`
 while logged in as an administrator.

@@ -134,6 +134,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 		switch ($se['type']) {
 		    case "open_text":
 		    case "text_area":
+		    case "reference_data":
 		    case "date_selector":
 		    case "tags":
 		    case "single_select":

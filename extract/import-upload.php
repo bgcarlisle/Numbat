@@ -340,6 +340,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 						break;
 
 					    case "open_text":
+					    case "text_area":
+					    case "reference_data":
 
 						echo '<div class="nbtImportElement">';
 

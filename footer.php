@@ -781,6 +781,30 @@
 
  }
 
+ function nbtChangeSubRefdataFormat ( seid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/changesubrefdataformat.php',
+	 type: 'post',
+	 data: {
+	     subelement: seid,
+	     newcolumnname: $('#nbtElementColumnName' + seid).val()
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtSubElementFeedback' + seid).html(html);
+
+	 $('#nbtSubElementFeedback' + seid).fadeIn(500, function () {
+
+	     $('#nbtSubElementFeedback' + seid).fadeOut(1500);
+
+	 });
+
+     });
+
+ }
+
  function nbtChangeRegex ( eid ) {
 
      $.ajax ({
@@ -3995,6 +4019,23 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 
      $.ajax ({
 	 url: numbaturl + 'forms/addsubtextarea.php',
+	 type: 'post',
+	 data: {
+	     elementid: eid
+	 },
+	 dataType: 'html'
+     }).done ( function (html) {
+
+	 $('#nbtSubExtractionElements' + eid).html(html);
+
+     });
+
+ }
+
+ function nbtAddNewSubRefData ( eid ) {
+
+     $.ajax ({
+	 url: numbaturl + 'forms/addsubrefdata.php',
 	 type: 'post',
 	 data: {
 	     elementid: eid

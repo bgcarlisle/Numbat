@@ -43,9 +43,39 @@ foreach ( $subextractions as $subextraction ) {
 
 		break;
 
+	    case "reference_data":
+
+		echo '<div id="nbtSubelementContainer' . $subelement['id'] . '-' . $subextraction['id'] . '"';
+
+		if ($subelement['startup_visible'] != 1) {
+		    echo ' class="nbtHidden"';
+		}
+
+		echo '>';
+
+		nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
+
+		if ($subelement['reference_data_format'] == "") {
+		    $subelement['reference_data_format'] = '$data';
+		}
+
+		$refdata = preg_replace(
+		    '/\$data/',
+		    $subextraction[$subelement['dbname']],
+		    $subelement['reference_data_format']
+		);
+
+		$refdata = str_replace("\n", "<br>", $refdata);
+
+		echo "<p>" . $refdata . "</p>";
+
+		echo '</div>';
+
+		break;
+
 	    case "text_area":
 
-		     echo '<div id="nbtSubelementContainer' . $subelement['id'] . '-' . $subextraction['id'] . '"';
+		echo '<div id="nbtSubelementContainer' . $subelement['id'] . '-' . $subextraction['id'] . '"';
 
 		if ($subelement['startup_visible'] != 1) {
 		    echo ' class="nbtHidden"';

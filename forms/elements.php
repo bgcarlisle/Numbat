@@ -222,6 +222,7 @@ if ( count ( $elements ) > 0 ) {
 		<button onclick="nbtAddNewSubMultiSelect(<?php echo $element['id']; ?>);">Multi select</button>
 		<button onclick="nbtAddNewSubTagsElement(<?php echo $element['id']; ?>);">Tags</button>
 		<button onclick="nbtAddNewSubTable(<?php echo $element['id']; ?>);">Table data</button>
+		<button onclick="nbtAddNewSubRefData(<?php echo $element['id']; ?>);">Reference data</button>
 	    </div>
 	</div>
 

@@ -1224,6 +1224,35 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	echo "<p>Sub-elements table already has a tag prompts column</p>";
     }
 
+    // Add the reference_data_format column for sub-extractions
+
+    if (! check_for_subelements_column ("reference_data_format")) {
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `subelements` ADD COLUMN `reference_data_format` TEXT NULL DEFAULT NULL AFTER `tagprompts`;");
+
+	    if ($stmt->execute()) {
+		echo "<p>Sub-extraction elements table updated with reference_data_format column</p>";
+	    } else {
+		echo "<p>Error updating sub-extraction elements table with reference_data_format column</p>";
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+
+	}
+	
+    } else {
+	echo "<p>Sub-elements table already has a reference_data_format column</p>";
+    }
+
     // Get rid of conditional display triggers with no parent element
 
     echo "<h3>Conditional display element maintenance</h3>";

@@ -25,6 +25,24 @@ foreach ( $subextractions as $subextraction ) {
 
 		break;
 
+	    case "reference_data":
+
+		if ($subelement['reference_data_format'] == "") {
+		    $subelement['reference_data_format'] = '$data';
+		}
+
+		$refdata = preg_replace(
+		    '/\$data/',
+		    $subextraction[$subelement['dbname']],
+		    $subelement['reference_data_format']
+		);
+
+		$refdata = str_replace("\n", "<br>", $refdata);
+
+		echo "<p>" . $refdata . "</p>";
+		
+		break;
+
 	    case "date_selector":
 
 		echo $subextraction[$subelement['dbname']];

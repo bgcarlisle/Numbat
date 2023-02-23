@@ -133,6 +133,24 @@ foreach ( $subelements as $subelement ) {
 
 			break;
 
+			case "reference_data":
+
+				?><h4>Reference data prompt</h4>
+				<p class="nbtFinePrint">A "reference data prompt" does not accept input from the extractor. Rather, it displays data about the sub-extraction. To populate this field, select "Import extractions" from the Numbat menu.</p>
+				<p class="nbtFinePrint">By default, the extractors will be presented with whatever data this field has been populated with, however you can change the way that it is presented by adding text before or after it and using `$data` (without the quotes) to indicate where the data should be inserted.</p>
+				<p>Display name: <input type="text" id="nbtSubElementDisplayName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['displayname']; ?>" onblur="nbtChangeSubDisplayName(<?php echo $subelement['id']; ?>);" maxlength="200"></p>
+				<p class="nbtFinePrint">Will appear on extraction form</p>
+				<p>Column name: <input type="text" id="nbtSubElementColumnName<?php echo $subelement['id']; ?>" value="<?php echo $subelement['dbname']; ?>" onblur="nbtChangeSubColumnName(<?php echo $subelement['id']; ?>);"></p>
+				<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
+				<p>Reference data:</p>
+				<textarea style="width: 100%; height: 80px;" id="nbtElementColumnName<?php echo $subelement['id']; ?>" onblur="nbtChangeSubRefdataFormat(<?php echo $subelement['id']; ?>);" maxlength="2500"><?php echo $subelement['reference_data_format']; ?></textarea>
+				<p class="nbtFinePrint">The text `$data` (without the quotes) will be replaced with the reference data.</p>
+<?php
+
+												     
+
+			break;
+
 		}
 
 		?>

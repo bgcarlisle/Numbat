@@ -6558,6 +6558,37 @@ function nbt_refdata_change_column_name ( $elementid, $newcolumnname ) {
 
 }
 
+function nbt_subrefdata_change_format ( $subelementid, $newformat ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("UPDATE `subelements` SET `reference_data_format`=:nf WHERE `id` = :seid");
+
+	$stmt->bindParam(':seid', $eid);
+	$stmt->bindParam(':nf', $nf);
+
+	$eid = $subelementid;
+	$nf = $newformat;
+
+	if ($stmt->execute()) {
+
+	    echo "Reference data format saved";
+
+	}
+
+	$dbh = null;
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+}
+
 function nbt_change_display_name ( $elementid, $newdisplayname ) {
 
     $itworked = 0;
@@ -12446,6 +12477,173 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 
 }
 
+function nbt_add_sub_ref_data ( $elementid, $displayname = NULL, $dbname = NULL, $regex = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
+
+    $elementid = intval($elementid);
+    $dbname = nbt_remove_special($dbname);
+
+    $element = nbt_get_form_element_for_elementid ( $elementid );
+
+    // get the highest sortorder value
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
+
+	$stmt->bindParam(':eid', $eid);
+
+	$eid = $elementid;
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    foreach ( $result as $row ) {
+
+		$highestsortorder = $row['sortorder'];
+
+	    }
+
+	} else {
+
+	    echo "MySQL fail";
+
+	}
+
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // find a good name for the new column
+
+    if ( is_null ($dbname) ) {
+	
+	$foundgoodcolumn = FALSE;
+
+	$counter = 1;
+
+	while ( $foundgoodcolumn == FALSE ) {
+
+	    try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'reference_data_" . $counter . "';");
+
+		$stmt->execute();
+
+		$result = $stmt->fetchAll();
+
+		if ( count ( $result ) == 0 ) {
+
+		    $dbname = "reference_data_" . $counter;
+
+		    $foundgoodcolumn = TRUE;
+
+		}
+
+	    }
+
+	    catch (PDOException $e) {
+
+		echo $e->getMessage();
+
+	    }
+
+	    $counter ++;
+
+	}
+	
+    }
+
+
+    // then insert a new element into the form elements table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, regex, copypreviousprompt, codebook, toggle) VALUES (:element, :sort, :type, :dbname, :displayname, :regex, :copypreviousprompt, :codebook, :toggle);");
+
+	$stmt->bindParam(':element', $eid);
+	$stmt->bindParam(':sort', $sort);
+	$stmt->bindParam(':type', $type);
+	$stmt->bindParam(':dbname', $dbn);
+	$stmt->bindParam(':displayname', $dn);
+	$stmt->bindParam(':regex', $rx);
+	$stmt->bindParam(':copypreviousprompt', $cpp);
+	$stmt->bindParam(':codebook', $cb);
+	$stmt->bindParam(':toggle', $tg);
+
+	$eid = $elementid;
+	$sort = $highestsortorder + 1;
+	$type = "reference_data";
+	$dbn = $dbname;
+	$dn = $displayname;
+	$rx = $regex;
+	$cpp = $copypreviousprompt;
+	$cb = $codebook;
+	$tg = $toggle;
+
+	if ($stmt->execute()) {
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+	    $stmt2->execute();
+	    $result = $stmt2->fetchAll();
+	    $newid = $result[0]['newid'];
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // then, add a column to the extractions table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
+
+	$stmt->execute();
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // then add a column to the master table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
+
+	$stmt->execute();
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    return ($newid);
+
+}
+
 function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname = NULL, $regex = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
 
     $elementid = intval($elementid);
@@ -13009,6 +13207,9 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
 	    break;
 	case "date_selector":
 	    $dbtype = "DATE DEFAULT NULL";
+	    break;
+	case "reference_data":
+	    $dbtype = "TEXT DEFAULT NULL";
 	    break;
 	    
     }
@@ -14892,7 +15093,7 @@ function nbt_insert_imported_extraction ( $formid, $refsetid, $usercolumn, $user
     
 }
 
-function nbt_insert_imported_sub_extraction ( $elementid, $refsetid, $usercolumn, $user, $referenceid_column, $selected_elements, $row, $separator ) {
+function nbt_insert_imported_sub_extraction ( $elementid, $refsetid, $usercolumn, $user, $referenceid_column, $selected_elements, $row, $separator, $rowcount ) {
 
     if ( ! ctype_space($row) && $row != '' ) {
 
@@ -14915,7 +15116,7 @@ function nbt_insert_imported_sub_extraction ( $elementid, $refsetid, $usercolumn
 	try {
 
 	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("INSERT INTO `sub_" . $element['columnname'] . "` (" . $sqlcols . ", `refsetid`, `referenceid`, `userid`) VALUES (" . $sqlparams . ", :rsid, :rid, :uid)");
+	    $stmt = $dbh->prepare("INSERT INTO `sub_" . $element['columnname'] . "` (" . $sqlcols . ", `refsetid`, `referenceid`, `userid`, `sortorder`) VALUES (" . $sqlparams . ", :rsid, :rid, :uid, :ord)");
 
 	    $counter = 0;
 	    $colvars = [];
@@ -14943,9 +15144,11 @@ function nbt_insert_imported_sub_extraction ( $elementid, $refsetid, $usercolumn
 	    $stmt->bindParam(':rsid', $rsid);
 	    $stmt->bindParam(':rid', $rid);
 	    $stmt->bindParam(':uid', $uid);
+	    $stmt->bindParam(':ord', $ord);
 
 	    $rsid = $refsetid;
 	    $rid = $values[$referenceid_column];
+	    $ord = $rowcount;
 
 	    if ($usercolumn == "ns") {
 		$uid = $user;
@@ -15465,6 +15668,8 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 	    case "open_text": // intentionally blank
 
 	    case "text_area": // intentionally blank
+
+	    case "reference_data": // intentionally blank
 
 	    case "date_selector": // intentionally blank
 

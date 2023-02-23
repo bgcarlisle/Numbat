@@ -232,7 +232,7 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 			foreach ( $lines as $line ) {
 
-			    if (nbt_insert_imported_sub_extraction ( $_POST['element'], $_POST['refset'], $_POST['usercolumn'], $_POST['user'], $_POST['referenceid'], $selected_subelements, $line, "\t" )) {
+			    if (nbt_insert_imported_sub_extraction ( $_POST['element'], $_POST['refset'], $_POST['usercolumn'], $_POST['user'], $_POST['referenceid'], $selected_subelements, $line, "\t", $countrows )) {
 				$countrows++;
 			    }
 			    
@@ -248,7 +248,7 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 			echo '<p>Reference set: ' . $refset['name'] . '</p>';
 
-			echo '<p>Form: ' . $form['name'] . ' / ' . $element['displayname'] . ' (table)</p>';
+			echo '<p>Sub-extraction: ' . $element['displayname'] . '</p>';
 
 			echo '<hr>';
 
