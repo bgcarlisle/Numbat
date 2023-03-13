@@ -76,7 +76,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		$form_cols_string = ", " . implode(", ", $fcols);
 
-		if (count($cols) == 0) {
+		if (count($fcols) == 0) {
 		    $form_cols_string = "";
 		}
 		
@@ -107,7 +107,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		$form_cols_string = ", " . implode(", ", $fcols);
 
-		if (count($cols) == 0) {
+		if (count($fcols) == 0) {
 		    $form_cols_string = "";
 		}
 
