@@ -80,6 +80,11 @@
 		    </a>
 		</li>
 		<li>
+		    <a href="<?php echo SITE_URL; ?>uploads/">
+			Upload files
+		    </a>
+		</li>
+		<li>
 		    <a href="<?php echo SITE_URL; ?>assignments/">
 			Manage extraction assignments
 		    </a>

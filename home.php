@@ -6,6 +6,7 @@
 	<li><a href="<?php echo SITE_URL; ?>forms/">Edit extraction forms</a></li>
 	<li><a href="<?php echo SITE_URL; ?>assignments/">Manage user assignments</a></li>
 	<li><a href="<?php echo SITE_URL; ?>attach/">Attach files to references</a></li>
+	<li><a href="<?php echo SITE_URL; ?>uploads/">Upload files</a></li>
 	<li><a href="<?php echo SITE_URL; ?>extract/">Do extractions</a></li>
 	<li><a href="<?php echo SITE_URL; ?>extract/?action=import">Import extractions</a></li>
 	<li><a href="<?php echo SITE_URL; ?>final/">Reconcile finished extractions</a></li>
