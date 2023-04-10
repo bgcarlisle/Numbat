@@ -4,26 +4,26 @@ include_once('../config.php');
 
 if ( nbt_user_is_logged_in () ) { // User is logged in
 
-	if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >= 2 ) {
+    if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >= 2 ) {
 
-		include ( ABS_PATH . "header.php" );
-		include ( ABS_PATH . "uploads/uploads.php" );
+	include ( ABS_PATH . "header.php" );
+	include ( ABS_PATH . "uploads/uploads.php" );
 
-	} else {
+    } else {
 
-		$nbtErrorText = "You do not have permission to upload files.";
-
-		include ( ABS_PATH . "header.php" );
-		include ( ABS_PATH . "error.php" );
-
-	}
-    
-} else {
-
-	$nbtErrorText = "You are not logged in.";
+	$nbtErrorText = "You do not have permission to upload files.";
 
 	include ( ABS_PATH . "header.php" );
 	include ( ABS_PATH . "error.php" );
+
+    }
+    
+} else {
+
+    $nbtErrorText = "You are not logged in.";
+
+    include ( ABS_PATH . "header.php" );
+    include ( ABS_PATH . "error.php" );
     
 }
 
