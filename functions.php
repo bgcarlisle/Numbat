@@ -17941,4 +17941,8 @@ function nbt_get_completions_for_assignment_export ($refsetid) {
 
 }
 
+function nbt_new_upload ($path) {
+    
+}
+
 ?>
