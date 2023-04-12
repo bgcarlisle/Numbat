@@ -1296,6 +1296,29 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	echo $e->getMessage();
 
     }
+
+    // Uploads table
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("CREATE TABLE IF NOT EXISTS `uploads` (`id` int(11) NOT NULL AUTO_INCREMENT, `when_uploaded` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `userid` int(11) NOT NULL, `filename` TEXT NOT NULL, PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+
+	if ($stmt->execute()) {
+	    echo "<p>The uploads table has been created if it did not exist</p>";
+	} else {
+	    echo "<p>Error attempting to create the uploads table</p>";
+	}
+
+	$dbh = null;
+	
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
     
 
     // End
