@@ -17941,7 +17941,36 @@ function nbt_get_completions_for_assignment_export ($refsetid) {
 
 }
 
-function nbt_new_upload ($path) {
+function nbt_new_upload ($filename, $userid) {
+    
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("INSERT INTO `uploads` (`userid`, `filename`) VALUES (:uid, :fn);");
+	
+	$stmt->bindParam(':uid', $uid);
+	$stmt->bindParam(':fn', $fn);
+
+	$uid = $userid;
+	$fn = $filename;
+
+	if ( $stmt->execute() ) {
+
+	    return TRUE;
+
+	} else {
+
+	    return FALSE;
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
     
 }
 
