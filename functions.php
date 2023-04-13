@@ -17941,8 +17941,8 @@ function nbt_get_completions_for_assignment_export ($refsetid) {
 
 }
 
-function nbt_new_upload ($filename, $userid) {
-    
+function nbt_new_file_upload ($filename, $userid) {
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -17976,6 +17976,39 @@ function nbt_new_upload ($filename, $userid) {
 
     }
     
+}
+
+function nbt_get_all_uploads () {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `uploads` ORDER BY `when_uploaded` DESC;");
+	
+	$stmt->bindParam(':seid', $seid);
+
+	$seid = $subelementid;
+
+	if ( $stmt->execute() ) {
+
+	    $result = $stmt->fetchAll();
+
+	    return $result;
+
+	} else {
+
+	    return FALSE;
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }    
+
 }
 
 ?>
