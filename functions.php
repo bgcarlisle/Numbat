@@ -17955,8 +17955,12 @@ function nbt_new_upload ($filename, $userid) {
 	$fn = $filename;
 
 	if ( $stmt->execute() ) {
-
-	    return TRUE;
+	    
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+	    $stmt2->execute();
+	    $result = $stmt2->fetchAll();
+	    
+	    return $result[0]['newid'];
 
 	} else {
 
