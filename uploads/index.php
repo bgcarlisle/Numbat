@@ -43,21 +43,26 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 		$path = $_FILES["file"]["name"];
 		$ext = pathinfo($path, PATHINFO_EXTENSION);
 
-		$upload_id = nbt_new_file_upload($path);
-		
-		if (move_uploaded_file ( $_FILES["file"]["tmp_name"], ABS_PATH . "uploads/files/" . $path )) { // File moved to uploads folder successfully
+		// Record upload in db
+		$upload_id = nbt_new_file_upload($path, $_SESSION[INSTALL_HASH . '_nbt_userid']);
 
-		    include ( ABS_PATH . "header.php" );
-		    include ( ABS_PATH . "uploads/success.php");
-		    include ( ABS_PATH . "uploads/list-uploads.php");
+		if ($upload_id) { // Successfully recorded in db
 		    
+		    if (move_uploaded_file ( $_FILES["file"]["tmp_name"], ABS_PATH . "uploads/files/" . $path )) { // File moved to uploads folder successfully
 
-		} else { // File not moved to uploads folder successfully
+			include ( ABS_PATH . "header.php" );
+			include ( ABS_PATH . "uploads/success.php");
+			include ( ABS_PATH . "uploads/list-uploads.php");
+			
 
-		    $nbtErrorText = "Error moving file to uploads folder.";
+		    } else { // File not moved to uploads folder successfully
 
-		    include ( ABS_PATH . "header.php" );
-		    include ( ABS_PATH . "error.php" );
+			$nbtErrorText = "Error moving file to uploads folder.";
+
+			include ( ABS_PATH . "header.php" );
+			include ( ABS_PATH . "error.php" );
+			
+		    }
 		    
 		}
 		
