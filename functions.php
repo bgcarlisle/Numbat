@@ -17983,11 +17983,7 @@ function nbt_get_all_uploads () {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM `uploads` ORDER BY `when_uploaded` DESC;");
-	
-	$stmt->bindParam(':seid', $seid);
-
-	$seid = $subelementid;
+	$stmt = $dbh->prepare("SELECT * FROM `uploads`, `users` WHERE `uploads`.`userid` = `users`.`id` ORDER BY `when_uploaded` DESC;");
 
 	if ( $stmt->execute() ) {
 
