@@ -543,3 +543,9 @@ textarea.finalOverride {
 .TagPromptRow {
     display: none;
 }
+code {
+    background: #666;
+    color: #fff;
+    border-radius: 3px;
+    padding: 0px 6px;
+}
