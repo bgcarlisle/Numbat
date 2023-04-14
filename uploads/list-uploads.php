@@ -2,7 +2,7 @@
     <h2>
         Upload files
     </h2>
-    <p>Files uploaded using this tool will be available in the <code>uploads/files/</code> folder in this Numbat instance.</p>
+    <p>Files uploaded using this tool will be available in the <code>uploads/files/</code> folder in this Numbat instance. This tool is only available to users with admin privileges.</p>
     <h3>New file</h3>
     <form action="<?php echo SITE_URL; ?>uploads/" method="post" enctype="multipart/form-data">
         <input type="file" name="file" id="file">
