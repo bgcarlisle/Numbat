@@ -18007,4 +18007,21 @@ function nbt_get_all_uploads () {
 
 }
 
+function nbt_all_files_in_uploads_dir () {    
+    // Will only return files that don't start with `.`
+    
+    $file_scan = scandir ( ABS_PATH . "uploads/files/" );
+
+    $files = [];
+    
+    foreach ($file_scan as $file) {
+	if (substr($file, 0, 1) != ".") {
+	    $files[] = $file;
+	}
+    }
+
+    return $files;
+    
+}
+
 ?>
