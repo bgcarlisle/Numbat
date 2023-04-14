@@ -18003,7 +18003,7 @@ function nbt_get_all_uploads () {
 
 	echo $e->getMessage();
 
-    }    
+    }
 
 }
 
@@ -18021,6 +18021,84 @@ function nbt_all_files_in_uploads_dir () {
     }
 
     return $files;
+    
+}
+
+function nbt_delete_uploaded_file ($fileid) {
+
+    // Get upload db entry
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `uploads` WHERE `id` = :upid;");
+
+	$stmt->bindParam(':upid', $upid1);
+
+	$upid1 = $fileid;
+	
+	if ( $stmt->execute() ) {
+
+	    $result = $stmt->fetchAll();
+
+	    $filename = $result[0]['filename'];
+
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }    
+
+    // Remove from database
+    
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("DELETE FROM `uploads` WHERE `id` = :upid LIMIT 1;");
+	
+	$stmt->bindParam(':upid', $upid2);
+
+	$upid2 = $fileid;
+	
+	if ( $stmt->execute() ) {
+	    $db = TRUE;
+	} else {
+	    $db = FALSE;
+	}
+
+    }
+
+    catch (PDOException $e) {
+
+	echo $e->getMessage();
+
+    }
+
+    // Delete from disk
+
+    if ($filename != "") {
+	$file = unlink( ABS_PATH . "uploads/files/" . $filename);
+    } else {
+	$file = FALSE;
+    }
+
+    // Success or failure return values
+
+    $returnval = "";
+    
+    if ($db) {
+	$returnval .= "db";
+    }
+
+    if ($file) {
+	$returnval .= "file";
+    }
+
+    return $returnval;
     
 }
 

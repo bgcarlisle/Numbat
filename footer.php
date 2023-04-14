@@ -6202,6 +6202,29 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
      
  }
 
+ function nbtDeleteUploadedFile (fileid) {
+     
+     $.ajax ({
+	 url: numbaturl + 'uploads/delete.php',
+	 type: 'post',
+	 data: {
+	     fid: fileid
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 if (response != 'dbfile') {
+	     alert('Error deleting file');
+	 } else {
+	     $('#nbtUploadRow' + fileid + ' td').addClass('nbtBadField');
+	      setTimeout( function () {
+		  $('#nbtUploadRow' + fileid).slideUp();
+	      }, 1000);
+	     
+	 }
+     });
+     
+ }
+
 </script>
 </body>
 </html>

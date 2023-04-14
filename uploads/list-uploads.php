@@ -41,7 +41,7 @@
 		<td>
 		    <button id="nbtDeleteUploadButton<?php echo $file[0]; ?>" onclick="$('#nbtConfirmDeleteUpload<?php echo $file[0]; ?>').slideDown();$(this).slideUp(0);">Delete</button>
 		    <div id="nbtConfirmDeleteUpload<?php echo $file[0]; ?>" class="nbtHidden">
-			<button>For real</button>
+			<button onclick="nbtDeleteUploadedFile(<?php echo $file[0]; ?>);">For real</button>
 			<button onclick="$('#nbtConfirmDeleteUpload<?php echo $file[0]; ?>').slideUp(0);$('#nbtDeleteUploadButton<?php echo $file[0]; ?>').slideDown();">Cancel</button>
 		    </div>
 		</td>
