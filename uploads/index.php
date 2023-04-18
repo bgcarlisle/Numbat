@@ -8,9 +8,9 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 	if ($_POST['action'] == "upload") { // Trying to upload
 
-	    if ($_FILES["file"]["error"] > 0) { // There's an upload error
+	    if ($_FILES["file"]["error"][0] > 0) { // There's an upload error
 		
-		if ($_FILES["file"]["error"] == 4) { // No file selected
+		if ($_FILES["file"]["error"][0] == 4) { // No file selected
 
                     $nbtErrorText = "No file selected";
 
@@ -19,7 +19,7 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 		} else {
 
-                    $nbtErrorText = "Upload error: " . $_FILES["file"]["error"];
+                    $nbtErrorText = "Upload error: " . $_FILES["file"]["error"][0];
 
                     include ( ABS_PATH . "header.php" );
                     include ( ABS_PATH . "error.php" );
@@ -40,31 +40,38 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 		}
 
-		$path = $_FILES["file"]["name"];
-		$ext = pathinfo($path, PATHINFO_EXTENSION);
+		$files_n = count($_FILES['file']['name']);
+		$file_counter = 0;
+		
+		for ($i = 0; $i < $files_n; $i++) {
 
-		// Record upload in db
-		$upload_id = nbt_new_file_upload($path, $_SESSION[INSTALL_HASH . '_nbt_userid']);
+		    $path = $_FILES["file"]["name"][$i];
+		    $ext = pathinfo($path, PATHINFO_EXTENSION);
 
-		if ($upload_id) { // Successfully recorded in db
-		    
-		    if (move_uploaded_file ( $_FILES["file"]["tmp_name"], ABS_PATH . "uploads/files/" . $path )) { // File moved to uploads folder successfully
+		    // Record upload in db
+		    $upload_id = nbt_new_file_upload($path, $_SESSION[INSTALL_HASH . '_nbt_userid']);
 
-			include ( ABS_PATH . "header.php" );
-			include ( ABS_PATH . "uploads/success.php");
-			include ( ABS_PATH . "uploads/list-uploads.php");
+		    if ($upload_id) { // Successfully recorded in db
 			
+			if (move_uploaded_file ( $_FILES["file"]["tmp_name"][$i], ABS_PATH . "uploads/files/" . $path )) { // File moved to uploads folder successfully
+			    
 
-		    } else { // File not moved to uploads folder successfully
+			} else { // File not moved to uploads folder successfully
 
-			$nbtErrorText = "Error moving file to uploads folder.";
+			    $nbtErrorText = "Error moving file to uploads folder.";
 
-			include ( ABS_PATH . "header.php" );
-			include ( ABS_PATH . "error.php" );
+			    include ( ABS_PATH . "header.php" );
+			    include ( ABS_PATH . "error.php" );
+			    
+			}
 			
 		    }
 		    
 		}
+
+		include ( ABS_PATH . "header.php" );
+		include ( ABS_PATH . "uploads/success.php");
+		include ( ABS_PATH . "uploads/list-uploads.php");
 		
 	    }
 	    
