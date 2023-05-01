@@ -336,6 +336,33 @@
 
 	}
 
+	try { // conditional display table
+
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `conditional_display`; CREATE TABLE `conditional_display` ( `id` int(11) NOT NULL AUTO_INCREMENT, `elementid` int(11) DEFAULT NULL, `subelementid` int(11) DEFAULT NULL, `trigger_element` int(11) DEFAULT NULL, `trigger_option` int(11) DEFAULT NULL, `type` varchar(50) DEFAULT 'is', PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+
+	    if ( $stmt->execute() ) {
+
+		echo "<p>Conditional display table created &#x2713;</p>";
+
+	    } else {
+
+		echo "<p>Error making conditional display table</p>";
+
+		$error = TRUE;
+
+	    }
+
+	    $dbh = null;	    
+	    
+	}
+
+	catch (PDOException $e) {
+
+	    echo $e->getMessage();
+	    
+	}
+
 	// insert admin user
 
 	try {
