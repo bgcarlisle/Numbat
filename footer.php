@@ -13,7 +13,7 @@
      // Here comes the conditional display logic
      <?php
 
-     if (isset($formelements) & count($formelements) > 0) {
+     if (isset($formelements) && count($formelements) > 0) {
 	 foreach ($formelements as $ele) {
 	     if ($ele['startup_visible'] != 1) {
 		 // We're only interested in elements that are hidden at startup

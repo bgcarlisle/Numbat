@@ -60,9 +60,7 @@ function nbt_creds_check_out ( $username, $password ) { // Returns TRUE if the u
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -101,9 +99,7 @@ function nbt_get_username_for_userid ($userid) { // Returns username if the user
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -142,9 +138,7 @@ function nbt_get_userid_for_username ($username) { // Returns user id if the use
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -173,9 +167,7 @@ function nbt_log_user_in ( $username ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -214,9 +206,7 @@ function nbt_username_is_taken ( $username ) { // Returns TRUE if the username i
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -255,9 +245,7 @@ function nbt_email_is_in_use ( $email ) { // Returns TRUE if there is an account
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -315,11 +303,8 @@ function nbt_save_new_user ($username, $email, $password) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
 	return FALSE;
-
     }
 
 }
@@ -351,9 +336,7 @@ function nbt_send_password_recovery_email ( $username ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // Get the user's email address
@@ -382,9 +365,7 @@ function nbt_send_password_recovery_email ( $username ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // Then, email the user with a link including the hash
@@ -439,9 +420,7 @@ function nbt_password_recovery_code_checks_out ( $username, $code) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -482,9 +461,7 @@ function nbt_admin_generate_password_link ( $userid ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
     } else {
 	
@@ -522,9 +499,7 @@ function nbt_change_password ( $username, $newpass ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -563,9 +538,7 @@ function nbt_get_emailverify_for_userid ($userid) { // Returns user emailverify 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -606,9 +579,7 @@ function nbt_verify_email_address ($username, $code) { // Returns TRUE if the us
 		}
 
 		catch (PDOException $e) {
-
 		    echo $e->getMessage();
-
 		}
 
 	    } else { // the code is not correct
@@ -662,9 +633,7 @@ function nbt_get_name_for_refsetid ( $drugid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -695,9 +664,7 @@ function nbt_get_refsetid_for_name ( $name ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -728,9 +695,7 @@ function nbt_get_refset_for_id ( $refsetid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -753,9 +718,7 @@ function nbt_get_all_references_for_refset ( $refsetid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -782,9 +745,7 @@ function nbt_get_all_extracted_references_for_refset_and_form ( $refsetid, $form
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -807,7 +768,6 @@ function nbt_get_all_extractions_for_refset_and_form ( $refsetid, $formid, $mins
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
     }
 
@@ -839,9 +799,7 @@ function nbt_get_extractions_for_refset_ref_and_form ( $refsetid, $refid, $formi
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -868,9 +826,7 @@ function nbt_count_all_references_for_drug_id ( $drugid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -903,9 +859,7 @@ function nbt_get_all_extractions_for_drug_id ( $drugid, $start, $range ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -932,9 +886,7 @@ function nbt_count_all_extractions_for_drug_id ( $drugid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -965,9 +917,7 @@ function nbt_get_reference_for_refsetid_and_refid ( $refsetid, $refid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1007,9 +957,7 @@ function nbt_return_references_for_refset_and_query ( $citationsid, $refsetid, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1032,9 +980,7 @@ function nbt_get_columns_for_refset ( $refsetid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1065,9 +1011,7 @@ function nbt_update_refset_metadata ( $refset, $column, $newvalue ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1101,9 +1045,7 @@ function nbt_return_references_for_assignment_search ( $refsetid, $query ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1137,9 +1079,7 @@ function nbt_add_citation ( $citationsection, $refsetid, $reference, $userid, $c
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1179,9 +1119,7 @@ function nbt_get_citations ( $citations, $refsetid, $reference, $userid, $orderb
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1208,9 +1146,7 @@ function nbt_copy_citation_to_master ( $elementid, $originalid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     foreach ( $result as $row ) {
@@ -1254,9 +1190,7 @@ function nbt_copy_citation_to_master ( $elementid, $originalid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     foreach ( $columns as $column ) {
@@ -1277,9 +1211,7 @@ function nbt_copy_citation_to_master ( $elementid, $originalid ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -1323,9 +1255,7 @@ function nbt_get_master_citations ( $elementid, $refsetid, $reference, $orderbyc
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1354,9 +1284,7 @@ function nbt_remove_master_citation ( $section, $id ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1389,9 +1317,7 @@ function nbt_remove_citation ( $section, $citation ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1427,9 +1353,7 @@ function nbt_update_extraction ( $fid, $id, $column, $value ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     }
@@ -1465,9 +1389,7 @@ function nbt_update_extraction ( $fid, $id, $column, $value ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1505,9 +1427,7 @@ function nbt_update_sub_extraction ( $eid, $id, $column, $value ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1545,9 +1465,7 @@ function nbt_update_msub_extraction ( $eid, $id, $column, $value ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1580,9 +1498,7 @@ function nbt_toggle_extraction ( $formid, $id, $column ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1617,9 +1533,7 @@ function nbt_toggle_sub_extraction ( $elementid, $id, $column ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1654,9 +1568,7 @@ function nbt_toggle_msub_extraction ( $elementid, $id, $column ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1687,9 +1599,7 @@ function nbt_get_extraction ( $formid, $refsetid, $refid, $userid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // See if an extraction exists
@@ -1722,9 +1632,7 @@ function nbt_get_extraction ( $formid, $refsetid, $refid, $userid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1755,9 +1663,7 @@ function nbt_get_uncited ( $drugid, $refid, $userid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1791,9 +1697,7 @@ function nbt_add_uncited ( $drugid, $refid, $userid, $text ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -1820,9 +1724,7 @@ function nbt_remove_uncited ($uncid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 }
 
@@ -2314,9 +2216,7 @@ function nbt_get_table_data_rows ( $elementid, $refsetid, $refid, $userid, $sub_
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -2357,9 +2257,7 @@ function nbt_get_all_table_data_rows_for_refset ( $elementid, $refsetid, $sub_ex
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -2388,9 +2286,7 @@ function nbt_get_all_sub_extraction_rows_for_refset ( $elementid, $refsetid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -2419,9 +2315,7 @@ function nbt_get_all_sub_extraction_table_data_rows_for_refset ( $elementid, $re
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -2462,9 +2356,7 @@ function nbt_get_all_reconciled_table_data_rows_for_refset ( $elementid, $refset
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -2493,9 +2385,7 @@ function nbt_get_all_reconciled_sub_extraction_rows_for_refset ( $elementid, $re
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -2569,9 +2459,7 @@ function nbt_add_new_extraction_table_data_row ( $tableid, $refsetid, $refid, $u
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -2626,9 +2514,7 @@ function nbt_remove_master_table_row ( $elementid, $rowid, $sub_table = FALSE ) 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -2653,9 +2539,7 @@ function nbt_get_manual_refs_for_refset ( $refsetid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -2740,9 +2624,7 @@ function nbt_add_manual_ref ( $refset ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -2779,9 +2661,7 @@ function nbt_update_manual_reference ( $refsetid, $column, $refid, $newvalue ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -2808,9 +2688,7 @@ function nbt_remove_manual_reference ( $refsetid, $refid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -2857,9 +2735,7 @@ function nbt_auto_insert_efficacy_table_rows ($drugid, $refid, $userid) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	}
@@ -2906,9 +2782,7 @@ function nbt_auto_insert_safety_table_rows ($drugid, $refid, $userid) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -2954,9 +2828,7 @@ function nbt_update_citation ( $id, $column, $value ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -3001,9 +2873,7 @@ function nbt_update_citeno ( $section, $citid, $newvalue ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -3032,9 +2902,7 @@ function nbt_toggle_ref_inclusion ( $drugid, $refid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -3058,9 +2926,7 @@ function nbt_delete_extraction ( $formid, $extrid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -3091,9 +2957,7 @@ function nbt_get_completed_extractions ( $drugid, $refid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -3120,9 +2984,7 @@ function nbt_set_master ( $drugid, $refid, $row, $value ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -3153,9 +3015,7 @@ function nbt_get_distinct_citations_for_element_refset_and_ref ( $elementid, $re
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -3198,9 +3058,7 @@ function nbt_get_particular_citation ( $elementid, $refsetid, $refid, $userid, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -3241,9 +3099,7 @@ function nbt_get_year_author_for_drug_and_ref ( $drugid, $refid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -3422,9 +3278,7 @@ function nbt_copy_to_master ( $formid, $refsetid, $reference, $row, $extrid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // Check whether the element is a single select
@@ -3457,9 +3311,7 @@ function nbt_copy_to_master ( $formid, $refsetid, $reference, $row, $extrid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // Set the final copy to that value
@@ -3484,9 +3336,7 @@ function nbt_copy_to_master ( $formid, $refsetid, $reference, $row, $extrid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return $val2 . " ";
@@ -3537,9 +3387,7 @@ function nbt_copy_multi_select_to_master ( $formid, $refsetid, $reference, $extr
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// Set the other extraction to that value
@@ -3564,9 +3412,7 @@ function nbt_copy_multi_select_to_master ( $formid, $refsetid, $reference, $extr
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -3605,9 +3451,7 @@ function sigUseDoubleCitation ( $id, $drugid, $reference, $section, $citation, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // Then, make sure there's citations for that user
@@ -3648,9 +3492,7 @@ function sigUseDoubleCitation ( $id, $drugid, $reference, $section, $citation, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -3696,9 +3538,7 @@ function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -3733,9 +3573,7 @@ function nbt_get_status_for_assignment ( $assignment ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -3766,9 +3604,7 @@ function nbt_get_final ( $formid, $refsetid, $refid, $insert = TRUE ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     }
@@ -3801,9 +3637,7 @@ function nbt_get_final ( $formid, $refsetid, $refid, $insert = TRUE ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -3857,9 +3691,7 @@ function nbt_get_master_table_rows ( $elementid, $refsetid, $refid, $sub_table =
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 }
 
@@ -3889,9 +3721,7 @@ function nbt_copy_table_row_to_master ( $elementid, $refsetid, $refid, $original
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // Make a new row, get the id
@@ -3926,9 +3756,7 @@ function nbt_copy_table_row_to_master ( $elementid, $refsetid, $refid, $original
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // Copy the data over
@@ -3955,9 +3783,7 @@ function nbt_copy_table_row_to_master ( $elementid, $refsetid, $refid, $original
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -4010,9 +3836,7 @@ function nbt_add_empty_table_row_to_master ( $elementid, $refsetid, $refid, $sub
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4051,9 +3875,7 @@ function nbt_get_privileges_for_userid ( $userid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4076,9 +3898,7 @@ function nbt_get_all_users () {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4107,9 +3927,7 @@ function nbt_change_user_privileges ( $userid, $privileges ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4138,9 +3956,7 @@ function nbt_manually_change_email_verification ( $userid, $newvalue ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4163,9 +3979,7 @@ function nbt_get_all_ref_sets () {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4188,9 +4002,7 @@ function nbt_get_all_extraction_forms () {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4243,9 +4055,7 @@ function nbt_new_extraction_form ( $formname = "New extraction form", $descripti
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // Make a new extraction table with the name `extraction_newid`
@@ -4263,9 +4073,7 @@ function nbt_new_extraction_form ( $formname = "New extraction form", $descripti
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // Make the final table
@@ -4286,9 +4094,7 @@ function nbt_new_extraction_form ( $formname = "New extraction form", $descripti
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4325,9 +4131,7 @@ function nbt_delete_extraction_form ( $formid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then remove the form from the list
@@ -4352,9 +4156,7 @@ function nbt_delete_extraction_form ( $formid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4392,9 +4194,7 @@ function nbt_get_form_for_id ( $formid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4425,9 +4225,7 @@ function check_for_forms_column ($columnname) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -4458,9 +4256,7 @@ function check_for_referencesets_column ($columnname) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -4491,9 +4287,7 @@ function nbt_change_form_metadata ( $formid, $column, $newval ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     }
@@ -4529,9 +4323,7 @@ function nbt_get_elements_for_formid ( $formid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4572,9 +4364,7 @@ function nbt_get_next_eid_in_form ( $formid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     try {
@@ -4604,9 +4394,7 @@ function nbt_get_next_eid_in_form ( $formid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -4640,9 +4428,7 @@ function nbt_get_toggles_for_formid ( $formid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4680,9 +4466,7 @@ function nbt_get_form_element_for_elementid ( $elementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4720,9 +4504,7 @@ function nbt_get_sub_element_for_subelementid ( $subelementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4756,9 +4538,7 @@ function nbt_get_all_subelements_for_formid ( $formid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4796,9 +4576,7 @@ function nbt_get_select_for_selectid ( $selectid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4832,9 +4610,7 @@ function nbt_get_all_select_options_for_formid ( $formid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4872,9 +4648,7 @@ function nbt_get_column_for_columnid ( $columnid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -4924,9 +4698,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the new column
@@ -4959,9 +4731,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -5006,9 +4776,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the extractions table
@@ -5023,9 +4791,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add the column to the master table
@@ -5040,9 +4806,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -5092,9 +4856,7 @@ function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $colum
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the new column
@@ -5127,9 +4889,7 @@ function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $colum
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -5174,9 +4934,7 @@ function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $colum
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the extractions table
@@ -5191,9 +4949,7 @@ function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $colum
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add the column to the final table
@@ -5208,9 +4964,7 @@ function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $colum
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -5260,9 +5014,7 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the new column
@@ -5295,9 +5047,7 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -5340,9 +5090,7 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the extractions table
@@ -5357,9 +5105,7 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add the column to the master table
@@ -5374,9 +5120,7 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -5426,9 +5170,7 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the new column
@@ -5461,9 +5203,7 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -5506,9 +5246,7 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the extractions table
@@ -5523,9 +5261,7 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add the column to the master table
@@ -5540,9 +5276,7 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -5579,9 +5313,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // remove it from the master table
@@ -5596,9 +5328,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    break;
@@ -5617,9 +5347,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // remove it from the final table
@@ -5634,9 +5362,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    break;
@@ -5655,9 +5381,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // remove it from the master table
@@ -5672,9 +5396,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    break;
@@ -5693,9 +5415,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // remove it from the master table
@@ -5710,9 +5430,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // the options are removed from the selectoptions table below
@@ -5755,9 +5473,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // delete the table
@@ -5776,9 +5492,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // delete the master table
@@ -5797,9 +5511,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    break;
@@ -5826,9 +5538,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // delete the table
@@ -5847,9 +5557,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // delete the master table
@@ -5868,9 +5576,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    break;
@@ -5893,9 +5599,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // delete the master table
@@ -5914,9 +5618,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // then remove all the columns from the citations columns table
@@ -5939,9 +5641,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    break;
@@ -5960,9 +5660,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // remove it from the master table
@@ -5977,9 +5675,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    break;
@@ -5998,9 +5694,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // remove it from the master table
@@ -6015,9 +5709,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    break;
@@ -6040,9 +5732,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // delete the master table
@@ -6061,9 +5751,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    // then remove all the sub extraction elements
@@ -6100,9 +5788,7 @@ function nbt_delete_form_element ( $elementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then remove conditional display triggers
@@ -6125,9 +5811,7 @@ function nbt_delete_form_element ( $elementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then remove the element from the formelement table
@@ -6150,9 +5834,7 @@ function nbt_delete_form_element ( $elementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -6208,9 +5890,7 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then alter the column in the master table
@@ -6229,9 +5909,7 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 2 ) {
@@ -6260,9 +5938,7 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	if ( $itworked == 3 ) {
@@ -6303,9 +5979,7 @@ function nbt_change_regex ( $elementid, $newregex ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     } else {
@@ -6332,9 +6006,7 @@ function nbt_change_regex ( $elementid, $newregex ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     }
@@ -6365,9 +6037,7 @@ function nbt_change_tags_prompts ( $elementid, $newtagprompts ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     } else {
@@ -6394,9 +6064,7 @@ function nbt_change_tags_prompts ( $elementid, $newtagprompts ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     }
@@ -6427,9 +6095,7 @@ function nbt_change_sub_tags_prompts ( $subelementid, $newtagprompts ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     } else {
@@ -6456,9 +6122,7 @@ function nbt_change_sub_tags_prompts ( $subelementid, $newtagprompts ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     }
@@ -6489,9 +6153,7 @@ function nbt_change_subelement_regex ( $subelementid, $newregex ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     } else {
@@ -6518,9 +6180,7 @@ function nbt_change_subelement_regex ( $subelementid, $newregex ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     }
@@ -6551,9 +6211,7 @@ function nbt_refdata_change_column_name ( $elementid, $newcolumnname ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -6582,9 +6240,7 @@ function nbt_subrefdata_change_format ( $subelementid, $newformat ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -6615,9 +6271,7 @@ function nbt_change_display_name ( $elementid, $newdisplayname ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 1 ) {
@@ -6658,9 +6312,7 @@ function nbt_change_element_codebook ( $elementid, $newcodebook ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 1 ) {
@@ -6697,9 +6349,7 @@ function nbt_update_element_sortorder ( $elementid, $sortorder ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -6726,9 +6376,7 @@ function nbt_update_subelement_sortorder ( $subelementid, $sortorder ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -6761,9 +6409,7 @@ function nbt_switch_elements_sortorder ( $element1id, $element2id ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     try {
@@ -6784,9 +6430,7 @@ function nbt_switch_elements_sortorder ( $element1id, $element2id ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -6819,9 +6463,7 @@ function nbt_switch_selects_sortorder ( $select1id, $select2id ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     try {
@@ -6842,9 +6484,7 @@ function nbt_switch_selects_sortorder ( $select1id, $select2id ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -6879,9 +6519,7 @@ function nbt_switch_subextraction_sortorder ( $elementid, $sub1id, $sub2id ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     try {
@@ -6902,9 +6540,7 @@ function nbt_switch_subextraction_sortorder ( $elementid, $sub1id, $sub2id ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -6937,9 +6573,7 @@ function nbt_switch_tablecolumn_sortorder ( $column1id, $column2id ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     try {
@@ -6960,9 +6594,7 @@ function nbt_switch_tablecolumn_sortorder ( $column1id, $column2id ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -7007,9 +6639,7 @@ function nbt_move_form_element ( $elementid, $direction ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// move the element up, if necessary
@@ -7056,9 +6686,7 @@ function nbt_move_form_element ( $elementid, $direction ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// move the element down, if necessary
@@ -7113,9 +6741,7 @@ function nbt_move_select_option ( $selectid, $direction ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// move the element up, if necessary
@@ -7162,9 +6788,7 @@ function nbt_move_select_option ( $selectid, $direction ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// move the element down, if necessary
@@ -7225,9 +6849,7 @@ function nbt_move_sub_extraction ( $elementid, $refsetid, $refid, $subextraction
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// move the element up, if necessary
@@ -7278,9 +6900,7 @@ function nbt_move_sub_extraction ( $elementid, $refsetid, $refid, $subextraction
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// move the element down, if necessary
@@ -7340,9 +6960,7 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the new column
@@ -7375,9 +6993,7 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -7430,9 +7046,7 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the extractions table
@@ -7447,9 +7061,7 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the final table
@@ -7464,9 +7076,7 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // return the id
@@ -7495,9 +7105,7 @@ function nbt_get_all_select_options_for_element ( $elementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -7537,9 +7145,7 @@ function nbt_add_single_select_option ( $elementid, $displayname = NULL, $dbname
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then add the element
@@ -7577,9 +7183,7 @@ function nbt_add_single_select_option ( $elementid, $displayname = NULL, $dbname
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -7621,9 +7225,7 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
@@ -7658,9 +7260,7 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -7709,9 +7309,7 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the extractions table
@@ -7726,9 +7324,7 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the master table
@@ -7743,9 +7339,7 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return $newid;
@@ -7770,9 +7364,7 @@ function nbt_remove_single_select_option ( $selectid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -7793,9 +7385,7 @@ function nbt_remove_multi_select_option ( $elementid, $selectid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // drop the column from the master table
@@ -7810,9 +7400,7 @@ function nbt_remove_multi_select_option ( $elementid, $selectid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // remove from options table
@@ -7833,9 +7421,7 @@ function nbt_remove_multi_select_option ( $elementid, $selectid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -7858,9 +7444,7 @@ function nbt_remove_sub_multi_select_option ( $subelementid, $selectid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // remove from master table
@@ -7875,9 +7459,7 @@ function nbt_remove_sub_multi_select_option ( $subelementid, $selectid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // remove from options table
@@ -7898,9 +7480,7 @@ function nbt_remove_sub_multi_select_option ( $subelementid, $selectid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -7931,9 +7511,7 @@ function nbt_change_element_toggle ( $elementid, $newtoggle ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 1 ) {
@@ -7974,9 +7552,7 @@ function nbt_update_single_select ( $selectid, $column, $newvalue ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 1 ) {
@@ -8036,9 +7612,7 @@ function nbt_add_multi_select ( $formid, $elementid, $displayname = NULL, $colum
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( is_null ($columnname) ) {
@@ -8087,9 +7661,7 @@ function nbt_add_multi_select ( $formid, $elementid, $displayname = NULL, $colum
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return $newid;
@@ -8116,9 +7688,7 @@ function nbt_increase_element_sortorder ( $elementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -8166,9 +7736,7 @@ function nbt_add_section_heading ( $formid, $elementid, $displayname = NULL, $co
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then insert a new element into the form elements table
@@ -8203,9 +7771,7 @@ function nbt_add_section_heading ( $formid, $elementid, $displayname = NULL, $co
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -8236,9 +7802,7 @@ function nbt_update_multi_select_option_column ( $elementid, $selectid, $oldcolu
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // update the master table
@@ -8257,9 +7821,7 @@ function nbt_update_multi_select_option_column ( $elementid, $selectid, $oldcolu
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // update options table
@@ -8288,9 +7850,7 @@ function nbt_update_multi_select_option_column ( $elementid, $selectid, $oldcolu
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     } else {
@@ -8331,9 +7891,7 @@ function nbt_update_sub_multi_select_option_column ( $subelementid, $selectid, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // update the master table
@@ -8352,9 +7910,7 @@ function nbt_update_sub_multi_select_option_column ( $subelementid, $selectid, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // update the options table
@@ -8383,9 +7939,7 @@ function nbt_update_sub_multi_select_option_column ( $subelementid, $selectid, $
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     } else {
@@ -8434,9 +7988,7 @@ function nbt_change_multi_select_column_prefix ( $elementid, $newcolumn ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// update the master table
@@ -8455,9 +8007,7 @@ function nbt_change_multi_select_column_prefix ( $elementid, $newcolumn ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -8489,9 +8039,7 @@ function nbt_change_multi_select_column_prefix ( $elementid, $newcolumn ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -8555,9 +8103,7 @@ function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the table
@@ -8610,9 +8156,7 @@ function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then make the master table
@@ -8631,9 +8175,7 @@ function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add it into the form elements table
@@ -8685,9 +8227,7 @@ function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return $newid;
@@ -8723,9 +8263,7 @@ function nbt_get_all_columns_for_sub_table_data ( $subelementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -8769,9 +8307,7 @@ function nbt_get_all_columns_for_table_data ( $elementid, $sub_table = FALSE ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -8806,9 +8342,7 @@ function nbt_change_table_suffix ( $elementid, $newsuffix ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// then alter the column in the master table
@@ -8827,9 +8361,7 @@ function nbt_change_table_suffix ( $elementid, $newsuffix ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	if ( $itworked == 2 ) {
@@ -8858,9 +8390,7 @@ function nbt_change_table_suffix ( $elementid, $newsuffix ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	}
@@ -8905,9 +8435,7 @@ function nbt_change_sub_table_suffix ( $subelementid, $newsuffix ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then alter the column in the master table
@@ -8926,9 +8454,7 @@ function nbt_change_sub_table_suffix ( $subelementid, $newsuffix ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 2 ) {
@@ -8957,9 +8483,7 @@ function nbt_change_sub_table_suffix ( $subelementid, $newsuffix ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -9023,9 +8547,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $sub_table ) {
@@ -9082,9 +8604,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	}
@@ -9127,9 +8647,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $tableformat == "table_data" || $sub_table ) { // Standard table data
@@ -9155,9 +8673,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// then add a column to the master table
@@ -9182,9 +8698,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     } else { // Large table data
@@ -9201,9 +8715,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// then add a column to the master table
@@ -9218,9 +8730,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -9260,9 +8770,7 @@ function nbt_get_table_column_for_columnid ( $columnid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -9296,9 +8804,7 @@ function nbt_get_all_table_data_cols_for_formid ( $formid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -9340,9 +8846,7 @@ function nbt_remove_table_data_column ( $elementid, $columnid, $sub_table = FALS
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // master table
@@ -9367,9 +8871,7 @@ function nbt_remove_table_data_column ( $elementid, $columnid, $sub_table = FALS
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // columns table
@@ -9390,9 +8892,7 @@ function nbt_remove_table_data_column ( $elementid, $columnid, $sub_table = FALS
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -9425,9 +8925,7 @@ function nbt_update_table_data_column_display ( $columnid, $newvalue ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -9490,9 +8988,7 @@ function nbt_move_table_data_column ( $columnid, $direction, $sub_table = FALSE 
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// move the element up, if necessary
@@ -9559,9 +9055,7 @@ function nbt_move_table_data_column ( $columnid, $direction, $sub_table = FALSE 
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// move the element down, if necessary
@@ -9634,9 +9128,7 @@ function nbt_update_table_data_column_db ( $columnid, $tableformat, $newcolumnna
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // alter the column in the master table
@@ -9665,9 +9157,7 @@ function nbt_update_table_data_column_db ( $columnid, $tableformat, $newcolumnna
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 2 ) {
@@ -9696,9 +9186,7 @@ function nbt_update_table_data_column_db ( $columnid, $tableformat, $newcolumnna
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -9760,9 +9248,7 @@ function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $c
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the new column
@@ -9795,9 +9281,7 @@ function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $c
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -9841,9 +9325,7 @@ function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $c
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the extractions table
@@ -9858,9 +9340,7 @@ function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $c
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then add a column to the master table
@@ -9875,9 +9355,7 @@ function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $c
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -9930,9 +9408,7 @@ function nbt_add_extraction_timer ( $formid, $elementid, $codebook = NULL, $togg
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then insert a new element into the form elements table
@@ -9965,9 +9441,7 @@ function nbt_add_extraction_timer ( $formid, $elementid, $codebook = NULL, $togg
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -10017,9 +9491,7 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the new column
@@ -10052,9 +9524,7 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -10096,9 +9566,7 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the extractions table
@@ -10113,9 +9581,7 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then add a column to the master table
@@ -10130,9 +9596,7 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -10163,9 +9627,7 @@ function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // alter the column in the master table
@@ -10184,9 +9646,7 @@ function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 2 ) {
@@ -10215,9 +9675,7 @@ function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -10279,9 +9737,7 @@ function nbt_add_citation_selector ( $formid, $elementid, $displayname = NULL, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the table
@@ -10334,9 +9790,7 @@ function nbt_add_citation_selector ( $formid, $elementid, $displayname = NULL, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then make the master table
@@ -10355,9 +9809,7 @@ function nbt_add_citation_selector ( $formid, $elementid, $displayname = NULL, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add it into the form elements table
@@ -10409,9 +9861,7 @@ function nbt_add_citation_selector ( $formid, $elementid, $displayname = NULL, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return $newid;
@@ -10448,9 +9898,7 @@ function nbt_change_citation_selector_suffix ( $elementid, $newsuffix ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// then alter the master table
@@ -10469,9 +9917,7 @@ function nbt_change_citation_selector_suffix ( $elementid, $newsuffix ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	if ( $itworked == 2 ) {
@@ -10500,9 +9946,7 @@ function nbt_change_citation_selector_suffix ( $elementid, $newsuffix ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	}
@@ -10550,9 +9994,7 @@ function nbt_get_all_columns_for_citation_selector ( $elementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -10595,9 +10037,7 @@ function nbt_add_citation_property ( $elementid, $displayname = NULL, $dbname = 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
@@ -10636,9 +10076,7 @@ function nbt_add_citation_property ( $elementid, $displayname = NULL, $dbname = 
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	}
@@ -10671,9 +10109,7 @@ function nbt_add_citation_property ( $elementid, $displayname = NULL, $dbname = 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the table
@@ -10688,9 +10124,7 @@ function nbt_add_citation_property ( $elementid, $displayname = NULL, $dbname = 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then add a column to the master table
@@ -10705,9 +10139,7 @@ function nbt_add_citation_property ( $elementid, $displayname = NULL, $dbname = 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -10740,9 +10172,7 @@ function nbt_update_citation_property_display ( $columnid, $newvalue ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -10775,9 +10205,7 @@ function nbt_update_citation_property_db ( $columnid, $newcolumnname ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then alter the column in the final table
@@ -10796,9 +10224,7 @@ function nbt_update_citation_property_db ( $columnid, $newcolumnname ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 2 ) {
@@ -10827,9 +10253,7 @@ function nbt_update_citation_property_db ( $columnid, $newcolumnname ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -10883,9 +10307,7 @@ function nbt_toggle_citation_property_remind ( $columnid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -10927,9 +10349,7 @@ function nbt_toggle_citation_property_forcecaps ( $columnid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -10956,9 +10376,7 @@ function nbt_toggle_subelement_copy_from_prev ( $subelementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -10996,9 +10414,7 @@ function nbt_get_citation_property_for_propertyid ( $propertyid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -11032,9 +10448,7 @@ function nbt_get_all_citations_cols_for_formid ( $formid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -11079,9 +10493,7 @@ function nbt_move_citation_property ( $columnid, $direction ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// move the element up, if necessary
@@ -11128,9 +10540,7 @@ function nbt_move_citation_property ( $columnid, $direction ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// move the element down, if necessary
@@ -11173,9 +10583,7 @@ function nbt_switch_citation_property_sortorder ( $column1id, $column2id ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     try {
@@ -11196,9 +10604,7 @@ function nbt_switch_citation_property_sortorder ( $column1id, $column2id ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -11458,9 +10864,7 @@ function nbt_remove_table_data_row ( $tableid, $rowid, $sub_table = FALSE ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -11518,9 +10922,7 @@ function nbt_update_extraction_table_data ($tableid, $rowid, $column, $newvalue,
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -11558,9 +10960,7 @@ function nbt_update_final ( $formid, $refsetid, $refid, $column, $newvalue ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -11617,9 +11017,7 @@ function nbt_update_extraction_mtable_data ($tableid, $rowid, $column, $newvalue
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -11657,9 +11055,7 @@ function nbt_update_citation_property ( $section, $cid, $column, $value ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -11697,9 +11093,7 @@ function nbt_update_master_citation_property ( $section, $cid, $column, $value )
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -11726,9 +11120,7 @@ function nbt_get_all_assignments_for_refset ( $refsetid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -11767,9 +11159,7 @@ function nbtAddAssignment ( $userid, $formid, $refsetid, $refid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -11796,9 +11186,7 @@ function nbtDeleteAssignment ( $assignmentid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -12042,9 +11430,7 @@ function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suf
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the table
@@ -12097,9 +11483,7 @@ function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suf
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then make a master table
@@ -12118,9 +11502,7 @@ function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suf
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add it into the form elements table
@@ -12168,9 +11550,7 @@ function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suf
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return $newid;
@@ -12206,9 +11586,7 @@ function nbt_get_sub_extraction_elements_for_elementid ( $elementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -12239,9 +11617,7 @@ function nbt_change_sub_extraction_suffix ( $elementid, $newsuffix ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then alter the master table
@@ -12260,9 +11636,7 @@ function nbt_change_sub_extraction_suffix ( $elementid, $newsuffix ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 2 ) {
@@ -12291,9 +11665,7 @@ function nbt_change_sub_extraction_suffix ( $elementid, $newsuffix ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -12350,9 +11722,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the new column
@@ -12385,9 +11755,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -12434,9 +11802,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the extractions table
@@ -12451,9 +11817,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then add a column to the master table
@@ -12468,9 +11832,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return ($newid);
@@ -12517,9 +11879,7 @@ function nbt_add_sub_ref_data ( $elementid, $displayname = NULL, $dbname = NULL,
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the new column
@@ -12552,9 +11912,7 @@ function nbt_add_sub_ref_data ( $elementid, $displayname = NULL, $dbname = NULL,
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -12601,9 +11959,7 @@ function nbt_add_sub_ref_data ( $elementid, $displayname = NULL, $dbname = NULL,
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the extractions table
@@ -12618,9 +11974,7 @@ function nbt_add_sub_ref_data ( $elementid, $displayname = NULL, $dbname = NULL,
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then add a column to the master table
@@ -12635,9 +11989,7 @@ function nbt_add_sub_ref_data ( $elementid, $displayname = NULL, $dbname = NULL,
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return ($newid);
@@ -12684,9 +12036,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the new column
@@ -12719,9 +12069,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -12768,9 +12116,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then add a column to the extractions table
@@ -12785,9 +12131,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then add a column to the merged table
@@ -12802,9 +12146,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return ($newid);
@@ -12851,9 +12193,7 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the new column
@@ -12886,9 +12226,7 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -12935,9 +12273,7 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the extractions table
@@ -12952,9 +12288,7 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then add a column to the final table
@@ -12969,9 +12303,7 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return ($newid);
@@ -13010,9 +12342,7 @@ function nbt_delete_sub_element ( $subelementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then remove the column from the extractions table
@@ -13027,9 +12357,7 @@ function nbt_delete_sub_element ( $subelementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then remove the column from the master table
@@ -13044,9 +12372,7 @@ function nbt_delete_sub_element ( $subelementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then remove all the options from the select options table
@@ -13069,9 +12395,7 @@ function nbt_delete_sub_element ( $subelementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // if it's a table_data, remove those tables
@@ -13090,9 +12414,7 @@ function nbt_delete_sub_element ( $subelementid ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try {
@@ -13107,9 +12429,7 @@ function nbt_delete_sub_element ( $subelementid ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -13132,9 +12452,7 @@ function nbt_delete_sub_element ( $subelementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -13165,9 +12483,7 @@ function nbt_change_sub_element_display_name ( $subelementid, $newdisplayname ) 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 1 ) {
@@ -13234,9 +12550,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then alter the column in the master table
@@ -13255,9 +12569,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 2 ) {
@@ -13286,9 +12598,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -13331,9 +12641,7 @@ function nbt_change_sub_element_codebook ( $subelementid, $newcodebook ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 1 ) {
@@ -13374,9 +12682,7 @@ function nbt_change_sub_element_toggle ( $subelementid, $newtoggle ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 1 ) {
@@ -13419,9 +12725,7 @@ function nbt_switch_sub_elements_sortorder ( $subelement1id, $subelement2id ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     try {
@@ -13442,9 +12746,7 @@ function nbt_switch_sub_elements_sortorder ( $subelement1id, $subelement2id ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -13489,9 +12791,7 @@ function nbt_move_sub_element ( $subelementid, $direction ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// move the element up, if necessary
@@ -13538,9 +12838,7 @@ function nbt_move_sub_element ( $subelementid, $direction ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// move the element down, if necessary
@@ -13595,9 +12893,7 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the new column
@@ -13630,9 +12926,7 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -13686,9 +12980,7 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the extractions table
@@ -13703,9 +12995,7 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then add a column to the master table
@@ -13720,9 +13010,7 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return $newid;
@@ -13749,9 +13037,7 @@ function nbt_get_all_select_options_for_sub_element ( $subelementid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -13792,9 +13078,7 @@ function nbt_add_sub_single_select_option ( $subelementid, $displayname = NULL, 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then add the element
@@ -13834,9 +13118,7 @@ function nbt_add_sub_single_select_option ( $subelementid, $displayname = NULL, 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -13881,9 +13163,7 @@ function nbt_move_sub_select_option ( $selectid, $direction ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// move the element up, if necessary
@@ -13930,9 +13210,7 @@ function nbt_move_sub_select_option ( $selectid, $direction ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// move the element down, if necessary
@@ -13984,9 +13262,7 @@ function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = N
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     try {
@@ -14026,9 +13302,7 @@ function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = N
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return $newid;
@@ -14075,9 +13349,7 @@ function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $c
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good suffix for the table
@@ -14130,9 +13402,7 @@ function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $c
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then make the final table
@@ -14151,9 +13421,7 @@ function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $c
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add it into the subelements table
@@ -14199,9 +13467,7 @@ function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $c
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return $newid;
@@ -14244,9 +13510,7 @@ function nbt_change_sub_multi_select_column_prefix ( $subelementid, $newcolumn )
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try {
@@ -14263,9 +13527,7 @@ function nbt_change_sub_multi_select_column_prefix ( $subelementid, $newcolumn )
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -14297,9 +13559,7 @@ function nbt_change_sub_multi_select_column_prefix ( $subelementid, $newcolumn )
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -14353,9 +13613,7 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     $subelement = nbt_get_sub_element_for_subelementid ( $subelementid );
@@ -14394,9 +13652,7 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -14441,9 +13697,7 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the extractions table
@@ -14458,9 +13712,7 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then add a column to the master table
@@ -14475,9 +13727,7 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return $newid;
@@ -14524,9 +13774,7 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // find a good name for the new column
@@ -14559,9 +13807,7 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	    $counter ++;
@@ -14605,9 +13851,7 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then, add a column to the extractions table
@@ -14622,9 +13866,7 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then add a column to the master table
@@ -14639,9 +13881,7 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     return ($newid);
@@ -14676,9 +13916,7 @@ function nbt_get_sub_extractions ( $elementid, $refsetid, $refid, $userid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -14709,9 +13947,7 @@ function nbt_get_master_sub_extractions ( $elementid, $refsetid, $refid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -14757,9 +13993,7 @@ function nbt_add_new_sub_extraction ($elementid, $refsetid, $refid, $userid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then add the new row
@@ -14798,9 +14032,7 @@ function nbt_add_new_sub_extraction ($elementid, $refsetid, $refid, $userid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -14837,9 +14069,7 @@ function nbt_remove_sub_extraction_instance ( $elementid, $subextractionid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -14872,9 +14102,7 @@ function nbt_change_refset_name ( $refsetid, $newname ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -14920,9 +14148,7 @@ function nbt_make_new_refset_row ( $newname, $title, $authors, $year, $journal, 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -14945,9 +14171,7 @@ function nbt_make_new_refset_table ( $refsetid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -14994,9 +14218,7 @@ function nbt_add_column_to_refset_table ( $refsetid, $columnname, $columntype ) 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -15084,9 +14306,7 @@ function nbt_insert_imported_extraction ( $formid, $refsetid, $usercolumn, $user
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     }
@@ -15175,9 +14395,7 @@ function nbt_insert_imported_sub_extraction ( $elementid, $refsetid, $usercolumn
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     }
@@ -15286,9 +14504,7 @@ function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $userc
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	} 
 	
     }
@@ -15347,9 +14563,7 @@ function nbt_insert_row_into_columns ( $refset, $columns, $row, $separator ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -15377,9 +14591,7 @@ function nbt_delete_refset ( $refsetid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -15410,9 +14622,7 @@ function nbt_delete_ref ( $refsetid, $refid ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     }
@@ -15447,9 +14657,7 @@ function nbtQueryReferenceSet ( $refsetid, $query ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -15480,9 +14688,7 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // Make a new row, get the id
@@ -15517,9 +14723,7 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // copy the data over
@@ -15554,9 +14758,7 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 		    }
 
 		    catch (PDOException $e) {
-
 			echo $e->getMessage();
-
 		    }
 
 		}
@@ -15583,9 +14785,7 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 		}
 
 		catch (PDOException $e) {
-
 		    echo $e->getMessage();
-
 		}
 
 		// get the columns
@@ -15628,9 +14828,7 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 		    }
 
 		    catch (PDOException $e) {
-
 			echo $e->getMessage();
-
 		    }
 
 		    foreach ( $columns as $column ) {
@@ -15653,9 +14851,7 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 			}
 
 			catch (PDOException $e) {
-
 			    echo $e->getMessage();
-
 			}
 
 
@@ -15695,9 +14891,7 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 		}
 
 		catch (PDOException $e) {
-
 		    echo $e->getMessage();
-
 		}
 
 		break;
@@ -15744,9 +14938,7 @@ function nbt_remove_master_sub_extraction ( $elementid, $originalid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // See if there's any tables in the subextraction
@@ -15784,9 +14976,7 @@ function nbt_remove_master_sub_extraction ( $elementid, $originalid ) {
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	}
@@ -15794,9 +14984,7 @@ function nbt_remove_master_sub_extraction ( $elementid, $originalid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     if ( $itworked == 2 ) {
@@ -15835,9 +15023,7 @@ function nbt_get_sub_extraction_for_element_and_id ( $elementid, $subextractioni
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -15868,9 +15054,7 @@ function nbt_get_setting ( $key ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -15918,9 +15102,7 @@ function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then insert a new element into the form elements table
@@ -15955,9 +15137,7 @@ function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -16006,9 +15186,7 @@ function nbt_add_reference_data ( $formid, $elementid, $displayname = NULL, $ref
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // then insert a new element into the form elements table
@@ -16045,9 +15223,7 @@ function nbt_add_reference_data ( $formid, $elementid, $displayname = NULL, $ref
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -16079,9 +15255,7 @@ function nbt_set_master_status ( $formid, $masterid, $newstatus ) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     }
@@ -16106,9 +15280,7 @@ function nbt_set_master_status ( $formid, $masterid, $newstatus ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -16139,9 +15311,7 @@ function nbt_search_multiples ( $refsetid, $query ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -16170,9 +15340,7 @@ function nbt_get_all_assignments_for_refset_and_ref ( $refset, $ref ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -16201,9 +15369,7 @@ function nbt_get_master_extractions_for_refset_ref_and_form ( $refsetid, $refid,
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -16226,9 +15392,7 @@ function nbt_get_all_citation_form_elements () {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -16257,9 +15421,7 @@ function nbt_get_all_citations_for_element_and_citationid ( $dbname, $refset, $c
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -16284,9 +15446,7 @@ function nbt_move_assignments_for_refset_fromref_toref ( $refset, $from_rid, $to
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -16313,9 +15473,7 @@ function nbt_move_citations_for_element_db_fromref_toref ( $dbname, $refset, $fr
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // Then do the master copy
@@ -16338,9 +15496,7 @@ function nbt_move_citations_for_element_db_fromref_toref ( $dbname, $refset, $fr
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -16368,9 +15524,7 @@ function nbt_move_extractions_for_form_db_refset_fromref_toref ( $formid, $refse
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // Then get the elements not kept in the main
@@ -16404,9 +15558,7 @@ function nbt_move_extractions_for_form_db_refset_fromref_toref ( $formid, $refse
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	}
@@ -16435,9 +15587,7 @@ function nbt_move_extractions_for_form_db_refset_fromref_toref ( $formid, $refse
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	}
@@ -16466,9 +15616,7 @@ function nbt_move_extractions_for_form_db_refset_fromref_toref ( $formid, $refse
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	}
@@ -16497,9 +15645,7 @@ function nbt_move_master_for_form_db_refset_fromref_toref ( $formid, $refset, $f
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // Then get the elements not kept in the main
@@ -16531,9 +15677,7 @@ function nbt_move_master_for_form_db_refset_fromref_toref ( $formid, $refset, $f
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	}
@@ -16560,9 +15704,7 @@ function nbt_move_master_for_form_db_refset_fromref_toref ( $formid, $refset, $f
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	}
@@ -16589,9 +15731,7 @@ function nbt_move_master_for_form_db_refset_fromref_toref ( $formid, $refset, $f
 	    }
 
 	    catch (PDOException $e) {
-
 		echo $e->getMessage();
-
 	    }
 
 	}
@@ -16630,9 +15770,7 @@ function nbtGetCitationPropertyReminders ( $citations, $refset, $referenceid, $c
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -16659,9 +15797,7 @@ function nbt_get_all_reconciled_references_for_refset_and_form ( $refsetid, $for
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -16690,9 +15826,7 @@ function nbt_get_all_citations_for_refset ( $elementid, $refsetid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -16721,9 +15855,7 @@ function nbt_get_all_reconciled_citations_for_refset ( $elementid, $refsetid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -16760,9 +15892,7 @@ function nbt_get_unique_entries_for_prev_select ( $elementid, $refsetid, $extrac
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
     }
@@ -16787,9 +15917,7 @@ function nbt_get_unique_values_for_refset_column ( $refsetid, $column ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -16816,9 +15944,7 @@ function nbt_get_referenceids_for_refset_column_and_value ( $refsetid, $column, 
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -16871,9 +15997,7 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 		}
 
 		catch (PDOException $e) {
-
 		    echo $e->getMessage();
-
 		}
 		
 		break;
@@ -16896,9 +16020,7 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 		}
 
 		catch (PDOException $e) {
-
 		    echo $e->getMessage();
-
 		}
 		
 		break;
@@ -16921,9 +16043,7 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 		}
 
 		catch (PDOException $e) {
-
 		    echo $e->getMessage();
-
 		}
 		
 		break;
@@ -16946,9 +16066,7 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 		}
 
 		catch (PDOException $e) {
-
 		    echo $e->getMessage();
-
 		}
 		
 		break;
@@ -16999,9 +16117,7 @@ function nbt_get_k_random_referenceids_for_refset_by_user ( $refsetid, $k, $form
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     }
@@ -17069,9 +16185,7 @@ function nbt_get_k_random_referenceids_for_refset_by_user_and_users ( $refsetid,
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 	
     }
@@ -17104,9 +16218,7 @@ function get_incomplete_assignments_for_form_and_refset ( $formid, $refsetid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17145,9 +16257,7 @@ function nbt_get_times_for_extraction ( $formid, $refsetid, $refid, $userid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17182,9 +16292,7 @@ function nbt_restart_extraction_timer ( $formid, $refsetid, $refid, $userid ) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17219,9 +16327,7 @@ function nbt_clear_finished_extraction_timer ( $formid, $refsetid, $refid, $user
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17252,9 +16358,7 @@ function nbt_table_exists ($tablename) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17298,9 +16402,7 @@ function nbt_toggle_element_startup_visible ($elementid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17327,9 +16429,7 @@ function nbt_toggle_subelement_startup_visible ($subelementid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17358,9 +16458,7 @@ function nbt_add_conditional_display_event ($elementid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17397,9 +16495,7 @@ function nbt_copy_conditional_display_event ($elementid, $subelementid, $trigger
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17428,9 +16524,7 @@ function nbt_add_sub_conditional_display_event ($subelementid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17459,9 +16553,7 @@ function nbt_remove_conditional_display_event ($eventid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17492,9 +16584,7 @@ function nbt_get_conditional_events ($elementid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }    
     
 }
@@ -17525,9 +16615,7 @@ function nbt_get_sub_conditional_events ($subelementid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }    
     
 }
@@ -17558,9 +16646,7 @@ function nbt_get_conditional_events_for_formid ($formid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }    
     
 }
@@ -17595,9 +16681,7 @@ function nbt_update_conditional_display_trigger_element ($eventid, $trigger_elem
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17628,9 +16712,7 @@ function nbt_update_conditional_display_trigger_option ($eventid, $trigger_optio
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17658,9 +16740,7 @@ function nbt_update_conditional_display_type ($eventid, $cd_type) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17687,9 +16767,7 @@ function nbt_update_conditional_display_logic ($elementid, $operator) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17716,9 +16794,7 @@ function nbt_update_sub_conditional_display_logic ($subelementid, $operator) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17745,9 +16821,7 @@ function nbt_update_conditional_display_destructive_hiding ($elementid, $destruc
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17774,9 +16848,7 @@ function nbt_update_sub_conditional_display_destructive_hiding ($subelementid, $
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -17812,9 +16884,7 @@ function nbt_get_subextraction_elements_for_subextraction_dbname ($dbname) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 }
 
@@ -17856,9 +16926,7 @@ function nbt_assignments_for_export ($refset) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -17891,9 +16959,7 @@ function nbt_get_completions_for_assignment_export ($refsetid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     $completions = [];
@@ -17928,9 +16994,7 @@ function nbt_get_completions_for_assignment_export ($refsetid) {
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	$completions = array_merge($completions, $form_completions);
@@ -17971,9 +17035,7 @@ function nbt_new_file_upload ($filename, $userid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
     
 }
@@ -18000,9 +17062,7 @@ function nbt_get_all_uploads () {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
 }
@@ -18048,9 +17108,7 @@ function nbt_delete_uploaded_file ($fileid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }    
 
     // Remove from database
@@ -18073,9 +17131,7 @@ function nbt_delete_uploaded_file ($fileid) {
     }
 
     catch (PDOException $e) {
-
 	echo $e->getMessage();
-
     }
 
     // Delete from disk

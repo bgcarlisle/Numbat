@@ -61,9 +61,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // citations columns table
@@ -88,9 +86,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // form elements table
@@ -115,9 +111,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // forms table
@@ -142,9 +136,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // reference sets table
@@ -169,9 +161,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // selection options table
@@ -196,9 +186,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // settings table
@@ -223,9 +211,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // sub elements table
@@ -250,9 +236,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // tabledata columns table
@@ -277,9 +261,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // users table
@@ -304,14 +286,10 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
-	// uploads table
-
-	try { // users table
+	try { // uploads table
 
 	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `uploads`; CREATE TABLE `uploads` ( `id` int(11) NOT NULL AUTO_INCREMENT, `when_uploaded` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `userid` int(11) NOT NULL, `filename` TEXT NOT NULL, PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
@@ -333,9 +311,34 @@
 	}
 
 	catch (PDOException $e) {
+	    echo $e->getMessage();
+	}
+
+	try { // conditional display table
+
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `conditional_display`; CREATE TABLE `conditional_display` ( `id` int(11) NOT NULL AUTO_INCREMENT, `elementid` int(11) DEFAULT NULL, `subelementid` int(11) DEFAULT NULL, `trigger_element` int(11) DEFAULT NULL, `trigger_option` int(11) DEFAULT NULL, `type` varchar(50) DEFAULT 'is', PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+
+	    if ( $stmt->execute() ) {
+
+		echo "<p>Conditional display table created &#x2713;</p>";
+
+	    } else {
+
+		echo "<p>Error making conditional display table</p>";
+
+		$error = TRUE;
+
+	    }
+
+	    $dbh = null;	    
+	    
+	}
+
+	catch (PDOException $e) {
 
 	    echo $e->getMessage();
-
+	    
 	}
 
 	// insert admin user
@@ -409,9 +412,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try {
@@ -432,9 +433,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// make a place to save backup mysql dumps
