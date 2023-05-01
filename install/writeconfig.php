@@ -61,9 +61,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // citations columns table
@@ -88,9 +86,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // form elements table
@@ -115,9 +111,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // forms table
@@ -142,9 +136,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // reference sets table
@@ -169,9 +161,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // selection options table
@@ -196,9 +186,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // settings table
@@ -223,9 +211,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // sub elements table
@@ -250,9 +236,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // tabledata columns table
@@ -277,9 +261,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // users table
@@ -304,9 +286,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // uploads table
@@ -331,9 +311,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try { // conditional display table
@@ -434,9 +412,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	try {
@@ -457,9 +433,7 @@
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
 	// make a place to save backup mysql dumps
