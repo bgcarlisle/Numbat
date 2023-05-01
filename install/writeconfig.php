@@ -309,9 +309,7 @@
 
 	}
 
-	// uploads table
-
-	try { // users table
+	try { // uploads table
 
 	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `uploads`; CREATE TABLE `uploads` ( `id` int(11) NOT NULL AUTO_INCREMENT, `when_uploaded` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `userid` int(11) NOT NULL, `filename` TEXT NOT NULL, PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
