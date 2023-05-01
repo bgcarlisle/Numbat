@@ -118,6 +118,9 @@ username and password to complete the installation.
 * Added new text area sub-extraction element
 * Added new reference data sub-extraction element
 * Added tool for uploading files, e.g. images for reference
+* Fixed bug that prevents compatibility with PHP 8+
+* Fixed bug where a fresh Numbat installation needs to have the
+  `db-migrations.php` run in order to function properly
 
 To migrate from an earlier version of Numbat, run `db-migrations.php`
 while logged in as an administrator.
