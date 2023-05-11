@@ -553,7 +553,7 @@ function nbt_verify_email_address ($username, $code) { // Returns TRUE if the us
 
 	if ( $emailverify == "0" ) { // The account has already been verified
 
-	    return FALSE;
+	    return TRUE;
 
 	} else { // The account has not yet been verified
 
