@@ -18,7 +18,7 @@ if ( ! preg_match("/^[0-9A-Za-z.\-_]+$/", $_POST['nbtSignupUsername']) ) { // If
 		
 	} else { // Username is not taken
 		
-		if ( ! preg_match("/^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/", $_POST['nbtSignupEmail']) ) { // Check that it's a well-formed email
+		if ( ! preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/", $_POST['nbtSignupEmail']) ) { // Check that it's a well-formed email
 			
 			echo "<p class=\"nbtSignupError nbtFeedbackBad nbtFinePrint\">The email address you provided was not well-formed.</p>";
 		
