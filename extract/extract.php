@@ -671,7 +671,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
-		echo '<select id="nbtAssignUser">';
+		echo '<select class="nbtAssignerDropdown" data-element="' . $element['id'] . '" id="nbtAssignUser' . $element['id'] . '">';
 
 		echo '<option value="NULL">Choose a user to assign</option>';
 
@@ -693,7 +693,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		echo '</select>';
 
-		echo '<select id="nbtAssignForm">';
+		echo '<select class="nbtAssignerDropdown" data-element="' . $element['id'] . '" id="nbtAssignForm' . $element['id'] . '">';
 
 		echo '<option value="NULL">Choose a form to use</option>';
 
@@ -715,7 +715,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		echo '</select>';
 
-		echo '<button onclick="nbtAddAssignmentInExtraction(';
+		echo '<button style="margin: 0 4px" onclick="nbtAddAssignmentInExtraction(';
 		
 		echo $_GET['refset'];
 
@@ -727,7 +727,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 		echo $element['id'];
 
-		echo ');">Assign this reference</button>';
+		echo ');" id="nbtAssignerButton' . $element['id'] . '" disabled>Assign this reference</button>';
 
 		echo '<p class="nbtFinePrint nbtHidden" id="nbtAddAssignmentFeedback';
 

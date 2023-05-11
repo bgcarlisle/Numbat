@@ -318,13 +318,24 @@
      ?>
 
      // End of conditional display logic
+
+     $('.nbtAssignerDropdown').on('change', function () {
+
+	 eid = $(this).data('element');
+
+	 if ($('#nbtAssignUser' + eid).val() != "NULL" && $('#nbtAssignForm' + eid).val() != "NULL") {
+	     $('#nbtAssignerButton' + eid).prop('disabled', false);
+	 } else {
+	     $('#nbtAssignerButton' + eid).prop('disabled', true);
+	 }
+	 
+     });
      
  });
 
  function nbtClearText (id, originalText) { // This clears the "user name" field when it's clicked on.
 
      if (id.value == originalText) {
-
 	 id.value='';
 
      }
@@ -3900,8 +3911,8 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 url: numbaturl + 'assignments/addassignment.php',
 	 type: 'post',
 	 data: {
-	     userid: $('#nbtAssignUser').val(),
-	     formid: $('#nbtAssignForm').val(),
+	     userid: $('#nbtAssignUser' + eid).val(),
+	     formid: $('#nbtAssignForm' + eid).val(),
 	     refset: rsid,
 	     ref: rid
 	 },
