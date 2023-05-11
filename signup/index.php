@@ -18,7 +18,7 @@ if ( isset ( $_POST['nbtSignupUsername'] ) ) {
 			
 		} else {
 			
-			$sigErrorText = "Your verification code didn't check out.";
+			$nbtErrorText = "Your verification code didn't check out.";
 			
 			include ("../header.php");
 			include ("../error.php");
