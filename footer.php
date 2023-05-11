@@ -346,7 +346,7 @@
      if (id.value.length > 0) {
 
 	 // var emailregex=/[A-Za-z0-9._%+\-]\.[A-Za-z0-9.\-]\.[A-Za-z]{2,4}+$/; //^[a-zA-z]+$/
-	 var emailregex = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+	 var emailregex = /^[a-zA-Z0-9._%\-+]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
 
 	 if ( ! emailregex.test (id.value) ) { // If it's not a well-formed email
 
