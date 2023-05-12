@@ -73,7 +73,7 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
     } else {
 
-	$nbtErrorText = "You do not have permission to do extractions.";
+	$nbtErrorText = "<p>You do not have permission to do extractions.</p><p>A user with admin privileges must go to the user administration page and change your level of privileges to User or Admin for you to access this page.</p>";
 
 	include ( ABS_PATH . "header.php" );
 	include ( ABS_PATH . "error.php" );
