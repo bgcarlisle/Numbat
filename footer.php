@@ -5466,9 +5466,9 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 
  function nbtExportIRR (fid, rid) {
 
-     if ($('#nbtIRR' + fid).val() != 'ns') {
+     if ($('#nbtIRR' + fid + '-' + rid).val() != 'ns') {
 	 
-	 window.location.href = numbaturl + 'export/save_irr.php?formid=' + fid + '&refset=' + rid + '&elementid=' + $('#nbtIRR' + fid).val();
+	 window.location.href = numbaturl + 'export/save_irr.php?formid=' + fid + '&refset=' + rid + '&elementid=' + $('#nbtIRR' + fid + '-' + rid).val();
 
      }
 
