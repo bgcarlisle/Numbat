@@ -151,11 +151,19 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 	    
 	    if ( $_POST['final'] == 0 ) {
 
+		foreach ($fcols as $key => $value) {
+		    $fcols[$key] = "REPLACE(REPLACE(REPLACE(sub_" . $_POST['formid'] . "." . $value . ", '\\\"', '&quot;'), '\\r', '\\\\n'), '\\n', '\\\\n') as '" . $value . "'";
+		}
+
 		// Put those columns together into a string
 
-		$form_cols_string = "sub_" . $_POST['formid'] . "." . implode(", sub_" . $_POST['formid'] . ".", $fcols);
+		$form_cols_string = ", " . implode(", ", $fcols);
 
-		$select_cols = "sub_" . $_POST['formid'] . ".referenceid, users.username, " . $rs_cols_string . ", " . $form_cols_string;
+		if (count($fcols) == 0) {
+		    $form_cols_string = 0;
+		}
+
+		$select_cols = "sub_" . $_POST['formid'] . ".referenceid, users.username, " . $rs_cols_string . $form_cols_string;
 
 		// echo "sub";
 
@@ -167,11 +175,19 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 	    } else {
 
+		foreach ($fcols as $key => $value) {
+		    $fcols[$key] = "REPLACE(REPLACE(REPLACE(msub_" . $_POST['formid'] . "." . $value . ", '\\\"', '&quot;'), '\\r', '\\\\n'), '\\n', '\\\\n') as '" . $value . "'";
+		}
+
 		// Put those columns together into a string
 
-		$form_cols_string = "msub_" . $_POST['formid'] . "." . implode(", msub_" . $_POST['formid'] . ".", $fcols);
+		$form_cols_string = ", " . implode(", ", $fcols);
 
-		$select_cols = "msub_" . $_POST['formid'] . ".referenceid, " . $rs_cols_string . ", " . $form_cols_string;
+		if (count($fcols) == 0) {
+		    $form_cols_string = 0;
+		}
+
+		$select_cols = "msub_" . $_POST['formid'] . ".referenceid, " . $rs_cols_string . $form_cols_string;
 
 		// echo sub final;
 
