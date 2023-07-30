@@ -4922,6 +4922,8 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 
  function nbtCopySEPreviousSingleSelect ( eid, previousid, currentid, dbname ) {
 
+     $('.nbtSub' + currentid + '-' + dbname + '.nbtTextOptionChosen').click();
+
      $('.nbtSub' + previousid + '-' + dbname + '.nbtTextOptionChosen').each ( function () {
 
 	 var previousbuttonid = 'nbtSub' + eid + '-' + previousid + 'Q' + dbname + 'A';
