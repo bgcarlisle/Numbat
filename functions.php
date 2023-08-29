@@ -3966,7 +3966,7 @@ function nbt_get_all_ref_sets () {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM referencesets;");
+	$stmt = $dbh->prepare("SELECT * FROM referencesets ORDER BY id ASC;");
 
 	$stmt->execute();
 
