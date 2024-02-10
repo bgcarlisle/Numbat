@@ -32,13 +32,13 @@
 		 $trigger_selector = implode(", ", $trigger_selectors);
 
 		 if (count (trigger_selectors) > 0) {
-		     
+
 		     // Make jQuery expressions for each of the conditions
 		     $event_expressions = [];
 		     foreach ($cd_events as $event) {
 			 $trigger_element = nbt_get_form_element_for_elementid ($event['trigger_element']);
 			 $trigger_options = nbt_get_all_select_options_for_element ($event['trigger_element']);
-			 
+
 			 switch ($trigger_element['type']) {
 			     case "single_select":
 				 switch ($event['type']) {
@@ -89,9 +89,9 @@
 				 }
 				 break;
 			 }
-			 
+
 		     }
-		     
+
 		     switch ($ele['conditional_logical_operator']) {
 			 case "any":
 			     // Combine jQuery expressions with "OR"
@@ -119,7 +119,7 @@
 
 		     if ($ele['destructive_hiding'] == 1) {
 			 // Clear the element when hidden
-			 
+
 			 switch ($ele['type']) {
 			     case "open_text":
 				 echo "    $('#nbtTextField" . $ele['columnname'] . "').val('');\n";
@@ -147,18 +147,18 @@
 				 break;
 			 }
 		     }
-		     
+
 		     echo "  }\n";
 
 		     echo "});\n\n";
 
 
 		 }
-		 
+
 	     }
 
 	     // Add conditional display logic for each sub-extraction
-	     
+
 	     if ($ele['type'] == "sub_extraction") {
 
 		 // Get all the subelements
@@ -180,7 +180,7 @@
 			     if (! in_array (".nbtCDSubelement" . $trigger_element['id'], $sub_trigger_selectors) ) {
 				 array_push($sub_trigger_selectors, ".nbtCDSubelement" . $trigger_element['id']);
 			     }
-			     
+
 			 }
 			 $sub_trigger_selector = implode(", ", $sub_trigger_selectors);
 
@@ -262,9 +262,9 @@
 			     echo "\n\n$('.nbtSubExtraction').on('answerChange', '" . $sub_trigger_selector . "', function () {\n";
 
 			     echo "  var subexid = $(this).attr('subextractionid');\n";
-			     
+
 			     echo "  if (" . $sub_combined_expression . ") {\n";
-			     
+
 			     echo "    $('#nbtSubelementContainer" . $sele['id'] . "-' + subexid).slideDown();\n";
 
 			     echo "  } else {\n";
@@ -296,25 +296,25 @@
 					 break;
 
 				 }
-				 
+
 			     }
-			     
+
 			     echo "  }\n";
 
 			     echo "});\n\n";
-			     
+
 			 }
-			 
+
 		     }
 
 		 }
-		 
+
 	     }
 	 }
      }
 
      echo "$('.nbtTextOptionSelect').trigger('answerChange');\n\n";
-     
+
      ?>
 
      // End of conditional display logic
@@ -328,9 +328,9 @@
 	 } else {
 	     $('#nbtAssignerButton' + eid).prop('disabled', true);
 	 }
-	 
+
      });
-     
+
  });
 
  function nbtClearText (id, originalText) { // This clears the "user name" field when it's clicked on.
@@ -902,7 +902,7 @@
 	     }
 	 });
      }
-     
+
  }
 
  function nbtSearchSubTagsPrompts ( inputelement ) {
@@ -914,7 +914,7 @@
      } else {
 	 inputelement.parent().parent().parent().find('.TagPromptRow').fadeOut(0);
 
-	 
+
 	 inputelement.parent().parent().parent().find('.TagPromptRow td.TagPromptCell').each( function (index) {
 	     cell_value = $(this).html();
 
@@ -922,9 +922,9 @@
 		 $(this).parent().fadeIn(0);
 	     }
 	 });
-	 
+
      }
-     
+
  }
 
  function nbtUpdateSelectedTagsTable ( eid, exid, form, columnname ) {
@@ -938,7 +938,7 @@
      tagprompts = tagpromptstext.split(";");
      tagprompts = tagprompts.map(s => s.trim());
      tagprompts = tagprompts.sort();
-     
+
      $('#SelectedTagsTable' + eid + ' tr:not(.nbtTableHeaders)').remove();
 
      for (var key in selectedtags) {
@@ -952,11 +952,11 @@
 	     }
 
 	     $('#SelectedTagsTable' + eid).append('<tr><td><input type="text" value="' + selectedtags[key] + '" onblur="nbtRemoveTagFromSelected(' + eid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\');nbtAddTagToSelected(' + eid + ', $(this).val(), ' + exid + ', ' + form + ', \'' + columnname + '\');"></td><td style="text-align: right;">' + addtopromptsbutton + '<button onclick="nbtRemoveTagFromSelected(' + eid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\', ' + exid + ', ' + form + ', \'' + columnname + '\');">Remove</button></td></tr>');
-	     
+
 	 }
-	 
+
      }
-     
+
      $('#SelectedTagsTable' + eid).append('<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddTagToSelected(' + eid + ', $(this).val(), ' + exid + ', ' + form + ', \'' + columnname + '\');" onkeyup="if (event.keyCode == 13) {nbtAddTagToSelected(' + eid + ', $(this).val(), ' + exid + ', ' + form + ', \'' + columnname + '\');}"></td><td>&nbsp;</td></tr>');
 
      // Update the database
@@ -978,9 +978,9 @@
 	 setTimeout( function () {
 	     $('#TagFeedback' + eid).slideUp(400);
 	 }, 2000);
-	 
+
      });
-     
+
  }
 
  function nbtUpdateSelectedSubTagsTable ( eid, seid, subexid, columnname ) {
@@ -994,7 +994,7 @@
      tagprompts = tagpromptstext.split(";");
      tagprompts = tagprompts.map(s => s.trim());
      tagprompts = tagprompts.sort();
-     
+
      $('#SelectedSubTagsTable' + seid + '-' + subexid + ' tr:not(.nbtTableHeaders)').remove();
 
      for (var key in selectedtags) {
@@ -1008,11 +1008,11 @@
 	     }
 
 	     $('#SelectedSubTagsTable' + seid + '-' + subexid).append('<tr><td><input type="text" value="' + selectedtags[key] + '" onblur="nbtRemoveSubTagFromSelected(' + seid + ', ' + subexid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\');nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');"></td><td style="text-align: right;">' + addtopromptsbutton + '<button onclick="nbtRemoveSubTagFromSelected(' + eid + ', ' + seid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\', ' + subexid + ', \'' + columnname + '\');">Remove</button></td></tr>');
-	     
+
 	 }
-	 
+
      }
-     
+
      $('#SelectedSubTagsTable' + seid + '-' + subexid).append('<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');" onkeyup="if (event.keyCode == 13) {nbtAddSubTagToSelected(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');}"></td><td>&nbsp;</td></tr>');
 
      // Update the database
@@ -1034,9 +1034,9 @@
 	 setTimeout( function () {
 	     $('#TagFeedback' + eid).slideUp(400);
 	 }, 2000);
-	 
+
      });
-     
+
  }
 
  function nbtUpdateSelectedFinalSubTagsTable ( eid, seid, subexid, columnname ) {
@@ -1045,7 +1045,7 @@
      selectedtags = selectedtagstext.split(";");
      selectedtags = selectedtags.map(s => s.trim());
      selectedtags = selectedtags.sort();
-     
+
      $('#SelectedSubTagsTable' + seid + '-' + subexid + ' tr:not(.nbtTableHeaders)').remove();
 
      for (var key in selectedtags) {
@@ -1053,11 +1053,11 @@
 	 if (selectedtags[key] != '') {
 
 	     $('#SelectedSubTagsTable' + seid + '-' + subexid).append('<tr><td><input type="text" value="' + selectedtags[key] + '" onblur="nbtRemoveSubTagFromSelectedFinal(' + seid + ', ' + subexid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\');nbtAddSubTagToSelectedFinal(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');"></td><td style="text-align: right;"><button onclick="nbtRemoveSubTagFromSelectedFinal(' + eid + ', ' + seid + ', \'' + selectedtags[key].replace(/\'/g, '\\\'') + '\', ' + subexid + ', \'' + columnname + '\');">Remove</button></td></tr>');
-	     
+
 	 }
-	 
+
      }
-     
+
      $('#SelectedSubTagsTable' + seid + '-' + subexid).append('<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddSubTagToSelectedFinal(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');" onkeyup="if (event.keyCode == 13) {nbtAddSubTagToSelectedFinal(' + eid + ', ' + seid + ', $(this).val(), ' + subexid + ', \'' + columnname + '\');}"></td><td>&nbsp;</td></tr>');
 
      // Update the database
@@ -1079,9 +1079,9 @@
 	 setTimeout( function () {
 	     $('#TagFeedback' + seid + '-' + subexid).slideUp(400);
 	 }, 2000);
-	 
+
      });
-     
+
  }
 
  function nbtAddTagToSelected ( eid, tagval, exid, form, columnname ) {
@@ -1093,7 +1093,7 @@
      selectedtags = selectedtagstext.split(";");
 
      found = 0;
-     
+
      for (var key in selectedtags) {
 
 	 if (selectedtags[key].toLowerCase().trim() == "") {
@@ -1103,9 +1103,9 @@
 	     if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
 		 found = 1;
 	     }
-	     
+
 	 }
-	 
+
      }
 
      if (found == 0) {
@@ -1129,7 +1129,7 @@ function nbtAddSubTagToSelected ( eid, seid, tagval, subexid, columnname ) {
      selectedtags = selectedtagstext.split(";");
 
      found = 0;
-     
+
      for (var key in selectedtags) {
 
 	 if (selectedtags[key].toLowerCase().trim() == "") {
@@ -1139,9 +1139,9 @@ function nbtAddSubTagToSelected ( eid, seid, tagval, subexid, columnname ) {
 	     if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
 		 found = 1;
 	     }
-	     
+
 	 }
-	 
+
      }
 
      if (found == 0) {
@@ -1165,7 +1165,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
      selectedtags = selectedtagstext.split(";");
 
      found = 0;
-     
+
      for (var key in selectedtags) {
 
 	 if (selectedtags[key].toLowerCase().trim() == "") {
@@ -1175,9 +1175,9 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     if (selectedtags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
 		 found = 1;
 	     }
-	     
+
 	 }
-	 
+
      }
 
      if (found == 0) {
@@ -1199,7 +1199,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
      selectedtags = selectedtagstext.split(";");
 
      found = 0;
-     
+
      for (var key in selectedtags) {
 
 	 if (selectedtags[key].toLowerCase().trim() == "") {
@@ -1211,14 +1211,14 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     }
 
 	 }
-	 
+
      }
 
      selectedtagstext = selectedtags.sort().join(";");
      $('#SelectedTagsText' + eid).val(selectedtagstext);
 
      nbtUpdateSelectedTagsTable ( eid, exid, form, columnname );
-     
+
  }
 
  function nbtRemoveSubTagFromSelected ( eid, seid, tagval, subexid, columnname ) {
@@ -1228,7 +1228,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
      selectedtags = selectedtagstext.split(";");
 
      found = 0;
-     
+
      for (var key in selectedtags) {
 
 	 if (selectedtags[key].toLowerCase().trim() == "") {
@@ -1240,14 +1240,14 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     }
 
 	 }
-	 
+
      }
 
      selectedtagstext = selectedtags.sort().join(";");
      $('#SelectedSubTagsText' + seid + '-' + subexid).val(selectedtagstext);
 
      nbtUpdateSelectedSubTagsTable ( eid, seid, subexid, columnname );
-     
+
  }
 
  function nbtRemoveSubTagFromSelectedFinal ( eid, seid, tagval, subexid, columnname ) {
@@ -1257,7 +1257,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
      selectedtags = selectedtagstext.split(";");
 
      found = 0;
-     
+
      for (var key in selectedtags) {
 
 	 if (selectedtags[key].toLowerCase().trim() == "") {
@@ -1269,14 +1269,14 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     }
 
 	 }
-	 
+
      }
 
      selectedtagstext = selectedtags.sort().join(";");
      $('#SelectedSubTagsText' + seid + '-' + subexid).val(selectedtagstext);
 
      nbtUpdateSelectedFinalSubTagsTable ( eid, seid, subexid, columnname );
-     
+
  }
 
  function nbtAddTagToPrompts ( eid, button ) {
@@ -1347,7 +1347,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 
      });
  }
- 
+
  function nbtChangeDateColumnName ( eid ) {
 
      nbtRemoveSpecialCharactersFromField ('#nbtElementColumnName' + eid);
@@ -2326,7 +2326,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 }
 
      });
-     
+
  }
 
  function nbtMoveCitationProperty ( eid, cid, dir ) {
@@ -2355,7 +2355,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 $('#' + textfieldid).addClass('nbtBackgroundFeedbackBad');
 
 	 $('#' + feedbackid).html('Not saved: regex does not match ' + regex).slideDown();
-	 
+
      } else {
 
 	 $('#' + feedbackid).slideUp();
@@ -2396,10 +2396,10 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     }
 
 	 });
-	 
+
      }
-     
-     
+
+
 
  }
 
@@ -2410,7 +2410,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 $('#' + textfieldid).addClass('nbtBackgroundFeedbackBad');
 
 	 $('#' + feedbackid).html('Not saved: regex does not match ' + regex).slideDown();
-	 
+
      } else {
 
 	 $('#' + textfieldid).removeClass('nbtBackgroundFeedbackBad');
@@ -2440,7 +2440,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     });
 
 	 });
-	 
+
      }
 
  }
@@ -2565,7 +2565,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 },
 	 dataType: 'html'
      }).done ( function (html) {
-	 
+
 	 $('#' + textfieldid).val(html);
 
 	 if ( html != 'Bad date format' ) {
@@ -2663,7 +2663,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 		 });
 
 	     });
-	     
+
 	 } else {
 
 	     $('#' + textfieldid).addClass('nbtBackgroundFeedbackBad');
@@ -2674,7 +2674,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 		 $('#' + textfieldid).val('');
 
 	     }, 1500);
-	     
+
 	 }
 
      });
@@ -3690,7 +3690,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 }
 
      });
-     
+
  }
 
  function nbtAssignerSelectKRandomByUserAndUsers ( refset ) {
@@ -3722,7 +3722,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 }
 
      });
-     
+
  }
 
  function nbtAssign () {
@@ -3847,7 +3847,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     },
 	     dataType: 'html'
 	 }).done(function (response) {
-	     
+
 	     if (response == "SUCCESS") {
 
 		 nbtUpdateCompletedAssignmentsCount ( fid, rsid );
@@ -4760,7 +4760,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 if (finaltags[key].toLowerCase().trim() == "") {
 	     finaltags.splice(key, 1);
 	 }
-	 
+
      }
 
      $.ajax ({
@@ -4778,7 +4778,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 $('#nbtFinalSelectedTags' + eid).val(finaltags.join(";"));
 	 nbtUpdateFinalTagsTable (eid, formid, refset, refid, col);
      });
-     
+
  }
 
  function nbtRemoveTagFromFinal ( tagval, eid, formid, refset, refid, col ) {
@@ -4786,7 +4786,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
      finaltagstext = $('#nbtFinalSelectedTags' + eid ).val();
 
      if (finaltagstext != "") {
-	 
+
 	 finaltags = finaltagstext.split(";");
 	 finaltags = finaltags.map(s => s.trim());
 	 finaltags = finaltags.sort();
@@ -4801,12 +4801,12 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     if (finaltags[key].toLowerCase().trim() == "") {
 		 finaltags.splice(key, 1);
 	     }
-	     
+
 	     if (finaltags[key].toLowerCase().trim() == tagval.toLowerCase().trim()) {
 		 finaltags.splice(key, 1);
 	     }
 	 }
-	 
+
      } else {
 	 finaltags = [];
      }
@@ -4826,7 +4826,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 $('#nbtFinalSelectedTags' + eid).val(finaltags.join(";"));
 	 nbtUpdateFinalTagsTable (eid, formid, refset, refid, col);
      });
-     
+
  }
 
  function nbtUpdateFinalTagsTable (eid, formid, refset, refid, col) {
@@ -4846,7 +4846,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
      }
 
      $('#nbtFinalTagsTable' + eid).append('<tr class="nbtFinalTagRow' + eid + '"><td colspan="2"><input type="text" placeholder="Add new tag" onblur="nbtCopyTagToFinal($(this).val(), ' + eid + ', ' + formid + ', ' + refset +', ' + refid + ', \'' + col + '\');" onkeyup="if (event.keyCode == 13) { nbtCopyTagToFinal($(this).val(), ' + eid + ', ' + formid + ', ' + refset +', ' + refid + ', \'' + col + '\'); }"></td></tr>');
-     
+
  }
 
  function nbtCopyMultiSelectToMaster ( fid, rsid, refid, exid, eid, uid ) {
@@ -4963,7 +4963,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
      });
 
  }
- 
+
  function nbtPasswordCheck () {
      if ( $('#nbtSignUpPassword1').val() == "" ) {
 	 $('#nbtChangePassButton').attr('disabled', true);
@@ -5052,7 +5052,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
  function nbtCheckLogin () {
 
      if ($('.nbtSigninPanel').length == 0) {
-	 
+
          $.ajax ({
 	     url: numbaturl + 'timeout.php',
 	     type: 'post',
@@ -5469,7 +5469,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
  function nbtExportIRR (fid, rid) {
 
      if ($('#nbtIRR' + fid + '-' + rid).val() != 'ns') {
-	 
+
 	 window.location.href = numbaturl + 'export/save_irr.php?formid=' + fid + '&refset=' + rid + '&elementid=' + $('#nbtIRR' + fid + '-' + rid).val();
 
      }
@@ -5496,7 +5496,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 
 
 	 });
-	 
+
      }
 
  }
@@ -5504,18 +5504,6 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
  function nbtChoosePrevSelect ( colname, newval ) {
 
      $('#nbtTextField' + colname).val(newval).blur();
-
- }
-
- if ( $('#nbtExtractionInProgress').val() == 1 ) {
-
-     nbtCheckLogin();
-
-     $('.nbtSidebar').draggable().resizable({
-	 minWidth: 360,
-	 minHeight: 250,
-	 alsoResize: ".nbtSidebar textarea"
-     });
 
  }
 
@@ -5565,11 +5553,11 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     $('#nbtAssignmentsNotCompletedCountForForm-' + formid).html(numerator + '/' + denominator + ' assignments complete');
 
 	 });
-	 
+
      } else {
 
 	 $('#nbtAssignmentsNotCompletedCountForForm-' + formid).html(denominator + ' assignments');
-	 
+
      }
 
  }
@@ -5594,7 +5582,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     display_time_started = Math.floor(time_started / 60);
 
 	     $('#time_started_display').html( display_time_started + ' minute(s) ago');
-	     
+
 	     break;
 
 	 case time_started < (24*60*60):
@@ -5649,7 +5637,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 $('#time_finished_display').html('(Timer is still running; mark the extraction as Completed to stop the timer)');
 
 	 $('#nbtFinishedTimeClearButton').slideUp();
-	 
+
      } else {
 
 	 $('#nbtFinishedTimeClearButton').slideDown();
@@ -5664,7 +5652,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     case time_finished < 60:
 
 		 finished_display = 'Less than a minute ago';
-		 
+
 		 break;
 
 	     case time_finished < (60*60):
@@ -5672,7 +5660,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 		 display_time_finished = Math.floor(time_finished / 60);
 
 		 finished_display = display_time_finished + ' minute(s) ago';
-		 
+
 		 break;
 
 	     case time_finished < (24*60*60):
@@ -5712,7 +5700,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 		 finished_display = display_time_years + ' years(s) ago';
 
 		 break;
-		 
+
 	 }
 
 	 switch (true) {
@@ -5726,7 +5714,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 		 elapsed_display_minutes = ('0' + elapsed_minutes).slice(-2);
 
 		 elapsed_display = elapsed_hours + ":" + elapsed_display_minutes;
-		 
+
 		 break;
 
 	     default:
@@ -5739,9 +5727,9 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 }
 
 	 $('#time_finished_display').html(finished_display + ' (extraction time ' + elapsed_display + ')');
-	 
+
      }
-     
+
  }
 
  function nbtUpdateExtractionTimer (seconds) {
@@ -5757,9 +5745,9 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
      setTimeout( function () {
 
 	 nbtUpdateExtractionTimer (seconds);
-	 
+
      }, seconds * 1000);
-     
+
  }
 
  function nbtRestartExtractionTimer ( form, refset, ref ) {
@@ -5780,15 +5768,15 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     $('#time_started').val('0');
 	     $('#time_finished').val('NaN');
 	     $('#nbtQstatusA1').click();
-	     
+
 	 } else {
 
 	     alert ('Error resetting timer');
-	     
+
 	 }
 
      });
-     
+
  }
 
  function nbtClearFinishedTime ( form, refset, ref ) {
@@ -5805,18 +5793,18 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
      }).done ( function (response) {
 
 	 if (response == 'Timer reset') {
-	     
+
 	     $('#time_finished').val('NaN');
 	     $('#nbtQstatusA1').click();
-	     
+
 	 } else {
 
 	     alert ('Error resetting timer');
-	     
+
 	 }
 
      });
-     
+
  }
 
  $('a.nbtstatus').click(function () {
@@ -5833,7 +5821,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 }
      });
      elements = JSON.stringify(elements);
-     
+
      // Send that to the server
      $.ajax ({
 	 url: numbaturl + 'forms/saveformelementssortorder.php',
@@ -5848,9 +5836,9 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 if (!res) {
 	     alert ('Error saving order of form elements');
 	 }
-	 
+
      });
-     
+
  });
 
  $('.nbtSubExtractionEditor').on('sortupdate', function (event, ui) {
@@ -5877,7 +5865,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 if (!res) {
 	     alert ('Error saving order of sub-extraction elements');
 	 }
-	 
+
      });
  });
 
@@ -5900,7 +5888,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
  }
 
  function nbtFormElementToggleStartupVisible (elementid) {
-     
+
      $.ajax ({
 	 url: numbaturl + 'forms/elementtogglestartupvisible.php',
 	 type: 'post',
@@ -5927,13 +5915,13 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     $('#nbtConditionLogicDescription' + elementid).slideDown();
 	     $('#nbtDestructiveHidingDescription' + elementid).slideDown();
 	 }
-	 
+
      });
-     
+
  }
 
  function nbtSubElementToggleStartupVisible (subelementid) {
-     
+
      $.ajax ({
 	 url: numbaturl + 'forms/subelementtogglestartupvisible.php',
 	 type: 'post',
@@ -5960,9 +5948,9 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     $('#nbtConditionLogicDescriptionSub' + subelementid).slideDown();
 	     $('#nbtDestructiveHidingDescriptionSub' + subelementid).slideDown();
 	 }
-	 
+
      });
-     
+
  }
 
  function nbtAddCondDispEvent (elementid) {
@@ -5977,9 +5965,9 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
      }).done( function (response) {
 
 	 $('#nbtCondDispEventsContainer' + elementid).html(response);
-	 
+
      });
-     
+
  }
 
  function nbtAddCondDispEventSub (subelementid) {
@@ -5994,9 +5982,9 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
      }).done( function (response) {
 
 	 $('#nbtCondDispEventsContainerSub' + subelementid).html(response);
-	 
+
      });
-     
+
  }
 
  function nbtRemoveCondDispEvent (eventid) {
@@ -6017,9 +6005,9 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 } else {
 	     alert (response);
 	 }
-	 
+
      });
-     
+
  }
 
  function nbtUpdateCondDispTriggerElement (eventid) {
@@ -6034,7 +6022,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 dataType: 'html'
      }).done( function (response) {
 	 res = JSON.parse(response);
-	 
+
 	 if (res) {
 	     $('#nbtCondDispTriggerOption' + eventid).html('');
 	     $('#nbtCondDispTriggerOption' + eventid).append('<option value="ns" selected>Choose an option</option>');
@@ -6046,11 +6034,11 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     alert (response);
 	 }
      });
-     
+
  }
 
  function nbtUpdateSubCondDispTriggerElement (eventid) {
-     
+
      $.ajax ({
 	 url: numbaturl + 'forms/updatesubconddisptriggerelement.php',
 	 type: 'post',
@@ -6061,7 +6049,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	 dataType: 'html'
      }).done( function (response) {
 	 res = JSON.parse(response);
-	 
+
 	 if (res) {
 	     $('#nbtSubCondDispTriggerOption' + eventid).html('');
 	     $('#nbtSubCondDispTriggerOption' + eventid).append('<option value="ns" selected>Choose an option</option>');
@@ -6073,7 +6061,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     alert (response);
 	 }
      });
-     
+
  }
 
  function nbtUpdateCondDispTriggerOption (eventid) {
@@ -6091,7 +6079,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     alert(response);
 	 }
      });
-     
+
  }
 
  function nbtUpdateSubCondDispTriggerOption (eventid) {
@@ -6109,7 +6097,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     alert(response);
 	 }
      });
-     
+
  }
 
  function nbtUpdateCondDispType (eventid) {
@@ -6140,7 +6128,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     alert(response);
 	 }
      });
-     
+
  }
 
  function nbtUpdateCondDispLogic (elementid) {
@@ -6158,7 +6146,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     alert(response);
 	 }
      });
-     
+
  }
 
  function nbtUpdateSubCondDispLogic (subelementid) {
@@ -6176,7 +6164,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     alert(response);
 	 }
      });
-     
+
  }
 
  function nbtUpdateCondDispHideAction (elementid) {
@@ -6194,7 +6182,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     alert(response);
 	 }
      });
-     
+
  }
 
  function nbtUpdateSubCondDispHideAction (subelementid) {
@@ -6212,11 +6200,11 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     alert(response);
 	 }
      });
-     
+
  }
 
  function nbtDeleteUploadedFile (fileid) {
-     
+
      $.ajax ({
 	 url: numbaturl + 'uploads/delete.php',
 	 type: 'post',
@@ -6232,10 +6220,10 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	      setTimeout( function () {
 		  $('#nbtUploadRow' + fileid).slideUp();
 	      }, 1000);
-	     
+
 	 }
      });
-     
+
  }
 
 </script>

@@ -293,24 +293,6 @@ table.nbtTabledData textarea {
 	width: 90%;
 	height: 150px;
 }
-div.nbtSidebar {
-	position: fixed;
-	width: 33%;
-	min-width: 360px;
-	height: 260px;
-	background: #eee;
-	border-radius: 5px;
-	padding: 5px 5px 5px 7px;
-	margin-top: 10px;
-	margin-left: 20px;
-	border: 1px solid #aaa;
-	right: 20px;
-}
-div.nbtSidebar textarea {
-	width: 97%;
-	margin-right: 20px;
-	height: 70%;
-}
 div.nbtNonsidebar {
 	background: #fff;
 	width: 100%;

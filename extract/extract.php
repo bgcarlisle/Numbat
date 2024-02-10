@@ -2,13 +2,7 @@
 
 $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
-?><button onclick="$('.nbtSidebar').fadeIn(200);$(this).fadeOut(0);$('#nbtExtractionNotes').focus();" id="nbtUnhideSidebar" style="position: fixed; right: 20px; top: 60px;">Show notes</button>
-<div class="nbtSidebar" style="display: none;">
-    <h3>Extraction notes</h3>
-    <p class="nbtFinePrint">These notes are for your own reference. These will not be reconciled with other extractors. <a href="#" onclick="event.preventDefault();$(this).parent().parent().fadeOut(200);$('button#nbtUnhideSidebar').fadeIn(200);">[Hide]</a></p>
-    <textarea id="nbtExtractionNotes" onblur="nbtSaveTextField(<?php echo $_GET['form']; ?>, <?php echo $extraction['id']; ?>, 'notes', 'nbtExtractionNotes');"><?php echo $extraction['notes']; ?></textarea>
-</div>
-<div class="nbtCoverup" id="nbtManualRefsCoverup">&nbsp;</div>
+?><div class="nbtCoverup" id="nbtManualRefsCoverup">&nbsp;</div>
 <div id="nbtManualRefs" class="nbtInlineManualNewRef">&nbsp;</div>
 <div class="nbtNonsidebar">
     <div class="nbtContentPanel">
@@ -120,9 +114,9 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
     if ( $formelements[0]['type'] != "section_heading" ) {
 
 	echo '<div class="nbtContentPanel">';
-	
+
     }
-    
+
     foreach ( $formelements as $element ) {
 
 	switch ( $element['type'] ) {
@@ -140,15 +134,15 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		if ( $element['startup_visible'] != 1 ) {
 
 		    echo ' nbtHidden';
-		    
+
 		}
 
 		echo '" id="nbtElementContainer' . $element['id'] . '">';
 
 		echo '<h3>';
-		
+
 		echo $element['displayname'];
-		
+
 		if ( $element['codebook'] != "" ) {
 
 		    $element['codebook'] = str_replace ("\n", "<br>", $element['codebook']);
@@ -191,12 +185,12 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		if ( ! $form_preview ) {
 
 		    $extraction_times = nbt_get_times_for_extraction ( $_GET['form'], $_GET['refset'], $_GET['ref'], $_SESSION[INSTALL_HASH . '_nbt_userid'] );
-		    
+
 		} else {
 
 		    $extraction_times['time_started'] = 0;
 		    $extraction_times['time_finished'] = "NaN";
-		    
+
 		}
 
 		echo '<input type="hidden" id="time_started" value="' . $extraction_times['time_started'] . '">';
@@ -216,7 +210,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		echo '<script>$(document).ready( function () { nbtUpdateExtractionTimer(1); } );</script>';
 
 		break;
-		
+
 	    case "open_text":
 
 		echo '<div';
@@ -243,7 +237,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 	    case "text_area":
 
 		echo '<div';
-		
+
 		if ( $element['startup_visible'] != 1 ) {
 
 		    echo ' class="nbtElementContainer nbtHidden"';
@@ -432,7 +426,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		echo 'Feedback">&nbsp;</span>';
 
 		echo '</div>';
-		
+
 		break;
 
 	    case "table_data":
@@ -531,7 +525,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		echo '<span>Start typing in the field below to add a new citation to this extraction</span>';
 
 		echo '<span class="nbtDoubleCitationFeedback nbtFeedbackBad nbtHidden" id="nbtDoubleCitationFeedback';
-		
+
 		echo $element['id'];
 
 		echo '">You have already cited this reference here!</span>';
@@ -549,7 +543,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		echo '">Clear field</button>';
 
 		echo '<button onclick="nbtAddNewReferenceToRefSet(';
-		
+
 		echo $extraction['refsetid'];
 
 		echo ');">Add a new reference</button>';
@@ -561,7 +555,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		echo '\');">View manually added references</button>';
 
 		echo '<input type="text" class="nbtCitationFinder" id="nbtCitationFinder';
-		
+
 		echo $element['id'];
 
 		echo '" onkeyup="nbtFindCitation(event, ';
@@ -601,7 +595,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		echo $element['id'];
 
 		echo '">';
-		
+
 		$nbtListCitationsCitationID = $element['id'];
 		$nbtListCitationsCitationDB = $element['columnname'];
 		$nbtListCitationsRefSetID = $_GET['refset'];
@@ -688,7 +682,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		    echo $user['username'];
 
 		    echo '</option>';
-		    
+
 		}
 
 		echo '</select>';
@@ -716,7 +710,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		echo '</select>';
 
 		echo '<button style="margin: 0 4px" onclick="nbtAddAssignmentInExtraction(';
-		
+
 		echo $_GET['refset'];
 
 		echo ', ';
@@ -736,7 +730,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		echo '">&nbsp;</p>';
 
 		echo '</div>';
-		
+
 		break;
 
 	    case "reference_data":
@@ -757,7 +751,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
 		$refdata = $element['columnname'];
-		
+
 		preg_match_all(
 		    '/\$([A-Za-z0-9_-]+)/',
 		    $element['columnname'],
@@ -795,7 +789,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		}
 
 		echo ' id="nbtElementContainer' . $element['id'] . '">';
-		
+
 		nbt_echo_display_name_and_codebook ( $element['displayname'], $element['codebook'] );
 
 		$unique_previous_entries = nbt_get_unique_entries_for_prev_select ( $element['id'], $extraction['refsetid'], $extraction['id'] );
@@ -835,7 +829,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 			echo '\')">Choose</button></td>';
 
 			echo '</tr>';
-			
+
 		    }
 
 		    echo '</table>';
@@ -873,7 +867,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		echo '<p>Tag prompts</p>';
 
 		echo '<input type="hidden" id="nbtElementTagsPrompts' . $element['id'] . '" value="' . $element['tagprompts'] . '">';
-		
+
 		echo '<table class="nbtTabledData">';
 
 		echo '<tr class="nbtTableHeaders"><td colspan="2"><input id="TagSearch' . $element['id'] . '" type="text" onkeyup="nbtSearchTagsPrompts(' . $element['id'] . ');" placeholder="Search tag prompts"></td></tr>';
@@ -898,7 +892,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 		echo '<table class="nbtTabledData" id="SelectedTagsTable' . $element['id'] . '">';
 
 		echo '<tr class="nbtTableHeaders"><td colspan="2">Selected tags</td></tr>';
-		
+
 		foreach ($selectedtags as $selectedtag) {
 
 		    if ($selectedtag != "") {
@@ -910,19 +904,19 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 			}
 
 			echo '<tr><td><input type="text" value="' . $selectedtag . '" onblur="nbtRemoveTagFromSelected(' . $element['id'] . ', \'' . addslashes($selectedtag) . '\', ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');nbtAddTagToSelected(' . $element['id'] . ', $(this).val(), ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');"></td><td style="text-align: right;">' . $addtopromptsbutton . '<button onclick="nbtRemoveTagFromSelected(' . $element['id'] . ', \'' . addslashes($selectedtag) . '\', ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');">Remove</button></td></tr>';
-			
+
 		    }
-		    
+
 		}
 
 		echo '<tr><td><input type="text" placeholder="Add new tag" value="" onblur="nbtAddTagToSelected(' . $element['id'] . ', $(this).val(), ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');" onkeyup="if (event.keyCode == 13) {nbtAddTagToSelected(' . $element['id'] . ', $(this).val(), ' . $extraction['id'] . ', ' . $_GET['form'] . ', \'' . $element['columnname'] . '\');}"></td><td>&nbsp;</td></tr>';
-		
+
 		echo '</table>';
 
 		echo '<div id="TagFeedback' . $element['id'] . '" class="nbtHidden"></div>';
 
 		echo '</div>';
-		
+
 		break;
 
 	}
@@ -950,7 +944,7 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 	    echo "Completed";
 
 	    break;
-	    
+
     }
 
     echo "</span>. (Change this using the selector at the top)</p>";
@@ -960,4 +954,3 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 <div style="height: 200px;">&nbsp;</div>
 </div>
-<input type="hidden" id="nbtExtractionInProgress" value="1">

@@ -121,6 +121,8 @@ username and password to complete the installation.
 * Fixed bug that prevents compatibility with PHP 8+
 * Fixed bug where a fresh Numbat installation needs to have the
   `db-migrations.php` run in order to function properly
+* Removed default `notes` column from extraction form (it was never
+  used and it was causing problems)
 
 To migrate from an earlier version of Numbat, run `db-migrations.php`
 while logged in as an administrator.
