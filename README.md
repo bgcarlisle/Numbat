@@ -124,6 +124,7 @@ username and password to complete the installation.
 * Removed default `notes` column from extraction form (it was never
   used and it was causing problems)
 * Improved CSV import
+* New screening tool
 
 To migrate from an earlier version of Numbat, run `db-migrations.php`
 while logged in as an administrator.
