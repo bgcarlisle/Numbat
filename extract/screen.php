@@ -18,7 +18,7 @@ foreach ($formelements as $element) {
   <div class="nbtContentPanel">
     <h2>Screening reference set: <?php echo $refset['name']; ?></h2>
     <p>Form: <?php echo $form['name']; ?></p>
-    <p>Keyboard shortcuts: j (next row); k (previous row); n (next unfinished row); 1 (include); 2-9 (exclusion reasons); 0 (focus notes)</p>
+    <p>Keyboard shortcuts: j (next row); k (previous row); 1 (include); 2-9 (exclusion reasons); 0 (focus notes)</p>
     <table class="nbtTabledData" id="nbtScreeningGrid" data-formid="<?php echo $form['id']; ?>" data-refsetid="<?php echo $refset['id']; ?>">
       <tr class="nbtTableHeaders">
         <td>Reference</td>
