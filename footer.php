@@ -420,18 +420,38 @@
        $('.nbtScreeningIncludeBox').on('click', function (event) {
          event.stopPropagation();
 
+         includebox = $(this);
          $.ajax ({
-           url: numbaturl + 'extract/updateextraction.php',
+           url: numbaturl + 'extract/updatescreening.php',
            type: 'post',
            data: {
-             fid: formid,
-             refset: rsid,
-             rid: $(this).data('referenceid')
+            action: 'include',
+            fid: formid,
+            refset: rsid,
+            rid: $(this).data('referenceid')
            },
            dataType: 'html'
          }).done ( function (response) {
 
-
+          switch (response) {
+            case "1":
+              includebox.css("background-color","#ccffcc");
+              includebox.html('Include');
+              includebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
+              break;
+            case "0":
+              includebox.css("background-color","#ffcccc");
+              includebox.html('Exclude');
+              break;
+            case "null":
+              includebox.css("background-color","");
+              includebox.html('Include?');
+              includebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
+              break;
+            case "Error":
+              alert('Error saving');
+              break;
+          }
 
          });
 
@@ -441,20 +461,34 @@
        $('.nbtScreeningExcludeBox').on('click', function (event) {
          event.stopPropagation();
 
-         $.ajax ({
-           url: numbaturl + 'extract/updateextraction.php',
-           type: 'post',
-           data: {
-             fid: formid,
-             refset: rsid,
-             rid: $(this).data('referenceid')
-           },
-           dataType: 'html'
-         }).done ( function (response) {
+        excludebox = $(this);
+        $.ajax ({
+          url: numbaturl + 'extract/updatescreening.php',
+          type: 'post',
+          data: {
+           action: 'exclude',
+           reason: $(this).data('excludereason'),
+           fid: formid,
+           refset: rsid,
+           rid: $(this).data('referenceid')
+          },
+          dataType: 'html'
+        }).done ( function (response) {
 
+          if (response == "Clear all") {
+            excludebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
+          } else {
+            if ( response != "Error") {
+              excludebox.parent().children('.nbtScreeningIncludeBox').css("background-color", "#ffcccc").html('Exclude');
+              excludebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
+              excludebox.css("background-color","#ffcccc");
+            } else {
+              alert('Error saving');
+            }
 
+          }
 
-         });
+        });
 
        });
 
@@ -462,6 +496,36 @@
        $('input.nbtScreeningNotes').on('click', function (event) {
          event.stopPropagation(); // Don't focus/unfocus the row
        });
+
+      // When the notes field is unfocused
+       $('input.nbtScreeningNotes').on('blur', function () {
+
+        notesfield = $(this);
+        $.ajax ({
+          url: numbaturl + 'extract/updatescreening.php',
+          type: 'post',
+          data: {
+           action: 'notes',
+           notes: $(this).val(),
+           fid: formid,
+           refset: rsid,
+           rid: $(this).data('referenceid')
+          },
+          dataType: 'html'
+        }).done ( function (response) {
+
+          if (response == "Saved") {
+            notesfield.css("background-color","#ccffcc");
+            setTimeout( function () {
+         	     notesfield.css("background-color","");
+         	 }, 1000);
+          } else {
+            alert("Error saving")
+          }
+
+        });
+       });
+
 
      } // End of screening
 

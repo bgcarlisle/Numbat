@@ -5,6 +5,7 @@ $refset = nbt_get_refset_for_id ( $_GET['refset'] );
 $form = nbt_get_form_for_id ( $_GET['form'] );
 $assignments = nbt_get_assignments_for_user_and_refset ($_SESSION[INSTALL_HASH . '_nbt_userid'], $_GET['refset']);
 $refs = nbt_get_all_references_for_refset ($_GET['refset']);
+$extractions = nbt_get_all_extractions_for_refset_and_form ($_GET['refset'], $_GET['form']);
 
 foreach ($formelements as $element) {
   if ($element['columnname'] == "exclusion_reason") {
@@ -29,6 +30,40 @@ foreach ($formelements as $element) {
       </tr>
       <?php foreach ($assignments as $assignment) { ?>
         <?php if ($assignment['formid'] == $form['id']) { ?>
+          <?php
+
+          $includeboxstyle = NULL;
+          $includeboxcontent = NULL;
+
+          foreach ($extractions as $ext) {
+            if ($assignment['referenceid'] == $ext['referenceid']) {
+
+              switch ($ext['include']) {
+                case NULL:
+                  $includeboxstyle = '';
+                  $includeboxcontent = "Include?";
+                  break;
+                case 1:
+                  $includeboxstyle = ' style="background-color: #ccffcc;"';
+                  $includeboxcontent = "Include";
+                  break;
+                case 0:
+                  $includeboxstyle = ' style="background-color: #ffcccc;"';
+                  $includeboxcontent = "Exclude";
+                  break;
+              }
+
+              $exclusion_reason = $ext['exclusion_reason'];
+
+            }
+          }
+
+          if ( is_null($includeboxstyle) ) {
+            $includeboxstyle = '';
+            $includeboxcontent = "Include?";
+          }
+
+          ?>
           <tr class="nbtFocusableScreeningRow">
             <td>
               <h3><?php echo $refs[$assignment['referenceid']][$refset['title']]; ?></h3>
@@ -39,14 +74,23 @@ foreach ($formelements as $element) {
               </p>
               <p><?php echo str_replace("\n", "<br>", $refs[$assignment['referenceid']][$refset['abstract']]); ?></p>
             </td>
-            <td class="nbtScreeningIncludeBox" data-referenceid="<?php echo $assignment['referenceid']; ?>">Include?</td>
+            <td class="nbtScreeningIncludeBox" data-referenceid="<?php echo $assignment['referenceid']; ?>"<?php echo $includeboxstyle; ?>>
+              <?php echo $includeboxcontent; ?>
+            </td>
             <?php $exclude_counter = 0; ?>
             <?php foreach ($exclusion_reasons as $er) { ?>
-              <td class="nbtScreeningExcludeBox nbtScreeningExcludeBox<?php echo $exclude_counter; ?>" data-referenceid="<?php echo $assignment['referenceid']; ?>"><?php echo $er['displayname']; ?></td>
+              <?php
+              if ($exclusion_reason == $er['dbname']) {
+                $excludeboxstyle = ' style = "background-color: #ffcccc;"';
+              } else {
+                $excludeboxstyle = '';
+              }
+              ?>
+              <td class="nbtScreeningExcludeBox nbtScreeningExcludeBox<?php echo $exclude_counter; ?>" data-referenceid="<?php echo $assignment['referenceid']; ?>" data-excludereason="<?php echo $er['dbname']; ?>"<?php echo $excludeboxstyle; ?>><?php echo $er['displayname']; ?></td>
               <?php $exclude_counter++; ?>
             <?php } ?>
             <td style="width: 250px;">
-              <input type="text" value="" class="nbtScreeningNotes">
+              <input type="text" value="" class="nbtScreeningNotes" data-referenceid="<?php echo $assignment['referenceid']; ?>">
             </td>
           </tr>
         <?php } ?>
