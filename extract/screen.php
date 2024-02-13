@@ -34,6 +34,8 @@ foreach ($formelements as $element) {
 
           $includeboxstyle = NULL;
           $includeboxcontent = NULL;
+          $exclusion_reason = NULL;
+          $notes = "";
 
           foreach ($extractions as $ext) {
             if ($assignment['referenceid'] == $ext['referenceid']) {
@@ -55,7 +57,9 @@ foreach ($formelements as $element) {
 
               $exclusion_reason = $ext['exclusion_reason'];
 
+              $notes = $ext['notes'];
             }
+
           }
 
           if ( is_null($includeboxstyle) ) {
@@ -90,7 +94,7 @@ foreach ($formelements as $element) {
               <?php $exclude_counter++; ?>
             <?php } ?>
             <td style="width: 250px;">
-              <input type="text" value="" class="nbtScreeningNotes" data-referenceid="<?php echo $assignment['referenceid']; ?>">
+              <input type="text" value="<?php echo $notes; ?>" class="nbtScreeningNotes" data-referenceid="<?php echo $assignment['referenceid']; ?>">
             </td>
           </tr>
         <?php } ?>
