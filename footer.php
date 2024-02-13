@@ -321,15 +321,150 @@
 
      $('.nbtAssignerDropdown').on('change', function () {
 
-	 eid = $(this).data('element');
+    	 eid = $(this).data('element');
 
-	 if ($('#nbtAssignUser' + eid).val() != "NULL" && $('#nbtAssignForm' + eid).val() != "NULL") {
-	     $('#nbtAssignerButton' + eid).prop('disabled', false);
-	 } else {
-	     $('#nbtAssignerButton' + eid).prop('disabled', true);
-	 }
+    	 if ($('#nbtAssignUser' + eid).val() != "NULL" && $('#nbtAssignForm' + eid).val() != "NULL") {
+    	     $('#nbtAssignerButton' + eid).prop('disabled', false);
+    	 } else {
+    	     $('#nbtAssignerButton' + eid).prop('disabled', true);
+    	 }
 
      });
+
+     // Screening
+     if ($('#nbtScreeningGrid').length) { // If there's the screening table
+
+       formid = $('#nbtScreeningGrid').data('formid');
+       rsid = $('#nbtScreeningGrid').data('refsetid');
+
+       // Focus goes where clicked
+       $('#nbtScreeningGrid tr.nbtFocusableScreeningRow').on('click', function () {
+         if (! $(this).hasClass('nbtScreeningFocus')) {
+           $('#nbtScreeningGrid tr').removeClass('nbtScreeningFocus');
+           $(this).addClass('nbtScreeningFocus');
+         } else {
+           $('#nbtScreeningGrid tr').removeClass('nbtScreeningFocus');
+         }
+
+       });
+
+       // Add keyboard shortcuts
+       document.addEventListener('keyup', function (event) {
+         if (! $('input.nbtScreeningNotes:focus').length) { // These don't work when a notes is in focus
+
+           if (event.keyCode == 74) { // Letter j
+             if ($('.nbtScreeningFocus').length) {
+               if ($('.nbtScreeningFocus').next('.nbtFocusableScreeningRow').length) {
+                 $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').next('.nbtFocusableScreeningRow').addClass('nbtScreeningFocus');
+                 $('html, body').animate({
+                   scrollTop: $('.nbtScreeningFocus').offset().top - 50
+                 }, 250);
+               }
+             } else {
+               $('.nbtFocusableScreeningRow:first').addClass('nbtScreeningFocus');
+             }
+
+           }
+
+           if (event.keyCode == 75) { // Letter k
+             if ($('.nbtScreeningFocus').length) {
+               if ($('.nbtScreeningFocus').prev('.nbtFocusableScreeningRow').length) {
+                 $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').prev('.nbtFocusableScreeningRow').addClass('nbtScreeningFocus');
+                 $('html, body').animate({
+                   scrollTop: $('.nbtScreeningFocus').offset().top - 50
+                 }, 250);
+               }
+             } else {
+               $('.nbtFocusableScreeningRow:last').addClass('nbtScreeningFocus');
+             }
+           }
+
+           if (event.keyCode == 27) { // Esc key
+             // Removes focus
+             $('#nbtScreeningGrid tr').removeClass('nbtScreeningFocus');
+           }
+
+           if (event.keyCode == 49 || event.keyCode == 97) { // 1 or numpad 1
+             // Mark as include
+             $('.nbtScreeningFocus .nbtScreeningIncludeBox').click();
+           }
+
+           if ((event.keyCode >= 50 && event.keyCode <= 57) || (event.keyCode >= 98 && event.keyCode <= 105)) {
+             if (event.keyCode <= 57) {
+               num = event.keyCode - 48;
+             } else {
+               num = event.keyCode - 96;
+             }
+
+             boxnum = num - 2;
+
+             // Mark exclusion reason
+             $('.nbtScreeningFocus .nbtScreeningExcludeBox' + boxnum).click();
+           }
+
+           if (event.keyCode == 48 || event.keyCode == 96) { // 0 or numpad 0
+             $('.nbtScreeningFocus input.nbtScreeningNotes').focus();
+           }
+         } else { // A notes input is focused
+           if (event.keyCode == 27) { // Esc key
+             // Removes focus
+             $('.nbtScreeningFocus input.nbtScreeningNotes').blur();
+           }
+         }
+
+
+
+       });
+
+       // When the include box is clicked
+       $('.nbtScreeningIncludeBox').on('click', function (event) {
+         event.stopPropagation();
+
+         $.ajax ({
+           url: numbaturl + 'extract/updateextraction.php',
+           type: 'post',
+           data: {
+             fid: formid,
+             refset: rsid,
+             rid: $(this).data('referenceid')
+           },
+           dataType: 'html'
+         }).done ( function (response) {
+
+
+
+         });
+
+       });
+
+       // When an exclude box is clicked
+       $('.nbtScreeningExcludeBox').on('click', function (event) {
+         event.stopPropagation();
+
+         $.ajax ({
+           url: numbaturl + 'extract/updateextraction.php',
+           type: 'post',
+           data: {
+             fid: formid,
+             refset: rsid,
+             rid: $(this).data('referenceid')
+           },
+           dataType: 'html'
+         }).done ( function (response) {
+
+
+
+         });
+
+       });
+
+       // When the notes field is clicked
+       $('input.nbtScreeningNotes').on('click', function (event) {
+         event.stopPropagation(); // Don't focus/unfocus the row
+       });
+
+     } // End of screening
+
 
  });
 
@@ -407,22 +542,20 @@
  function nbtChangeUserPrivileges ( userid ) {
 
      $.ajax ({
-	 url: numbaturl + 'users/changeprivileges.php',
-	 type: 'post',
-	 data: {
-	     user: userid,
-	     privileges: $('#nbtUserPrivileges' + userid).val()
-	 },
-	 dataType: 'html'
+    	 url: numbaturl + 'users/changeprivileges.php',
+    	 type: 'post',
+    	 data: {
+  	     user: userid,
+  	     privileges: $('#nbtUserPrivileges' + userid).val()
+    	 },
+	     dataType: 'html'
      }).done ( function (html) {
 
-	 $('#nbtPrivilegeFeedback').html(html);
+    	 $('#nbtPrivilegeFeedback').html(html);
 
-	 $('#nbtPrivilegeFeedback').fadeIn(500, function () {
-
-	     $('#nbtPrivilegeFeedback').fadeOut(3000);
-
-	 });
+    	 $('#nbtPrivilegeFeedback').fadeIn(500, function () {
+    	     $('#nbtPrivilegeFeedback').fadeOut(3000);
+    	 });
 
      });
 
@@ -472,17 +605,18 @@
 
  }
 
- function nbtNewExtractionForm () {
+ function nbtNewExtractionForm (type) {
 
      $.ajax ({
-	 url: numbaturl + 'forms/newform.php',
-	 type: 'post',
-	 data: {
-	 },
-	 dataType: 'html'
+    	 url: numbaturl + 'forms/newform.php',
+    	 type: 'post',
+    	 data: {
+         formtype: type
+    	 },
+    	 dataType: 'html'
      }).done ( function (html) {
 
-	 $('#nbtFormsTable').html(html);
+	     $('#nbtFormsTable').html(html);
 
      });
 

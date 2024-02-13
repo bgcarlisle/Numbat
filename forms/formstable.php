@@ -8,7 +8,7 @@
 	<td style="width: 100px;">Delete</td>
     </tr>
     <?php
-    
+
     $allforms = nbt_get_all_extraction_forms ();
 
     foreach ( $allforms as $form ) {
@@ -26,7 +26,7 @@
 		} else {
 		    echo '<p>' . $form['project'] . '</p>';
 		}
-		
+
 		?>
 		<p><?php echo $form['projectdate']; ?></p>
 	    </td>
@@ -44,15 +44,18 @@
 
     ?>
     <tr>
-	<td colspan="6"><button onclick="nbtNewExtractionForm();">Add new extraction form</button></td>
+	     <td colspan="6">
+         <button onclick="nbtNewExtractionForm('extraction');">Add new extraction form</button>
+           <button onclick="nbtNewExtractionForm('screening');">Add new screening form</button>
+       </td>
     </tr>
 </table>
 <button id="nbtShowImportFormButton" onclick="$('#nbtImportForm').slideDown();$('#nbtShowImportFormButton').slideUp();">Import an extraction form</button>
 <div class="nbtHidden" id="nbtImportForm">
     <h3>Import a Numbat form from a .json file</h3>
     <form action="<?php echo SITE_URL; ?>forms/importform.php" method="post" enctype="multipart/form-data">
-	<input type="file" name="file" id="file">
-	<button>Import Numbat form</button>
-	<button onclick="event.preventDefault();$('#nbtShowImportFormButton').slideDown();$('#nbtImportForm').slideUp();">Cancel</button>
+    	<input type="file" name="file" id="file">
+    	<button>Import Numbat form</button>
+    	<button onclick="event.preventDefault();$('#nbtShowImportFormButton').slideDown();$('#nbtImportForm').slideUp();">Cancel</button>
     </form>
 </div>

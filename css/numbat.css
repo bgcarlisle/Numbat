@@ -531,3 +531,7 @@ code {
     border-radius: 3px;
     padding: 0px 6px;
 }
+tr.nbtScreeningFocus {
+	border-left: 10px solid #333;
+	font-size: 150%;
+}

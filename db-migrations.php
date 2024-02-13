@@ -28,7 +28,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -38,9 +38,9 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 
     } else {
-	
+
 	echo "<p>The reference sets table already has a title column</p>";
-	
+
     }
 
     if ( ! check_for_referencesets_column ("authors") ) {
@@ -57,7 +57,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -67,9 +67,9 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 
     } else {
-	
+
 	echo "<p>The reference sets table already has an authors column</p>";
-	
+
     }
 
     if ( ! check_for_referencesets_column ("year") ) {
@@ -86,7 +86,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -96,9 +96,9 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 
     } else {
-	
+
 	echo "<p>The reference sets table already has a year column</p>";
-	
+
     }
 
     if ( ! check_for_referencesets_column ("journal") ) {
@@ -115,7 +115,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -125,9 +125,9 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 
     } else {
-	
+
 	echo "<p>The reference sets table already has a journal column</p>";
-	
+
     }
 
     if ( ! check_for_referencesets_column ("abstract") ) {
@@ -144,7 +144,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -154,9 +154,9 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 
     } else {
-	
+
 	echo "<p>The reference sets table already has an abstract column</p>";
-	
+
     }
 
     // 2. Make `columnname` 2500 characters long
@@ -190,7 +190,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    }
 
 		    $dbh = null;
-		    
+
 		}
 
 		catch (PDOException $e) {
@@ -198,15 +198,15 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    echo $e->getMessage();
 
 		}
-		
+
 	    } else {
 
 		echo "<p>The form elements table columname column is already 2500 characters long</p>";
-		
+
 	    }
-	    
+
 	}
-	
+
     }
 
     catch (PDOException $e) {
@@ -248,7 +248,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    }
 
 		    $dbh = null;
-		    
+
 		}
 
 		catch (PDOException $e) {
@@ -256,13 +256,13 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    echo $e->getMessage();
 
 		}
-		
+
 	    } else {
 
 		echo "<p>The form called '" . $form['name'] . "' already has a timestamp_finished column</p>";
-		
+
 	    }
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -303,7 +303,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    }
 
 		    $dbh = null;
-		    
+
 		}
 
 		catch (PDOException $e) {
@@ -311,13 +311,13 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    echo $e->getMessage();
 
 		}
-		
+
 	    } else {
 
 		echo "<p>The form called '" . $form['name'] . "' (final version) already has a timestamp_finished column</p>";
-		
+
 	    }
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -359,7 +359,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    }
 
 		    $dbh = null;
-		    
+
 		}
 
 		catch (PDOException $e) {
@@ -367,15 +367,15 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    echo $e->getMessage();
 
 		}
-		
+
 	    } else {
 
 		echo "<p>The form sub-extraction elements table columname column is already 2000 characters long</p>";
-		
+
 	    }
-	    
+
 	}
-	
+
     }
 
     catch (PDOException $e) {
@@ -411,7 +411,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		} else {
 		    echo "<p>Error adding the regex column to the form elements table</p>";
 		}
-		
+
 	    }
 
 	    catch (PDOException $e) {
@@ -419,13 +419,13 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		echo $e->getMessage();
 
 	    }
-	    
+
 	} else {
 
 	    echo "<p>The form elements table already has a regex column</p>";
-	    
+
 	}
-	
+
     }
 
     catch (PDOException $e) {
@@ -461,7 +461,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		} else {
 		    echo "<p>Error adding the regex column to the subextraction elements table</p>";
 		}
-		
+
 	    }
 
 	    catch (PDOException $e) {
@@ -469,13 +469,13 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		echo $e->getMessage();
 
 	    }
-	    
+
 	} else {
 
 	    echo "<p>The subextraction elements table already has a regex column</p>";
-	    
+
 	}
-	
+
     }
 
     catch (PDOException $e) {
@@ -510,7 +510,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    } else {
 		return FALSE;
 	    }
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -518,7 +518,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     }
 
     if ( ! check_for_subelements_column ("copypreviousprompt") ) {
@@ -537,7 +537,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -545,44 +545,73 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 
 	echo "<p>The sub-extraction elements table already has a \"copy from previous\" prompt column</p>";
-	
+
     }
 
     // 7. Add the new columns to the forms table
 
     echo '<h3>Add form metadata columns for export and sharing</h3>';
 
-    if ( ! check_for_forms_column("version") ) {
+    if ( ! check_for_forms_column("formtype") ) {
 
-	try {
+    	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `version` VARCHAR(50) NULL DEFAULT NULL AFTER `description`;");
+    	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `formtype` VARCHAR(100) NULL DEFAULT 'extraction' AFTER `id`;");
 
-	    if ($stmt->execute()) {
-		echo "<p>The forms table has been updated with \"version\" column</p>";
-	    } else {
-		echo "<p>Error updating the forms table with \"version\" column</p>";
-	    }
+    	    if ($stmt->execute()) {
+    		      echo "<p>The forms table has been updated with \"formtype\" column</p>";
+    	    } else {
+    		      echo "<p>Error updating the forms table with \"formtype\" column</p>";
+    	    }
 
-	    $dbh = null;
-	    
-	}
+    	    $dbh = null;
 
-	catch (PDOException $e) {
+    	}
 
-	    echo $e->getMessage();
+    	catch (PDOException $e) {
 
-	}
-	
+    	    echo $e->getMessage();
+
+    	}
+
     } else {
 
-	echo "<p>The forms table already has a 'version' column.</p>";
-	
+	    echo "<p>The forms table already has a 'formtype' column.</p>";
+
+    }
+
+    if ( ! check_for_forms_column("version") ) {
+
+    	try {
+
+    	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `version` VARCHAR(50) NULL DEFAULT NULL AFTER `description`;");
+
+    	    if ($stmt->execute()) {
+    		      echo "<p>The forms table has been updated with \"version\" column</p>";
+    	    } else {
+    		      echo "<p>Error updating the forms table with \"version\" column</p>";
+    	    }
+
+    	    $dbh = null;
+
+    	}
+
+    	catch (PDOException $e) {
+
+    	    echo $e->getMessage();
+
+    	}
+
+    } else {
+
+	    echo "<p>The forms table already has a 'version' column.</p>";
+
     }
 
     if ( ! check_for_forms_column("author") ) {
@@ -599,7 +628,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -607,11 +636,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 
 	echo "<p>The forms table already has an 'author' column.</p>";
-	
+
     }
 
     if ( ! check_for_forms_column("affiliation") ) {
@@ -628,7 +657,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -636,11 +665,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 
 	echo "<p>The forms table already has an 'affiliation' column.</p>";
-	
+
     }
 
     if ( ! check_for_forms_column("project") ) {
@@ -657,7 +686,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -665,11 +694,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 
 	echo "<p>The forms table already has a 'project' column.</p>";
-	
+
     }
 
     if ( ! check_for_forms_column("protocol") ) {
@@ -686,7 +715,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -694,11 +723,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 
 	echo "<p>The forms table already has a 'protocol' column.</p>";
-	
+
     }
 
     if ( ! check_for_forms_column("projectdate") ) {
@@ -715,7 +744,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -723,11 +752,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 
 	echo "<p>The forms table already has a 'projectdate' column.</p>";
-	
+
     }
 
     // 8. Add the conditional display columns and table
@@ -744,7 +773,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 
 	$dbh = null;
-	
+
     }
 
     catch (PDOException $e) {
@@ -775,7 +804,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    } else {
 		return FALSE;
 	    }
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -783,7 +812,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     }
 
     if (! check_for_formelements_column ("startup_visible")) {
@@ -800,7 +829,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -808,7 +837,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 	echo "<p>Form elements table already has a startup_visible column</p>";
     }
@@ -827,7 +856,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -835,7 +864,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 	echo "<p>Form elements table already has a conditional_logical_operator column</p>";
     }
@@ -854,7 +883,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -862,7 +891,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 	echo "<p>Form elements table already has a destructive_hiding column</p>";
     }
@@ -883,7 +912,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -891,7 +920,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 	echo "<p>Sub-extraction elements table already has a startup_visible column</p>";
     }
@@ -910,7 +939,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -918,7 +947,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 	echo "<p>Sub-extraction elements table already has a conditional_logical_operator column</p>";
     }
@@ -937,7 +966,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -945,7 +974,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 	echo "<p>Sub-extraction elements table already has a destructive_hiding column</p>";
     }
@@ -974,7 +1003,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    } else {
 		return FALSE;
 	    }
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -982,7 +1011,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     }
 
     if (! check_for_conditional_display_column ("subelementid")) {
@@ -999,7 +1028,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -1007,7 +1036,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 	echo "<p>Conditional display table already has a subelementid column</p>";
     }
@@ -1028,7 +1057,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    $dbh = null;
 
 	    return $result;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -1036,7 +1065,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     }
 
     function get_all_subextraction_open_text_fields () {
@@ -1053,7 +1082,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    $dbh = null;
 
 	    return $result;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -1061,7 +1090,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     }
 
     $ot_fields = get_all_open_text_fields ();
@@ -1081,7 +1110,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    if ($stmt->execute()) {
 		echo "<p>Updated extraction text field: " . $columnname . "</p>";
 	    }
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -1103,7 +1132,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    if ($stmt->execute()) {
 		echo "<p>Updated final text field: " . $columnname . "</p>";
 	    }
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -1111,7 +1140,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     }
 
     $sub_ot_fields = get_all_subextraction_open_text_fields ();
@@ -1133,7 +1162,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    if ($stmt->execute()) {
 		echo "<p>Updated sub-extraction text field: " . $columnname . "</p>";
 	    }
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -1155,7 +1184,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    if ($stmt->execute()) {
 		echo "<p>Updated sub-extraction final text field: " . $columnname . "</p>";
 	    }
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -1163,7 +1192,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     }
 
     // Add tagprompts column to formelements table
@@ -1183,7 +1212,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -1191,7 +1220,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 	echo "<p>Form elements table already has a tag prompts column</p>";
     }
@@ -1211,7 +1240,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -1219,7 +1248,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 	echo "<p>Sub-elements table already has a tag prompts column</p>";
     }
@@ -1240,7 +1269,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    }
 
 	    $dbh = null;
-	    
+
 	}
 
 	catch (PDOException $e) {
@@ -1248,7 +1277,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 
 	}
-	
+
     } else {
 	echo "<p>Sub-elements table already has a reference_data_format column</p>";
     }
@@ -1268,7 +1297,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 
 	$dbh = null;
-	
+
     }
 
     catch (PDOException $e) {
@@ -1288,7 +1317,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 
 	$dbh = null;
-	
+
     }
 
     catch (PDOException $e) {
@@ -1311,7 +1340,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 
 	$dbh = null;
-	
+
     }
 
     catch (PDOException $e) {
@@ -1319,14 +1348,14 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	echo $e->getMessage();
 
     }
-    
+
 
     // End
-    
+
 } else { // Not admin
 
     echo "<p>You are not logged in, or you do not have sufficient privileges to perform database migration</p>";
-    
+
 }
 
 echo '</div>';

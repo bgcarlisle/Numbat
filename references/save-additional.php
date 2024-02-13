@@ -7,9 +7,9 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
     if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) == 4 ) {
 
-	$file = fopen ( ABS_PATH . "references/tmp/tmp.txt", "r" );
+	     $file = fopen ( ABS_PATH . "references/tmp/tmp.txt", "r" );
 
-	
+
 	if ( ! $file ) {
 
 	    $nbtErrorText = "Error opening file";
@@ -19,7 +19,7 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 	} else {
 	    $filesize = filesize ( ABS_PATH . "references/tmp/tmp.txt" );
-	    
+
 	    if ( ! $filesize ) {
 
 		$nbtErrorText = "File is empty: " . $filesize;
@@ -29,27 +29,13 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 	    } else {
 
-		$filecontent = fread( $file, $filesize);
+        $lines = array();
 
-		$encoding = mb_detect_encoding ($filecontent, ["UTF-8"]);
-		
-		if ($encoding != "UTF-8") {
-		    $filecontent = mb_convert_encoding ($filecontent, "UTF-8", "UTF-16");
-		}
+        while (($udata = fgetcsv($file, 100000, "\t")) !== FALSE) {
+          $lines[] = $udata;
+        }
 
-		fclose ($file);
-
-		$lines = array();
-
-		if ( count ( explode ( "\n", $filecontent ) ) > count ( explode ( "\r\n", $filecontent ) ) ) {
-		    
-		    $line_demarcation = "\n";
-
-		} else {
-
-		    $line_demarcation = "\r\n";
-
-		}
+		    fclose ($file);
 
 		// echo $_POST['refset'] . "<br><br>";
 
@@ -59,41 +45,41 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 		$columns = array();
 		foreach ($refsetcolumns as $rcol) {
 		    if ($_POST["col" . $colcount] != "ns" & $_POST["col" . $colcount] != "") {
-			$columns[] = $rcol[0];
+			       $columns[] = $rcol[0];
 		    }
 		    $colcount++;
 		}
 
 		// echo "COLUMNS (" . implode(", ", $columns) . ")";
 		$linecount = 0;
-		foreach (explode ($line_demarcation, $filecontent) as $line) {
+		foreach ($lines as $line) {
 		    if ($linecount > 0) {
-			$colcount = 0;
-			$row_to_insert = array();
-			foreach ($refsetcolumns as $rcol) {
-			    if ($_POST["col" . $colcount] != "ns" & $_POST["col" . $colcount] != "") {
-				$valcount = 0;
-				foreach (explode ("\t", $line) as $val) {
-				    if ($_POST["col" . $colcount] == $valcount) {
-					$row_to_insert[] = $val;
-				    }
-				    $valcount++;
-				}
-			    }
-			    $colcount++;
-			}
-			nbt_insert_row_into_columns ($_POST['refset'], $columns, implode("\t", $row_to_insert), "\t");
-			// echo "VALUES (" . implode(",", $row_to_insert) . ")";
+    			$colcount = 0;
+    			$row_to_insert = array();
+    			foreach ($refsetcolumns as $rcol) {
+    			    if ($_POST["col" . $colcount] != "ns" & $_POST["col" . $colcount] != "") {
+                $valcount = 0;
+                foreach ($line as $val) {
+                  if ($_POST["col" . $colcount] == $valcount) {
+                    $row_to_insert[] = $val;
+                  }
+                  $valcount++;
+                }
+              }
+    			    $colcount++;
+    			}
+    			nbt_insert_row_into_columns ($_POST['refset'], $columns, $row_to_insert, "\t");
+    			// echo "VALUES (" . implode(",", $row_to_insert) . ")";
 		    }
 		    $linecount++;
 		    // echo "<br><br>";
 		}
-		
+
 		include ( ABS_PATH . "header.php" );
 
 		$refset = nbt_get_refset_for_id ($_POST['refset']);
 
-		
+
 ?>
 
     <div class="nbtGreyGradient nbtContentPanel">
@@ -101,13 +87,13 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 	<p>Your new rows have been added to <a href="<?php echo SITE_URL; ?>references/?action=view&refset=<?php echo $refset['id']; ?>"><?php echo $refset['name']; ?>.</p>
     </div>
     <?php
-    
+
     }
     }
     }
     }
-    
+
     include ( ABS_PATH . "footer.php" );
 
-    
+
     ?>

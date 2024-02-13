@@ -430,7 +430,7 @@ function nbt_admin_generate_password_link ( $userid ) {
     $username = nbt_get_username_for_userid ($userid);
 
     if ($username) {
-	
+
 	// First, generate a 10-character hash
 
 	$string = md5(uniqid(rand(), true));
@@ -453,7 +453,7 @@ function nbt_admin_generate_password_link ( $userid ) {
 	    if ($stmt->execute()) {
 
 		return SITE_URL . "forgot/?username=" . $username . "&code=" . $passwordchangecode;
-		
+
 	    }
 
 	    $dbh = null;
@@ -464,12 +464,12 @@ function nbt_admin_generate_password_link ( $userid ) {
 	    echo $e->getMessage();
 	}
     } else {
-	
+
 	return FALSE;
-	
+
     }
 
-    
+
 }
 
 function nbt_change_password ( $username, $newpass ) {
@@ -704,16 +704,16 @@ function nbt_get_all_references_for_refset ( $refsetid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` ORDER BY id ASC;");
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` ORDER BY id ASC;");
 
-	$stmt->execute();
+    	$stmt->execute();
 
-	$result = $stmt->fetchAll();
+    	$result = $stmt->fetchAll();
 
-	$dbh = null;
+    	$dbh = null;
 
-	return $result;
+    	return $result;
 
     }
 
@@ -727,20 +727,20 @@ function nbt_get_all_extracted_references_for_refset_and_form ( $refsetid, $form
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `id` IN (SELECT `referenceid` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `status` = 2) ORDER BY id ASC;");
+      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+      $stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `id` IN (SELECT `referenceid` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `status` = 2) ORDER BY id ASC;");
 
-	$stmt->bindParam(':refset', $rsid);
+      $stmt->bindParam(':refset', $rsid);
 
-	$rsid = $refsetid;
+      $rsid = $refsetid;
 
-	$stmt->execute();
+      $stmt->execute();
 
-	$result = $stmt->fetchAll();
+      $result = $stmt->fetchAll();
 
-	$dbh = null;
+      $dbh = null;
 
-	return $result;
+      return $result;
 
     }
 
@@ -1322,10 +1322,16 @@ function nbt_remove_citation ( $section, $citation ) {
 
 }
 
+function nbt_update_screening ( $fid, $rsid, $rid, $dbname, $value ) {
+
+  
+
+}
+
 function nbt_update_extraction ( $fid, $id, $column, $value ) {
 
     if ($value == "") {
-	$value = NULL;
+	     $value = NULL;
     }
 
     if ( $column == "status" && $value == 2 ) { // Special case: they're clicking "completed"
@@ -1355,7 +1361,7 @@ function nbt_update_extraction ( $fid, $id, $column, $value ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     }
 
     // And in the special case or the regular case, do this:
@@ -1550,7 +1556,7 @@ function nbt_toggle_msub_extraction ( $elementid, $id, $column ) {
 	$stmt->bindParam(':id', $seid);
 
 	$seid = $id;
-	
+
 	if ( $stmt->execute() ) {
 
 	    $dbh = null;
@@ -2228,13 +2234,13 @@ function nbt_get_all_table_data_rows_for_refset ( $elementid, $refsetid, $sub_ex
 	$subelement = nbt_get_sub_element_for_subelementid ( $elementid );
 
 	$suffix = $subelement['dbname'];
-	
+
     } else {
 
 	$element = nbt_get_form_element_for_elementid ( $elementid );
 
 	$suffix = $element['columnname'];
-	
+
     }
 
     try {
@@ -2323,17 +2329,17 @@ function nbt_get_all_sub_extraction_table_data_rows_for_refset ( $elementid, $re
 function nbt_get_all_reconciled_table_data_rows_for_refset ( $elementid, $refsetid, $sub_extraction = FALSE ) {
 
     if ( $sub_extraction ) {
-	
+
 	$subelement = nbt_get_sub_element_for_subelementid ( $elementid );
 
 	$suffix = $subelement['dbname'];
-	
+
     } else {
 
 	$element = nbt_get_form_element_for_elementid ( $elementid );
 
 	$suffix = $element['columnname'];
-	
+
     }
 
     try {
@@ -3305,9 +3311,9 @@ function nbt_copy_to_master ( $formid, $refsetid, $reference, $row, $extrid ) {
 	    if (is_null ($value)) {
 		$value = "";
 	    }
-	    
+
 	}
-	
+
     }
 
     catch (PDOException $e) {
@@ -3381,7 +3387,7 @@ function nbt_copy_multi_select_to_master ( $formid, $refsetid, $reference, $extr
 	    if (is_null($value)) {
 
 		$value = 0;
-		
+
 	    }
 
 	}
@@ -3497,48 +3503,60 @@ function sigUseDoubleCitation ( $id, $drugid, $reference, $section, $citation, $
 
 }
 
-function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "whenassigned", $sortdirection = "DESC" ) {
+function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "whenassigned", $sortdirection = "DESC", $form_type = "", $gp_ft=FALSE ) {
 
     if ($sortdirection == "ASC") {
-	$sd = " ASC;";
+	     $sd = " ASC;";
     } else {
-	$sd = " DESC;";
+	     $sd = " DESC;";
     }
 
     switch ($sort) {
-	case "referenceid":
-	    $sortquery = "ORDER BY `referenceid`" . $sd;
-	    break;
-	case "formid":
-	    $sortquery = "ORDER BY `formid`" . $sd;
-	    break;
-	case "whenassigned":
-	default:
-	    $sortquery = "ORDER BY `whenassigned`" . $sd;
-	    break;
+  	case "referenceid":
+  	    $sortquery = "ORDER BY `referenceid`" . $sd;
+  	    break;
+  	case "formid":
+  	    $sortquery = "ORDER BY `forms`.`id`" . $sd;
+  	    break;
+  	case "whenassigned":
+  	default:
+  	    $sortquery = "ORDER BY `whenassigned`" . $sd;
+  	    break;
+    }
+
+    if ($form_type != "") { // If it's only showing extraction forms
+      $ext_form = "`forms`.`formtype` = '" . $form_type . "' AND ";
+    } else {
+      $ext_form = "";
+    }
+
+    if ($gp_ft) { // Group by form type
+      $gpft = " GROUP BY `formtype` ";
+    } else {
+      $gpft = "";
     }
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("SELECT *, (SELECT `id` FROM `forms` WHERE `id` LIKE `formid`) as `formid`, (SELECT `name` FROM `forms` WHERE `id` LIKE `formid`) as `formname` FROM `assignments`, `referenceset_" . $refsetid . "` WHERE `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() " . $sortquery);
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$stmt = $dbh->prepare ("SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() " . $gpft . $sortquery);
 
-	$stmt->bindParam(':userid', $uid);
+    	$stmt->bindParam(':userid', $uid);
 
-	$uid = $userid;
+    	$uid = $userid;
 
-	$stmt->execute();
+    	$stmt->execute();
 
-	$result = $stmt->fetchAll();
+    	$result = $stmt->fetchAll();
 
-	$dbh = null;
+    	$dbh = null;
 
-	return $result;
+    	return $result;
 
     }
 
     catch (PDOException $e) {
-	echo $e->getMessage();
+	     echo $e->getMessage();
     }
 
 }
@@ -3584,7 +3602,7 @@ function nbt_get_final ( $formid, $refsetid, $refid, $insert = TRUE ) {
     // If it's already there, it will fail
     // Hooray for MySQL indices
 
-    if ( $insert ) {	
+    if ( $insert ) {
 
 	try {
 
@@ -3606,7 +3624,7 @@ function nbt_get_final ( $formid, $refsetid, $refid, $insert = TRUE ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     }
 
     // Now, get the row
@@ -4007,94 +4025,110 @@ function nbt_get_all_extraction_forms () {
 
 }
 
-function nbt_new_extraction_form ( $formname = "New extraction form", $description = "Add a useful description of your new form here.", $version = "1.0", $author = NULL, $affiliation = NULL, $project = NULL, $protocol = NULL, $projectdate = NULL) {
+function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New extraction form", $description = "Add a useful description of your new form here.", $version = "1.0", $author = NULL, $affiliation = NULL, $project = NULL, $protocol = NULL, $projectdate = NULL ) {
 
     if ( is_null ($projectdate) ) {
-	$projectdate=date("Y-m-d");
+	     $projectdate=date("Y-m-d");
     }
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO forms (name, description, version, author, affiliation, project, protocol, projectdate) VALUES (:name, :description, :version, :author, :affiliation, :project, :protocol, :projectdate);");
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$stmt = $dbh->prepare ("INSERT INTO forms (formtype, name, description, version, author, affiliation, project, protocol, projectdate) VALUES (:formtype, :name, :description, :version, :author, :affiliation, :project, :protocol, :projectdate);");
 
-	$stmt->bindParam(':name', $name);
-	$stmt->bindParam(':description', $desc);
-	$stmt->bindParam(':version', $vers);
-	$stmt->bindParam(':author', $auth);
-	$stmt->bindParam(':affiliation', $affi);
-	$stmt->bindParam(':project', $proj);
-	$stmt->bindParam(':protocol', $prot);
-	$stmt->bindParam(':projectdate', $prda);
+      $stmt->bindParam(':formtype', $ft);
+      $stmt->bindParam(':name', $name);
+    	$stmt->bindParam(':description', $desc);
+    	$stmt->bindParam(':version', $vers);
+    	$stmt->bindParam(':author', $auth);
+    	$stmt->bindParam(':affiliation', $affi);
+    	$stmt->bindParam(':project', $proj);
+    	$stmt->bindParam(':protocol', $prot);
+    	$stmt->bindParam(':projectdate', $prda);
 
-	$name = $formname;
-	$desc = $description;
-	$vers = $version;
-	$auth = $author;
-	$affi = $affiliation;
-	$proj = $project;
-	$prot = $protocol;
-	$prda = $projectdate;
+      $ft = $formtype;
+    	$name = $formname;
+    	$desc = $description;
+    	$vers = $version;
+    	$auth = $author;
+    	$affi = $affiliation;
+    	$proj = $project;
+    	$prot = $protocol;
+    	$prda = $projectdate;
 
-	$stmt->execute();
+    	$stmt->execute();
 
-	$stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+    	$stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
 
-	$stmt2->execute();
+    	$stmt2->execute();
 
-	$result = $stmt2->fetchAll();
+    	$result = $stmt2->fetchAll();
 
-	$dbh = null;
+    	$dbh = null;
 
-	foreach ( $result as $row ) {
+    	foreach ( $result as $row ) {
 
-	    $newid = $row['newid'];
+    	    $newid = $row['newid'];
 
-	}
+    	}
 
     }
 
     catch (PDOException $e) {
-	echo $e->getMessage();
+	     echo $e->getMessage();
     }
 
     // Make a new extraction table with the name `extraction_newid`
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("CREATE TABLE `extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `timestamp_finished` timestamp NULL DEFAULT NULL, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `status` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`,`userid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$stmt = $dbh->prepare("CREATE TABLE `extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `timestamp_finished` timestamp NULL DEFAULT NULL, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `status` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`,`userid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
-	if ($stmt->execute()) {
+    	if ($stmt->execute()) {
 
-	    $dbh = null;
+    	    $dbh = null;
 
-	}
+    	}
 
     }
 
     catch (PDOException $e) {
-	echo $e->getMessage();
+	     echo $e->getMessage();
+    }
+
+    // If it's a screening form, add the requisite form elements
+
+    if ($formtype == "screening") {
+
+      $include_element_id = nbt_add_single_select($newid, 0, "Include", "include");
+      nbt_add_single_select_option($include_element_id, "Include", "1");
+      nbt_add_single_select_option($include_element_id, "Exclude", "0");
+
+      $exclude_reason_id = nbt_add_single_select($newid, $include_element_id, "Reason for exclusion", "exclusion_reason");
+
+      nbt_add_text_area_field($newid, $exclude_reason_id, "Extractor notes", "notes");
+
     }
 
     // Make the final table
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("CREATE TABLE `m_extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `timestamp_finished` timestamp NULL DEFAULT NULL, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `status` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$stmt = $dbh->prepare("CREATE TABLE `m_extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `timestamp_finished` timestamp NULL DEFAULT NULL, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `status` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
-	if ($stmt->execute()) {
+    	if ($stmt->execute()) {
 
-	    $dbh = null;
+    	    $dbh = null;
 
-	    return $newid;
+    	    return $newid;
 
-	}
+    	}
 
     }
 
     catch (PDOException $e) {
-	echo $e->getMessage();
+	     echo $e->getMessage();
     }
 
 }
@@ -4221,13 +4255,13 @@ function check_for_forms_column ($columnname) {
 	} else {
 	    return FALSE;
 	}
-	
+
     }
 
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function check_for_referencesets_column ($columnname) {
@@ -4252,19 +4286,19 @@ function check_for_referencesets_column ($columnname) {
 	} else {
 	    return FALSE;
 	}
-	
+
     }
 
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_change_form_metadata ( $formid, $column, $newval ) {
 
     if ( check_for_forms_column ($column) ) {
-	
+
 	try {
 
 	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -4289,7 +4323,7 @@ function nbt_change_form_metadata ( $formid, $column, $newval ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     }
 
 }
@@ -4396,7 +4430,7 @@ function nbt_get_next_eid_in_form ( $formid ) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_get_toggles_for_formid ( $formid ) {
@@ -4737,7 +4771,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 	    $counter ++;
 
 	}
-	
+
     }
 
     // then insert a new element into the form elements table
@@ -5209,7 +5243,7 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
 	    $counter ++;
 
 	}
-	
+
     }
 
     // then insert a new element into the form elements table
@@ -5807,7 +5841,7 @@ function nbt_delete_form_element ( $elementid ) {
 	    $dbh = null;
 
 	}
-	
+
     }
 
     catch (PDOException $e) {
@@ -5867,9 +5901,9 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
 	case "tags":
 	    $dbtype = "TEXT DEFAULT NULL";
 	    break;
-	    
+
     }
-    
+
     // Start a counter to see if everything saved properly
 
     $itworked = 0;
@@ -5981,7 +6015,7 @@ function nbt_change_regex ( $elementid, $newregex ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     } else {
 
 	try {
@@ -6008,9 +6042,9 @@ function nbt_change_regex ( $elementid, $newregex ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     }
-    
+
 }
 
 function nbt_change_tags_prompts ( $elementid, $newtagprompts ) {
@@ -6039,7 +6073,7 @@ function nbt_change_tags_prompts ( $elementid, $newtagprompts ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     } else {
 
 	try {
@@ -6066,9 +6100,9 @@ function nbt_change_tags_prompts ( $elementid, $newtagprompts ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     }
-    
+
 }
 
 function nbt_change_sub_tags_prompts ( $subelementid, $newtagprompts ) {
@@ -6097,7 +6131,7 @@ function nbt_change_sub_tags_prompts ( $subelementid, $newtagprompts ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     } else {
 
 	try {
@@ -6124,9 +6158,9 @@ function nbt_change_sub_tags_prompts ( $subelementid, $newtagprompts ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     }
-    
+
 }
 
 function nbt_change_subelement_regex ( $subelementid, $newregex ) {
@@ -6155,7 +6189,7 @@ function nbt_change_subelement_regex ( $subelementid, $newregex ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     } else {
 
 	try {
@@ -6182,9 +6216,9 @@ function nbt_change_subelement_regex ( $subelementid, $newregex ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     }
-    
+
 }
 
 function nbt_refdata_change_column_name ( $elementid, $newcolumnname ) {
@@ -6351,7 +6385,7 @@ function nbt_update_element_sortorder ( $elementid, $sortorder ) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_update_subelement_sortorder ( $subelementid, $sortorder ) {
@@ -6378,7 +6412,7 @@ function nbt_update_subelement_sortorder ( $subelementid, $sortorder ) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_switch_elements_sortorder ( $element1id, $element2id ) {
@@ -6999,7 +7033,7 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
 	    $counter ++;
 
 	}
-	
+
     }
 
     // then insert a new element into the form elements table
@@ -7042,7 +7076,7 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
 		$newid = $row['newid'];
 	    }
 	}
-	
+
     }
 
     catch (PDOException $e) {
@@ -7269,7 +7303,7 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
 
 	$columnname = $element['columnname'] . "_" . intval($counter - 1);
 	$dbname = $counter - 1;
-	
+
     } else {
 
 	$columnname = $element['columnname'] . "_" . $dbname;
@@ -7618,7 +7652,7 @@ function nbt_add_multi_select ( $formid, $elementid, $displayname = NULL, $colum
     if ( is_null ($columnname) ) {
 	$columnname = "multi_select";
     }
-    
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -8221,7 +8255,7 @@ function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", 
 		$newid = $row['newid']; // This is the auto_increment-generated ID
 
 	    }
-	    
+
 	}
 
     }
@@ -8612,7 +8646,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
     } else {
 
 	$columnname = $dbname;
-	
+
     }
 
     // then insert a new option into the tabledatacolumns table
@@ -9531,7 +9565,7 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
 
 	}
     }
-    
+
     // then insert a new element into the form elements table
 
     try {
@@ -9773,7 +9807,7 @@ function nbt_add_citation_selector ( $formid, $elementid, $displayname = NULL, $
 
 	$suffix = $counter;
     }
-    
+
     // then make a new table
 
     try {
@@ -9950,9 +9984,9 @@ function nbt_change_citation_selector_suffix ( $elementid, $newsuffix ) {
 	    }
 
 	}
-	
+
     }
-    
+
     if ( $itworked == 3 ) {
 
 	echo "Changes saved";
@@ -10080,7 +10114,7 @@ function nbt_add_citation_property ( $elementid, $displayname = NULL, $dbname = 
 	    }
 
 	}
-	
+
     }
 
     // then insert a new option into the citationscolumns table
@@ -10962,7 +10996,7 @@ function nbt_update_final ( $formid, $refsetid, $refid, $column, $newvalue ) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_update_extraction_mtable_data ($tableid, $rowid, $column, $newvalue, $sub_table = FALSE) {
@@ -11366,7 +11400,7 @@ function nbt_echo_display_name_and_codebook ( $displayname, $codebook ) {
     echo $displayname;
 
     if ( $codebook != "" ) {
-	
+
 	$codebook = str_replace ("\n", "<br>", $codebook);
 
 	echo ' <a href="#" onclick="event.preventDefault();$(this).parent().next(\'.nbtCodebook\').slideToggle(100);">(?)</a></p>';
@@ -11554,7 +11588,7 @@ function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suf
     }
 
     return $newid;
-    
+
 }
 
 function nbt_get_sub_extraction_elements_for_elementid ( $elementid ) {
@@ -11728,7 +11762,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
     // find a good name for the new column
 
     if ( is_null ($dbname) ) {
-	
+
 	$foundgoodcolumn = FALSE;
 
 	$counter = 1;
@@ -11761,7 +11795,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 	    $counter ++;
 
 	}
-	
+
     }
 
 
@@ -11885,7 +11919,7 @@ function nbt_add_sub_ref_data ( $elementid, $displayname = NULL, $dbname = NULL,
     // find a good name for the new column
 
     if ( is_null ($dbname) ) {
-	
+
 	$foundgoodcolumn = FALSE;
 
 	$counter = 1;
@@ -11918,7 +11952,7 @@ function nbt_add_sub_ref_data ( $elementid, $displayname = NULL, $dbname = NULL,
 	    $counter ++;
 
 	}
-	
+
     }
 
 
@@ -12042,7 +12076,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
     // find a good name for the new column
 
     if ( is_null ($dbname) ) {
-	
+
 	$foundgoodcolumn = FALSE;
 
 	$counter = 1;
@@ -12075,7 +12109,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
 	    $counter ++;
 
 	}
-	
+
     }
 
 
@@ -12199,7 +12233,7 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
     // find a good name for the new column
 
     if ( is_null ($dbname) ) {
-	
+
 	$foundgoodcolumn = FALSE;
 
 	$counter = 1;
@@ -12232,7 +12266,7 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
 	    $counter ++;
 
 	}
-	
+
     }
 
 
@@ -12527,7 +12561,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
 	case "reference_data":
 	    $dbtype = "TEXT DEFAULT NULL";
 	    break;
-	    
+
     }
 
     // Start a counter to see if everything saved properly
@@ -12974,7 +13008,7 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
 		$newid = $row['newid']; // This is the auto_increment-generated ID
 
 	    }
-	    
+
 	}
 
     }
@@ -13110,7 +13144,7 @@ function nbt_add_sub_single_select_option ( $subelementid, $displayname = NULL, 
 	    $newid = $result[0]['newid'];
 
 	    return $newid;
-	    
+
 	}
 
 	$dbh = null;
@@ -13296,7 +13330,7 @@ function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = N
 	    $result = $stmt2->fetchAll();
 
 	    $newid = $result[0]['newid'];
-	    
+
 	}
 
     }
@@ -13461,7 +13495,7 @@ function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $c
 		$newid = $row['newid']; // This is the auto_increment-generated ID
 
 	    }
-	    
+
 	}
 
     }
@@ -13644,7 +13678,7 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
 		    $columnname = $subelement['dbname'] . "_" . $counter;
 
 		    $dbname = $counter;
-		    
+
 		    $foundgoodcolumn = TRUE;
 
 		}
@@ -13691,7 +13725,7 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
 	    $result = $stmt2->fetchAll();
 
 	    $newid = $result[0]['newid'];
-	    
+
 	}
 
     }
@@ -14234,7 +14268,7 @@ function nbt_insert_imported_extraction ( $formid, $refsetid, $usercolumn, $user
 	foreach ($selected_elements as $sele => $colno) {
 
 	    $dbcols[] = $sele;
-	    
+
 	}
 
 	$sqlcols = "`" . implode ( "`, `", $dbcols ) . "`";
@@ -14252,7 +14286,7 @@ function nbt_insert_imported_extraction ( $formid, $refsetid, $usercolumn, $user
 	    $colvars = [];
 
 	    foreach ( $selected_elements as $sele => $colno) {
-		
+
 		$stmt->bindParam(':' . $sele, $colvars[$counter]);
 
 		// This removes quotes if they're at the beginning and the end of a field
@@ -14268,7 +14302,7 @@ function nbt_insert_imported_extraction ( $formid, $refsetid, $usercolumn, $user
 		$colvars[$counter] = $values[$colno];
 
 		$counter++;
-		
+
 	    }
 
 	    $stmt->bindParam(':rsid', $rsid);
@@ -14308,9 +14342,9 @@ function nbt_insert_imported_extraction ( $formid, $refsetid, $usercolumn, $user
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     }
-    
+
 }
 
 function nbt_insert_imported_sub_extraction ( $elementid, $refsetid, $usercolumn, $user, $referenceid_column, $selected_elements, $row, $separator, $rowcount ) {
@@ -14324,7 +14358,7 @@ function nbt_insert_imported_sub_extraction ( $elementid, $refsetid, $usercolumn
 	foreach ($selected_elements as $sele => $colno) {
 
 	    $dbcols[] = $sele;
-	    
+
 	}
 
 	$sqlcols = "`" . implode ( "`, `", $dbcols ) . "`";
@@ -14342,7 +14376,7 @@ function nbt_insert_imported_sub_extraction ( $elementid, $refsetid, $usercolumn
 	    $colvars = [];
 
 	    foreach ( $selected_elements as $sele => $colno) {
-		
+
 		$stmt->bindParam(':' . $sele, $colvars[$counter]);
 
 		// This removes quotes if they're at the beginning and the end of a field
@@ -14358,7 +14392,7 @@ function nbt_insert_imported_sub_extraction ( $elementid, $refsetid, $usercolumn
 		$colvars[$counter] = $values[$colno];
 
 		$counter++;
-		
+
 	    }
 
 	    $stmt->bindParam(':rsid', $rsid);
@@ -14397,9 +14431,9 @@ function nbt_insert_imported_sub_extraction ( $elementid, $refsetid, $usercolumn
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     }
-    
+
 }
 
 function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $usercolumn, $user, $referenceid_column, $selected_columns, $row, $separator, $sub_extraction = FALSE, $subextractionid_column = NULL ) {
@@ -14411,7 +14445,7 @@ function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $userc
 	foreach ($selected_columns as $scol => $colno) {
 
 	    $dbcols[] = $scol;
-	    
+
 	}
 
 	$sqlcols = "`" . implode ( "`, `", $dbcols ) . "`";
@@ -14421,17 +14455,17 @@ function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $userc
 	$values = explode($separator, $row);
 
 	if ( $sub_extraction ) {
-	    
+
 	    $subelement = nbt_get_sub_element_for_subelementid ( $elementid );
 
 	    $suffix = $subelement['dbname'];
-	    
+
 	} else {
 
 	    $element = nbt_get_form_element_for_elementid ($elementid);
 
 	    $suffix = $element['columnname'];
-	    
+
 	}
 
 	try {
@@ -14443,12 +14477,12 @@ function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $userc
 	    } else {
 		$stmt = $dbh->prepare("INSERT INTO `tabledata_" . $suffix . "` (" . $sqlcols . ", `refsetid`, `referenceid`, `userid`) VALUES (" . $sqlparams . ", :rsid, :rid, :uid)");
 	    }
-	    
+
 	    $counter = 0;
 	    $colvars = [];
 
 	    foreach ( $selected_columns as $scol => $colno) {
-		
+
 		$stmt->bindParam(':' . $scol, $colvars[$counter]);
 
 		// This removes quotes if they're at the beginning and the end of a field
@@ -14464,7 +14498,7 @@ function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $userc
 		$colvars[$counter] = $values[$colno];
 
 		$counter++;
-		
+
 	    }
 
 	    $stmt->bindParam(':rsid', $rsid);
@@ -14505,21 +14539,17 @@ function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $userc
 
 	catch (PDOException $e) {
 	    echo $e->getMessage();
-	} 
-	
+	}
+
     }
-    
+
 }
 
-function nbt_insert_row_into_columns ( $refset, $columns, $row, $separator ) {
-
-    if ( ! ctype_space($row) && $row != '' ) {
+function nbt_insert_row_into_columns ( $refset, $columns, $values ) {
 
 	$sqlcols = "`" . implode ( "`, `", $columns ) . "`";
 
 	$sqlparams = ":" . implode ( ", :", $columns );
-
-	$values = explode ($separator, $row);
 
 	try {
 
@@ -14531,33 +14561,33 @@ function nbt_insert_row_into_columns ( $refset, $columns, $row, $separator ) {
 
 	    foreach ( $columns as $column ) {
 
-		$stmt->bindParam(':' . $column, $colvars[$counter]);
+        $stmt->bindParam(':' . $column, $colvars[$counter]);
 
-		// This removes quotes if they're at the beginning and the end of a field
+        // This removes quotes if they're at the beginning and the end of a field
 
-		$length = strlen ($values[$counter]);
+        $length = strlen ($values[$counter]);
 
-		if ( ( substr ($values[$counter], $length-1, 1) == "\"" ) && ( substr ($values[$counter], 0, 1) == "\"" ) ) {
+        if ( ( substr ($values[$counter], $length-1, 1) == "\"" ) && ( substr ($values[$counter], 0, 1) == "\"" ) ) {
 
-		    $values[$counter] = substr ( $values[$counter], 1, $length-2 );
+            $values[$counter] = substr ( $values[$counter], 1, $length-2 );
 
-		}
+        }
 
-		$colvars[$counter] = $values[$counter];
+        $colvars[$counter] = $values[$counter];
 
-		$counter++;
+        $counter++;
 
-	    }
+      }
 
 	    if ($stmt->execute()) {
 
-		$dbh = null;
-		return TRUE;
+    		$dbh = null;
+    		return TRUE;
 
 	    } else {
 
-		$dbh = null;
-		return FALSE;
+    		$dbh = null;
+    		return FALSE;
 	    }
 
 	}
@@ -14566,7 +14596,7 @@ function nbt_insert_row_into_columns ( $refset, $columns, $row, $separator ) {
 	    echo $e->getMessage();
 	}
 
-    }
+
 }
 
 function nbt_delete_refset ( $refsetid ) {
@@ -14624,9 +14654,9 @@ function nbt_delete_ref ( $refsetid, $refid ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     }
-    
+
 }
 
 function nbtQueryReferenceSet ( $refsetid, $query ) {
@@ -15062,7 +15092,7 @@ function nbt_get_setting ( $key ) {
 function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     // Already Bobby Tables proof
-    
+
     // this element is the one immediately before where we want to insert a new element
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
@@ -15257,7 +15287,7 @@ function nbt_set_master_status ( $formid, $masterid, $newstatus ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     }
 
     // And do this in any case
@@ -15919,11 +15949,11 @@ function nbt_get_unique_values_for_refset_column ( $refsetid, $column ) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_get_referenceids_for_refset_column_and_value ( $refsetid, $column, $value ) {
-    
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -15946,13 +15976,13 @@ function nbt_get_referenceids_for_refset_column_and_value ( $refsetid, $column, 
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $comp, $form ) {
 
     if ( $form != "ns") {
-	
+
 	$refsetid = intval($refsetid);
 	$k = intval($k);
 	$n = intval($n);
@@ -15980,7 +16010,7 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 	switch ( $crit ) {
 
 	    case "":
-		
+
 		try {
 
 		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -15999,7 +16029,7 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 		catch (PDOException $e) {
 		    echo $e->getMessage();
 		}
-		
+
 		break;
 
 	    case "Assigned":
@@ -16022,7 +16052,7 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 		catch (PDOException $e) {
 		    echo $e->getMessage();
 		}
-		
+
 		break;
 
 	    case "Extracted":
@@ -16045,7 +16075,7 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 		catch (PDOException $e) {
 		    echo $e->getMessage();
 		}
-		
+
 		break;
 
 	    case "Final":
@@ -16068,11 +16098,11 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 		catch (PDOException $e) {
 		    echo $e->getMessage();
 		}
-		
+
 		break;
-		
+
 	}
-	
+
     }
 
 }
@@ -16080,7 +16110,7 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 function nbt_get_k_random_referenceids_for_refset_by_user ( $refsetid, $k, $form, $yn, $user ) {
 
     if ( $form != "ns") {
-	
+
 	$refsetid = intval($refsetid);
 	$k = intval($k);
 	$form = intval($form);
@@ -16119,7 +16149,7 @@ function nbt_get_k_random_referenceids_for_refset_by_user ( $refsetid, $k, $form
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     }
 
 }
@@ -16143,11 +16173,11 @@ function nbt_get_k_random_referenceids_for_refset_by_user_and_users ( $refsetid,
 	default:
 	    $comp = "";
 	    break;
-	    
+
     }
 
     if ( $form != "ns") {
-	
+
 	$refsetid = intval($refsetid);
 	$k = intval($k);
 	$form = intval($form);
@@ -16187,7 +16217,7 @@ function nbt_get_k_random_referenceids_for_refset_by_user_and_users ( $refsetid,
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
-	
+
     }
 
 }
@@ -16206,7 +16236,7 @@ function get_incomplete_assignments_for_form_and_refset ( $formid, $refsetid ) {
 
 	$fid = $formid;
 	$rsid = $refsetid;
-	
+
 	$stmt->execute();
 
 	$result = $stmt->fetchAll();
@@ -16220,7 +16250,7 @@ function get_incomplete_assignments_for_form_and_refset ( $formid, $refsetid ) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_get_times_for_extraction ( $formid, $refsetid, $refid, $userid ) {
@@ -16259,7 +16289,7 @@ function nbt_get_times_for_extraction ( $formid, $refsetid, $refid, $userid ) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_restart_extraction_timer ( $formid, $refsetid, $refid, $userid ) {
@@ -16294,7 +16324,7 @@ function nbt_restart_extraction_timer ( $formid, $refsetid, $refid, $userid ) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_clear_finished_extraction_timer ( $formid, $refsetid, $refid, $userid ) {
@@ -16329,7 +16359,7 @@ function nbt_clear_finished_extraction_timer ( $formid, $refsetid, $refid, $user
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_table_exists ($tablename) {
@@ -16360,7 +16390,7 @@ function nbt_table_exists ($tablename) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_remove_special ($original) {
@@ -16386,7 +16416,7 @@ function nbt_toggle_element_startup_visible ($elementid) {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `formelements` SET `startup_visible` = IF(`startup_visible`=1, 0, 1) WHERE `id` = :eid LIMIT 1;");
-	
+
 	$stmt->bindParam(':eid', $eid);
 
 	$eid = $elementid;
@@ -16404,7 +16434,7 @@ function nbt_toggle_element_startup_visible ($elementid) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_toggle_subelement_startup_visible ($subelementid) {
@@ -16413,7 +16443,7 @@ function nbt_toggle_subelement_startup_visible ($subelementid) {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `subelements` SET `startup_visible` = IF(`startup_visible`=1, 0, 1) WHERE `id` = :seid LIMIT 1;");
-	
+
 	$stmt->bindParam(':seid', $seid);
 
 	$seid = $subelementid;
@@ -16431,7 +16461,7 @@ function nbt_toggle_subelement_startup_visible ($subelementid) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_add_conditional_display_event ($elementid) {
@@ -16440,7 +16470,7 @@ function nbt_add_conditional_display_event ($elementid) {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("INSERT INTO `conditional_display` (`elementid`) VALUES (:eid);");
-	
+
 	$stmt->bindParam(':eid', $eid);
 
 	$eid = $elementid;
@@ -16460,7 +16490,7 @@ function nbt_add_conditional_display_event ($elementid) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_copy_conditional_display_event ($elementid, $subelementid, $triggerelementid, $triggeroption, $type) {
@@ -16469,7 +16499,7 @@ function nbt_copy_conditional_display_event ($elementid, $subelementid, $trigger
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("INSERT INTO `conditional_display` (`elementid`, `subelementid`, `trigger_element`, `trigger_option`, `type`) VALUES (:eid, :seid, :teid, :to, :ty);");
-	
+
 	$stmt->bindParam(':eid', $eid);
 	$stmt->bindParam(':seid', $seid);
 	$stmt->bindParam(':teid', $teid);
@@ -16497,7 +16527,7 @@ function nbt_copy_conditional_display_event ($elementid, $subelementid, $trigger
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_add_sub_conditional_display_event ($subelementid) {
@@ -16506,7 +16536,7 @@ function nbt_add_sub_conditional_display_event ($subelementid) {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("INSERT INTO `conditional_display` (`subelementid`) VALUES (:seid);");
-	
+
 	$stmt->bindParam(':seid', $seid);
 
 	$seid = $subelementid;
@@ -16526,7 +16556,7 @@ function nbt_add_sub_conditional_display_event ($subelementid) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_remove_conditional_display_event ($eventid) {
@@ -16535,7 +16565,7 @@ function nbt_remove_conditional_display_event ($eventid) {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `conditional_display` WHERE `id` = :eid LIMIT 1;");
-	
+
 	$stmt->bindParam(':eid', $eid);
 
 	$eid = $eventid;
@@ -16555,7 +16585,7 @@ function nbt_remove_conditional_display_event ($eventid) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_get_conditional_events ($elementid) {
@@ -16564,7 +16594,7 @@ function nbt_get_conditional_events ($elementid) {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `conditional_display` WHERE `elementid` = :eid;");
-	
+
 	$stmt->bindParam(':eid', $eid);
 
 	$eid = $elementid;
@@ -16585,8 +16615,8 @@ function nbt_get_conditional_events ($elementid) {
 
     catch (PDOException $e) {
 	echo $e->getMessage();
-    }    
-    
+    }
+
 }
 
 function nbt_get_sub_conditional_events ($subelementid) {
@@ -16595,7 +16625,7 @@ function nbt_get_sub_conditional_events ($subelementid) {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `conditional_display` WHERE `subelementid` = :seid;");
-	
+
 	$stmt->bindParam(':seid', $seid);
 
 	$seid = $subelementid;
@@ -16616,8 +16646,8 @@ function nbt_get_sub_conditional_events ($subelementid) {
 
     catch (PDOException $e) {
 	echo $e->getMessage();
-    }    
-    
+    }
+
 }
 
 function nbt_get_conditional_events_for_formid ($formid) {
@@ -16626,7 +16656,7 @@ function nbt_get_conditional_events_for_formid ($formid) {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `conditional_display` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid) OR `subelementid` IN (SELECT `id` FROM `subelements` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid));");
-	
+
 	$stmt->bindParam(':fid', $fid);
 
 	$fid = $formid;
@@ -16647,8 +16677,8 @@ function nbt_get_conditional_events_for_formid ($formid) {
 
     catch (PDOException $e) {
 	echo $e->getMessage();
-    }    
-    
+    }
+
 }
 
 function nbt_update_conditional_display_trigger_element ($eventid, $trigger_element_id) {
@@ -16661,7 +16691,7 @@ function nbt_update_conditional_display_trigger_element ($eventid, $trigger_elem
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `conditional_display` SET `trigger_element` = :teid WHERE `id` = :eventid LIMIT 1;");
-	
+
 	$stmt->bindParam(':teid', $teid);
 	$stmt->bindParam(':eventid', $eid);
 
@@ -16669,13 +16699,13 @@ function nbt_update_conditional_display_trigger_element ($eventid, $trigger_elem
 	$eid = $eventid;
 
 	if ( $stmt->execute() ) {
-	    
+
 	    return TRUE;
 
 	} else {
 
 	    return FALSE;
-	    
+
 	}
 
     }
@@ -16683,7 +16713,7 @@ function nbt_update_conditional_display_trigger_element ($eventid, $trigger_elem
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_update_conditional_display_trigger_option ($eventid, $trigger_option_id) {
@@ -16696,7 +16726,7 @@ function nbt_update_conditional_display_trigger_option ($eventid, $trigger_optio
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `conditional_display` SET `trigger_option` = :topt WHERE `id` = :eventid LIMIT 1;");
-	
+
 	$stmt->bindParam(':topt', $topt);
 	$stmt->bindParam(':eventid', $eid);
 
@@ -16714,7 +16744,7 @@ function nbt_update_conditional_display_trigger_option ($eventid, $trigger_optio
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 
@@ -16724,7 +16754,7 @@ function nbt_update_conditional_display_type ($eventid, $cd_type) {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `conditional_display` SET `type` = :type WHERE `id` = :eventid LIMIT 1;");
-	
+
 	$stmt->bindParam(':type', $type);
 	$stmt->bindParam(':eventid', $eid);
 
@@ -16742,7 +16772,7 @@ function nbt_update_conditional_display_type ($eventid, $cd_type) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_update_conditional_display_logic ($elementid, $operator) {
@@ -16751,7 +16781,7 @@ function nbt_update_conditional_display_logic ($elementid, $operator) {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `formelements` SET `conditional_logical_operator` = :lopt WHERE `id` = :elementid LIMIT 1;");
-	
+
 	$stmt->bindParam(':lopt', $lopt);
 	$stmt->bindParam(':elementid', $ele);
 
@@ -16769,7 +16799,7 @@ function nbt_update_conditional_display_logic ($elementid, $operator) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_update_sub_conditional_display_logic ($subelementid, $operator) {
@@ -16778,7 +16808,7 @@ function nbt_update_sub_conditional_display_logic ($subelementid, $operator) {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `subelements` SET `conditional_logical_operator` = :lopt WHERE `id` = :subelementid LIMIT 1;");
-	
+
 	$stmt->bindParam(':lopt', $lopt);
 	$stmt->bindParam(':subelementid', $sele);
 
@@ -16796,7 +16826,7 @@ function nbt_update_sub_conditional_display_logic ($subelementid, $operator) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_update_conditional_display_destructive_hiding ($elementid, $destructive_hiding) {
@@ -16805,7 +16835,7 @@ function nbt_update_conditional_display_destructive_hiding ($elementid, $destruc
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `formelements` SET `destructive_hiding` = :dh WHERE `id` = :elementid LIMIT 1;");
-	
+
 	$stmt->bindParam(':dh', $dh);
 	$stmt->bindParam(':elementid', $ele);
 
@@ -16823,7 +16853,7 @@ function nbt_update_conditional_display_destructive_hiding ($elementid, $destruc
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_update_sub_conditional_display_destructive_hiding ($subelementid, $destructive_hiding) {
@@ -16832,7 +16862,7 @@ function nbt_update_sub_conditional_display_destructive_hiding ($subelementid, $
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `subelements` SET `destructive_hiding` = :dh WHERE `id` = :seid LIMIT 1;");
-	
+
 	$stmt->bindParam(':dh', $dh);
 	$stmt->bindParam(':seid', $seid);
 
@@ -16850,7 +16880,7 @@ function nbt_update_sub_conditional_display_destructive_hiding ($subelementid, $
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_get_subextraction_elements_for_subextraction_dbname ($dbname) {
@@ -16863,7 +16893,7 @@ function nbt_get_subextraction_elements_for_subextraction_dbname ($dbname) {
 	$stmt->bindParam(':dbname', $dn);
 
 	$dn = $dbname;
-	
+
 	if ($stmt->execute()) {
 
 	    $result = $stmt->fetchAll();
@@ -16906,7 +16936,7 @@ function nbt_assignments_for_export ($refset) {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT `whenassigned`, `referenceset_" . $refsetid . "`.`id` as `referenceid`, `referenceset_" . $refsetid . "`.`" . $title_col_name . "` as `title`, `users`.`id` as `userid`, `username`, `forms`.`id` as `formid`, `forms`.`name` as `form` FROM `referenceset_" . $refsetid . "`, `assignments`, `users`, `forms` WHERE `assignments`.`refsetid` = " . $refsetid . " AND `referenceset_" . $refsetid . "`.`id` = `assignments`.`referenceid` AND `users`.`id` = `assignments`.`userid` AND `forms`.`id` = `assignments`.`formid`;");
-	
+
 	if ($stmt->execute()) {
 
 	    $result = $stmt->fetchAll();
@@ -16932,7 +16962,7 @@ function nbt_assignments_for_export ($refset) {
 }
 
 function nbt_get_completions_for_assignment_export ($refsetid) {
-    
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -16941,7 +16971,7 @@ function nbt_get_completions_for_assignment_export ($refsetid) {
 	$stmt->bindParam(':rsid', $rsid);
 
 	$rsid = $refsetid;
-	
+
 	if ($stmt->execute()) {
 
 	    $forms = $stmt->fetchAll();
@@ -16967,7 +16997,7 @@ function nbt_get_completions_for_assignment_export ($refsetid) {
     foreach ($forms as $form) {
 
 	$fid = $form['formid'];
-	  
+
 	try {
 
 	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -16976,7 +17006,7 @@ function nbt_get_completions_for_assignment_export ($refsetid) {
 	    $stmt->bindParam(':rsid', $rsid);
 
 	    $rsid = $refsetid;
-	    
+
 	    if ($stmt->execute()) {
 
 		$form_completions = $stmt->fetchAll();
@@ -16998,7 +17028,7 @@ function nbt_get_completions_for_assignment_export ($refsetid) {
 	}
 
 	$completions = array_merge($completions, $form_completions);
-	
+
     }
 
     return $completions;
@@ -17011,7 +17041,7 @@ function nbt_new_file_upload ($filename, $userid) {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("INSERT INTO `uploads` (`userid`, `filename`) VALUES (:uid, :fn);");
-	
+
 	$stmt->bindParam(':uid', $uid);
 	$stmt->bindParam(':fn', $fn);
 
@@ -17019,11 +17049,11 @@ function nbt_new_file_upload ($filename, $userid) {
 	$fn = $filename;
 
 	if ( $stmt->execute() ) {
-	    
+
 	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
 	    $stmt2->execute();
 	    $result = $stmt2->fetchAll();
-	    
+
 	    return $result[0]['newid'];
 
 	} else {
@@ -17037,7 +17067,7 @@ function nbt_new_file_upload ($filename, $userid) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
-    
+
 }
 
 function nbt_get_all_uploads () {
@@ -17067,13 +17097,13 @@ function nbt_get_all_uploads () {
 
 }
 
-function nbt_all_files_in_uploads_dir () {    
+function nbt_all_files_in_uploads_dir () {
     // Will only return files that don't start with `.`
-    
+
     $file_scan = scandir ( ABS_PATH . "uploads/files/" );
 
     $files = [];
-    
+
     foreach ($file_scan as $file) {
 	if (substr($file, 0, 1) != ".") {
 	    $files[] = $file;
@@ -17081,7 +17111,7 @@ function nbt_all_files_in_uploads_dir () {
     }
 
     return $files;
-    
+
 }
 
 function nbt_delete_uploaded_file ($fileid) {
@@ -17096,7 +17126,7 @@ function nbt_delete_uploaded_file ($fileid) {
 	$stmt->bindParam(':upid', $upid1);
 
 	$upid1 = $fileid;
-	
+
 	if ( $stmt->execute() ) {
 
 	    $result = $stmt->fetchAll();
@@ -17109,19 +17139,19 @@ function nbt_delete_uploaded_file ($fileid) {
 
     catch (PDOException $e) {
 	echo $e->getMessage();
-    }    
+    }
 
     // Remove from database
-    
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `uploads` WHERE `id` = :upid LIMIT 1;");
-	
+
 	$stmt->bindParam(':upid', $upid2);
 
 	$upid2 = $fileid;
-	
+
 	if ( $stmt->execute() ) {
 	    $db = TRUE;
 	} else {
@@ -17145,7 +17175,7 @@ function nbt_delete_uploaded_file ($fileid) {
     // Success or failure return values
 
     $returnval = "";
-    
+
     if ($db) {
 	$returnval .= "db";
     }
@@ -17155,7 +17185,7 @@ function nbt_delete_uploaded_file ($fileid) {
     }
 
     return $returnval;
-    
+
 }
 
 ?>
