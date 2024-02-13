@@ -33,44 +33,21 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 				?><div class="nbtGreyGradient nbtContentPanel">
 				<h2>New reference set</h2><?php
 
-					$filecontent = fread ( $file, $filesize );
+				$lines = array();
 
-					$encoding = mb_detect_encoding ($filecontent, ["UTF-8"]);
+				while (($udata = fgetcsv($file, 100000, "\t")) !== FALSE) {
+          $lines[] = $udata;
+        }
 
-					if ($encoding != "UTF-8") {
-							  $filecontent = mb_convert_encoding ($filecontent, "UTF-8", "UTF-16");
-					}
-					fclose ( $file );
+				fclose ( $file );
 
-					$counter = 0;
-
-					$lines = array();
-
-					if ( count ( explode ( "\n", $filecontent ) ) > count ( explode ( "\r\n", $filecontent ) ) ) {
-
-					   $line_demarcation = "\n";
-
-					} else {
-
-					   $line_demarcation = "\r\n";
-
-					}
-
-					foreach ( explode ( $line_demarcation, $filecontent ) as $line ) {
-
-						$lines[$counter] = $line;
-
-						$counter++;
-
-					}
-
-							  $original_columns = explode ("\t", $lines[0]);
+							  $original_columns = $lines[0];
 
 							  $columns = [];
-							  
+
 							  foreach ( $original_columns as $column ) {
 							      $column = str_replace(" ", "_", $column);
-							      
+
 							      $column = preg_replace('/[^A-Za-z0-9 ]/', "_", $column);
 
 							      $column = preg_replace('/^(_)+/', '', $column);
@@ -130,7 +107,7 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 					foreach ( $lines as $line ) {
 
-						if ( nbt_insert_row_into_columns ( $refsetid, $columns, $line, "\t" ) ) {
+						if ( nbt_insert_row_into_columns ( $refsetid, $columns, $line ) ) {
 
 							$countrows++;
 

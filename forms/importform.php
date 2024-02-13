@@ -10,16 +10,16 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	    include ( ABS_PATH . "header.php" );
 	    include ( ABS_PATH . "error.php" );
-	    
+
 	} else {
 
 	    $nbtErrorText = "Upload error: " . $_FILES["file"]["error"];
 
 	    include ( ABS_PATH . "header.php" );
 	    include ( ABS_PATH . "error.php" );
-	    
+
 	}
-	
+
     } else { // No error on upload
 
 	include ( ABS_PATH . "header.php" );
@@ -43,7 +43,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    $nbtErrorText = "Error opening file";
 
 	    include ( ABS_PATH . "error.php" );
-	    
+
 	} else { // No error opening file
 
 	    $filesize = filesize ( ABS_PATH . "forms/tmp/tmp.txt" );
@@ -53,7 +53,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		$nbtErrorText = "File is empty";
 
 		include ( ABS_PATH . "error.php" );
-		
+
 	    } else { // File is not empty
 
 		// First back up the current instance
@@ -76,6 +76,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 			// Make a new extraction form with the imported metadata
 			$newformid = nbt_new_extraction_form (
+          "extraction",
 			    $import['name'],
 			    $import['description'],
 			    $import['version'],
@@ -209,7 +210,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 							}
 						    }
 						    break;
-						    
+
 					    }
 					}
 				    }
@@ -219,7 +220,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				    nbt_add_assignment_editor ($newformid, $peid, $element['displayname'], $element['codebook'], $element['toggle']);
 				    break;
 
-				    
+
 				case "reference_data":
 				    nbt_add_reference_data ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
 				    break;
@@ -227,19 +228,27 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				case "prev_select":
 				    nbt_add_prev_select ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle']);
 				    break;
-				    
+
 			    }
-			    
+
 			}
 
 			include ( ABS_PATH . "forms/forms.php");
-			
+
 			break;
 
 		    case "2.13":
-			
+
+
+        if (isset($import['formtype'])) {
+          $ft = $import['formtype'];
+        } else {
+          $ft = "extraction";
+        }
+
 			// Make a new extraction form with the imported metadata
 			$newformid = nbt_new_extraction_form (
+          $ft,
 			    $import['name'],
 			    $import['description'],
 			    $import['version'],
@@ -264,7 +273,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 			$elementid_lup = [];
 			$subelementid_lup = [];
 			$selopt_lup = [];
-			
+
 			// Loop through all the imported elements and re-create
 			// them in the current Numbat instance individually
 			$peid = 0;
@@ -396,7 +405,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 							}
 						    }
 						    break;
-						    
+
 					    }
 					}
 				    }
@@ -406,7 +415,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				    nbt_add_assignment_editor ($newformid, $peid, $element['displayname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 				    break;
 
-				    
+
 				case "reference_data":
 				    nbt_add_reference_data ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding']);
 				    break;
@@ -418,9 +427,9 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 				case "tags":
 				    nbt_add_tags_element ($newformid, $peid, $element['displayname'], $element['columnname'], $element['codebook'], $element['toggle'], $element['startup_visible'], $element['conditional_logical_operator'], $element['destructive_hiding'], $element['tagprompts']);
 				    break;
-				    
+
 			    }
-			    
+
 			}
 
 			// echo count($conditionals) . " conditionals<br>";
@@ -428,20 +437,20 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 			foreach ($conditionals as $conditional) {
 
 			    if ( ! is_null ($conditional['elementid']) ) {
-				
+
 				if (! nbt_copy_conditional_display_event ($elementid_lup[$conditional['elementid']], NULL, $elementid_lup[$conditional['trigger_element']], $selopt_lup[$conditional['trigger_option']], $conditional['type'])) {
 				    echo "Error importing element " . $conditional['elementid'] . "<br>";
 				}
 			    }
 
 			    if ( ! is_null ($conditional['subelementid']) ) {
-				
+
 				if (! nbt_copy_conditional_display_event (NULL, $subelementid_lup[$conditional['subelementid']], $subelementid_lup[$conditional['trigger_element']], $selopt_lup[$conditional['trigger_option']], $conditional['type'])) {
 				    echo "Error importing element " . $conditional['elementid'] . "<br>";
 				}
 			    }
-			    
-			    
+
+
 			}
 
 			include ( ABS_PATH . "forms/forms.php");
@@ -451,23 +460,23 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    default:
 
 			// Trying to import from a non-supported version of Numbat
-			
+
 			$nbtErrorText = "You are trying to import a Numbat form with version " . $import['numbatversion'] . ". This Numbat instance only supports version 2.12.";
 
 			include ( ABS_PATH . "header.php" );
 			include ( ABS_PATH . "error.php" );
-			
+
 			break;
 		}
 
 	    }
-	    
+
 	}
-	
+
     }
 
 } else {
-    
+
     $nbtErrorText = "You are not logged in, or you do not have sufficient privileges to perform this action.";
 
     include ( ABS_PATH . "header.php" );

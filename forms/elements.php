@@ -1,6 +1,3 @@
-<button onclick="collapseAllFormElements();">Collapse all form elements</button>
-<button onclick="expandAllFormElements();">Expand all form elements</button>
-<p>Drag elements to re-order.</p>
 <?php
 
 $elements = nbt_get_elements_for_formid ($_GET['id']);
@@ -40,9 +37,9 @@ if ( count ( $elements ) > 0 ) {
 	<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
 	<p>Regex validation: <input type="text" id="nbtElementRegex<?php echo $element['id']; ?>" value="<?php echo $element['regex']; ?>" onblur="nbtChangeRegex(<?php echo $element['id']; ?>);" maxlength="500"></p>
 	<p class="nbtFinePrint">Will not save extractor input unless the text matches the regex supplied; leave blank for no regex validation</p>
-	
+
 	<?php
-	
+
 	break;
 
 	case "text_area":
@@ -276,7 +273,7 @@ if ( count ( $elements ) > 0 ) {
 	<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);" maxlength="50"></p>
 	<p class="nbtFinePrint">Will appear on exported spreadsheet</p>
 	<?php
-	
+
 	break;
 
 	case "timer":
@@ -377,4 +374,3 @@ if ( count ( $elements ) > 0 ) {
     }
 
     ?>
-    

@@ -53,7 +53,7 @@
 		echo "<p>Error making assignments table</p>";
 
 		$error = TRUE;
-		
+
 	    }
 
 	    $dbh = null;
@@ -117,7 +117,7 @@
 	try { // forms table
 
 	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `forms`; CREATE TABLE `forms` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `name` varchar(500) DEFAULT NULL, `description` varchar(1000) DEFAULT NULL, `version` varchar(50) DEFAULT NULL, `author` varchar(2500) DEFAULT NULL, `affiliation` varchar(2500) DEFAULT NULL, `project` varchar(2500) DEFAULT NULL, `protocol` varchar(2500) DEFAULT NULL, projectdate varchar(500) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `forms`; CREATE TABLE `forms` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `formtype` varchar(100) NOT NULL DEFAULT 'extraction', `name` varchar(500) DEFAULT NULL, `description` varchar(1000) DEFAULT NULL, `version` varchar(50) DEFAULT NULL, `author` varchar(2500) DEFAULT NULL, `affiliation` varchar(2500) DEFAULT NULL, `project` varchar(2500) DEFAULT NULL, `protocol` varchar(2500) DEFAULT NULL, projectdate varchar(500) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
 	    if ( $stmt->execute() ) {
 
@@ -331,14 +331,14 @@
 
 	    }
 
-	    $dbh = null;	    
-	    
+	    $dbh = null;
+
 	}
 
 	catch (PDOException $e) {
 
 	    echo $e->getMessage();
-	    
+
 	}
 
 	// insert admin user
@@ -462,7 +462,7 @@
 
     }
 
-    
+
 
     ?>
 </div>
@@ -482,4 +482,3 @@ if (! $error) {
 }
 
 ?>
-

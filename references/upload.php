@@ -52,49 +52,23 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	    if ( ! $filesize ) {
 
-		$nbtErrorText = "File is empty: " . $filesize;
+    		$nbtErrorText = "File is empty: " . $filesize;
 
-		include ( ABS_PATH . "error.php" );
+    		include ( ABS_PATH . "error.php" );
 
 	    } else {
 
-		$filecontent = fread ( $file, $filesize );
+        $lines = array();
 
-		$encoding = mb_detect_encoding ($filecontent, ["UTF-8"]);
+        while (($udata = fgetcsv($file, 100000, "\t")) !== FALSE) {
+          $lines[] = $udata;
+        }
 
-		if ($encoding != "UTF-8") {
-		    $filecontent = mb_convert_encoding ($filecontent, "UTF-8", "UTF-16");
-		}
-
-		fclose ( $file );
+	      fclose ( $file );
 
 		$counter = 0;
 
-		$lines = array();
-
-		if ( count ( explode ( "\n", $filecontent ) ) > count ( explode ( "\r\n", $filecontent ) ) ) {
-
-		    $line_demarcation = "\n";
-
-		} else {
-
-		    $line_demarcation = "\r\n";
-
-		}
-
-		foreach ( explode ( $line_demarcation, $filecontent ) as $line ) {
-
-		    if ( strlen (trim($line)) > 0 ) {
-
-			$lines[$counter] = $line;
-			
-		    }
-
-		    $counter++;
-
-		}
-
-		$columns = explode ("\t", $lines[0]);
+		$columns = $lines[0];
 
 		unset ($lines[0]);
 
@@ -121,25 +95,23 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    $alldates = TRUE;
 	    foreach ($lines as $line) {
 
-		// echo explode("\t", $line)[$colcount];
-
-		if ( explode("\t", $line)[$colcount] != "" ) {
+		if ( $line[$colcount] != "" ) {
 		    $allblank = FALSE;
 		}
 
-		if (!ctype_digit(explode("\t", $line)[$colcount])) {
+		if (!ctype_digit($line[$colcount])) {
 
-		    if (explode("\t", $line)[$colcount] != "NULL" && explode("\t", $line)[$colcount] != "") {
+		    if ($line[$colcount] != "NULL" && $line[$colcount] != "") {
 			$allint = FALSE;
 		    }
 		}
 
-		if ( strlen (explode("\t", $line)[$colcount]) > $maxstrcount ) {
-		    $maxstrcount = strlen(explode("\t", $line)[$colcount]);
+		if ( strlen ($line[$colcount]) > $maxstrcount ) {
+		    $maxstrcount = strlen($line[$colcount]);
 		}
 
-		if ( preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', explode("\t", $line)[$colcount]) != 1 ) {
-		    if (explode("\t", $line)[$colcount] != "NULL" && explode("\t", $line)[$colcount] != "") {
+		if ( preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $line[$colcount]) != 1 ) {
+		    if ($line[$colcount] != "NULL" && $line[$colcount] != "") {
 			$alldates = FALSE;
 		    }
 		}
@@ -166,7 +138,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    // rename the column headings
 
 	    $column = str_replace(" ", "_", $column);
-	    
+
 	    $column = preg_replace('/[^A-Za-z0-9 ]/', "_", $column);
 
 	    $column = preg_replace('/^(_)+/', '', $column);
@@ -175,10 +147,14 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	    $column = strtolower($column);
 
+      if ($column == "id") {
+        $column = "imported_id";
+      }
+
 	    // echo $column . " " . $coltype;
 	?>
 
-	
+
 	<input type="hidden" name="nbtNewColName<?php echo $colcount; ?>" value="<?php echo $column; ?>">
 	<input type="hidden" name="nbtNewColType<?php echo $colcount; ?>" value="<?php echo $coltype; ?>">
 	<?php
@@ -186,7 +162,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	$colcount++;
 
 	}
-	
+
 	?>
 	<h3>Choose columns for reference metadata</h3>
 	<div style="margin-bottom: 20px;">
@@ -201,7 +177,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    // rename the column headings
 
 		    $column = str_replace(" ", "_", $column);
-		    
+
 		    $column = preg_replace('/[^A-Za-z0-9 ]/', "_", $column);
 
 		    $column = preg_replace('/^(_)+/', '', $column);
@@ -210,7 +186,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    $column = strtolower($column);
 
-		    if ( $column == "title" ) {
+        if ($column == "id") {
+          $column = "imported_id";
+        }
+
+		    if ( $column == "title" || $column =="ti" ) {
 			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
 		    } else {
 			echo '<option value="' . $colcount . '">' . $column . '</option>';
@@ -221,7 +201,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		?>
 	    </select>
-	    
+
 	    <p>Authors</p>
 	    <select name="nbtAuthorsColumn">
 		<option>Choose a column</option>
@@ -234,7 +214,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    // rename the column headings
 
 		    $column = str_replace(" ", "_", $column);
-		    
+
 		    $column = preg_replace('/[^A-Za-z0-9 ]/', "_", $column);
 
 		    $column = preg_replace('/^(_)+/', '', $column);
@@ -243,7 +223,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    $column = strtolower($column);
 
-		    if ( ($column == "authors" || $column == "author" || $column == "locations") && $selected == 0 ) {
+        if ($column == "id") {
+          $column = "imported_id";
+        }
+
+		    if ( ($column == "authors" || $column == "author" || $column == "locations" || $column == "au") && $selected == 0 ) {
 			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
 			$selected++;
 		    } else {
@@ -255,7 +239,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		?>
 	    </select>
-	    
+
 	    <p>Year</p>
 	    <select name="nbtYearColumn">
 		<option>Choose a column</option>
@@ -268,7 +252,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    // rename the column headings
 
 		    $column = str_replace(" ", "_", $column);
-		    
+
 		    $column = preg_replace('/[^A-Za-z0-9 ]/', "_", $column);
 
 		    $column = preg_replace('/^(_)+/', '', $column);
@@ -277,7 +261,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    $column = strtolower($column);
 
-		    if ( ($column == "year" || $column == "publication_year" || $column == "start_date") && $selected == 0 ) {
+        if ($column == "id") {
+          $column = "imported_id";
+        }
+
+		    if ( ($column == "year" || $column == "publication_year" || $column == "start_date" || $column == "yr") && $selected == 0 ) {
 			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
 		    } else {
 			echo '<option value="' . $colcount . '">' . $column . '</option>';
@@ -288,7 +276,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		?>
 	    </select>
-	    
+
 	    <p>Journal</p>
 	    <select name="nbtJournalColumn">
 		<option>Choose a column</option>
@@ -301,7 +289,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    // rename the column headings
 
 		    $column = str_replace(" ", "_", $column);
-		    
+
 		    $column = preg_replace('/[^A-Za-z0-9 ]/', "_", $column);
 
 		    $column = preg_replace('/^(_)+/', '', $column);
@@ -310,7 +298,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    $column = strtolower($column);
 
-		    if ( ($column == "journal" || $column == "publication_title" || $column == "status") && $selected == 0 ) {
+        if ($column == "id") {
+          $column = "imported_id";
+        }
+
+		    if ( ($column == "journal" || $column == "publication_title" || $column == "status" || $column == "pt") && $selected == 0 ) {
 			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
 			$selected++;
 		    } else {
@@ -322,7 +314,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		?>
 	    </select>
-	    
+
 	    <p>Abstract</p>
 	    <select name="nbtAbstractColumn">
 		<option>Choose a column</option>
@@ -335,7 +327,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    // rename the column headings
 
 		    $column = str_replace(" ", "_", $column);
-		    
+
 		    $column = preg_replace('/[^A-Za-z0-9 ]/', "_", $column);
 
 		    $column = preg_replace('/^(_)+/', '', $column);
@@ -344,7 +336,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    $column = strtolower($column);
 
-		    if ( ($column == "abstract" || $column == "abstract_note" || $column == "acronym") && $selected == 0) {
+		    if ( ($column == "abstract" || $column == "abstract_note" || $column == "acronym" || $column == "ab") && $selected == 0) {
 			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
 			$selected++;
 		    } else {
