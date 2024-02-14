@@ -349,65 +349,69 @@
        });
 
        // Add keyboard shortcuts
-       document.addEventListener('keyup', function (event) {
+       document.addEventListener('keydown', function (event) {
          if (! $('input.nbtScreeningNotes:focus').length) { // These don't work when a notes is in focus
 
-           if (event.keyCode == 74) { // Letter j
-             if ($('.nbtScreeningFocus').length) {
-               if ($('.nbtScreeningFocus').next('.nbtFocusableScreeningRow:visible').length) {
-                 $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').next('.nbtFocusableScreeningRow:visible').addClass('nbtScreeningFocus');
-                 $('html, body').animate({
-                   scrollTop: $('.nbtScreeningFocus').offset().top - 50
-                 }, 250);
+           if (! (event.getModifierState("Alt") | event.getModifierState("Control") | event.getModifierState("Meta"))) {
+             // These don't work if Control, Alt or Meta are being pressed
+             if (event.keyCode == 74) { // Letter j
+               if ($('.nbtScreeningFocus').length) {
+                 if ($('.nbtScreeningFocus').next('.nbtFocusableScreeningRow:visible').length) {
+                   $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').next('.nbtFocusableScreeningRow:visible').addClass('nbtScreeningFocus');
+                   $('html, body').animate({
+                     scrollTop: $('.nbtScreeningFocus').offset().top - 50
+                   }, 250);
+                 }
+               } else {
+                 $('.nbtFocusableScreeningRow:visible:first').addClass('nbtScreeningFocus');
                }
-             } else {
-               $('.nbtFocusableScreeningRow:visible:first').addClass('nbtScreeningFocus');
+
              }
 
-           }
-
-           if (event.keyCode == 75) { // Letter k
-             if ($('.nbtScreeningFocus').length) {
-               if ($('.nbtScreeningFocus').prev('.nbtFocusableScreeningRow:visible').length) {
-                 $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').prev('.nbtFocusableScreeningRow:visible').addClass('nbtScreeningFocus');
-                 $('html, body').animate({
-                   scrollTop: $('.nbtScreeningFocus').offset().top - 50
-                 }, 250);
+             if (event.keyCode == 75) { // Letter k
+               if ($('.nbtScreeningFocus').length) {
+                 if ($('.nbtScreeningFocus').prev('.nbtFocusableScreeningRow:visible').length) {
+                   $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').prev('.nbtFocusableScreeningRow:visible').addClass('nbtScreeningFocus');
+                   $('html, body').animate({
+                     scrollTop: $('.nbtScreeningFocus').offset().top - 50
+                   }, 250);
+                 }
+               } else {
+                 $('.nbtFocusableScreeningRow:visible:last').addClass('nbtScreeningFocus');
                }
-             } else {
-               $('.nbtFocusableScreeningRow:visible:last').addClass('nbtScreeningFocus');
-             }
-           }
-
-           if (event.keyCode == 27) { // Esc key
-             // Removes focus
-             $('#nbtScreeningGrid tr').removeClass('nbtScreeningFocus');
-           }
-
-           if (event.keyCode == 49 || event.keyCode == 97) { // 1 or numpad 1
-             // Mark as include
-             $('.nbtScreeningFocus .nbtScreeningIncludeBox').click();
-           }
-
-           if ((event.keyCode >= 50 && event.keyCode <= 57) || (event.keyCode >= 98 && event.keyCode <= 105)) {
-             if (event.keyCode <= 57) {
-               num = event.keyCode - 48;
-             } else {
-               num = event.keyCode - 96;
              }
 
-             boxnum = num - 2;
+             if (event.keyCode == 27) { // Esc key
+               // Removes focus
+               $('#nbtScreeningGrid tr').removeClass('nbtScreeningFocus');
+             }
 
-             // Mark exclusion reason
-             $('.nbtScreeningFocus .nbtScreeningExcludeBox' + boxnum).click();
-           }
+             if (event.keyCode == 49 || event.keyCode == 97) { // 1 or numpad 1
+               // Mark as include
+               $('.nbtScreeningFocus .nbtScreeningIncludeBox').click();
+             }
 
-           if (event.keyCode == 48 || event.keyCode == 96) { // 0 or numpad 0
-             $('.nbtScreeningFocus input.nbtScreeningNotes').focus();
-           }
+             if ((event.keyCode >= 50 && event.keyCode <= 57) || (event.keyCode >= 98 && event.keyCode <= 105)) {
+               if (event.keyCode <= 57) {
+                 num = event.keyCode - 48;
+               } else {
+                 num = event.keyCode - 96;
+               }
 
-           if (event.keyCode == 72) {
-             $('.nbtScreeningDone').parent().fadeToggle(0);
+               boxnum = num - 2;
+
+               // Mark exclusion reason
+               $('.nbtScreeningFocus .nbtScreeningExcludeBox' + boxnum).click();
+             }
+
+             if (event.keyCode == 48 || event.keyCode == 96) { // 0 or numpad 0
+               $('.nbtScreeningFocus input.nbtScreeningNotes').focus();
+             }
+
+             if (event.keyCode == 72) {
+               $('.nbtScreeningDone').parent().fadeToggle(0);
+             }
+
            }
 
          } else { // A notes input is focused
