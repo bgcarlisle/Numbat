@@ -18,7 +18,7 @@ foreach ($formelements as $element) {
   <div class="nbtContentPanel">
     <h2>Screening reference set: <?php echo $refset['name']; ?></h2>
     <p>Form: <?php echo $form['name']; ?></p>
-    <p>Keyboard shortcuts: j (next row); k (previous row); 1 (include); 2-9 (exclusion reasons); 0 (focus notes)</p>
+    <p>Keyboard shortcuts: j (next row); k (previous row); 1 (include); 2-9 (exclusion reasons); 0 (focus notes); h (hide completed)</p>
     <table class="nbtTabledData" id="nbtScreeningGrid" data-formid="<?php echo $form['id']; ?>" data-refsetid="<?php echo $refset['id']; ?>">
       <tr class="nbtTableHeaders">
         <td>Reference</td>
@@ -43,14 +43,17 @@ foreach ($formelements as $element) {
               switch ($ext['include']) {
                 case NULL:
                   $includeboxstyle = '';
+                  $includeboxclass = "";
                   $includeboxcontent = "Include?";
                   break;
                 case 1:
                   $includeboxstyle = ' style="background-color: #ccffcc;"';
+                  $includeboxclass = " nbtScreeningDone";
                   $includeboxcontent = "Include";
                   break;
                 case 0:
                   $includeboxstyle = ' style="background-color: #ffcccc;"';
+                  $includeboxclass = " nbtScreeningDone";
                   $includeboxcontent = "Exclude";
                   break;
               }
@@ -64,6 +67,7 @@ foreach ($formelements as $element) {
 
           if ( is_null($includeboxstyle) ) {
             $includeboxstyle = '';
+            $includeboxclass = "";
             $includeboxcontent = "Include?";
           }
 
@@ -78,7 +82,7 @@ foreach ($formelements as $element) {
               </p>
               <p><?php echo str_replace("\n", "<br>", $refs[$assignment['referenceid']][$refset['abstract']]); ?></p>
             </td>
-            <td class="nbtScreeningIncludeBox" data-referenceid="<?php echo $assignment['referenceid']; ?>"<?php echo $includeboxstyle; ?>>
+            <td class="nbtScreeningIncludeBox<?php echo $includeboxclass; ?>" data-referenceid="<?php echo $assignment['referenceid']; ?>"<?php echo $includeboxstyle; ?>>
               <?php echo $includeboxcontent; ?>
             </td>
             <?php $exclude_counter = 0; ?>

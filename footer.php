@@ -354,28 +354,28 @@
 
            if (event.keyCode == 74) { // Letter j
              if ($('.nbtScreeningFocus').length) {
-               if ($('.nbtScreeningFocus').next('.nbtFocusableScreeningRow').length) {
-                 $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').next('.nbtFocusableScreeningRow').addClass('nbtScreeningFocus');
+               if ($('.nbtScreeningFocus').next('.nbtFocusableScreeningRow:visible').length) {
+                 $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').next('.nbtFocusableScreeningRow:visible').addClass('nbtScreeningFocus');
                  $('html, body').animate({
                    scrollTop: $('.nbtScreeningFocus').offset().top - 50
                  }, 250);
                }
              } else {
-               $('.nbtFocusableScreeningRow:first').addClass('nbtScreeningFocus');
+               $('.nbtFocusableScreeningRow:visible:first').addClass('nbtScreeningFocus');
              }
 
            }
 
            if (event.keyCode == 75) { // Letter k
              if ($('.nbtScreeningFocus').length) {
-               if ($('.nbtScreeningFocus').prev('.nbtFocusableScreeningRow').length) {
-                 $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').prev('.nbtFocusableScreeningRow').addClass('nbtScreeningFocus');
+               if ($('.nbtScreeningFocus').prev('.nbtFocusableScreeningRow:visible').length) {
+                 $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').prev('.nbtFocusableScreeningRow:visible').addClass('nbtScreeningFocus');
                  $('html, body').animate({
                    scrollTop: $('.nbtScreeningFocus').offset().top - 50
                  }, 250);
                }
              } else {
-               $('.nbtFocusableScreeningRow:last').addClass('nbtScreeningFocus');
+               $('.nbtFocusableScreeningRow:visible:last').addClass('nbtScreeningFocus');
              }
            }
 
@@ -405,6 +405,11 @@
            if (event.keyCode == 48 || event.keyCode == 96) { // 0 or numpad 0
              $('.nbtScreeningFocus input.nbtScreeningNotes').focus();
            }
+
+           if (event.keyCode == 72) {
+             $('.nbtScreeningDone').parent().fadeToggle(0);
+           }
+
          } else { // A notes input is focused
            if (event.keyCode == 27) { // Esc key
              // Removes focus
@@ -437,15 +442,18 @@
             case "1":
               includebox.css("background-color","#ccffcc");
               includebox.html('Include');
+              includebox.addClass('nbtScreeningDone');
               includebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
               break;
             case "0":
               includebox.css("background-color","#ffcccc");
+              includebox.addClass('nbtScreeningDone');
               includebox.html('Exclude');
               break;
             case "null":
               includebox.css("background-color","");
               includebox.html('Include?');
+              includebox.removeClass('nbtScreeningDone');
               includebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
               break;
             case "Error":
