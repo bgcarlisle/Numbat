@@ -74,13 +74,13 @@ foreach ($formelements as $element) {
           ?>
           <tr class="nbtFocusableScreeningRow">
             <td>
-              <h3><?php echo $refs[$assignment['referenceid']][$refset['title']]; ?></h3>
+              <h3><?php echo $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['title']]; ?></h3>
               <p>
-                <?php echo $refs[$assignment['referenceid']][$refset['authors']]; ?>
-                <?php echo $refs[$assignment['referenceid']][$refset['journal']]; ?>
-                <?php echo $refs[$assignment['referenceid']][$refset['year']]; ?>
+                <?php echo $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['authors']]; ?>
+                <?php echo $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['journal']]; ?>
+                <?php echo $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['year']]; ?>
               </p>
-              <p><?php echo str_replace("\n", "<br>", $refs[$assignment['referenceid']][$refset['abstract']]); ?></p>
+              <p><?php echo str_replace("\n", "<br>", $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['abstract']]); ?></p>
             </td>
             <td class="nbtScreeningIncludeBox<?php echo $includeboxclass; ?>" data-referenceid="<?php echo $assignment['referenceid']; ?>"<?php echo $includeboxstyle; ?>>
               <?php echo $includeboxcontent; ?>
