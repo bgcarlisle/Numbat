@@ -349,7 +349,7 @@
        });
 
        // Add keyboard shortcuts
-       document.addEventListener('keydown', function (event) {
+       document.addEventListener('keyup', function (event) {
          if (! $('input.nbtScreeningNotes:focus').length) { // These don't work when a notes is in focus
 
            if (! (event.getModifierState("Alt") | event.getModifierState("Control") | event.getModifierState("Meta"))) {
