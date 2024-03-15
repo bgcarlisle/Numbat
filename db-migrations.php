@@ -16,55 +16,51 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     if ( ! check_for_referencesets_column ("title") ) {
 
-	try {
+    	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `title` INT(11) NULL DEFAULT NULL AFTER `name`;");
+    	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	    $stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `title` INT(11) NULL DEFAULT NULL AFTER `name`;");
 
-	    if ($stmt->execute()) {
-		echo "<p>Reference sets table updated with title column</p>";
-	    } else {
-		echo "<p>Error updating reference sets table with title column</p>";
-	    }
+    	    if ($stmt->execute()) {
+    		      echo "<p>Reference sets table updated with title column</p>";
+    	    } else {
+    		      echo "<p>Error updating reference sets table with title column</p>";
+    	    }
 
-	    $dbh = null;
+    	    $dbh = null;
 
-	}
+    	}
 
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
+    	catch (PDOException $e) {
+    	    echo $e->getMessage();
+    	}
 
     } else {
 
-	echo "<p>The reference sets table already has a title column</p>";
+	     echo "<p>The reference sets table already has a title column</p>";
 
     }
 
     if ( ! check_for_referencesets_column ("authors") ) {
 
-	try {
+    	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `authors` INT(11) NULL DEFAULT NULL AFTER `title`;");
+    	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	    $stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `authors` INT(11) NULL DEFAULT NULL AFTER `title`;");
 
-	    if ($stmt->execute()) {
-		echo "<p>Reference sets table updated with authors column</p>";
-	    } else {
-		echo "<p>Error updating reference sets table with authors column</p>";
-	    }
+    	    if ($stmt->execute()) {
+    		      echo "<p>Reference sets table updated with authors column</p>";
+    	    } else {
+    		      echo "<p>Error updating reference sets table with authors column</p>";
+    	    }
 
-	    $dbh = null;
+    	    $dbh = null;
 
-	}
+    	}
 
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
+    	catch (PDOException $e) {
+    	    echo $e->getMessage();
+    	}
 
     } else {
 
