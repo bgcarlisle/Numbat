@@ -60,7 +60,7 @@ foreach ($formelements as $element) {
 
               $exclusion_reason = $ext['exclusion_reason'];
 
-              $notes = $ext['notes'];
+              $notes = $ext['extractor_notes'];
             }
 
           }

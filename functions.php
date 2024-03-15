@@ -4019,7 +4019,7 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
 
       $exclude_reason_id = nbt_add_single_select($newid, $include_element_id, "Reason for exclusion", "exclusion_reason");
 
-      nbt_add_text_area_field($newid, $exclude_reason_id, "Extractor notes", "notes");
+      nbt_add_text_area_field($newid, $exclude_reason_id, "Extractor notes", "extractor_notes");
 
     }
 
@@ -17431,7 +17431,7 @@ function nbt_screening_notes ($formid, $refsetid, $referenceid, $notes) {
     try {
 
       $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-      $stmt = $dbh->prepare("INSERT INTO `extractions_" . $formid . "` (`refsetid`, `referenceid`, `userid`, `status`, `timestamp_finished`, `notes`) VALUES (:rsid, :rid, :uid, 2, NOW(), :notes)");
+      $stmt = $dbh->prepare("INSERT INTO `extractions_" . $formid . "` (`refsetid`, `referenceid`, `userid`, `status`, `timestamp_finished`, `extractor_notes`) VALUES (:rsid, :rid, :uid, 2, NOW(), :notes)");
 
       $stmt->bindParam(':rsid', $rsid);
       $stmt->bindParam(':rid', $rid);
@@ -17460,7 +17460,7 @@ function nbt_screening_notes ($formid, $refsetid, $referenceid, $notes) {
     try {
 
       $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-      $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `notes` = :notes WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
+      $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `extractor_notes` = :notes WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
 
       $stmt->bindParam(':rsid', $rsid);
       $stmt->bindParam(':rid', $rid);
