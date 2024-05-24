@@ -38,7 +38,7 @@ foreach ($formelements as $element) {
           $notes = "";
 
           foreach ($extractions as $ext) {
-            if ($assignment['referenceid'] == $ext['referenceid']) {
+            if ($assignment['referenceid'] == $ext['referenceid'] & $ext['userid'] == $_SESSION[INSTALL_HASH . '_nbt_userid']) {
 
               switch ($ext['include']) {
                 case NULL:
