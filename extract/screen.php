@@ -3,14 +3,18 @@
 $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 $refset = nbt_get_refset_for_id ( $_GET['refset'] );
 $form = nbt_get_form_for_id ( $_GET['form'] );
-$assignments = nbt_get_assignments_for_user_and_refset ($_SESSION[INSTALL_HASH . '_nbt_userid'], $_GET['refset']);
+if (isset($_GET['screeningpage'])) {
+    $assignments = nbt_get_assignments_for_user_and_refset ($_SESSION[INSTALL_HASH . '_nbt_userid'], $_GET['refset'], "whenassigned", "DESC", "", FALSE, $_GET['screeningpage']);
+} else {
+    $assignments = nbt_get_assignments_for_user_and_refset ($_SESSION[INSTALL_HASH . '_nbt_userid'], $_GET['refset']);
+}
 $refs = nbt_get_all_references_for_refset ($_GET['refset']);
 $extractions = nbt_get_all_extractions_for_refset_and_form ($_GET['refset'], $_GET['form']);
 
 foreach ($formelements as $element) {
-  if ($element['columnname'] == "exclusion_reason") {
-    $exclusion_reasons = nbt_get_all_select_options_for_element($element['id']);
-  }
+    if ($element['columnname'] == "exclusion_reason") {
+	$exclusion_reasons = nbt_get_all_select_options_for_element($element['id']);
+    }
 }
 
 ?>
