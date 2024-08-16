@@ -3484,6 +3484,37 @@ function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "
 
 }
 
+function nbt_count_assignments_for_user_refset_form ($userid, $refsetid, $formid) {
+    try {
+
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$stmt = $dbh->prepare ("SELECT COUNT(*) as `assign_count` FROM `assignments` WHERE `userid` = :userid AND `formid` = :fid AND `refsetid` = :rsid");
+
+    	$stmt->bindParam(':userid', $uid);
+    	$stmt->bindParam(':fid', $fid);
+    	$stmt->bindParam(':rsid', $rsid);
+
+
+    	$uid = $userid;
+	$fid = $formid;
+	$rsid = $refsetid;
+
+    	$stmt->execute();
+
+    	$result = $stmt->fetchAll();
+
+    	$dbh = null;
+
+    	return $result[0]['assign_count'];
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+    
+}
+
 function nbt_get_status_for_assignment ( $assignment ) {
 
     try {
