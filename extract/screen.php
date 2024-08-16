@@ -3,20 +3,39 @@
 $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 $refset = nbt_get_refset_for_id ( $_GET['refset'] );
 $form = nbt_get_form_for_id ( $_GET['form'] );
-$assignments = nbt_get_assignments_for_user_and_refset ($_SESSION[INSTALL_HASH . '_nbt_userid'], $_GET['refset']);
+if (isset($_GET['screeningpage'])) {
+    $assignments = nbt_get_assignments_for_user_refset_form_paginated ($_SESSION[INSTALL_HASH . '_nbt_userid'], $_GET['refset'], "whenassigned", "DESC", "", FALSE, $_GET['screeningpage'], $_GET['form']);
+} else {
+    $assignments = nbt_get_assignments_for_user_and_refset ($_SESSION[INSTALL_HASH . '_nbt_userid'], $_GET['refset']);
+}
 $refs = nbt_get_all_references_for_refset ($_GET['refset']);
 $extractions = nbt_get_all_extractions_for_refset_and_form ($_GET['refset'], $_GET['form']);
+$count_of_assignments = nbt_count_assignments_for_user_refset_form ($_SESSION[INSTALL_HASH . '_nbt_userid'], $_GET['refset'], $_GET['form']);
 
 foreach ($formelements as $element) {
-  if ($element['columnname'] == "exclusion_reason") {
-    $exclusion_reasons = nbt_get_all_select_options_for_element($element['id']);
-  }
+    if ($element['columnname'] == "exclusion_reason") {
+	$exclusion_reasons = nbt_get_all_select_options_for_element($element['id']);
+    }
 }
 
 ?>
 <div class="nbtNonsidebar">
   <div class="nbtContentPanel">
-    <h2>Screening reference set: <?php echo $refset['name']; ?></h2>
+      <h2>Screening reference set: <?php echo $refset['name']; ?> (<?php echo $count_of_assignments; ?> total)</h2>
+      <?php if (isset($_GET['screeningpage'])) { ?>
+	  <div>
+	      Page:
+	      <?php $i = 1; ?>
+	      <?php while ($i <= ceil($count_of_assignments / 100)) { ?>
+		  <?php if ($i != $_GET['screeningpage']) { ?>
+		      <span style="margin: 0 10px; padding: 2px 4px;"><a href="<?php echo SITE_URL; ?>extract/?action=screen&form=<?php echo $_GET['form']; ?>&refset=<?php echo $_GET['refset']; ?>&screeningpage=<?php echo $i; ?>"><?php echo $i; ?></a></span>
+		  <?php } else { ?>
+		      <span style="margin: 0 10px; padding: 2px 4px; border: 1px solid #333;"><?php echo $i; ?></span>
+		  <?php } ?>
+		  <?php $i++; ?>
+	      <?php } ?>
+	  </div>
+      <?php } ?>
     <p>Form: <?php echo $form['name']; ?></p>
     <p>Keyboard shortcuts: j (next row); k (previous row); 1 (include); 2-9 (exclusion reasons); 0 (focus notes); h (hide completed)</p>
     <table class="nbtTabledData" id="nbtScreeningGrid" data-formid="<?php echo $form['id']; ?>" data-refsetid="<?php echo $refset['id']; ?>">
@@ -104,5 +123,19 @@ foreach ($formelements as $element) {
         <?php } ?>
       <?php } ?>
     </table>
+    <?php if (isset($_GET['screeningpage'])) { ?>
+	  <div>
+	      Page:
+	      <?php $i = 1; ?>
+	      <?php while ($i <= ceil($count_of_assignments / 100)) { ?>
+		  <?php if ($i != $_GET['screeningpage']) { ?>
+		      <span style="margin: 0 10px; padding: 2px 4px;"><a href="<?php echo SITE_URL; ?>extract/?action=screen&form=<?php echo $_GET['form']; ?>&refset=<?php echo $_GET['refset']; ?>&screeningpage=<?php echo $i; ?>"><?php echo $i; ?></a></span>
+		  <?php } else { ?>
+		      <span style="margin: 0 10px; padding: 2px 4px; border: 1px solid #333;"><?php echo $i; ?></span>
+		  <?php } ?>
+		  <?php $i++; ?>
+	      <?php } ?>
+	  </div>
+    <?php } ?>
   </div>
 </div>

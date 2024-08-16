@@ -3419,9 +3419,9 @@ function sigUseDoubleCitation ( $id, $drugid, $reference, $section, $citation, $
 function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "whenassigned", $sortdirection = "DESC", $form_type = "", $gp_ft=FALSE ) {
 
     if ($sortdirection == "ASC") {
-	     $sd = " ASC;";
+	$sd = " ASC;";
     } else {
-	     $sd = " DESC;";
+	$sd = " DESC;";
     }
 
     switch ($sort) {
@@ -3438,15 +3438,15 @@ function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "
     }
 
     if ($form_type != "") { // If it's only showing extraction forms
-      $ext_form = "`forms`.`formtype` = '" . $form_type . "' AND ";
+	$ext_form = "`forms`.`formtype` = '" . $form_type . "' AND ";
     } else {
-      $ext_form = "";
+	$ext_form = "";
     }
 
     if ($gp_ft) { // Group by form type
-      $gpft = " GROUP BY `formtype`, `formname` ";
+	$gpft = " GROUP BY `formtype`, `formname` ";
     } else {
-      $gpft = "";
+	$gpft = "";
     }
 
     try {
@@ -3469,9 +3469,106 @@ function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "
     }
 
     catch (PDOException $e) {
-	     echo $e->getMessage();
+	echo $e->getMessage();
     }
 
+}
+
+function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid, $sort = "whenassigned", $sortdirection = "DESC", $form_type = "", $gp_ft=FALSE, $screening_page=NULL, $formid=NULL ) {
+
+    if ($sortdirection == "ASC") {
+	$sd = " ASC";
+    } else {
+	$sd = " DESC";
+    }
+
+    switch ($sort) {
+  	case "referenceid":
+  	    $sortquery = "ORDER BY `referenceid`" . $sd;
+  	    break;
+  	case "formid":
+  	    $sortquery = "ORDER BY `forms`.`id`" . $sd;
+  	    break;
+  	case "whenassigned":
+  	default:
+  	    $sortquery = "ORDER BY `whenassigned`" . $sd;
+  	    break;
+    }
+
+    if ($form_type != "") { // If it's only showing extraction forms
+	$ext_form = "`forms`.`formtype` = '" . $form_type . "' AND ";
+    } else {
+	$ext_form = "";
+    }
+
+    if ($gp_ft) { // Group by form type
+	$gpft = " GROUP BY `formtype`, `formname` ";
+    } else {
+	$gpft = "";
+    }
+
+    if (is_null($screening_page)) {
+	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() " . $gpft . $sortquery . ";";
+    } else {
+	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() AND `formid` = :fid " . $gpft . $sortquery . " LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";";
+    }
+
+    try {
+
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$stmt = $dbh->prepare ($query);
+
+    	$stmt->bindParam(':userid', $uid);
+    	$stmt->bindParam(':fid', $fid);
+
+    	$uid = $userid;
+	$fid = $formid;
+
+    	$stmt->execute();
+
+    	$result = $stmt->fetchAll();
+
+    	$dbh = null;
+
+    	return $result;
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+
+}
+
+function nbt_count_assignments_for_user_refset_form ($userid, $refsetid, $formid) {
+    try {
+
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$stmt = $dbh->prepare ("SELECT COUNT(*) as `assign_count` FROM `assignments` WHERE `userid` = :userid AND `formid` = :fid AND `refsetid` = :rsid");
+
+    	$stmt->bindParam(':userid', $uid);
+    	$stmt->bindParam(':fid', $fid);
+    	$stmt->bindParam(':rsid', $rsid);
+
+
+    	$uid = $userid;
+	$fid = $formid;
+	$rsid = $refsetid;
+
+    	$stmt->execute();
+
+    	$result = $stmt->fetchAll();
+
+    	$dbh = null;
+
+    	return $result[0]['assign_count'];
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+    
 }
 
 function nbt_get_status_for_assignment ( $assignment ) {
@@ -3941,7 +4038,7 @@ function nbt_get_all_extraction_forms () {
 function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New extraction form", $description = "Add a useful description of your new form here.", $version = "1.0", $author = NULL, $affiliation = NULL, $project = NULL, $protocol = NULL, $projectdate = NULL ) {
 
     if ( is_null ($projectdate) ) {
-	     $projectdate=date("Y-m-d");
+	$projectdate=date("Y-m-d");
     }
 
     try {
@@ -3949,8 +4046,8 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
     	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
     	$stmt = $dbh->prepare ("INSERT INTO forms (formtype, name, description, version, author, affiliation, project, protocol, projectdate) VALUES (:formtype, :name, :description, :version, :author, :affiliation, :project, :protocol, :projectdate);");
 
-      $stmt->bindParam(':formtype', $ft);
-      $stmt->bindParam(':name', $name);
+	$stmt->bindParam(':formtype', $ft);
+	$stmt->bindParam(':name', $name);
     	$stmt->bindParam(':description', $desc);
     	$stmt->bindParam(':version', $vers);
     	$stmt->bindParam(':author', $auth);
@@ -3959,7 +4056,7 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
     	$stmt->bindParam(':protocol', $prot);
     	$stmt->bindParam(':projectdate', $prda);
 
-      $ft = $formtype;
+	$ft = $formtype;
     	$name = $formname;
     	$desc = $description;
     	$vers = $version;
@@ -3988,7 +4085,7 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
     }
 
     catch (PDOException $e) {
-	     echo $e->getMessage();
+	echo $e->getMessage();
     }
 
     // Make a new extraction table with the name `extraction_newid`
@@ -4006,20 +4103,20 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
     }
 
     catch (PDOException $e) {
-	     echo $e->getMessage();
+	echo $e->getMessage();
     }
 
     // If it's a screening form, add the requisite form elements
 
     if ($formtype == "screening") {
 
-      $include_element_id = nbt_add_single_select($newid, 0, "Include", "include");
-      nbt_add_single_select_option($include_element_id, "Include", "1");
-      nbt_add_single_select_option($include_element_id, "Exclude", "0");
+	$include_element_id = nbt_add_single_select($newid, 0, "Include", "include");
+	nbt_add_single_select_option($include_element_id, "Include", "1");
+	nbt_add_single_select_option($include_element_id, "Exclude", "0");
 
-      $exclude_reason_id = nbt_add_single_select($newid, $include_element_id, "Reason for exclusion", "exclusion_reason");
+	$exclude_reason_id = nbt_add_single_select($newid, $include_element_id, "Reason for exclusion", "exclusion_reason");
 
-      nbt_add_text_area_field($newid, $exclude_reason_id, "Extractor notes", "extractor_notes");
+	nbt_add_text_area_field($newid, $exclude_reason_id, "Extractor notes", "extractor_notes");
 
     }
 
@@ -4041,7 +4138,7 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
     }
 
     catch (PDOException $e) {
-	     echo $e->getMessage();
+	echo $e->getMessage();
     }
 
 }
