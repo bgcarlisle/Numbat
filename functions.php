@@ -3452,7 +3452,7 @@ function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "
     if (is_null($screening_page)) {
 	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() " . $gpft . $sortquery . ";";
     } else {
-	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() AND `formid` = " $formid . " " . $gpft . $sortquery . " LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";";
+	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() AND `formid` = :fid " . $gpft . $sortquery . " LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";";
     }
 
     echo $query;
@@ -3463,8 +3463,10 @@ function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "
     	$stmt = $dbh->prepare ($query);
 
     	$stmt->bindParam(':userid', $uid);
+    	$stmt->bindParam(':fid', $fid);
 
     	$uid = $userid;
+	$fid = $formid;
 
     	$stmt->execute();
 
