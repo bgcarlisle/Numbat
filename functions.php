@@ -3491,7 +3491,7 @@ function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid
   	    break;
   	case "whenassigned":
   	default:
-  	    $sortquery = "ORDER BY `whenassigned`" . $sd;
+	    $sortquery = "ORDER BY `assignments`.`id`" . $sd;
   	    break;
     }
 
