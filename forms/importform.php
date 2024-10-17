@@ -405,6 +405,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 							}
 						    }
 						    break;
+						case "text_area":
+						    $newseid = nbt_add_sub_text_area_field ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $subelementid_lup[$sel['id']] = $newseid;
+						    break;
 
 					    }
 					}
