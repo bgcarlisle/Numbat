@@ -362,19 +362,19 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 					if ($element['id'] == $sel['elementid']) {
 					    switch ($sel['type']) {
 						case "open_text":
-						    $newseid = nbt_add_sub_open_text_field ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $newseid = nbt_add_sub_open_text_field ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle'], $sel['startup_visible'], $sel['conditional_logical_operator'], $sel['destructive_hiding']);
 						    $subelementid_lup[$sel['id']] = $newseid;
 						    break;
 						case "tags":
-						    $newseid = nbt_add_sub_tags_element ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $newseid = nbt_add_sub_tags_element ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle'], $sel['startup_visible'], $sel['conditional_logical_operator'], $sel['destructive_hiding']);
 						    $subelementid_lup[$sel['id']] = $newseid;
 						    break;
 						case "date_selector":
-						    $newseid = nbt_add_sub_date_selector ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $newseid = nbt_add_sub_date_selector ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle'], $sel['startup_visible'], $sel['conditional_logical_operator'], $sel['destructive_hiding']);
 						    $subelementid_lup[$sel['id']] = $newseid;
 						    break;
 						case "single_select":
-						    $newseid = nbt_add_sub_single_select ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $newseid = nbt_add_sub_single_select ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle'], $sel['startup_visible'], $sel['conditional_logical_operator'], $sel['destructive_hiding']);
 						    $subelementid_lup[$sel['id']] = $newseid;
 
 						    foreach ($selectoptions as $opt) {
@@ -385,7 +385,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 						    }
 						    break;
 						case "multi_select":
-						    $newseid = nbt_add_sub_multi_select ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $newseid = nbt_add_sub_multi_select ($newelementid, $sel['displayname'], $sel['dbname'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle'], $sel['startup_visible'], $sel['conditional_logical_operator'], $sel['destructive_hiding']);
 						    $subelementid_lup[$sel['id']] = $newseid;
 
 						    foreach ($selectoptions as $opt) {
@@ -396,7 +396,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 						    }
 						    break;
 						case "table_data":
-						    $newseid = nbt_add_sub_table ($newelementid, $sel['displayname'], $sel['dbname'], $sel['codebook'], $sel['toggle']);
+						    $newseid = nbt_add_sub_table ($newelementid, $sel['displayname'], $sel['dbname'], $sel['codebook'], $sel['toggle'], $sel['startup_visible'], $sel['conditional_logical_operator'], $sel['destructive_hiding']);
 						    $subelementid_lup[$sel['id']] = $newseid;
 
 						    foreach ($tabledatacols as $col) {
@@ -406,7 +406,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 						    }
 						    break;
 						case "text_area":
-						    $newseid = nbt_add_sub_text_area_field ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle']);
+						    $newseid = nbt_add_sub_text_area_field ($newelementid, $sel['displayname'], $sel['dbname'], $sel['regex'], $sel['copypreviousprompt'], $sel['codebook'], $sel['toggle'], $sel['startup_visible'], $sel['conditional_logical_operator'], $sel['destructive_hiding']);
 						    $subelementid_lup[$sel['id']] = $newseid;
 						    break;
 

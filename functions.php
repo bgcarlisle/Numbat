@@ -4558,7 +4558,7 @@ function nbt_get_all_subelements_for_formid ( $formid ) {
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid);");
+	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid) ORDER BY `elementid`, `sortorder` ASC;");
 
 	$stmt->bindParam(':fid', $fid);
 
@@ -11726,7 +11726,7 @@ function nbt_change_sub_extraction_suffix ( $elementid, $newsuffix ) {
 
 }
 
-function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname = NULL, $regex = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname = NULL, $regex = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $elementid = intval($elementid);
     $dbname = nbt_remove_special($dbname);
@@ -11814,7 +11814,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, regex, copypreviousprompt, codebook, toggle) VALUES (:element, :sort, :type, :dbname, :displayname, :regex, :copypreviousprompt, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, regex, copypreviousprompt, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:element, :sort, :type, :dbname, :displayname, :regex, :copypreviousprompt, :codebook, :toggle, :sv, :clo, :dh);");
 
 	$stmt->bindParam(':element', $eid);
 	$stmt->bindParam(':sort', $sort);
@@ -11825,6 +11825,9 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 	$stmt->bindParam(':copypreviousprompt', $cpp);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':sv', $sv);
+	$stmt->bindParam(':clo', $clo);
+	$stmt->bindParam(':dh', $dh);
 
 	$eid = $elementid;
 	$sort = $highestsortorder + 1;
@@ -11835,6 +11838,9 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 	$cpp = $copypreviousprompt;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	if ($stmt->execute()) {
 	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
@@ -12040,7 +12046,7 @@ function nbt_add_sub_ref_data ( $elementid, $displayname = NULL, $dbname = NULL,
 
 }
 
-function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname = NULL, $regex = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname = NULL, $regex = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $elementid = intval($elementid);
     $dbname = nbt_remove_special($dbname);
@@ -12064,11 +12070,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
 
 	    $dbh = null;
 
-	    foreach ( $result as $row ) {
-
-		$highestsortorder = $row['sortorder'];
-
-	    }
+	    $highestsortorder = $result[0]['sortorder'];
 
 	} else {
 
@@ -12081,6 +12083,10 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
 
     catch (PDOException $e) {
 	echo $e->getMessage();
+    }
+
+    if ($highestsortorder == "") {
+	$highestsortorder = 0;
     }
 
     // find a good name for the new column
@@ -12128,7 +12134,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, regex, copypreviousprompt, codebook, toggle) VALUES (:element, :sort, :type, :dbname, :displayname, :regex, :copypreviousprompt, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO `subelements` (`elementid`, `sortorder`, `type`, `dbname`, `displayname`, `regex`, `copypreviousprompt`, `codebook`, `toggle`, `startup_visible`, `conditional_logical_operator`, `destructive_hiding`) VALUES (:element, :sort, :type, :dbname, :displayname, :regex, :copypreviousprompt, :codebook, :toggle, :sv, :clo, :dh);");
 
 	$stmt->bindParam(':element', $eid);
 	$stmt->bindParam(':sort', $sort);
@@ -12139,6 +12145,9 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
 	$stmt->bindParam(':copypreviousprompt', $cpp);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':sv', $sv);
+	$stmt->bindParam(':clo', $clo);
+	$stmt->bindParam(':dh', $dh);
 
 	$eid = $elementid;
 	$sort = $highestsortorder + 1;
@@ -12149,6 +12158,9 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
 	$cpp = $copypreviousprompt;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	if ($stmt->execute()) {
 	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
@@ -12197,7 +12209,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
 
 }
 
-function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = NULL, $regex = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = NULL, $regex = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1  ) {
 
     $elementid = intval($elementid);
     $dbname = nbt_remove_special($dbname);
@@ -12285,7 +12297,7 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, regex, copypreviousprompt, codebook, toggle) VALUES (:element, :sort, :type, :dbname, :displayname, :regex, :copypreviousprompt, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, regex, copypreviousprompt, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:element, :sort, :type, :dbname, :displayname, :regex, :copypreviousprompt, :codebook, :toggle, :sv, :clo, :dh);");
 
 	$stmt->bindParam(':element', $eid);
 	$stmt->bindParam(':sort', $sort);
@@ -12296,6 +12308,9 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
 	$stmt->bindParam(':copypreviousprompt', $cpp);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':sv', $sv);
+	$stmt->bindParam(':clo', $clo);
+	$stmt->bindParam(':dh', $dh);
 
 	$eid = $elementid;
 	$sort = $highestsortorder + 1;
@@ -12306,6 +12321,9 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
 	$cpp = $copypreviousprompt;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	if ($stmt->execute()) {
 	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
@@ -12897,7 +12915,7 @@ function nbt_move_sub_element ( $subelementid, $direction ) {
 
 }
 
-function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1  ) {
 
     $elementid = intval($elementid);
     $dbname = nbt_remove_special($dbname);
@@ -12921,11 +12939,7 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
 
 	    $dbh = null;
 
-	    foreach ( $result as $row ) {
-
-		$highestsortorder = $row['sortorder'];
-
-	    }
+	    $highestsortorder = $result[0]['sortorder'];
 
 	} else {
 
@@ -12939,6 +12953,14 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
+
+    echo "sort: " . $highestsortorder . " / ";
+
+    if ($highestsortorder == "") {
+	$highestsortorder = 0;
+    }
+
+    echo "newsort: " . $highestsortorder . "<br>";
 
     // find a good name for the new column
 
@@ -12984,7 +13006,7 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, copypreviousprompt, codebook, toggle) VALUES (:element, :sort, :type, :column, :displayname, :copypreviousprompt, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, copypreviousprompt, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:element, :sort, :type, :column, :displayname, :copypreviousprompt, :codebook, :toggle, :sv, :clo, :dh);");
 
 	$stmt->bindParam(':element', $eid);
 	$stmt->bindParam(':sort', $sort);
@@ -12994,6 +13016,9 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
 	$stmt->bindParam(':copypreviousprompt', $cpp);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':sv', $sv);
+	$stmt->bindParam(':clo', $clo);
+	$stmt->bindParam(':dh', $dh);
 
 	$eid = $elementid;
 	$sort = $highestsortorder + 1;
@@ -13003,6 +13028,9 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
 	$cpp = $copypreviousprompt;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	if ($stmt->execute()) {
 
@@ -13269,7 +13297,11 @@ function nbt_move_sub_select_option ( $selectid, $direction ) {
 
 }
 
-function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1  ) {
+
+    if (is_null($dbname)) {
+	$dbname = "multi_select";
+    }
 
     $elementid = intval($elementid);
     $dbname = nbt_remove_special($dbname);
@@ -13291,12 +13323,7 @@ function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = N
 
 	    $dbh = null;
 
-	    foreach ( $result as $row ) {
-
-		$highestsortorder = $row['sortorder'];
-
-	    }
-
+	    $highestsortorder = $result[0]['sortorder'];
 	} else {
 
 	    echo "MySQL fail";
@@ -13309,10 +13336,14 @@ function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = N
 	echo $e->getMessage();
     }
 
+    if ($highestsortorder == "") {
+	$highestsortorder = 0;
+    }
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname, displayname, copypreviousprompt, codebook, toggle) VALUES (:element, :sort, :type, :column, :displayname, :copypreviousprompt, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, `type`, dbname, displayname, copypreviousprompt, codebook, toggle, `startup_visible`, `conditional_logical_operator`, `destructive_hiding`) VALUES (:element, :sort, :type, :column, :displayname, :copypreviousprompt, :codebook, :toggle, :sv, :clo, :dh);");
 
 	$stmt->bindParam(':element', $eid);
 	$stmt->bindParam(':sort', $sort);
@@ -13322,25 +13353,27 @@ function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = N
 	$stmt->bindParam(':copypreviousprompt', $cpp);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':sv', $sv);
+	$stmt->bindParam(':clo', $clo);
+	$stmt->bindParam(':dh', $dh);
 
 	$eid = $elementid;
 	$sort = $highestsortorder + 1;
 	$type = "multi_select";
-	$col = "multi_select";
+	$col = $dbname;
 	$dn = $displayname;
 	$cpp = $copypreviousprompt;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	if ($stmt->execute()) {
 	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
-
 	    $stmt2->execute();
-
 	    $result = $stmt2->fetchAll();
-
 	    $newid = $result[0]['newid'];
-
 	}
 
     }
@@ -13353,7 +13386,7 @@ function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = N
 
 }
 
-function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
 
     $elementid = intval($elementid);
     $suffix = nbt_remove_special($suffix);
@@ -13473,7 +13506,7 @@ function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $c
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname, displayname, codebook, toggle) VALUES (:element, :sort, :type, :column, :displayname, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:element, :sort, :type, :column, :displayname, :codebook, :toggle, :sv, :clo, :dh);");
 
 	$stmt->bindParam(':element', $eid);
 	$stmt->bindParam(':sort', $sort);
@@ -13482,6 +13515,9 @@ function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $c
 	$stmt->bindParam(':displayname', $dn);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':sv', $sv);
+	$stmt->bindParam(':clo', $clo);
+	$stmt->bindParam(':dh', $dh);
 
 	$eid = $element['id'];
 	$sort = $highestsortorder + 1;
@@ -13490,6 +13526,9 @@ function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $c
 	$dn = $displayname;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	if ($stmt->execute()) {
 
@@ -13778,7 +13817,7 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
 
 }
 
-function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL ) {
+function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = NULL, $copypreviousprompt = 1, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1  ) {
 
     $elementid = intval($elementid);
     $dbname = nbt_remove_special($dbname);
@@ -13865,7 +13904,7 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname, displayname, copypreviousprompt, codebook, toggle) VALUES (:element, :sort, :type, :column, :displayname, :copypreviousprompt, :codebook, :toggle);");
+	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname, displayname, copypreviousprompt, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:element, :sort, :type, :column, :displayname, :copypreviousprompt, :codebook, :toggle, :sv, :clo, :dh);");
 
 	$stmt->bindParam(':element', $eid);
 	$stmt->bindParam(':sort', $sort);
@@ -13875,6 +13914,9 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
 	$stmt->bindParam(':copypreviousprompt', $cpp);
 	$stmt->bindParam(':codebook', $cb);
 	$stmt->bindParam(':toggle', $tg);
+	$stmt->bindParam(':sv', $sv);
+	$stmt->bindParam(':clo', $clo);
+	$stmt->bindParam(':dh', $dh);
 
 	$eid = $elementid;
 	$sort = $highestsortorder + 1;
@@ -13884,6 +13926,9 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
 	$cpp = $copypreviousprompt;
 	$cb = $codebook;
 	$tg = $toggle;
+	$sv = $startup_visible;
+	$clo = $conditional_logical_operator;
+	$dh = $destructive_hiding;
 
 	if ($stmt->execute()) {
 	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
