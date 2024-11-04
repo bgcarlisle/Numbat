@@ -10,10 +10,18 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 			
 			switch ( $_GET['action'] ) {
 				
-				case "reconcile":
+			    case "reconcile":
+				
+				include ( ABS_PATH . "header.php" );
+				include ( ABS_PATH . "final/final.php" );
+				
+				break;
+
+
+			    case "reconcilescreened":
 					
-					include ( ABS_PATH . "header.php" );
-					include ( ABS_PATH . "final/final.php" );
+				include ( ABS_PATH . "header.php" );
+				include ( ABS_PATH . "final/screen.php" );
 				
 				break;
 				
