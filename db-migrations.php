@@ -1345,6 +1345,42 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     }
 
+    // Screening extraction forms
+
+    echo "<h3>Screening extraction form updates</h3>";
+
+    $forms = nbt_get_all_extraction_forms ();
+
+    // Loop through all the forms on this instance
+    foreach ($forms as $form) {
+
+	if ($form['formtype'] == "screening") {
+
+	    $elements = nbt_get_elements_for_formid ( $form['id'] );
+
+	    // Check for a refdata element
+	    $form_has_refdata = FALSE;
+	    $highestsortorder = 1;
+	    
+	    foreach ($elements as $element) {
+		if ($element['type'] == "reference_data") {
+		    $form_has_refdata = TRUE;
+		    if ($element['sortorder'] > $highestsortorder) {
+			$highestsortorder = $element['sortorder'];
+			
+		    }
+		}
+	    }
+
+	    if (! $form_has_refdata) {
+		// Add the reference data element
+		nbt_add_reference_data($form['id'], $highestsortorder + 1, "Reference data", "");
+		echo "<p>Updated screening form with reference data element: " . $form['name'] . "</p>";
+	    }
+	    
+	}
+	
+    }
 
     // End
 
