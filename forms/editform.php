@@ -70,10 +70,8 @@ $form = nbt_get_form_for_id ($_GET['id']);
 				echo "</div>";
 				break;
 			case "screening":
-				?><h2>Reasons for exclusion</h2>
-				<p>A user will be presented with two questions: 1. Include or exclude the reference in question?, 2. If it is to be excluded, choose one of the reasons why.</p>
-				<p>You can enter reasons for exclusion below and change their order.</p>
-				<p>If you need more flexibility, make an "extraction" type form.</p><?php
+				?><h2>Reference data and reasons for exclusion</h2>
+				<?php
 				include ('./screening.php');
 				break;
 

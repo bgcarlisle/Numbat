@@ -4175,7 +4175,9 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
 
 	$exclude_reason_id = nbt_add_single_select($newid, $include_element_id, "Reason for exclusion", "exclusion_reason");
 
-	nbt_add_text_area_field($newid, $exclude_reason_id, "Extractor notes", "extractor_notes");
+	$notes_element_id = nbt_add_text_area_field($newid, $exclude_reason_id, "Extractor notes", "extractor_notes");
+
+	nbt_add_reference_data($newid, $notes_element_id, "Reference data", "");
 
     }
 
@@ -5344,7 +5346,17 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
 	$clo = $conditional_logical_operator;
 	$dh = $destructive_hiding;
 
-	$stmt->execute();
+	if ($stmt->execute()) {
+	    $stmt2 = $dbh->prepare("SELECT LAST_INSERT_ID() AS newid;");
+
+	    $stmt2->execute();
+
+	    $result = $stmt2->fetchAll();
+
+	    foreach ( $result as $row ) {
+		$newid = $row['newid'];
+	    }
+	}
 
     }
 
@@ -5381,6 +5393,10 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
+
+    // return the id
+
+    return $newid;
 
 }
 

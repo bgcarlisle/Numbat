@@ -100,6 +100,37 @@ foreach ($formelements as $element) {
                 <?php echo $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['year']]; ?>
               </p>
               <p><?php echo str_replace("\n", "<br>", $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['abstract']]); ?></p>
+	      <div><?php
+		   
+		   foreach ($formelements as $ele) {
+		       if ($ele['type'] == "reference_data") {
+			   $element = $ele;
+			   
+		       }
+		   }
+		   
+		   $refdata = $element['columnname'];
+		   
+		   preg_match_all(
+		       '/\$([A-Za-z0-9_-]+)/',
+		       $element['columnname'],
+		       $cols_to_replace
+		   );
+
+		   foreach ( $cols_to_replace[0] as $col_to_replace ) {
+		       $refdata = preg_replace (
+			   "/\\" . $col_to_replace . "\b/",
+			   $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][substr($col_to_replace, 1)],
+			   // $ref[substr($col_to_replace, 1)],
+			   $refdata
+		       );
+		   }
+
+		   $refdata = str_replace("\n", "<br>", $refdata);
+
+		   echo $refdata;
+
+		   ?></div>
             </td>
             <td class="nbtScreeningIncludeBox<?php echo $includeboxclass; ?>" data-referenceid="<?php echo $assignment['referenceid']; ?>"<?php echo $includeboxstyle; ?>>
               <?php echo $includeboxcontent; ?>
