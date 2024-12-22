@@ -14279,19 +14279,38 @@ function nbt_make_new_refset_row ( $newname, $title, $authors, $year, $journal, 
 	$stmt = $dbh->prepare("INSERT INTO referencesets (name, title, authors, year, journal, abstract) VALUES (:name, :title, :authors, :year, :journal, :abstract)");
 
 	$stmt->bindParam(':name', $name);
-
 	$stmt->bindParam(':title', $ti);
 	$stmt->bindParam(':authors', $au);
 	$stmt->bindParam(':year', $ye);
 	$stmt->bindParam(':journal', $jo);
 	$stmt->bindParam(':abstract', $ab);
 	$name = $newname;
-	$ti = $title + 2; // Have to add 2 to each one, because two columns are added to each table by Numbat
-	$au = $authors + 2;
-	$ye = $year + 2;
-	$jo = $journal + 2;
-	$ab = $abstract + 2;
-
+	// Have to add 2 to each one, because two columns are added to each table by Numbat
+	if (is_int($title)) {
+	    $ti = $title + 2;
+	} else {
+	    $ti = NULL;
+	}
+	if (is_int($authors)) {
+	    $au = $authors + 2;
+	} else {
+	    $au = NULL;
+	}
+	if (is_int($year)) {
+	    $ye = $year + 2;
+	} else {
+	    $ye = NULL;
+	}
+	if (is_int($journal)) {
+	    $jo = $journal + 2;
+	} else {
+	    $jo = NULL;
+	}
+	if (is_int($abstract)) {
+	    $ab = $abstract + 2;
+	} else {
+	    $ab = NULL;
+	}
 
 	$stmt->execute();
 

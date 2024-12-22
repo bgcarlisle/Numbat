@@ -168,7 +168,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	<div style="margin-bottom: 20px;">
 	    <p>Title</p>
 	    <select name="nbtTitleColumn">
-		<option>Choose a column</option>
+		<option value="NULL">Choose a column</option>
 		<?php
 
 		$colcount = 0;
