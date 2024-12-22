@@ -64,7 +64,14 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 		// Make a new row in the referencesets table
 
-		$refsetid = nbt_make_new_refset_row ( $_POST['nbtNewRefSetName'], $_POST['nbtTitleColumn'], $_POST['nbtAuthorsColumn'], $_POST['nbtYearColumn'], $_POST['nbtJournalColumn'], $_POST['nbtAbstractColumn'] );
+		$refsetid = nbt_make_new_refset_row (
+		    $_POST['nbtNewRefSetName'],
+		    $_POST['nbtTitleColumn'],
+		    $_POST['nbtAuthorsColumn'],
+		    $_POST['nbtYearColumn'],
+		    $_POST['nbtJournalColumn'],
+		    $_POST['nbtAbstractColumn']
+		);
 
 		// Make a new refset table
 
@@ -86,7 +93,9 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 
 		while ( $counter < ( $_POST['nbtNumberOfColumns'] ) ) {
 
-		    if ( nbt_add_column_to_refset_table ( $refsetid, $_POST['nbtNewColName' . $counter], $_POST['nbtNewColType' . $counter] ) ) {
+		    if ( nbt_add_column_to_refset_table (
+			$refsetid, $_POST['nbtNewColName' . $counter], $_POST['nbtNewColType' . $counter]
+		    ) ) {
 
 			echo "Added column: " . $_POST['nbtNewColName' . $counter] . "<br>";
 
