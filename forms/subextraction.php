@@ -5,6 +5,7 @@ $subelements = nbt_get_sub_extraction_elements_for_elementid ( $subelementid );
 foreach ( $subelements as $subelement ) {
 
 ?><div style="border: 1px solid #999; border-radius: 3px; padding: 10px; margin: 5px 0 20px 0; background: #ddd;" id="nbtSubElement<?php echo $subelement['id']; ?>" class="nbtSubElementEditor" subelementid="<?php echo $subelement['id']; ?>">
+    <div style="float: right; margin-left: 10px;" class="nbtFormElementDraggy"><img src="<?php echo SITE_URL; ?>images/draggy.svg"></div>
     <button style="float: right;" onclick="$(this).fadeOut(0);$('#nbtDeleteSubElement<?php echo $subelement['id']; ?>').fadeIn();">Delete</button>
     <button class="nbtHidden" id="nbtDeleteSubElement<?php echo $subelement['id']; ?>" style="float: right;" onclick="nbtDeleteSubElement(<?php echo $subelement['id']; ?>);">For real</button>
     <?php

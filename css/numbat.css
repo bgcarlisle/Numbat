@@ -534,3 +534,8 @@ code {
 tr.nbtScreeningFocus {
 	border-left: 10px solid #333;
 }
+.nbtFormElementDraggyPlaceholder {
+    border: 20px solid #fff;
+    height: 40px;
+    margin: 10px 0 40px 0;
+}

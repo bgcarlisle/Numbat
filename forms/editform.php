@@ -56,7 +56,7 @@ $form = nbt_get_form_for_id ($_GET['id']);
 				?><h2>Form elements</h2>
 				<button onclick="collapseAllFormElements();">Collapse all form elements</button>
 				<button onclick="expandAllFormElements();">Expand all form elements</button>
-				<p>Drag elements to re-order.</p>
+				<p>Drag elements by <img src="<?php echo SITE_URL; ?>images/draggy.svg" style="margin: 0 3px;"> to re-order.</p>
 				<div id="nbtFormElements"><?php
 				include ('./elements.php');
 				echo "</div>";

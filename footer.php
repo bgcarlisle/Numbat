@@ -4,9 +4,25 @@
 
  $(document).ready(function () {
 
-     $('#nbtFormElements').sortable();
+     $('#nbtFormElements').sortable({
+	 handle: ".nbtFormElementDraggy",
+	 placeholder: "nbtFormElementDraggyPlaceholder",
+	 forcePlaceholderSize: true,
+	 start: function (event, ui) {
+	     ui.item.height('auto');
+	     ui.placeholder.height(ui.item.height());
+	 }
+     });
 
-     $('.nbtSubExtractionEditor').sortable();
+     $('.nbtSubExtractionEditor').sortable({
+	 handle: ".nbtFormElementDraggy",
+	 placeholder: "nbtFormElementDraggyPlaceholder",
+	 forcePlaceholderSize: true,
+	 start: function (event, ui) {
+	     ui.item.height('auto');
+	     ui.placeholder.height(ui.item.height());
+	 }
+     });
 
      nbtCheckLogin();
 
@@ -6090,7 +6106,7 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
  });
 
  $('div#nbtFormElements').on('click', '.nbtFormEditorCollapse', function() {
-     $(this).parent().children().not('h4').not('button').not('.nbtFormElementDeleterContainer').slideToggle();
+     $(this).parent().children().not('h4').not('button').not('.nbtFormElementDeleterContainer').not('.nbtFormElementDraggy').slideToggle();
      if ($(this).parent().children().find('.nbtDisplayName').val() != '') {
 	 $(this).parent().children().children('.nbtDisplayNameHidden').html('(' + $(this).parent().children().find('.nbtDisplayName').val() + ')');
      } else {

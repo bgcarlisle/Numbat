@@ -8,6 +8,7 @@ if ( count ( $elements ) > 0 ) {
 
 	echo '<div class="nbtFormEditorElement" id="nbtFormElement' . $element['id'] . '" elementid="' . $element['id'] . '">'; ?>
     <div style="border: 1px solid #999; border-radius: 3px; padding: 10px; margin: 5px 0 20px 0; background-color: #eee;">
+	<div style="float: right; margin-left: 10px;" class="nbtFormElementDraggy"><img src="<?php echo SITE_URL; ?>images/draggy.svg"></div>
 	<button style="float: right;" id="nbtFormEditorElementDelete<?php echo $element['id']; ?>" onclick="$(this).fadeOut(0);$('#nbtDeleteFormElement<?php echo $element['id']; ?>').fadeIn();">Delete</button>
     <div class="nbtFormElementDeleterContainer nbtHidden" id="nbtDeleteFormElement<?php echo $element['id']; ?>" class="nbtHidden">
 	<button style="float: right;" onclick="$('#nbtDeleteFormElement<?php echo $element['id']; ?>').fadeOut(0);$('#nbtFormEditorElementDelete<?php echo $element['id']; ?>').fadeIn();">Do not delete</button>
