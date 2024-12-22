@@ -748,15 +748,25 @@
 	     newval: $('#nbtFormMetadata-' + col).val()
 	 },
 	 dataType: 'html'
-     }).done ( function (html) {
+     }).done ( function (response) {
 
-	 $('#nbtFormMetadataFeedback-' + col).html(html);
+	 if (response == "Changes saved") {
 
-	 $('#nbtFormMetadataFeedback-' + col).fadeIn(500, function () {
+	     $('#nbtFormMetadata-' + col).addClass('nbtBackgroundFeedbackGood');
+	     
+             setTimeout( function () {
+         	 $('#nbtFormMetadata-' + col).removeClass('nbtBackgroundFeedbackGood');
+             }, 1000);
+	     
+	 } else {
 
-	     $('#nbtFormMetadataFeedback-' + col).fadeOut(500);
-
-	 })
+	     $('#nbtFormMetadata-' + col).addClass('nbtBackgroundFeedbackBad');
+	     
+             setTimeout( function () {
+         	 $('#nbtFormMetadata-' + col).removeClass('nbtBackgroundFeedbackBad');
+             }, 1000);
+	     
+	 }
 
      });
 
