@@ -4176,8 +4176,6 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
 
     	    $dbh = null;
 
-    	    return $newid;
-
     	}
 
     }
@@ -4201,6 +4199,8 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
 	nbt_add_reference_data($newid, $notes_element_id, "Reference data", "");
 
     }
+
+    return $newid;
 
 }
 
