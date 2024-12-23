@@ -1236,12 +1236,6 @@ function nbt_remove_citation ( $section, $citation ) {
 
 }
 
-function nbt_update_screening ( $fid, $rsid, $rid, $dbname, $value ) {
-
-
-
-}
-
 function nbt_update_extraction ( $fid, $id, $column, $value ) {
 
     if ($value == "") {
