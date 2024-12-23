@@ -4165,22 +4165,6 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
 	echo $e->getMessage();
     }
 
-    // If it's a screening form, add the requisite form elements
-
-    if ($formtype == "screening") {
-
-	$include_element_id = nbt_add_single_select($newid, 0, "Include", "include");
-	nbt_add_single_select_option($include_element_id, "Include", "1");
-	nbt_add_single_select_option($include_element_id, "Exclude", "0");
-
-	$exclude_reason_id = nbt_add_single_select($newid, $include_element_id, "Reason for exclusion", "exclusion_reason");
-
-	$notes_element_id = nbt_add_text_area_field($newid, $exclude_reason_id, "Extractor notes", "extractor_notes");
-
-	nbt_add_reference_data($newid, $notes_element_id, "Reference data", "");
-
-    }
-
     // Make the final table
 
     try {
@@ -4200,6 +4184,22 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
 
     catch (PDOException $e) {
 	echo $e->getMessage();
+    }
+
+    // If it's a screening form, add the requisite form elements
+
+    if ($formtype == "screening") {
+
+	$include_element_id = nbt_add_single_select($newid, 0, "Include", "include");
+	nbt_add_single_select_option($include_element_id, "Include", "1");
+	nbt_add_single_select_option($include_element_id, "Exclude", "0");
+
+	$exclude_reason_id = nbt_add_single_select($newid, $include_element_id, "Reason for exclusion", "exclusion_reason");
+
+	$notes_element_id = nbt_add_text_area_field($newid, $exclude_reason_id, "Extractor notes", "extractor_notes");
+
+	nbt_add_reference_data($newid, $notes_element_id, "Reference data", "");
+
     }
 
 }
