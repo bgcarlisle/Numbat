@@ -463,6 +463,7 @@ function nbt_admin_generate_password_link ( $userid ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
+	
     } else {
 
 	return FALSE;
@@ -727,20 +728,20 @@ function nbt_get_all_extracted_references_for_refset_and_form ( $refsetid, $form
 
     try {
 
-      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-      $stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `id` IN (SELECT `referenceid` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `status` = 2) ORDER BY id ASC;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `id` IN (SELECT `referenceid` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `status` = 2) ORDER BY id ASC;");
 
-      $stmt->bindParam(':refset', $rsid);
+	$stmt->bindParam(':refset', $rsid);
 
-      $rsid = $refsetid;
+	$rsid = $refsetid;
 
-      $stmt->execute();
+	$stmt->execute();
 
-      $result = $stmt->fetchAll();
+	$result = $stmt->fetchAll();
 
-      $dbh = null;
+	$dbh = null;
 
-      return $result;
+	return $result;
 
     }
 
@@ -1244,7 +1245,7 @@ function nbt_update_screening ( $fid, $rsid, $rid, $dbname, $value ) {
 function nbt_update_extraction ( $fid, $id, $column, $value ) {
 
     if ($value == "") {
-	     $value = NULL;
+	$value = NULL;
     }
 
     if ( $column == "status" && $value == 2 ) { // Special case: they're clicking "completed"
