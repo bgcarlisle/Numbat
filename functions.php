@@ -3469,38 +3469,9 @@ function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "
 
 }
 
-function nbt_get_assignments_for_refset_form_paginated ( $refsetid, $sort = "whenassigned", $sortdirection = "DESC", $form_type = "", $screening_page=NULL, $formid=NULL ) {
+function nbt_get_assignments_for_refset_form_paginated ( $refsetid, $formid=NULL, $screening_page=1 ) {
 
-  if ($sortdirection == "ASC") {
-	   $sd = " ASC";
-   } else {
-     $sd = " DESC";
-   }
-
-   switch ($sort) {
-     case "referenceid":
-  	    $sortquery = "ORDER BY `referenceid`" . $sd;
-        break;
-     case "formid":
-  	    $sortquery = "ORDER BY `forms`.`id`" . $sd;
-  	    break;
-  	 case "whenassigned":
-  	 default:
-	      $sortquery = "ORDER BY `assignments`.`id`" . $sd;
-  	    break;
-    }
-
-    if ($form_type != "") { // If it's only showing extraction forms
-      $ext_form = "`forms`.`formtype` = '" . $form_type . "' AND ";
-    } else {
-      $ext_form = "";
-    }
-
-    if (is_null($screening_page)) {
-      $query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() GROUP BY `referenceid`" . $sortquery . ";";
-    } else {
-      $query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() AND `formid` = :fid GROUP BY `referenceid`" . $sortquery . " LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";";
-    }
+    $query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() AND `formid` = :fid GROUP BY `referenceid` ORDER BY `referenceid` ASC LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";";
 
     try {
 
@@ -3509,8 +3480,7 @@ function nbt_get_assignments_for_refset_form_paginated ( $refsetid, $sort = "whe
 
     	$stmt->bindParam(':fid', $fid);
 
-    	$uid = $userid;
-	    $fid = $formid;
+        $fid = $formid;
 
     	$stmt->execute();
 
@@ -3523,7 +3493,7 @@ function nbt_get_assignments_for_refset_form_paginated ( $refsetid, $sort = "whe
     }
 
     catch (PDOException $e) {
-      echo $e->getMessage();
+	echo $e->getMessage();
     }
 
 }
@@ -3576,7 +3546,7 @@ function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid
     	$stmt->bindParam(':fid', $fid);
 
     	$uid = $userid;
-	    $fid = $formid;
+	$fid = $formid;
 
     	$stmt->execute();
 
@@ -3589,7 +3559,7 @@ function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid
     }
 
     catch (PDOException $e) {
-      echo $e->getMessage();
+	echo $e->getMessage();
     }
 
 }
@@ -3606,6 +3576,34 @@ function nbt_count_assignments_for_user_refset_form ($userid, $refsetid, $formid
 
 
     	$uid = $userid;
+	$fid = $formid;
+	$rsid = $refsetid;
+
+    	$stmt->execute();
+
+    	$result = $stmt->fetchAll();
+
+    	$dbh = null;
+
+    	return $result[0]['assign_count'];
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+
+}
+
+function nbt_count_assignments_for_refset_form ($refsetid, $formid) {
+    try {
+
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$stmt = $dbh->prepare ("SELECT COUNT(*) as `assign_count` FROM `assignments` WHERE `formid` = :fid AND `refsetid` = :rsid");
+
+    	$stmt->bindParam(':fid', $fid);
+    	$stmt->bindParam(':rsid', $rsid);
+
 	$fid = $formid;
 	$rsid = $refsetid;
 
