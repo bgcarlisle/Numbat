@@ -43,7 +43,7 @@ foreach ($formelements as $element) {
 	  </div>
 	  <p>Form: <?php echo $form['name']; ?></p>
 
-	  <table class="nbtTabledData" id="nbtScreeningGrid" data-formid="<?php echo $form['id']; ?>" data-refsetid="<?php echo $refset['id']; ?>">
+	  <table class="nbtTabledData" id="nbtScreeningReconcileGrid" data-formid="<?php echo $form['id']; ?>" data-refsetid="<?php echo $refset['id']; ?>">
 	      <tr class="nbtTableHeaders">
 		  <td>Reference</td>
 		  <td>Include</td>
@@ -117,11 +117,13 @@ foreach ($formelements as $element) {
 			       ?>
 			  </div>
 		      </td>
-		      <td>
+		      <td class="nbtScreeningReconcileIncludeBox" data-referenceid="<?php echo $assignment['referenceid']; ?>">
 			  <?php echo $row_include; ?>
+			  <div class="nbtFinalLabel"></div>
 		      </td>
+		      <?php $excl_count = 0; ?>
 		      <?php foreach ($exclusion_reasons as $er) { ?>
-			  <td>
+			  <td class="nbtScreeningReconcileExcludeBox<?php echo $excl_count; ?>">
 			      <?php
 
 			      foreach ($row_exclude as $exclude_user => $re) {
@@ -132,13 +134,14 @@ foreach ($formelements as $element) {
 			      
 			      ?>
 			  </td>
+			  <?php $excl_count++; ?>
 		      <?php } ?>
 		      <td>
 			  <?php
 
 			  if (! is_null($row_notes)) {
 			      foreach ($row_notes as $notes_user => $rn) {
-				  echo "<p>" . $notes_user . ": " . $rn . "</p>";
+				  echo "<p><span style=\"font-weight: 800\">" . $notes_user . "</span>: " . $rn . "</p>";
 			      }
 			  }
 

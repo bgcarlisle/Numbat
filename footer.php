@@ -364,7 +364,7 @@
 
        });
 
-       // Add keyboard shortcuts
+       // Add screening keyboard shortcuts
        document.addEventListener('keyup', function (event) {
          if (! $('input.nbtScreeningNotes:focus').length) { // These don't work when a notes is in focus
 
@@ -437,9 +437,7 @@
            }
          }
 
-
-
-       });
+       }); // End of screening keyboard shortcuts
 
        // When the include box is clicked
        $('.nbtScreeningIncludeBox').on('click', function (event) {
@@ -556,6 +554,131 @@
 
 
      } // End of screening
+
+     // Screening-reconciliation
+     if ($('#nbtScreeningReconcileGrid').length) { // If there's the screening-reconcile table
+	 
+	 formid = $('#nbtScreeningReconcileGrid').data('formid');
+	 rsid = $('#nbtScreeningReconcileGrid').data('refsetid');
+
+	 // Focus goes where clicked
+	 $('#nbtScreeningReconcileGrid tr.nbtFocusableScreeningRow').on('click', function () {
+             if (! $(this).hasClass('nbtScreeningFocus')) {
+		 $('#nbtScreeningReconcileGrid tr').removeClass('nbtScreeningFocus');
+		 $(this).addClass('nbtScreeningFocus');
+             } else {
+		 $('#nbtScreeningReconcileGrid tr').removeClass('nbtScreeningFocus');
+             }
+
+	 });
+
+	 // Add screening-reconcile keyboard shortcuts
+	 document.addEventListener('keyup', function (event) {
+	     if (! (event.getModifierState("Alt") | event.getModifierState("Control") | event.getModifierState("Meta"))) {
+		 // These don't work if Control, Alt or Meta are being pressed
+		 
+		 if (event.keyCode == 74) { // Letter j
+		     if ($('.nbtScreeningFocus').length) {
+			 if ($('.nbtScreeningFocus').next('.nbtFocusableScreeningRow:visible').length) {
+			     $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').next('.nbtFocusableScreeningRow:visible').addClass('nbtScreeningFocus');
+			     $('html, body').animate({
+				 scrollTop: $('.nbtScreeningFocus').offset().top - 50
+			     }, 250);
+			 }
+		     } else {
+			 $('.nbtFocusableScreeningRow:visible:first').addClass('nbtScreeningFocus');
+		     }
+
+		 } // End j
+
+		 if (event.keyCode == 75) { // Letter k
+		     if ($('.nbtScreeningFocus').length) {
+			 if ($('.nbtScreeningFocus').prev('.nbtFocusableScreeningRow:visible').length) {
+			     $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').prev('.nbtFocusableScreeningRow:visible').addClass('nbtScreeningFocus');
+			     $('html, body').animate({
+				 scrollTop: $('.nbtScreeningFocus').offset().top - 50
+			     }, 250);
+			 }
+		     } else {
+			 $('.nbtFocusableScreeningRow:visible:last').addClass('nbtScreeningFocus');
+		     }
+		 } // End k
+		 
+		 if (event.keyCode == 27) { // Esc key
+		     // Removes focus
+		     $('#nbtScreeningReconcileGrid tr').removeClass('nbtScreeningFocus');
+		 } // End Esc
+
+		 if (event.keyCode == 49 || event.keyCode == 97) { // 1 or numpad 1
+		     // Copy include to final
+		     $('.nbtScreeningFocus .nbtScreeningReconcileIncludeBox').click();
+		 } // End 1/include
+
+		 // keys 2-9
+		 if ((event.keyCode >= 50 && event.keyCode <= 57) || (event.keyCode >= 98 && event.keyCode <= 105)) {
+		     if (event.keyCode <= 57) {
+			 num = event.keyCode - 48;
+		     } else {
+			 num = event.keyCode - 96;
+		     }
+
+		     boxnum = num - 2;
+
+		     // Copy exclusion reason to final
+		     $('.nbtScreeningFocus .nbtScreeningReconcileExcludeBox' + boxnum).click();
+		 } // end keys 2-9
+		 
+	     } // End modifier key ignore
+	     
+	 }); // End of screening-reconcile keyboard shortcuts
+
+	 // When the reconcile include box is clicked
+	 $('.nbtScreeningReconcileIncludeBox').on('click', function (event) {
+             event.stopPropagation();
+
+             includebox = $(this);
+             $.ajax ({
+		 url: numbaturl + 'final/updatescreening.php',
+		 type: 'post',
+		 data: {
+		     action: 'include',
+		     fid: formid,
+		     refset: rsid,
+		     rid: $(this).data('referenceid')
+		 },
+		 dataType: 'html'
+             }).done ( function (response) {
+
+		 switch (response) {
+		     case "1":
+			 includebox.css("background-color","#ccffcc");
+			 includebox.children('.nbtFinalLabel').html('Include');
+			 includebox.addClass('nbtScreeningDone');
+			 includebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
+			 break;
+		     case "0":
+			 includebox.css("background-color","#ffcccc");
+			 includebox.addClass('nbtScreeningDone');
+			 includebox.html('Exclude');
+			 break;
+		     case "null":
+			 includebox.css("background-color","");
+			 includebox.html('Include?');
+			 includebox.removeClass('nbtScreeningDone');
+			 includebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
+			 break;
+		     case "Error":
+			 alert('Error saving');
+			 break;
+		 }
+
+             });
+
+	 });
+
+     }
+
+     // End of screening-reconciliation
 
 
  });
