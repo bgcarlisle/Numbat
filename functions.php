@@ -756,7 +756,7 @@ function nbt_get_all_extractions_for_refset_and_form ( $refsetid, $formid, $mins
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT *, " . $formid . " AS `formid` FROM `extractions_" . $formid . "`, `referenceset_" . $refsetid . "` WHERE `extractions_" . $formid . "`.`refsetid` = " . $refsetid . " AND `extractions_" . $formid . "`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND `extractions_" . $formid . "`.`status` >= " . $minstatus);
+	$stmt = $dbh->prepare("SELECT *, " . $formid . " AS `formid` FROM `extractions_" . $formid . "`, `referenceset_" . $refsetid . "`, `users` WHERE `users`.`id` = `extractions_" . $formid . "`.`userid` AND `extractions_" . $formid . "`.`refsetid` = " . $refsetid . " AND `extractions_" . $formid . "`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND `extractions_" . $formid . "`.`status` >= " . $minstatus);
 
 	$stmt->execute();
 
@@ -772,6 +772,66 @@ function nbt_get_all_extractions_for_refset_and_form ( $refsetid, $formid, $mins
 	echo $e->getMessage();
     }
 
+}
+
+function nbt_count_unique_references_assigned_by_refset_and_form ($refsetid, $formid) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT COUNT(DISTINCT(`referenceid`)) as `count` FROM `assignments` WHERE `formid` = :fid AND `refsetid` = :rsid;");
+
+	$stmt->bindParam(':rsid', $rsid);
+	$stmt->bindParam(':fid', $fid);
+
+	$fid = $formid;
+	$rsid = $refsetid;
+	
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	return $result[0]['count'];
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+    
+}
+
+function nbt_get_unique_references_assigned_by_refset_and_form_paginated ($refsetid, $formid, $screening_page = 1) {
+
+    $refsetid = intval($refsetid);
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `assignments`, `referenceset_" . $refsetid . "` WHERE `formid` = :fid AND `refsetid` = :rsid AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` GROUP BY referenceid ORDER BY referenceid ASC LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";");
+
+	$stmt->bindParam(':rsid', $rsid);
+	$stmt->bindParam(':fid', $fid);
+
+	$fid = $formid;
+	$rsid = $refsetid;
+	
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	return $result;
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+    
 }
 
 function nbt_get_extractions_for_refset_ref_and_form ( $refsetid, $refid, $formid, $minstatus = 2 ) {
@@ -3498,26 +3558,7 @@ function nbt_get_assignments_for_refset_form_paginated ( $refsetid, $formid=NULL
 
 }
 
-function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid, $sort = "whenassigned", $sortdirection = "DESC", $form_type = "", $gp_ft=FALSE, $screening_page=NULL, $formid=NULL ) {
-
-    if ($sortdirection == "ASC") {
-	$sd = " ASC";
-    } else {
-	$sd = " DESC";
-    }
-
-    switch ($sort) {
-  	case "referenceid":
-  	    $sortquery = "ORDER BY `referenceid`" . $sd;
-  	    break;
-  	case "formid":
-  	    $sortquery = "ORDER BY `forms`.`id`" . $sd;
-  	    break;
-  	case "whenassigned":
-  	default:
-	    $sortquery = "ORDER BY `assignments`.`id`" . $sd;
-  	    break;
-    }
+function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid, $form_type = "", $gp_ft=FALSE, $screening_page=NULL, $formid=NULL ) {
 
     if ($form_type != "") { // If it's only showing extraction forms
 	$ext_form = "`forms`.`formtype` = '" . $form_type . "' AND ";
@@ -3532,9 +3573,9 @@ function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid
     }
 
     if (is_null($screening_page)) {
-	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() " . $gpft . $sortquery . ";";
+	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() " . $gpft . "ORDER BY `referenceid` ASC;";
     } else {
-	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() AND `formid` = :fid " . $gpft . $sortquery . " LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";";
+	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() AND `formid` = :fid " . $gpft . " ORDER BY `referenceid` ASC LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";";
     }
 
     try {
