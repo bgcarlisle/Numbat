@@ -3,6 +3,7 @@
 $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 $refset = nbt_get_refset_for_id ( $_GET['refset'] );
 $form = nbt_get_form_for_id ( $_GET['form'] );
+$final = nbt_get_all_final_for_refset_and_form ( $_GET['refset'], $_GET['form'] );
 
 if (! isset($_GET['screeningpage'])) {
     $_GET['screeningpage'] = 1;
@@ -42,7 +43,7 @@ foreach ($formelements as $element) {
 	      <?php } ?>
 	  </div>
 	  <p>Form: <?php echo $form['name']; ?></p>
-
+	  <p>Keyboard shortcuts: j (next row); k (previous row); 1 (include); 2-9 (exclusion reasons); u (show unanimous rows only); h (hide completed); a (show all)</p>
 	  <table class="nbtTabledData" id="nbtScreeningReconcileGrid" data-formid="<?php echo $form['id']; ?>" data-refsetid="<?php echo $refset['id']; ?>">
 	      <tr class="nbtTableHeaders">
 		  <td>Reference</td>
@@ -55,26 +56,60 @@ foreach ($formelements as $element) {
 	      <?php foreach ($assignments as $assignment) { ?>
 		  <?php
 
+		  $row_done = "";
+		  $row_final = NULL;
+		  foreach ($final as $fi) {
+		      if ($fi['referenceid'] == $assignment['referenceid']) {
+			  $row_done = " nbtScreeningReconcileDone";
+			  $row_final = $fi;
+		      }
+		  }
+
 		  $row_include = NULL;
 		  $row_exclude = NULL;
 		  $row_notes = NULL;
 
-		  // Pulling out the extractions
+		  // Pulling out the extraction data
+		  $row_extraction_count = 0;
+		  $row_include_count = 0;
+		  $row_exclusion_reasons = Array();
 		  foreach ($extractions as $ext) {
 		      if ($assignment['referenceid'] == $ext['referenceid']) {
+			  $row_extraction_count++;
 			  if ($ext['extractor_notes'] != "") {
 			      $row_notes[$ext['username']] = $ext['extractor_notes'];
 			  }
 			  if ($ext['include'] == 1) {
+			      $row_include_count++;
 			      $row_include .= "<span class=\"nbtExtractionName\">" . $ext['username'] . "</span>";
 			  } else {
+			      if (! is_null($ext['exclusion_reason'])) {
+				  $row_exclusion_reasons[] = $ext['exclusion_reason'];
+			      }
 			      $row_exclude[$ext['username']] = $ext['exclusion_reason'];
 			  }
 		      }
 		  }
+
+		  // Check whether it's unanimous
+		  if ($row_extraction_count > 0) {
+		      if ($row_include_count == $row_extraction_count | ($row_include_count == 0 & count(array_unique($row_exclusion_reasons)) == 1)) {
+			  $row_unanimous = TRUE;
+		      } else {
+			  $row_unanimous = FALSE;
+		      }
+		  } else {
+		      $row_unanimous = FALSE;
+		  }
+
+		  if ($row_unanimous) {
+		      $unanimous_css = " nbtUnanimous";
+		  } else {
+		      $unanimous_css = "";
+		  }
 		  
 		  ?>
-		  <tr class="nbtFocusableScreeningRow">
+		  <tr class="nbtFocusableScreeningRow<?php echo $row_done . $unanimous_css; ?>">
 		      <td>
 			  <h3><?php echo $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['title']]; ?></h3>
 			  <p>
@@ -85,45 +120,77 @@ foreach ($formelements as $element) {
 			  <p><?php echo str_replace("\n", "<br>", $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['abstract']]); ?></p>
 			  <div>
 			      <?php
-			       
-			       foreach ($formelements as $ele) {
-				   if ($ele['type'] == "reference_data") {
-				       $element = $ele;
-				       
-				   }
-			       }
-			       
-			       $refdata = $element['columnname'];
-			       
-			       preg_match_all(
-				   '/\$([A-Za-z0-9_-]+)/',
-				   $element['columnname'],
-				   $cols_to_replace
-			       );
+			      
+			      foreach ($formelements as $ele) {
+				  if ($ele['type'] == "reference_data") {
+				      $element = $ele;
+				      
+				  }
+			      }
+			      
+			      $refdata = $element['columnname'];
+			      
+			      preg_match_all(
+				  '/\$([A-Za-z0-9_-]+)/',
+				  $element['columnname'],
+				  $cols_to_replace
+			      );
 
-			       foreach ( $cols_to_replace[0] as $col_to_replace ) {
-				   $refdata = preg_replace (
-				       "/\\" . $col_to_replace . "\b/",
-				       $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][substr($col_to_replace, 1)],
-				       // $ref[substr($col_to_replace, 1)],
-				       $refdata
-				   );
-			       }
+			      foreach ( $cols_to_replace[0] as $col_to_replace ) {
+				  $refdata = preg_replace (
+				      "/\\" . $col_to_replace . "\b/",
+				      $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][substr($col_to_replace, 1)],
+				      // $ref[substr($col_to_replace, 1)],
+				      $refdata
+				  );
+			      }
 
-			       $refdata = str_replace("\n", "<br>", $refdata);
+			      $refdata = str_replace("\n", "<br>", $refdata);
 
-			       echo $refdata;
+			      echo $refdata;
 
-			       ?>
+			      ?>
 			  </div>
 		      </td>
-		      <td class="nbtScreeningReconcileIncludeBox" data-referenceid="<?php echo $assignment['referenceid']; ?>">
+		      <?php
+
+		      $includeboxcss = "";
+		      if (is_null($row_final['include'])) {
+			  $includeboxlabel = "Include?";
+			  $includeboxcss = "";
+		      } else {
+
+			  if ($row_final['include'] == 1) {
+			      $includeboxlabel = "&#10003; Include";
+			      $includeboxcss = 'style="background-color: #ccffcc;"';
+			  }
+
+			  if ($row_final['include'] == 0) {
+			      $includeboxlabel = "&#10007; Exclude";
+			      $includeboxcss = 'style="background-color: #ffcccc;"';
+			  }
+			  
+		      }
+		      ?>
+		      <td class="nbtScreeningReconcileIncludeBox" data-referenceid="<?php echo $assignment['referenceid']; ?>"<?php echo $includeboxcss; ?>>
+			  <div class="nbtFinalLabel">
+			      <?php echo $includeboxlabel; ?>
+			  </div>
 			  <?php echo $row_include; ?>
-			  <div class="nbtFinalLabel"></div>
 		      </td>
 		      <?php $excl_count = 0; ?>
 		      <?php foreach ($exclusion_reasons as $er) { ?>
-			  <td class="nbtScreeningReconcileExcludeBox<?php echo $excl_count; ?>">
+			  <?php
+
+			  if ($row_final['include'] == 0 & $row_final['exclusion_reason'] == $er['dbname']) {
+			      $excludeboxcss = 'style="background-color: #ffcccc;"';
+			  } else {
+			      $excludeboxcss = '';
+			  }
+			  
+			  ?>
+			  <td class="nbtScreeningReconcileExcludeBox nbtScreeningReconcileExcludeBox<?php echo $excl_count; ?>" data-excludereason="<?php echo $er['dbname']; ?>" data-referenceid="<?php echo $assignment['referenceid']; ?>"<?php echo $excludeboxcss; ?>>
+			      <div><?php echo $er['displayname']; ?></div>
 			      <?php
 
 			      foreach ($row_exclude as $exclude_user => $re) {

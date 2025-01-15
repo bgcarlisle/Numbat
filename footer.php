@@ -627,6 +627,20 @@
 		     // Copy exclusion reason to final
 		     $('.nbtScreeningFocus .nbtScreeningReconcileExcludeBox' + boxnum).click();
 		 } // end keys 2-9
+
+		 if (event.keyCode == 72) { // h
+		     // Hide all completed
+		     $('.nbtScreeningReconcileDone').fadeOut(0);
+		 }
+		 if (event.keyCode == 65) { // a
+		     // Show all rows
+		     $('.nbtFocusableScreeningRow').fadeIn(0);
+		 }
+		 
+		 if (event.keyCode == 85) { // u
+		     // Show unanimous
+		     $('.nbtFocusableScreeningRow:not(.nbtUnanimous)').fadeToggle(0);
+		 }
 		 
 	     } // End modifier key ignore
 	     
@@ -652,20 +666,20 @@
 		 switch (response) {
 		     case "1":
 			 includebox.css("background-color","#ccffcc");
-			 includebox.children('.nbtFinalLabel').html('Include');
-			 includebox.addClass('nbtScreeningDone');
-			 includebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
+			 includebox.children('.nbtFinalLabel').html('&#10003; Include');
+			 includebox.parent().addClass('nbtScreeningReconcileDone');
+			 includebox.parent().children('.nbtScreeningReconcileExcludeBox').css("background-color", "");
 			 break;
 		     case "0":
 			 includebox.css("background-color","#ffcccc");
-			 includebox.addClass('nbtScreeningDone');
-			 includebox.html('Exclude');
+			 includebox.parent().addClass('nbtScreeningReconcileDone');
+			 includebox.children('.nbtFinalLabel').html('&#10007; Exclude');
 			 break;
 		     case "null":
 			 includebox.css("background-color","");
-			 includebox.html('Include?');
-			 includebox.removeClass('nbtScreeningDone');
-			 includebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
+			 includebox.children('.nbtFinalLabel').html('Include?');
+			 includebox.parent().removeClass('nbtScreeningReconcileDone');
+			 includebox.parent().children('.nbtScreeningReconcileExcludeBox').css("background-color", "");
 			 break;
 		     case "Error":
 			 alert('Error saving');
@@ -674,7 +688,43 @@
 
              });
 
-	 });
+	 }); // End of include box click
+
+	 // When an exclude box is clicked
+	 $('.nbtScreeningReconcileExcludeBox').on('click', function (event) {
+             event.stopPropagation();
+
+             excludebox = $(this);
+             $.ajax ({
+		 url: numbaturl + 'final/updatescreening.php',
+		 type: 'post',
+		 data: {
+		     action: 'exclude',
+		     reason: $(this).data('excludereason'),
+		     fid: formid,
+		     refset: rsid,
+		     rid: $(this).data('referenceid')
+		 },
+		 dataType: 'html'
+             }).done ( function (response) {
+
+		 if (response == "Clear all") {
+		     excludebox.parent().children('.nbtScreeningReconcileExcludeBox').css("background-color", "");
+		 } else {
+		     if ( response != "Error") {
+			 excludebox.parent().children('.nbtScreeningReconcileIncludeBox').css("background-color", "#ffcccc");
+			 excludebox.parent().children('.nbtScreeningReconcileIncludeBox').children('.nbtFinalLabel').html('&#10007; Exclude');
+			 excludebox.parent().children('.nbtScreeningReconcileExcludeBox').css("background-color", "");
+			 excludebox.css("background-color","#ffcccc");
+		     } else {
+			 alert('Error saving');
+		     }
+
+		 }
+
+             });
+
+	 }); // End of exclude box click
 
      }
 
