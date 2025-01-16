@@ -14339,7 +14339,7 @@ function nbt_make_new_refset_row ( $newname, $title, $authors, $year, $journal, 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("INSERT INTO referencesets (name, title, authors, year, journal, abstract) VALUES (:name, :title, :authors, :year, :journal, :abstract)");
+	$stmt = $dbh->prepare("INSERT INTO `referencesets` (`name`, `title`, `authors`, `year`, `journal`, `abstract`) VALUES (:name, :title, :authors, :year, :journal, :abstract)");
 
 	$stmt->bindParam(':name', $name);
 	$stmt->bindParam(':title', $ti);
@@ -14349,28 +14349,30 @@ function nbt_make_new_refset_row ( $newname, $title, $authors, $year, $journal, 
 	$stmt->bindParam(':abstract', $ab);
 	$name = $newname;
 	// Have to add 2 to each one, because two columns are added to each table by Numbat
-	if (is_int($title)) {
-	    $ti = $title + 2;
+	
+	if ($title != "NULL") {
+	    $ti = intval($title) + 2;
+
 	} else {
 	    $ti = NULL;
 	}
-	if (is_int($authors)) {
-	    $au = $authors + 2;
+	if ($authors != "NULL") {
+	    $au = intval($authors) + 2;
 	} else {
 	    $au = NULL;
 	}
-	if (is_int($year)) {
-	    $ye = $year + 2;
+	if ($year != "NULL") {
+	    $ye = intval($year) + 2;
 	} else {
 	    $ye = NULL;
 	}
-	if (is_int($journal)) {
-	    $jo = $journal + 2;
+	if ($journal != "NULL") {
+	    $jo = intval($journal) + 2;
 	} else {
 	    $jo = NULL;
 	}
-	if (is_int($abstract)) {
-	    $ab = $abstract + 2;
+	if ($abstract != "NULL") {
+	    $ab = intval($abstract) + 2;
 	} else {
 	    $ab = NULL;
 	}
