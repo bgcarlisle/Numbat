@@ -2065,7 +2065,7 @@ function nbt_echo_subextraction_text_field ($elementid, $subextraction, $dbcolum
 function nbt_echo_subextraction_text_area ($elementid, $subextraction, $dbcolumn) {
 
 ?>
-    <textarea style="width: 100%; height: 150px;" id="nbtSub<?php echo $subextraction['id']; ?>TextArea" onblur="nbtSaveSubExtractionTextField(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextArea', 'nbtSub<?php echo $subextraction['id']; ?>TextAreaField<?php echo $dbcolumn; ?>Feedback');"><?php echo $subextraction[$dbcolumn]; ?></textarea>
+    <textarea style="width: 100%; height: 150px;" id="nbtSub<?php echo $subextraction['id']; ?>TextArea<?php echo $dbcolumn; ?>" onblur="nbtSaveSubExtractionTextField(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextArea<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextAreaField<?php echo $dbcolumn; ?>Feedback');"><?php echo $subextraction[$dbcolumn]; ?></textarea>
     <p class="nbtInputFeedback" id="nbtSub<?php echo $subextraction['id']; ?>TextAreaField<?php echo $dbcolumn; ?>Feedback">&nbsp;</p>
 <?php
 
