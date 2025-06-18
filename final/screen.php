@@ -43,7 +43,7 @@ foreach ($formelements as $element) {
 	      <?php } ?>
 	  </div>
 	  <p>Form: <?php echo $form['name']; ?></p>
-	  <p>Keyboard shortcuts: j (next row); k (previous row); 1 (include); 2-9 (exclusion reasons); m (toggle references with less than 1 screening complete) u (show unanimous rows only); h (hide completed); a (show all)</p>
+	  <p>Keyboard shortcuts: j (next row); k (previous row); 1 (include); 2-9 (exclusion reasons); m (toggle references with less than 1 screening complete); u (show unanimous rows only); h (hide completed); a (show all)</p>
 	  <table class="nbtTabledData" id="nbtScreeningReconcileGrid" data-formid="<?php echo $form['id']; ?>" data-refsetid="<?php echo $refset['id']; ?>">
 	      <tr class="nbtTableHeaders">
 		  <td>Reference</td>
