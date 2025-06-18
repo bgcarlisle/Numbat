@@ -642,6 +642,11 @@
 		     $('.nbtFocusableScreeningRow:not(.nbtUnanimous)').fadeToggle(0);
 		 }
 		 
+		 if (event.keyCode == 77) { // m
+		     // Show unanimous
+		     $('.nbtFocusableScreeningRow:not(.nbtMultipleScreeningComplete)').fadeToggle(0);
+		 }
+		 
 	     } // End modifier key ignore
 	     
 	 }); // End of screening-reconcile keyboard shortcuts

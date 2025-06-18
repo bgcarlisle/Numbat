@@ -43,7 +43,7 @@ foreach ($formelements as $element) {
 	      <?php } ?>
 	  </div>
 	  <p>Form: <?php echo $form['name']; ?></p>
-	  <p>Keyboard shortcuts: j (next row); k (previous row); 1 (include); 2-9 (exclusion reasons); u (show unanimous rows only); h (hide completed); a (show all)</p>
+	  <p>Keyboard shortcuts: j (next row); k (previous row); 1 (include); 2-9 (exclusion reasons); m (toggle references with less than 1 screening complete) u (show unanimous rows only); h (hide completed); a (show all)</p>
 	  <table class="nbtTabledData" id="nbtScreeningReconcileGrid" data-formid="<?php echo $form['id']; ?>" data-refsetid="<?php echo $refset['id']; ?>">
 	      <tr class="nbtTableHeaders">
 		  <td>Reference</td>
@@ -91,6 +91,13 @@ foreach ($formelements as $element) {
 		      }
 		  }
 
+		  // Check whether there's more than 1 complete
+		  if ($row_extraction_count > 1) {
+		      $row_multiple_screens_css = " nbtMultipleScreeningComplete";
+		  } else {
+		      $row_multiple_screens_css = "";
+		  }
+
 		  // Check whether it's unanimous
 		  if ($row_extraction_count > 0) {
 		      if ($row_include_count == $row_extraction_count | ($row_include_count == 0 & count(array_unique($row_exclusion_reasons)) == 1)) {
@@ -109,7 +116,7 @@ foreach ($formelements as $element) {
 		  }
 		  
 		  ?>
-		  <tr class="nbtFocusableScreeningRow<?php echo $row_done . $unanimous_css; ?>">
+		  <tr class="nbtFocusableScreeningRow<?php echo $row_done . $unanimous_css . $row_multiple_screens_css; ?>">
 		      <td>
 			  <h3><?php echo $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['title']]; ?></h3>
 			  <p>
