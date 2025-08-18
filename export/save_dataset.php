@@ -9,6 +9,14 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
     // $filename = substr (hash('sha256', rand(0, 10000)), 0, 12);
 
     $filename = date("Y-m-d_His");
+    
+    // Get the name of the form and make it filename-friendly
+    $form = nbt_get_form_for_id($_POST[formid]);
+    $formname = nbt_remove_special($form['name']);
+
+    // Get the name of the reference set and make it filename-friendly
+    $refset = nbt_get_refset_for_id($_POST['refsetid']);
+    $rsname = nbt_remove_special($refset['name']);
 
     // Get the columns from the reference set
 
@@ -86,8 +94,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 		
 		$select_cols = $meta_cols_string . ", users.username, " . $rs_cols_string . $form_cols_string;
 
-		$filename = $filename . "-form_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-extractions";
-
+		$filename = $filename . "_form_" . $_POST['formid'] . "_" . $formname . "-refset_" . $_POST['refsetid'] . "_" . $rsname . "_extractions";
+		
 		echo $filename;
 
 		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT " . $select_cols . " FROM referenceset_" . $_POST['refsetid'] . ", extractions_" . $_POST['formid'] . ", users WHERE extractions_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND extractions_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id AND users.id = extractions_" . $_POST['formid'] . ".userid AND extractions_" . $_POST['formid'] . ".status = 2 ORDER BY extractions_" . $_POST['formid'] . ".timestamp_started ASC;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
@@ -117,8 +125,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		$select_cols = $meta_cols_string . ", " .  $rs_cols_string . $form_cols_string;
 
-		$filename = $filename . "-form_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-final";
-
+		$filename = $filename . "_form_" . $_POST['formid'] . "_" . $formname . "-refset_" . $_POST['refsetid'] . "_" . $rsname . "_final";
+		
 		echo $filename;
 
 		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT " . $select_cols . " FROM referenceset_" . $_POST['refsetid'] . ", m_extractions_" . $_POST['formid'] . " WHERE m_extractions_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND m_extractions_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id AND m_extractions_" . $_POST['formid'] . ".status = 2 ORDER BY m_extractions_" . $_POST['formid'] . ".timestamp_started ASC;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
