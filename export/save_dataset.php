@@ -33,12 +33,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 	    $rscols_to_export[] = $rs_col[0];
 	}
     }
-    
-    foreach ($rscols_to_export as $key => $value) {
-	$rscols_to_export[$key] = "REPLACE(REPLACE(REPLACE(referenceset_" . $_POST['refsetid'] . "." . $value . ", '\\\"', '&quot;'), '\\r', '\\\\n'), '\\n', '\\\\n') as '" . $value . "'";
-    }
 
-    $rs_cols_string = implode(", ", $rscols_to_export);
+    $rs_cols_string = "referenceset_" . $_POST['refsetid'] . "." . implode(", referenceset_" . $_POST['refsetid'] . ".", $rscols_to_export);
 
     switch ( $_POST['export_type'] ) {
 
