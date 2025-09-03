@@ -175,7 +175,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		// echo "sub";
 
-		$filename = $filename . "-sub_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-sub-extraction";
+		$filename = $filename . "_sub_" . $_POST['formid'] . "_" . $formname . "_refset_" . $_POST['refsetid'] . "_" . $rsname . "-sub_" . $_POST['formid'] . "_extractions";
 
 		echo $filename;
 
@@ -199,7 +199,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		// echo sub final;
 
-		$filename = $filename . "-sub_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-sub-final";
+		$filename = $filename . "_sub_" . $_POST['formid'] . "_" . $formname . "_refset_" . $_POST['refsetid'] . "_" . $rsname . "-sub" . $_POST['formid'] . "_final";
 
 		echo $filename;
 
