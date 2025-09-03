@@ -2195,6 +2195,42 @@ function nbt_get_table_data_rows ( $elementid, $refsetid, $refid, $userid, $sub_
 
 }
 
+function nbt_get_table_element_by_tablename ($tablename) {
+
+    try {
+	
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `type` LIKE '%table_data' AND `columnname` = :dbname LIMIT 1;");
+
+	$stmt->bindParam(':dbname', $dn);
+
+	$dn = $dbname;
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    if (length($result) == 1) {
+		return $result[0];
+	    } else {
+		return FALSE;
+	    }
+	    
+	    
+	} else {
+	    echo "MySQL fail";
+	    return FALSE;
+	}
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+    
+}
+
 function nbt_get_all_table_data_rows_for_refset ( $elementid, $refsetid, $sub_extraction = FALSE ) {
 
     if ( $sub_extraction == TRUE ) {
@@ -17130,6 +17166,43 @@ function nbt_get_subextraction_elements_for_subextraction_dbname ($dbname) {
     catch (PDOException $e) {
 	echo $e->getMessage();
     }
+}
+
+function nbt_get_element_for_subextraction_dbname ($dbname) {
+
+    try {
+	
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `type` = 'sub_extraction' AND `columnname` = :dbname LIMIT 1;");
+
+	$stmt->bindParam(':dbname', $dn);
+
+	$dn = $dbname;
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    if (length($result) == 1) {
+		return $result[0];
+	    } else {
+		return FALSE;
+	    }
+	    
+	    
+	} else {
+	    echo "MySQL fail";
+	    return FALSE;
+	}
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+    
 }
 
 function nbt_assignments_for_export ($refset) {

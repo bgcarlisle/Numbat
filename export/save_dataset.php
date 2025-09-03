@@ -121,7 +121,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		$select_cols = $meta_cols_string . ", " .  $rs_cols_string . $form_cols_string;
 
-		$filename = $filename . "_form_" . $_POST['formid'] . "_" . $formname . "-refset_" . $_POST['refsetid'] . "_" . $rsname . "_final";
+		$filename = $filename . "_form_" . $_POST['formid'] . "_" . $formname . "_refset_" . $_POST['refsetid'] . "_" . $rsname . "_final";
 		
 		echo $filename;
 
@@ -132,6 +132,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
             break;
 
         case "sub_extraction":
+
+	    $se_element = nbt_get_element_for_subextraction_dbname ($_POST['formid']);
+	    $form = nbt_get_form_for_id($se_element['formid']);
+	    $formname = nbt_remove_special($form['name']);
 
 	    // Get the columns for the sub-extraction form
 
@@ -175,7 +179,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		// echo "sub";
 
-		$filename = $filename . "_sub_" . $_POST['formid'] . "_" . $formname . "_refset_" . $_POST['refsetid'] . "_" . $rsname . "-sub_" . $_POST['formid'] . "_extractions";
+		$filename = $filename . "_sub_" . $_POST['formid'] . "_form_" . $formname . "_refset_" . $_POST['refsetid'] . "_" . $rsname . "_extractions";
 
 		echo $filename;
 
@@ -199,7 +203,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		// echo sub final;
 
-		$filename = $filename . "_sub_" . $_POST['formid'] . "_" . $formname . "_refset_" . $_POST['refsetid'] . "_" . $rsname . "-sub" . $_POST['formid'] . "_final";
+		$filename = $filename . "_sub_" . $_POST['formid'] . "_form_" . $formname . "_refset_" . $_POST['refsetid'] . "_" . $rsname . "_final";
 
 		echo $filename;
 
@@ -240,11 +244,15 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
         case "table_data":
 
+	    $table_element = nbt_get_table_element_by_tablename ($_POST['formid']);
+	    $form = nbt_get_form_for_id($table_element['formid']);
+	    $formname = nbt_remove_special($form['name']);
+
 	    if ( $_POST['final'] == 0 ) {
 
 		// echo "table";
 
-		$filename = $filename . "-table_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-table-extraction";
+		$filename = $filename . "_table_" . $_POST['formid'] . "_form_" . $formname . "_refset_" . $_POST['refsetid'] . "_" . $rsname . "_extractions";
 
 		echo $filename;
 
@@ -254,7 +262,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		// echo "table final";
 
-		$filename = $filename . "-table_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-table-final";
+		$filename = $filename . "_table_" . $_POST['formid'] . "_form_" . $formname . "_refset_" . $_POST['refsetid'] . "_" . $rsname . "_final";
 
 		echo $filename;
 
@@ -266,11 +274,15 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
         case "ltable_data":
 
+	    $table_element = nbt_get_table_element_by_tablename ($_POST['formid']);
+	    $form = nbt_get_form_for_id($table_element['formid']);
+	    $formname = nbt_remove_special($form['name']);
+
 	    if ( $_POST['final'] == 0 ) {
 
 		// echo "ltable";
 
-		$filename = $filename . "-table_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-table-extraction";
+		$filename = $filename . "_table_" . $_POST['formid'] . "_form_" . $formname . "_refset_" . $_POST['refsetid'] . "_" . $rsname . "_extractions";
 
 		echo $filename;
 
@@ -280,7 +292,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
 		// echo ltable final;
 
-		$filename = $filename . "-table_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-table-final";
+		$filename = $filename . "_table_" . $_POST['formid'] . "_form_" . $formname . "_refset_" . $_POST['refsetid'] . "_" . $rsname . "_final";
 
 		echo $filename;
 
