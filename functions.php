@@ -2200,7 +2200,7 @@ function nbt_get_table_element_by_tablename ($tablename) {
     try {
 	
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `type` LIKE '%table_data' AND `columnname` = :dbname LIMIT 1;");
+	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE (`type` = 'table_data' OR `type` = 'ltable_data') AND `columnname` = :dbname LIMIT 1;");
 
 	$stmt->bindParam(':dbname', $dn);
 
@@ -2212,7 +2212,7 @@ function nbt_get_table_element_by_tablename ($tablename) {
 
 	    $dbh = null;
 
-	    if (length($result) == 1) {
+	    if (count($result) == 1) {
 		return $result[0];
 	    } else {
 		return FALSE;
@@ -17185,7 +17185,7 @@ function nbt_get_element_for_subextraction_dbname ($dbname) {
 
 	    $dbh = null;
 
-	    if (length($result) == 1) {
+	    if (count($result) == 1) {
 		return $result[0];
 	    } else {
 		return FALSE;
