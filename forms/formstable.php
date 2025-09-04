@@ -28,7 +28,7 @@
 		}
 
 		?>
-		<p><?php echo $form['projectdate']; ?></p>
+		<p><?php echo $form['projectdate']; ?> (<?php echo $form['formtype']; ?>)</p>
 	    </td>
 	    <td><a href="<?php echo SITE_URL; ?>forms/?action=edit&id=<?php echo $form['id']; ?>">Edit</a></td>
 	    <td><a href="<?php echo SITE_URL; ?>extract/?action=preview&form=<?php echo $form['id']; ?>" target="_blank">Preview</a></td>

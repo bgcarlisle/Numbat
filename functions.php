@@ -463,6 +463,7 @@ function nbt_admin_generate_password_link ( $userid ) {
 	catch (PDOException $e) {
 	    echo $e->getMessage();
 	}
+	
     } else {
 
 	return FALSE;
@@ -727,35 +728,12 @@ function nbt_get_all_extracted_references_for_refset_and_form ( $refsetid, $form
 
     try {
 
-      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-      $stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `id` IN (SELECT `referenceid` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `status` = 2) ORDER BY id ASC;");
-
-      $stmt->bindParam(':refset', $rsid);
-
-      $rsid = $refsetid;
-
-      $stmt->execute();
-
-      $result = $stmt->fetchAll();
-
-      $dbh = null;
-
-      return $result;
-
-    }
-
-    catch (PDOException $e) {
-	echo $e->getMessage();
-    }
-
-}
-
-function nbt_get_all_extractions_for_refset_and_form ( $refsetid, $formid, $minstatus = 2 ) {
-
-    try {
-
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT *, " . $formid . " AS `formid` FROM `extractions_" . $formid . "`, `referenceset_" . $refsetid . "` WHERE `extractions_" . $formid . "`.`refsetid` = " . $refsetid . " AND `extractions_" . $formid . "`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND `extractions_" . $formid . "`.`status` >= " . $minstatus);
+	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `id` IN (SELECT `referenceid` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `status` = 2) ORDER BY id ASC;");
+
+	$stmt->bindParam(':refset', $rsid);
+
+	$rsid = $refsetid;
 
 	$stmt->execute();
 
@@ -771,6 +749,89 @@ function nbt_get_all_extractions_for_refset_and_form ( $refsetid, $formid, $mins
 	echo $e->getMessage();
     }
 
+}
+
+function nbt_get_all_extractions_for_refset_and_form ( $refsetid, $formid, $minstatus = 2 ) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT *, " . $formid . " AS `formid` FROM `extractions_" . $formid . "`, `referenceset_" . $refsetid . "`, `users` WHERE `users`.`id` = `extractions_" . $formid . "`.`userid` AND `extractions_" . $formid . "`.`refsetid` = " . $refsetid . " AND `extractions_" . $formid . "`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND `extractions_" . $formid . "`.`status` >= " . $minstatus);
+
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	return $result;
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+
+}
+
+function nbt_count_unique_references_assigned_by_refset_and_form ($refsetid, $formid) {
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT COUNT(DISTINCT(`referenceid`)) as `count` FROM `assignments` WHERE `formid` = :fid AND `refsetid` = :rsid;");
+
+	$stmt->bindParam(':rsid', $rsid);
+	$stmt->bindParam(':fid', $fid);
+
+	$fid = $formid;
+	$rsid = $refsetid;
+	
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	return $result[0]['count'];
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+    
+}
+
+function nbt_get_unique_references_assigned_by_refset_and_form_paginated ($refsetid, $formid, $screening_page = 1) {
+
+    $refsetid = intval($refsetid);
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `assignments`, `referenceset_" . $refsetid . "` WHERE `formid` = :fid AND `refsetid` = :rsid AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` GROUP BY referenceid ORDER BY referenceid ASC LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";");
+
+	$stmt->bindParam(':rsid', $rsid);
+	$stmt->bindParam(':fid', $fid);
+
+	$fid = $formid;
+	$rsid = $refsetid;
+	
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	return $result;
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+    
 }
 
 function nbt_get_extractions_for_refset_ref_and_form ( $refsetid, $refid, $formid, $minstatus = 2 ) {
@@ -1235,16 +1296,10 @@ function nbt_remove_citation ( $section, $citation ) {
 
 }
 
-function nbt_update_screening ( $fid, $rsid, $rid, $dbname, $value ) {
-
-
-
-}
-
 function nbt_update_extraction ( $fid, $id, $column, $value ) {
 
     if ($value == "") {
-	     $value = NULL;
+	$value = NULL;
     }
 
     if ( $column == "status" && $value == 2 ) { // Special case: they're clicking "completed"
@@ -2010,7 +2065,7 @@ function nbt_echo_subextraction_text_field ($elementid, $subextraction, $dbcolum
 function nbt_echo_subextraction_text_area ($elementid, $subextraction, $dbcolumn) {
 
 ?>
-    <textarea style="width: 100%; height: 150px;" id="nbtSub<?php echo $subextraction['id']; ?>TextArea" onblur="nbtSaveSubExtractionTextField(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextArea', 'nbtSub<?php echo $subextraction['id']; ?>TextAreaField<?php echo $dbcolumn; ?>Feedback');"><?php echo $subextraction[$dbcolumn]; ?></textarea>
+    <textarea style="width: 100%; height: 150px;" id="nbtSub<?php echo $subextraction['id']; ?>TextArea<?php echo $dbcolumn; ?>" onblur="nbtSaveSubExtractionTextField(<?php echo $elementid; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextArea<?php echo $dbcolumn; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextAreaField<?php echo $dbcolumn; ?>Feedback');"><?php echo $subextraction[$dbcolumn]; ?></textarea>
     <p class="nbtInputFeedback" id="nbtSub<?php echo $subextraction['id']; ?>TextAreaField<?php echo $dbcolumn; ?>Feedback">&nbsp;</p>
 <?php
 
@@ -2138,6 +2193,78 @@ function nbt_get_table_data_rows ( $elementid, $refsetid, $refid, $userid, $sub_
 	echo $e->getMessage();
     }
 
+}
+
+function nbt_get_sub_table_element_by_tablename ($tablename) {
+
+    try {
+	
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `type` LIKE '%table%' AND `dbname` = :dbname LIMIT 1;");
+
+	$stmt->bindParam(':dbname', $dn);
+
+	$dn = $tablename;
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    if (count($result) == 1) {
+		return $result[0];
+	    } else {
+		return FALSE;
+	    }
+	    
+	    
+	} else {
+	    echo "MySQL fail";
+	    return FALSE;
+	}
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+    
+}
+
+function nbt_get_table_element_by_tablename ($tablename) {
+
+    try {
+	
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE (`type` = 'table_data' OR `type` = 'ltable_data') AND `columnname` = :dbname LIMIT 1;");
+
+	$stmt->bindParam(':dbname', $dn);
+
+	$dn = $tablename;
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    if (count($result) == 1) {
+		return $result[0];
+	    } else {
+		return FALSE;
+	    }
+	    
+	    
+	} else {
+	    echo "MySQL fail";
+	    return FALSE;
+	}
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+    
 }
 
 function nbt_get_all_table_data_rows_for_refset ( $elementid, $refsetid, $sub_extraction = FALSE ) {
@@ -3474,38 +3601,9 @@ function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "
 
 }
 
-function nbt_get_assignments_for_refset_form_paginated ( $refsetid, $sort = "whenassigned", $sortdirection = "DESC", $form_type = "", $screening_page=NULL, $formid=NULL ) {
+function nbt_get_assignments_for_refset_form_paginated ( $refsetid, $formid=NULL, $screening_page=1 ) {
 
-  if ($sortdirection == "ASC") {
-	   $sd = " ASC";
-   } else {
-     $sd = " DESC";
-   }
-
-   switch ($sort) {
-     case "referenceid":
-  	    $sortquery = "ORDER BY `referenceid`" . $sd;
-        break;
-     case "formid":
-  	    $sortquery = "ORDER BY `forms`.`id`" . $sd;
-  	    break;
-  	 case "whenassigned":
-  	 default:
-	      $sortquery = "ORDER BY `assignments`.`id`" . $sd;
-  	    break;
-    }
-
-    if ($form_type != "") { // If it's only showing extraction forms
-      $ext_form = "`forms`.`formtype` = '" . $form_type . "' AND ";
-    } else {
-      $ext_form = "";
-    }
-
-    if (is_null($screening_page)) {
-      $query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() GROUP BY `referenceid`" . $sortquery . ";";
-    } else {
-      $query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() AND `formid` = :fid GROUP BY `referenceid`" . $sortquery . " LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";";
-    }
+    $query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() AND `formid` = :fid GROUP BY `referenceid` ORDER BY `referenceid` ASC LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";";
 
     try {
 
@@ -3514,8 +3612,7 @@ function nbt_get_assignments_for_refset_form_paginated ( $refsetid, $sort = "whe
 
     	$stmt->bindParam(':fid', $fid);
 
-    	$uid = $userid;
-	    $fid = $formid;
+        $fid = $formid;
 
     	$stmt->execute();
 
@@ -3528,31 +3625,12 @@ function nbt_get_assignments_for_refset_form_paginated ( $refsetid, $sort = "whe
     }
 
     catch (PDOException $e) {
-      echo $e->getMessage();
+	echo $e->getMessage();
     }
 
 }
 
-function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid, $sort = "whenassigned", $sortdirection = "DESC", $form_type = "", $gp_ft=FALSE, $screening_page=NULL, $formid=NULL ) {
-
-    if ($sortdirection == "ASC") {
-	$sd = " ASC";
-    } else {
-	$sd = " DESC";
-    }
-
-    switch ($sort) {
-  	case "referenceid":
-  	    $sortquery = "ORDER BY `referenceid`" . $sd;
-  	    break;
-  	case "formid":
-  	    $sortquery = "ORDER BY `forms`.`id`" . $sd;
-  	    break;
-  	case "whenassigned":
-  	default:
-	    $sortquery = "ORDER BY `assignments`.`id`" . $sd;
-  	    break;
-    }
+function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid, $form_type = "", $gp_ft=FALSE, $screening_page=NULL, $formid=NULL ) {
 
     if ($form_type != "") { // If it's only showing extraction forms
 	$ext_form = "`forms`.`formtype` = '" . $form_type . "' AND ";
@@ -3567,9 +3645,9 @@ function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid
     }
 
     if (is_null($screening_page)) {
-	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() " . $gpft . $sortquery . ";";
+	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() " . $gpft . "ORDER BY `referenceid` ASC;";
     } else {
-	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() AND `formid` = :fid " . $gpft . $sortquery . " LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";";
+	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() AND `formid` = :fid " . $gpft . " ORDER BY `referenceid` ASC LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";";
     }
 
     try {
@@ -3581,7 +3659,7 @@ function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid
     	$stmt->bindParam(':fid', $fid);
 
     	$uid = $userid;
-	    $fid = $formid;
+	$fid = $formid;
 
     	$stmt->execute();
 
@@ -3594,7 +3672,7 @@ function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid
     }
 
     catch (PDOException $e) {
-      echo $e->getMessage();
+	echo $e->getMessage();
     }
 
 }
@@ -3611,6 +3689,34 @@ function nbt_count_assignments_for_user_refset_form ($userid, $refsetid, $formid
 
 
     	$uid = $userid;
+	$fid = $formid;
+	$rsid = $refsetid;
+
+    	$stmt->execute();
+
+    	$result = $stmt->fetchAll();
+
+    	$dbh = null;
+
+    	return $result[0]['assign_count'];
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+
+}
+
+function nbt_count_assignments_for_refset_form ($refsetid, $formid) {
+    try {
+
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$stmt = $dbh->prepare ("SELECT COUNT(*) as `assign_count` FROM `assignments` WHERE `formid` = :fid AND `refsetid` = :rsid");
+
+    	$stmt->bindParam(':fid', $fid);
+    	$stmt->bindParam(':rsid', $rsid);
+
 	$fid = $formid;
 	$rsid = $refsetid;
 
@@ -3663,6 +3769,35 @@ function nbt_get_status_for_assignment ( $assignment ) {
 	echo $e->getMessage();
     }
 
+}
+
+function nbt_get_all_final_for_refset_and_form ( $refsetid, $formid ) {
+
+    $formid = intval($formid);
+    
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :refset;");
+
+	$stmt->bindParam(':refset', $rsid);
+
+	$rsid = $refsetid;
+
+	$stmt->execute();
+
+	$result = $stmt->fetchAll();
+
+	$dbh = null;
+
+	return $result;
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+    
 }
 
 function nbt_get_final ( $formid, $refsetid, $refid, $insert = TRUE ) {
@@ -4165,6 +4300,25 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
 	echo $e->getMessage();
     }
 
+    // Make the final table
+
+    try {
+
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$stmt = $dbh->prepare("CREATE TABLE `m_extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `timestamp_finished` timestamp NULL DEFAULT NULL, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `status` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+
+    	if ($stmt->execute()) {
+
+    	    $dbh = null;
+
+    	}
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+
     // If it's a screening form, add the requisite form elements
 
     if ($formtype == "screening") {
@@ -4181,26 +4335,7 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
 
     }
 
-    // Make the final table
-
-    try {
-
-    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-    	$stmt = $dbh->prepare("CREATE TABLE `m_extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `timestamp_finished` timestamp NULL DEFAULT NULL, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `status` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
-
-    	if ($stmt->execute()) {
-
-    	    $dbh = null;
-
-    	    return $newid;
-
-    	}
-
-    }
-
-    catch (PDOException $e) {
-	echo $e->getMessage();
-    }
+    return $newid;
 
 }
 
@@ -14276,22 +14411,43 @@ function nbt_make_new_refset_row ( $newname, $title, $authors, $year, $journal, 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("INSERT INTO referencesets (name, title, authors, year, journal, abstract) VALUES (:name, :title, :authors, :year, :journal, :abstract)");
+	$stmt = $dbh->prepare("INSERT INTO `referencesets` (`name`, `title`, `authors`, `year`, `journal`, `abstract`) VALUES (:name, :title, :authors, :year, :journal, :abstract)");
 
 	$stmt->bindParam(':name', $name);
-
 	$stmt->bindParam(':title', $ti);
 	$stmt->bindParam(':authors', $au);
 	$stmt->bindParam(':year', $ye);
 	$stmt->bindParam(':journal', $jo);
 	$stmt->bindParam(':abstract', $ab);
 	$name = $newname;
-	$ti = $title + 2; // Have to add 2 to each one, because two columns are added to each table by Numbat
-	$au = $authors + 2;
-	$ye = $year + 2;
-	$jo = $journal + 2;
-	$ab = $abstract + 2;
+	// Have to add 2 to each one, because two columns are added to each table by Numbat
+	
+	if ($title != "NULL") {
+	    $ti = intval($title) + 2;
 
+	} else {
+	    $ti = NULL;
+	}
+	if ($authors != "NULL") {
+	    $au = intval($authors) + 2;
+	} else {
+	    $au = NULL;
+	}
+	if ($year != "NULL") {
+	    $ye = intval($year) + 2;
+	} else {
+	    $ye = NULL;
+	}
+	if ($journal != "NULL") {
+	    $jo = intval($journal) + 2;
+	} else {
+	    $jo = NULL;
+	}
+	if ($abstract != "NULL") {
+	    $ab = intval($abstract) + 2;
+	} else {
+	    $ab = NULL;
+	}
 
 	$stmt->execute();
 
@@ -17048,6 +17204,43 @@ function nbt_get_subextraction_elements_for_subextraction_dbname ($dbname) {
     }
 }
 
+function nbt_get_element_for_subextraction_dbname ($dbname) {
+
+    try {
+	
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `type` = 'sub_extraction' AND `columnname` = :dbname LIMIT 1;");
+
+	$stmt->bindParam(':dbname', $dn);
+
+	$dn = $dbname;
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    if (count($result) == 1) {
+		return $result[0];
+	    } else {
+		return FALSE;
+	    }
+	    
+	    
+	} else {
+	    echo "MySQL fail";
+	    return FALSE;
+	}
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+    
+}
+
 function nbt_assignments_for_export ($refset) {
 
     $refset = nbt_get_refset_for_id ($refset);
@@ -17486,6 +17679,162 @@ function nbt_screening_include ($formid, $refsetid, $referenceid) {
   }
 }
 
+function nbt_screening_reconcile_include ($formid, $refsetid, $referenceid) {
+    // Get the current state of include and switch as follows:
+    // NULL -> 1
+    // 1 -> 0
+    // 0 -> NULL
+
+    $formid = intval($formid);
+    
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
+
+	$stmt->bindParam(':rsid', $rsid);
+	$stmt->bindParam(':rid', $rid);
+
+	$rsid = $refsetid;
+	$rid = $referenceid;
+
+	if ( $stmt->execute() ) {
+	    $result = $stmt->fetchAll();
+	    $extraction_started = count($result);
+	    $db_include = $result[0]['include'];
+	} else {
+	    return "Error";
+	}
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+
+    if ($extraction_started == 0) {
+	// Add a row to the db
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("INSERT INTO `m_extractions_" . $formid . "` (`refsetid`, `referenceid`, `include`, `status`, `timestamp_finished`) VALUES (:rsid, :rid, 1, 2, NOW())");
+
+	    $stmt->bindParam(':rsid', $rsid);
+	    $stmt->bindParam(':rid', $rid);
+
+	    $rsid = $refsetid;
+	    $rid = $referenceid;
+
+	    if ( $stmt->execute() ) {
+		return 1;
+	    } else {
+		return "Error";
+	    }
+
+	}
+
+	catch (PDOException $e) {
+	    echo $e->getMessage();
+	}
+
+    } else {
+	// Update the row in the db
+	switch ($db_include) {
+	    case NULL:
+		// Update include to 1
+		// Clear exclusion reason
+		try {
+
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `include` = 1, `exclusion_reason` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
+
+		    $stmt->bindParam(':rsid', $rsid);
+		    $stmt->bindParam(':rid', $rid);
+
+		    $rsid = $refsetid;
+		    $rid = $referenceid;
+
+		    if ( $stmt->execute() ) {
+			$result = $stmt->fetchAll();
+			$extraction_started = count($result);
+			$db_include = $result[0]['include'];
+			return "1";
+		    } else {
+			return "Error";
+		    }
+
+		}
+
+		catch (PDOException $e) {
+		    echo $e->getMessage();
+		}
+
+		break;
+
+	    case 0:
+		// Remove row from final table
+		// Clear exclusion reason
+		try {
+
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $stmt = $dbh->prepare("DELETE FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
+
+		    $stmt->bindParam(':rsid', $rsid);
+		    $stmt->bindParam(':rid', $rid);
+
+		    $rsid = $refsetid;
+		    $rid = $referenceid;
+
+		    if ( $stmt->execute() ) {
+			return "null";
+		    } else {
+			return "Error";
+		    }
+
+		}
+
+		catch (PDOException $e) {
+		    echo $e->getMessage();
+		}
+
+		break;
+
+	    case 1:
+		// Update include to 0
+		try {
+
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `include` = 0 WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
+
+		    $stmt->bindParam(':rsid', $rsid);
+		    $stmt->bindParam(':rid', $rid);
+
+		    $rsid = $refsetid;
+		    $rid = $referenceid;
+
+		    if ( $stmt->execute() ) {
+			$result = $stmt->fetchAll();
+			$extraction_started = count($result);
+			$db_include = $result[0]['include'];
+			return 0;
+		    } else {
+			return "Error";
+		    }
+
+		}
+
+		catch (PDOException $e) {
+		    echo $e->getMessage();
+		}
+
+		break;
+
+	}
+
+    }
+    
+}
+
 function nbt_screening_exclude ($formid, $refsetid, $referenceid, $reason) {
   // Get the current db row
   // If there is no row, insert one
@@ -17610,6 +17959,124 @@ function nbt_screening_exclude ($formid, $refsetid, $referenceid, $reason) {
 
   }
 
+}
+
+function nbt_screening_reconcile_exclude ($formid, $refsetid, $referenceid, $reason) {
+    // Get the current db row
+    // If there is no row, insert one
+
+    $formid = intval($formid);
+
+    try {
+
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
+
+	$stmt->bindParam(':rsid', $rsid);
+	$stmt->bindParam(':rid', $rid);
+
+	$rsid = $refsetid;
+	$rid = $referenceid;
+
+	if ( $stmt->execute() ) {
+	    $result = $stmt->fetchAll();
+	    $extraction_started = count($result);
+	    $db_exclude = $result[0]['exclusion_reason'];
+	} else {
+	    return "Error";
+	}
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+
+    if ($extraction_started == 0) { // No row in db yet
+
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("INSERT INTO `m_extractions_" . $formid . "` (`refsetid`, `referenceid`, `include`, `exclusion_reason`, `status`, `timestamp_finished`) VALUES (:rsid, :rid, 0, :er, 2, NOW())");
+
+	    $stmt->bindParam(':rsid', $rsid);
+	    $stmt->bindParam(':rid', $rid);
+	    $stmt->bindParam(':er', $er);
+
+	    $rsid = $refsetid;
+	    $rid = $referenceid;
+	    $er = $reason;
+
+	    if ( $stmt->execute() ) {
+		return $reason;
+	    } else {
+		return "Error";
+	    }
+
+	}
+
+	catch (PDOException $e) {
+	    echo $e->getMessage();
+	}
+
+    } else { // There's an extraction row already
+
+	if ($db_exclude == $reason) { // If they're un-clicking an already selected exclusion reason
+
+	    try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `include` = 0, `exclusion_reason` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
+
+		$stmt->bindParam(':rsid', $rsid);
+		$stmt->bindParam(':rid', $rid);
+
+		$rsid = $refsetid;
+		$rid = $referenceid;
+
+		if ( $stmt->execute() ) {
+		    return "Clear all";
+		} else {
+		    return "Error";
+		}
+
+	    }
+
+	    catch (PDOException $e) {
+		echo $e->getMessage();
+	    }
+
+	} else { // They're clicking on one that hasn't already been selected
+
+	    try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `include` = 0, `exclusion_reason` = :er WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
+
+		$stmt->bindParam(':rsid', $rsid);
+		$stmt->bindParam(':rid', $rid);
+		$stmt->bindParam(':er', $er);
+
+		$rsid = $refsetid;
+		$rid = $referenceid;
+		$er = $reason;
+
+		if ( $stmt->execute() ) {
+		    return $reason;
+		} else {
+		    return "Error";
+		}
+
+	    }
+
+	    catch (PDOException $e) {
+		echo $e->getMessage();
+	    }
+
+	}
+
+    }
+    
 }
 
 function nbt_screening_notes ($formid, $refsetid, $referenceid, $notes) {

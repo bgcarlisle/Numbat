@@ -168,7 +168,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	<div style="margin-bottom: 20px;">
 	    <p>Title</p>
 	    <select name="nbtTitleColumn">
-		<option>Choose a column</option>
+		<option value="NULL">Choose a column</option>
 		<?php
 
 		$colcount = 0;
@@ -204,7 +204,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	    <p>Authors</p>
 	    <select name="nbtAuthorsColumn">
-		<option>Choose a column</option>
+		<option value="NULL">Choose a column</option>
 		<?php
 
 		$colcount = 0;
@@ -242,7 +242,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	    <p>Year</p>
 	    <select name="nbtYearColumn">
-		<option>Choose a column</option>
+		<option value="NULL">Choose a column</option>
 		<?php
 
 		$colcount = 0;
@@ -279,7 +279,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	    <p>Journal</p>
 	    <select name="nbtJournalColumn">
-		<option>Choose a column</option>
+		<option value="NULL">Choose a column</option>
 		<?php
 
 		$colcount = 0;
@@ -317,7 +317,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	    <p>Abstract</p>
 	    <select name="nbtAbstractColumn">
-		<option>Choose a column</option>
+		<option value="NULL">Choose a column</option>
 		<?php
 
 		$colcount = 0;
