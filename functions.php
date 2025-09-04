@@ -2195,6 +2195,42 @@ function nbt_get_table_data_rows ( $elementid, $refsetid, $refid, $userid, $sub_
 
 }
 
+function nbt_get_sub_table_element_by_tablename ($tablename) {
+
+    try {
+	
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `type` LIKE '%table%' AND `dbname` = :dbname LIMIT 1;");
+
+	$stmt->bindParam(':dbname', $dn);
+
+	$dn = $tablename;
+
+	if ($stmt->execute()) {
+
+	    $result = $stmt->fetchAll();
+
+	    $dbh = null;
+
+	    if (count($result) == 1) {
+		return $result[0];
+	    } else {
+		return FALSE;
+	    }
+	    
+	    
+	} else {
+	    echo "MySQL fail";
+	    return FALSE;
+	}
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+    
+}
+
 function nbt_get_table_element_by_tablename ($tablename) {
 
     try {
@@ -2204,7 +2240,7 @@ function nbt_get_table_element_by_tablename ($tablename) {
 
 	$stmt->bindParam(':dbname', $dn);
 
-	$dn = $dbname;
+	$dn = $tablename;
 
 	if ($stmt->execute()) {
 
