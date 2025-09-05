@@ -1,3 +1,5 @@
+[Back to Index](index.md)
+
 # Introduction to Numbat Systematic Review Manager
 
 Numbat is a tool for multi-user collaborative data extraction,
@@ -75,5 +77,4 @@ The remaining directories and files in a Numbat instance are Numbat
 software, and should be identical between Numbat instances that are
 running the same version of Numbat.
 
-
-
+[Next: Quick start guide](quick-start.md)
