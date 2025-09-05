@@ -40,6 +40,8 @@ Open your web browser and navigate to the URL of your Numbat
 instance. You should see an installer that asks you for your MySQL
 credentials.
 
+---
+
 [Previous: Introduction](introduction.md)
 
 [Next: Installing and upgrading Numbat](install-and-upgrade.md)
