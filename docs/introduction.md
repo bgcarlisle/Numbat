@@ -21,34 +21,35 @@ A Numbat instance is a folder of Numbat software that has been linked
 to a MySQL database back-end that it manages, and provides a web app
 as a front-end for user access.
 
-A user is a person known to the Numbat instance by their username,
-which grants access to that person to perform actions with Numbat
-software based on the level of privileges they have. In some cases the
-term "extractor" will be used more-or-less interchangeably, although
-there may be cases where a user may not perform any extractions at
-all.
+A [user](users.md) is a person known to the Numbat instance by their
+username, which grants access to that person to perform actions with
+Numbat software based on the level of privileges they have. In some
+cases the term "extractor" will be used more-or-less interchangeably,
+although there may be cases where a user may not perform any
+extractions at all.
 
-A reference set is a table in a Numbat instance's database, in which
-every row represents a single reference and columns contain metadata
-for each reference. Usually one reference corresponds to one academic
-journal article or one clinical trial, however this can be flexible
-depending on the needs of the project at hand, as long as extractors
-are clear about the task assigned to them.
+A [reference set](references.md) is a table in a Numbat instance's
+database, in which every row represents a single reference and columns
+contain metadata for each reference. Usually one reference corresponds
+to one academic journal article or one clinical trial, however this
+can be flexible depending on the needs of the project at hand, as long
+as extractors are clear about the task assigned to them.
 
-An extraction form is a set of questions to be posed to an extractor
-regarding a single reference all together as a single unit. An
-extraction form consists of some metadata regarding the form itself,
-and an ordered set of extraction form elements (individual questions)
-to be shown to an extractor.
+An [extraction form](forms.md) is a set of questions to be posed to an
+extractor regarding a single reference all together as a single
+unit. An extraction form consists of some metadata regarding the form
+itself, and an ordered set of extraction form elements (individual
+questions) to be shown to an extractor.
 
-An assignment is a request that an extractor apply a particular
-extraction form to a particular reference within a particular
-reference set. An extractor can only extract a given reference once
-with the same extraction form.
+An [assignment](assignments.md) is a request that an extractor apply a
+particular extraction form to a particular reference within a
+particular reference set. An extractor can only extract a given
+reference once with the same extraction form.
 
-An extraction is a partially completed or fully completed assignment
-by a single user. Numbat allows an arbitrary number of users to be
-assigned, and to extract any reference with any extraction form.
+An [extraction](extractions.md) is a partially completed or fully
+completed assignment by a single user. Numbat allows an arbitrary
+number of users to be assigned, and to extract any reference with any
+extraction form.
 
 # Basic structure of a Numbat instance
 
