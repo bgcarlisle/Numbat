@@ -40,6 +40,28 @@ Open your web browser and navigate to the URL of your Numbat
 instance. You should see an installer that asks you for your MySQL
 credentials.
 
+Click the "Test database connexion" button when you have entered
+these. If Numbat is able to connect to your database, you'll get a
+green box confirming this. If you get a red box, you'll have to
+trouble-shoot your database connexion.
+
+The absolute path and site URL fields should be detected and filled in
+by Numbat automatically. Look them over to see if they look wildly
+wrong or are left blank or something.
+
+The Numbat project name field is a short amount of text that will help
+you and other extractors distinguish this Numbat instance from others
+they may use. Make it descriptive and specific.
+
+Numbat will take the admin credentials provided and generate its first
+user based on them. This user will have admin privileges.
+
+## Step 3: Upload a reference set
+
+Make a table in Modern CSV or using another spreadsheet tool where you
+know how to export it as a `.tsv` (tab-separated value)
+file. Recommended column names: `title`, `author`, `year`, `journal`.
+
 ---
 
 [Previous: Introduction](introduction.md)
