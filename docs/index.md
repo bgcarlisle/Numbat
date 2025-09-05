@@ -2,7 +2,7 @@
 
 1. [Introduction](introduction.md)
 2. [Quick start guide](quick-start.md)
-3. [Installing Numbat](installation.md)
+3. [Installing and upgrading Numbat](install-and-upgrade.md)
 4. [Users and permissions](users.md)
 5. [References and reference sets](references.md)
 6. [Forms and extraction elements](forms.md)
