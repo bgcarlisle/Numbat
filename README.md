@@ -5,6 +5,8 @@
 The source code for Numbat is available on
 [Github](https://github.com/bgcarlisle/Numbat "Numbat Github").
 
+The documentation for Numbat is available on [Github](docs/index.md)
+
 Numbat is free software first developed by Benjamin Carlisle in 2014
 for use by the STREAM research group[^1] in the Biomedical Ethics Unit
 at McGill University to facilitate systematic review work for the
