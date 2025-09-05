@@ -78,4 +78,6 @@ The remaining directories and files in a Numbat instance are Numbat
 software, and should be identical between Numbat instances that are
 running the same version of Numbat.
 
+[Previous: Index](README.md)
+
 [Next: Quick start guide](quick-start.md)
