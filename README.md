@@ -21,6 +21,11 @@ tongues.
 
 [^1]: <http://www.translationalethics.com/>
 
+Numbat Systematic Review is proudly 100% artificial
+intelligence-free. Numbat does not include AI, does not require AI
+integration, and none of the code or documentation was written using
+AI.
+
 ## Purpose and limitations
 
 ### What Numbat does
