@@ -78,8 +78,6 @@ There are two ways to mark an email as verified:
    email as being verified via the user administration page (Numbat
    menu > User administration).
    
-
-
 ---
 
 [Previous: Installing and upgrading Numbat](install-and-upgrade.md)
