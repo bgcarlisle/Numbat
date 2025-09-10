@@ -5,7 +5,7 @@
 This guide assumes that you have SSH access to a web server with
 Linux, Apache, MySQL and PHP installed. You will also need a MySQL
 database available with credentials that allow you full permissions to
-read and write. 
+read and write.
 
 Numbat is designed to co-exist with other instances of Numbat on the
 same domain or subdomain, however it is not recommended to share a
@@ -61,6 +61,16 @@ user based on them. This user will have admin privileges.
 Make a table in Modern CSV or using another spreadsheet tool where you
 know how to export it as a `.tsv` (tab-separated value)
 file. Recommended column names: `title`, `author`, `year`, `journal`.
+
+## Step 4: Define an extraction form
+
+## Step 5: Sign up other extractors
+
+## Step 6: Assign and do extractions
+
+## Step 7: Reconcile finished extractions
+
+## Step 8: Export final data sets for analysis
 
 ---
 
