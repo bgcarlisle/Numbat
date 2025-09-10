@@ -42,8 +42,8 @@ separated by tabs.
 
 Microsoft Excel technically can save a spreadsheet as a `.tsv`,
 however I recommend that you uninstall Microsoft Office from your
-computer and never open Excel ever again if this is at all possible
-for you.
+computer and never use Excel ever again if this is at all possible for
+you.
 
 LibreOffice Calc can also save a spreadsheet as a `.tsv`. Choose
 "File", then "Save As...", then from the file format drop-down menu
@@ -74,11 +74,42 @@ reference metadata (title, author, etc.) based on the column names
 case that Numbat can't guess, you will be prompted to choose a
 column. You may leave any of these blank, however an extractor will
 not be able to figure out what reference they are being asked to
-extract if you do not
+extract if you don't provide any way to identify their extraction
+task.
+
+The new reference set is not added to your Numbat instance until you
+click "Save changes". When you do so, you will see a screen that
+should reflect the name you provided for the reference set, the table
+for the database back-end (`referenceset_3` or similar), a list of all
+the columns that were added, and the number of rows that were
+added. You should double check at this point that all these details
+are correct, and that there was no error in uploading or in formatting
+the `.tsv` file.
+
+## Viewing and editing reference sets
+
+You can check again that the reference set was correctly uploaded, or
+view and edit any reference set in your Numbat instance by going to
+"Manage reference sets" from the Numbat menu, and then choosing the
+reference set you just uploaded. Here, you can change the name for the
+reference set, update the reference set metadata and see a preview of
+the reference set table. For legibility, Numbat will only display the
+first 50 characters of any cell in the table.
+
+Each row of the reference set table provides the option of deleting
+that row in the first column, in case you need to remove references.
 
 ## Adding more references to an existing reference set
 
+You can also insert new references into an already-existing reference
+set from this page. To do so, you must prepare a new `.tsv` file. The
+first row must contain column names and there must be one row for
+every new reference to be uploaded. You will be prompted to indicate
+which columns in the uploaded TSV correspond to which columns in the
+already-uploaded reference set. Numbat will try to match columns
+automatically where they match exactly.
 
+---
 
 [Previous: Users and permissions](users.md)
 
