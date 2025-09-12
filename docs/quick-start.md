@@ -62,6 +62,9 @@ Make a table in Modern CSV or using another spreadsheet tool where you
 know how to export it as a `.tsv` (tab-separated value)
 file. Recommended column names: `title`, `author`, `year`, `journal`.
 
+Upload this file to Numbat by selecting "Manage reference sets" from
+the Numbat menu, then "Add new reference set".
+
 ## Step 4: Define an extraction form
 
 ## Step 5: Sign up other extractors

@@ -68,6 +68,12 @@ extracted data and reconciled final copies. This database is not
 designed to be viewed or altered directly, but may be accessed using
 the credentials stored in `config.php` in case of troubleshooting.
 
+Numbat does not require an entire domain or subdomain to itself, and
+multiple Numbat instances can be served from the same domain or
+subdomain, under different (non-nesting) directories. It is not
+recommended to serve two Numbat instances from the same MySQL
+database.
+
 The contents of the `uploads/files/` directory are arbitrary files
 that a user may have uploaded to the server for their own reference,
 or the reference of an extractor. This folder is created only in the
