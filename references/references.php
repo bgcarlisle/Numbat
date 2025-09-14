@@ -8,8 +8,6 @@
 		    <td>Reference set</td>
 		    <td>View reference set</td>
 		    <td>Export reference set</td>
-		    <td>Manually added references</td>
-		    <td>Manage multiples</td>
 		    <td>Delete</td>
 		</tr>
 		<?php
@@ -22,8 +20,6 @@
       		    <td><?php echo $refset['name']; ?></td>
 		    <td><a href="<?php echo SITE_URL; ?>references/?action=view&refset=<?php echo $refset['id']; ?>">View</a></td>
  		    <td><button onclick="nbtExportRefset(<?php echo $refset['id']; ?>);">Export</button></td>
-		    <td><a href="<?php echo SITE_URL; ?>references/manual/?refset=<?php echo $refset['id']; ?>">Manual refs</a></td>
-		    <td><a href="<?php echo SITE_URL; ?>references/multiple/?refset=<?php echo $refset['id']; ?>">Multiples</a></td>
 		    <td>
 			<button onclick="$(this).fadeOut(0);$('#nbtDeleteRefSet<?php echo $refset['id']; ?>').fadeIn();">Delete</button>
 			<button class="nbtHidden" id="nbtDeleteRefSet<?php echo $refset['id']; ?>" onclick="nbtDeleteRefSet(<?php echo $refset['id']; ?>);">For real</button>
@@ -34,7 +30,7 @@
 
 		     ?>
 		<tr>
-		    <td colspan="7"><button onclick="$('#nbtNewReferenceSetInstructions').slideDown();$(this).fadeOut();" id="nbtShowNewRefsetButton">Add new reference set</button></td>
+		    <td colspan="5"><button onclick="$('#nbtNewReferenceSetInstructions').slideDown();$(this).fadeOut();" id="nbtShowNewRefsetButton">Add new reference set</button></td>
 		</tr>
 	</table>
 
