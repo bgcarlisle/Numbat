@@ -2,6 +2,11 @@
 
 # Numbat quick start guide
 
+Numbat is web application, designed to be installed on a web
+server. Numbat is not a laptop/desktop/mobile app. An administrator
+needs to install Numbat on a web server, but users only need a web
+browser to access it.
+
 This guide assumes that you have SSH access to a web server with
 Linux, Apache, MySQL and PHP installed. You will also need a MySQL
 database available with credentials that allow you full permissions to
