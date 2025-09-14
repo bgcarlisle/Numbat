@@ -12437,30 +12437,28 @@ function nbt_make_new_refset_row ( $newname, $title, $authors, $year, $journal, 
 	$stmt->bindParam(':abstract', $ab);
 	$name = $newname;
 	// Have to add 2 to each one, because two columns are added to each table by Numbat
-	
-	if ($title != "NULL") {
-	    $ti = intval($title) + 2;
-
+	if (is_int($title)) {
+	    $ti = $title + 2;
 	} else {
 	    $ti = NULL;
 	}
-	if ($authors != "NULL") {
-	    $au = intval($authors) + 2;
+	if (is_int($authors)) {
+	    $au = $authors + 2;
 	} else {
 	    $au = NULL;
 	}
-	if ($year != "NULL") {
-	    $ye = intval($year) + 2;
+	if (is_int($year)) {
+	    $ye = $year + 2;
 	} else {
 	    $ye = NULL;
 	}
-	if ($journal != "NULL") {
-	    $jo = intval($journal) + 2;
+	if (is_int($journal)) {
+	    $jo = $journal + 2;
 	} else {
 	    $jo = NULL;
 	}
-	if ($abstract != "NULL") {
-	    $ab = intval($abstract) + 2;
+	if (is_int($abstract)) {
+	    $ab = $abstract + 2;
 	} else {
 	    $ab = NULL;
 	}
