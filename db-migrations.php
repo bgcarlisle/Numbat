@@ -1381,78 +1381,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 	
     }
-
-    // Remove `manual` column from reference sets
-    echo "<h3>Remove deprecated 'manual' column from reference sets</h3>";
-
-    $refsets = nbt_get_all_ref_sets ();
-
-    foreach ($refsets as $refset) {
-	
-	$rscols = nbt_get_columns_for_refset ( $refset['id'] );
-
-	foreach ($rscols as $rscol) {
-	    if ($rscol[0] == "manual") {
-		// If there is a "manual" column
-
-		echo "<p>There's a 'manual' column in reference set " . $refset['id'] . "</p>";
-		
-		// Decrement each of the metadata columns by 1
-
-		try {
-
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		    $stmt = $dbh->prepare("UPDATE `referencesets` SET `title` = `title` - 1, `authors` = `authors` - 1, `year` = `year` - 1, `journal` = `journal` - 1, `abstract` = `abstract` - 1 WHERE `id` = :rsid");
-
-		    $stmt->bindParam(':rsid', $rsid);
-
-		    $rsid = $refset['id'];
-
-		    if ($stmt->execute()) {
-			echo "<p>Reference set " . $refset['id'] . " metadata has been adjusted</p>";
-		    } else {
-			echo "<p>Error attempting to adjust metadata for reference set " . $refset['id'] . "</p>";
-		    }
-
-		    $dbh = null;
-
-		}
-
-		catch (PDOException $e) {
-
-		    echo $e->getMessage();
-
-		}
-
-		// Remove the "manual" column
-
-		try {
-
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		    $stmt = $dbh->prepare("ALTER TABLE `referenceset_" . $refset['id'] . "` DROP COLUMN `manual`");
-
-		    if ($stmt->execute()) {
-			echo "<p>Reference set " . $refset['id'] . " 'manual' column dropped</p>";
-		    } else {
-			echo "<p>Error attempting to drop 'manual' column for reference set " . $refset['id'] . "</p>";
-		    }
-
-		    $dbh = null;
-
-		}
-
-		catch (PDOException $e) {
-
-		    echo $e->getMessage();
-
-		}
-		
-	    }
-	}
-    }
-
     
-
     // End
 
 } else { // Not admin
