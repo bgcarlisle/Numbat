@@ -26,7 +26,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
     $rscols_to_export = array();
     foreach ($rs_cols as $rs_col) {
-	if ($rs_col[0] != "id" & $rs_col[0] != "manual") {
+	if ($rs_col[0] != "id") {
 	    if ($rs_col[0] == "type") {
 		$rs_col[0] = "\`type\`";
 	    }

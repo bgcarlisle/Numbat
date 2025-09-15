@@ -984,8 +984,6 @@ function nbt_return_references_for_assignment_search ( $refsetid, $query ) {
 
 }
 
-
-
 function nbt_update_extraction ( $fid, $id, $column, $value ) {
 
     if ($value == "") {
