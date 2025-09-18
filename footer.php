@@ -47,7 +47,7 @@
 		 }
 		 $trigger_selector = implode(", ", $trigger_selectors);
 
-		 if (count (trigger_selectors) > 0) {
+		 if (count ($trigger_selectors) > 0) {
 
 		     // Make jQuery expressions for each of the conditions
 		     $event_expressions = [];
