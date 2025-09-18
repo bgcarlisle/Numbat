@@ -214,34 +214,6 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
             break;
 
-        case "citations":
-
-
-	    if ( $_POST['final'] == 0 ) {
-
-		// echo "cite\n\n";
-
-		$filename = $filename . "-cite_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-cite-extraction";
-
-		echo $filename;
-
-		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT * FROM referenceset_" . $_POST['refsetid'] . ", citations_" . $_POST['formid'] . " WHERE citations_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND citations_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
-
-	    } else {
-
-		// echo cite final;
-
-		$filename = $filename . "-cite_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-cite-final";
-
-		echo $filename;
-
-		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT * FROM referenceset_" . $_POST['refsetid'] . ", mcite_" . $_POST['formid'] . " WHERE mcite_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND mcite_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
-
-	    }
-
-
-            break;
-
         case "table_data":
 
 	    $table_element = nbt_get_table_element_by_tablename ($_POST['formid']);

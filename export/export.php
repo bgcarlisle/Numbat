@@ -401,76 +401,7 @@ if ( count ( $refsets ) > 0 ) {
 			}
 
 			break;
-
-		    case "citations":
-
-			echo "<tr>";
-
-			echo "<td>&nbsp;</td>";
 			
-			$extracted_cites = nbt_get_all_citations_for_refset ( $element['id'], $refset['id'] );
-
-			$reconciled_cites = nbt_get_all_reconciled_citations_for_refset ( $element['id'], $refset['id'] );
-
-			if ( count ( $extracted_cites ) > 0 ) {
-
-			    echo "<td><button onclick=\"nbtExportData('citations', ";
-
-			    echo $refset['id'];
-
-			    echo ", '";
-
-
-			    echo $element['columnname'];
-
-			    echo '\', 0);">Export "';
-
-			    echo $element['displayname'];
-
-			    echo '" citations</button></td>';
-
-			} else {
-
-			    echo '<td><p>Citation set "';
-
-			    echo $element['displayname'];
-
-			    echo '" has no extracted citations.</p></td>';
-
-			}
-
-			if ( count ( $reconciled_cites ) > 0 ) {
-
-			    echo "<td><button onclick=\"nbtExportData('citations', ";
-
-			    echo $refset['id'];
-
-			    echo ", '";
-
-			    echo $element['columnname'];
-
-			    echo '\', 1);">Export "';
-
-			    echo $element['displayname'];
-
-			    echo '" final citations</button></td>';
-
-			} else {
-
-			    echo '<td><p>The final copy of citation set "';
-
-			    echo $element['displayname'];
-
-			    echo '" has no reconciled citations.</p></td>';
-
-			}
-
-			$count_special_elements ++;
-
-			echo "</tr>";
-
-			break;
-
 		}
 
 
