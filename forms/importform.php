@@ -89,11 +89,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 			// Decode the JSON for all the element types that have
 			// an internal data structure
-			$elements = json_decode($import['elements'], true);
-			$selectoptions = json_decode($import['selectoptions'], true);
-			$tabledatacols = json_decode($import['tabledatacols'], true);
-			$subelements = json_decode($import['subelements'], true);
-			$citecols = json_decode($import['citationscols'], true);
+			$elements = $import['elements'];
+			$selectoptions = $import['selectoptions'];
+			$tabledatacols = $import['tabledatacols'];
+			$subelements = $import['subelements'];
+			$citecols = $import['citationscols'];
 
 			// Loop through all the imported elements and re-create
 			// them in the current Numbat instance individually
@@ -261,12 +261,12 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 			// Decode the JSON for all the element types that have
 			// an internal data structure
-			$elements = json_decode($import['elements'], true);
-			$selectoptions = json_decode($import['selectoptions'], true);
-			$tabledatacols = json_decode($import['tabledatacols'], true);
-			$subelements = json_decode($import['subelements'], true);
-			$citecols = json_decode($import['citationscols'], true);
-			$conditionals = json_decode($import['conditionals'], true);
+			$elements = $import['elements'];
+			$selectoptions = $import['selectoptions'];
+			$tabledatacols = $import['tabledatacols'];
+			$subelements = $import['subelements'];
+			$citecols = $import['citationscols'];
+			$conditionals = $import['conditionals'];
 
 			// Make lookup arrays for the old => new
 			// element id's, subelement id's and select-options

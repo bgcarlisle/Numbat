@@ -21,11 +21,11 @@ $formdata = array(
     "protocol"      => $form['protocol'],
     "projectdate"   => $form['projectdate'],
     "numbatversion" => NUMBAT_VERSION,
-    "elements"      => json_encode($elements),
-    "selectoptions" => json_encode($selectoptions),
-    "tabledatacols" => json_encode($tabledatacols),
-    "subelements"   => json_encode($subelements),
-    "conditionals"  => json_encode($conditionals)
+    "elements"      => $elements,
+    "selectoptions" => $selectoptions,
+    "tabledatacols" => $tabledatacols,
+    "subelements"   => $subelements,
+    "conditionals"  => $conditionals
 );
 
 echo json_encode($formdata);
