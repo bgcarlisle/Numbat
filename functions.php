@@ -1261,7 +1261,8 @@ function nbt_get_extraction ( $formid, $refsetid, $refid, $userid ) {
     }
 
     catch (PDOException $e) {
-	echo $e->getMessage();
+	// This has been commented out because we expect exceptions
+	// echo $e->getMessage();
     }
 
     // See if an extraction exists
