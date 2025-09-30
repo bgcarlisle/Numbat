@@ -2,6 +2,12 @@
 
 include_once ('../config.php');
 
+$illegal_columns = [
+    "id",
+    "referenceid",
+    "rid"
+];
+
 if ( nbt_user_is_logged_in () ) { // User is logged in
 
     if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) == 4 ) {
@@ -56,6 +62,11 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 		    $column = preg_replace('/(_)+$/', '', $column);
 
 		    $column = strtolower($column);
+
+		    // Remove illegal column names
+		    if (in_array($column, $illegal_columns)) {
+			$column = "imported_" . $column;
+		    }
 
 		    array_push($columns, $column);
 		}
