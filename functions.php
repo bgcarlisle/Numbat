@@ -2706,13 +2706,11 @@ function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid
     	$uid = $userid;
 	$fid = $formid;
 
-    	$stmt->execute();
-
-    	$result = $stmt->fetchAll();
-
-    	$dbh = null;
-
-    	return $result;
+	if ($stmt->execute()) {
+    	    $result = $stmt->fetchAll();
+    	    $dbh = null;
+    	    return $result;
+	}
 
     }
 
