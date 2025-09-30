@@ -2690,9 +2690,9 @@ function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid
     }
 
     if (is_null($screening_page)) {
-	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() " . $gpft . "ORDER BY `referenceid` ASC;";
+	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() " . $gpft . "ORDER BY `referenceset_" . $refsetid . "`.`referenceid` ASC;";
     } else {
-	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() AND `formid` = :fid " . $gpft . " ORDER BY `referenceid` ASC LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";";
+	$query = "SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() AND `formid` = :fid " . $gpft . " ORDER BY `referenceset_" . $refsetid . "`.`referenceid` ASC LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";";
     }
 
     try {
