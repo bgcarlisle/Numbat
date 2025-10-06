@@ -40,8 +40,8 @@ contains all the elements for the all forms in a Numbat instance,
 indexed by their form ID.
 
 The responses to an extraction form are stored in a table in the
-database back-end named `extractions_1`, `extractions_2`, where the
-numeral at the end of the name corresponds to the form ID.
+database back-end named `extractions_1`, `extractions_2`, etc. where
+the numeral at the end of the name corresponds to the form ID.
 
 There are two types of forms in Numbat: "screening" and
 "extraction". (Apologies for the ambiguity in the terminology
