@@ -98,6 +98,31 @@ per cell.
 
 ## Editing an extraction form
 
+An extraction form can be edited at any time. Go to "Edit extraction
+forms" under the Numbat menu and click the "Edit" link in the table
+row corresponding to the form of interest. This will open the form
+editor.
+
+Be careful editing your form, as changes are saved automatically as
+they are made.
+
+You can change the order of the elements in your form by dragging them
+up or down in the form editor by the ![Three horizontal grey
+bars](../images/draggy.svg "Dragging area") area and dropping them in
+a new position marked by a bold white outline. For ease of re-ordering
+elements, you can vertically collapse an element's editor by clicking
+on the "collapse/expand" button at the top right. Changing the order
+of elements within a form will not cause any data loss.
+
+You can delete an element by clicking "Delete" in the top right corner
+of any element in the form editor. (You will be prompted with "Yes,
+delete" and "Do not delete" before this change is saved to the
+database.) Deleting an element will result in potential data loss, as
+this will also delete the column containing any data that has been
+extracted for that element already. Of course, if no extractions have
+been done yet with this form, no data loss is possible.
+
+
 ## Documenting an extraction form
 
 ---
