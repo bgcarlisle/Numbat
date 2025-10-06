@@ -12,9 +12,7 @@ Linux, Apache, MySQL and PHP installed. You will also need a MySQL
 database available with credentials that allow you full permissions to
 read and write.
 
-Numbat is designed to co-exist with other instances of Numbat on the
-same domain or subdomain, however it is not recommended to share a
-single MySQL database among multiple Numbat instances.
+
 
 ## Necessary information
 
