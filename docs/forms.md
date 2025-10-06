@@ -80,8 +80,6 @@ for each reference to be extracted, rather than a grid containing all
 assigned references. There are no mandatory questions in an
 "extraction" form like in a "screening" form.
 
-### Section headings
-
 ### Deprecated element types
 
 * Citations as an extraction element have been deprecated, as the
@@ -95,6 +93,46 @@ the database back-end), which allowed an arbitrary number of
 characters per cell. The `ltable_data` element has been deprecated,
 and now `table_data` elements allow an arbitrary number of characters
 per cell.
+
+### Conditional display logic
+
+By default, all elements in an extraction form are visible, however it
+is possible to hide an element and have it appear depending on
+responses to other elements of the same form.
+
+To use conditional display logic, go to "When the form is first
+opened, this item should be" at the bottom of the form element, and
+change it from "Visible" to "Hidden." This will enable the conditional
+display logic editor. You can add zero, one or many conditions under
+which the element in question will appear. If there is more than one,
+these conditions can be joined with a conjunction or a disjunction by
+choosing "all" or "any" from the drop-down menu in the sentence "Show
+this element when any/all of the following conditions are met."
+
+Add a condition by clicking the "Add condition" button. This will
+provide an editor with a drop-down selector for the "trigger" element,
+a drop-down selector for how to evaluate the trigger element (matching
+a particular response, matching anything but a particular response,
+having a response, and having no response), and in the case that
+matching is required, a drop-down for selecting the option within that
+element to be matched. Conditions can be removed by clicking "Remove"
+and "Confirm remove" at the right.
+
+By default, when an element has a response, but then it is hidden, the
+response in the now-hidden element is cleared. This behaviour can be
+changed by selecting "Preserve response" from the drop-down in the
+sentence that says, "In the case that this element is hidden by a
+conditional display event after a response has been entered: Clear
+response".
+
+## Extraction form elements
+
+### Section headings
+
+A section heading is an element in an extraction form, but it is not a
+column in the exported database, as it is added for purely cosmetic
+reasons. It is used to group parts of a form together to make it more
+interpretable to extractors.
 
 ## Editing an extraction form
 
