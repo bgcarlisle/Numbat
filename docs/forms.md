@@ -214,8 +214,43 @@ An option consists of a "display name" which is paired with a "DB
 value", as specified in the "Options" table. "DB value" here means the
 text that will be stored in the database back-end when the option in
 question is selected by the extractor, and eventually exported in a
-data export file. The "display name" for an option in a single select
-is only ever seen by the extractor at the time of extraction.
+data export file. The DB value can only be 200 characters or fewer in
+length. The "display name" for an option in a single select is only
+ever seen by the extractor at the time of extraction.
+
+At the point of extraction, the extractor is presented with a list of
+all the predefined options as greyed-out text with a grey
+underline. Mousing over an unselected option turns the text black and
+the underline purple, to aid in legibility, and to make it clear what
+text goes together as a single option in the case that options contain
+multiple words. Clicking an option saves that choice to the database
+back-end. If it is successfully saved, the selected option retains its
+black text and purple underline even when the cursor is no longer over
+it. Clicking another option deselects the first one chosen, and
+clicking the selected option again de-selects it.
+
+### Multi select
+
+A multi select element allows the extractor to choose one or many from
+a set of predefined options.
+
+A multi select is nearly identical to a single except in two ways:
+First, a user is able to choose more than one option, unlike a single
+select that only allows a user to choose one. Second, the way that
+this is implemented in the database back-end is necessarily different.
+
+Instead of a single column in the database back-end, a multi-select
+generates one column per option. Each column is a MySQL `INT`, and
+takes a value of 1 or 0, indicating selected or non-selected. Columns
+are named based on the "column prefix" field in the form editor
+concatenated with an underscore and the "DB column" for each option.
+
+For example, a user could specify a multi select element for
+"Location", where the "column prefix" field contains `location`, and
+define two options, display name "Canada", with `ca` as its DB column
+and display name "Germany" with `de` as its DB column. This would
+generate two columns in the database: `location_ca` and `location_de`
+(note that the underscore is added automatically).
 
 ## Editing an extraction form
 
