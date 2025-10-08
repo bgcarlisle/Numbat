@@ -31,7 +31,6 @@ if ( count ( $elements ) > 0 ) {
 	case "open_text":
 
 	?><h4>Open text field <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
-	<p class="nbtFinePrint">Maximum entry length: 200 characters</p>
 	<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 	<p class="nbtFinePrint">Will appear on extraction form</p>
 	<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);" maxlength="50"></p>
@@ -46,7 +45,6 @@ if ( count ( $elements ) > 0 ) {
 	case "text_area":
 
 	?><h4>Text area field <span class="nbtDisplayNameHidden nbtHidden">&nbsp;</span></h4>
-	<p class="nbtFinePrint">Maximum entry length: 5000 characters</p>
 	<p>Display name: <input type="text" class="nbtDisplayName" id="nbtElementDisplayName<?php echo $element['id']; ?>" value="<?php echo $element['displayname']; ?>" onblur="nbtChangeDisplayName(<?php echo $element['id']; ?>);" maxlength="200"></p>
 	<p class="nbtFinePrint">Will appear on extraction form</p>
 	<p>Column name: <input type="text" id="nbtElementColumnName<?php echo $element['id']; ?>" value="<?php echo $element['columnname']; ?>" onblur="nbtChangeColumnName(<?php echo $element['id']; ?>);" maxlength="50"></p>
