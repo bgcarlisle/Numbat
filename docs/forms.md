@@ -141,6 +141,7 @@ column in the exported database, as it is added for purely cosmetic
 reasons. It is used to group parts of a form together to make it more
 interpretable to extractors.
 
+area field is presented to the user as a rectangle 150 px tall, rather
 ## Editing an extraction form
 
 An extraction form can be edited at any time. Go to "Edit extraction
