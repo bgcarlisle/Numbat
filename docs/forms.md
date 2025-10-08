@@ -141,7 +141,82 @@ column in the exported database, as it is added for purely cosmetic
 reasons. It is used to group parts of a form together to make it more
 interpretable to extractors.
 
+Note that conditional display logic applied to a section heading also
+applies to all the elements that follow it until the next section
+heading element.
+
+### Open text
+
+An open text element allows an extractor to enter arbitrary text,
+which is stored in the database back-end in a MySQL `TEXT` column
+(maximum size 64 kB). The user defines the name of the column in the
+database back-end using the "Column name" field in the form
+editor. This column name is also the one used at the time of data
+export.
+
+The "Display name" field allows the user to define the name for the
+open text field that will be displayed at the time of data
+extraction. This name is not included at the time of data export.
+
+This field allows for optional regex (regular expression)
+validation. If you enter a regex into the field here, an extractor's
+entry will not be saved unless it matches the regex specified. For
+example, if you want to make sure that an extractor only enters a
+whole-number Arabic numeral, use the regex `[0-9]+`.  Leave this field
+blank for no regex validation.
+
+At the point of extraction, the user will be presented with a
+single-line text field labelled with the user-defined "display name"
+above it. Text entered in the field is saved when the field loses
+focus. The field will flash green for 500 ms if it is saved
+successfully, and it will flash red for 500 ms on a failed attempt to
+save (including a failed regex match).
+
+### Text area
+
+A text area element is similar to an open text element, in that it
+also allows arbitrary text entry, stored as a `TEXT` column with the
+column name in the database back-end and in the data export file
+defined by the user in the same way.
+
+Text areas differ from open text fields in two ways: First, a text
 area field is presented to the user as a rectangle 150 px tall, rather
+than as a single-line height text field. This allows for greater ease
+in editing longer passages of text. Second, text area fields do not
+allow for regex verification.
+
+### Date selector
+
+A date selector element allows an extractor to enter arbitrary text,
+which is then parsed by the `strtotime()` PHP function and then
+formatted to an ISO-8601 compliant date (YYYY-MM-DD) for display to
+the extractor, and saved to the database back-end as a MySQL `DATE`
+column with the column name as specified by the user.
+
+Parsing the text with `strtotime()` in PHP allows the user to enter
+many natural language expressions to specify a date, such as "now",
+"tomorrow", "September 3, 1985", "next Wed", "+3 year", etc. In the
+case of a parsing failure, the field will flash red for 500 ms with
+the words "Bad date format", and then be cleared.
+
+During extraction, the user will be presented with a single-line text
+field labelled with the user-defined "display name" above it. Text
+entered in the field will be parsed as described above when the field
+loses focus and if successfully converted to a date, the field will
+flash green for 500 ms and the date will appear in ISO-8601 format.
+
+### Single select
+
+A single select element allows the extractor to choose one from a set
+of predefined options.
+
+An option consists of a "display name" which is paired with a "DB
+value", as specified in the "Options" table. "DB value" here means the
+text that will be stored in the database back-end when the option in
+question is selected by the extractor, and eventually exported in a
+data export file. The "display name" for an option in a single select
+is only ever seen by the extractor at the time of extraction.
+
 ## Editing an extraction form
 
 An extraction form can be edited at any time. Go to "Edit extraction
@@ -167,7 +242,6 @@ database.) Deleting an element will result in potential data loss, as
 this will also delete the column containing any data that has been
 extracted for that element already. Of course, if no extractions have
 been done yet with this form, no data loss is possible.
-
 
 ## Documenting an extraction form
 
