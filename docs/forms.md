@@ -125,7 +125,14 @@ sentence that says, "In the case that this element is hidden by a
 conditional display event after a response has been entered: Clear
 response".
 
-## Extraction form elements
+### Codebook
+
+Every element in an extraction form contains a "codebook" area. This
+allows a user to clarify how the question posed by the extraction form
+element is intended to be answered. Text entered here will be
+interpreted as HTML, to allow for links or special formatting.
+
+## Extraction form element types
 
 ### Section headings
 
