@@ -12,8 +12,6 @@ Linux, Apache, MySQL and PHP installed. You will also need a MySQL
 database available with credentials that allow you full permissions to
 read and write.
 
-
-
 ## Necessary information
 
 Have the following information ready before installation:
@@ -30,12 +28,13 @@ Have the following information ready before installation:
 
 ## Step 1: Put Numbat software on your server
 
-[Download the latest version of
-Numbat](https://github.com/bgcarlisle/Numbat/releases) as a `.zip`
+The quickest way to install Numbat is to [download the latest version
+of Numbat](https://github.com/bgcarlisle/Numbat/releases) as a `.zip`
 file and expand. Use the file transfer software of your choice
 (Filezilla is a good one if you need a suggestion) to transfer the
 entire contents of the expanded `.zip` to the root folder on your web
-server.
+server. (Cloning Numbat on to your web server using `git` for version
+control is the recommended method, described in the [documentation for installation and upgrading](install-and-upgrade.md).)
 
 ## Step 2: Run Numbat installer
 
