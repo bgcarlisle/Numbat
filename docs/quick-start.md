@@ -69,7 +69,21 @@ the Numbat menu, then "Add new reference set".
 
 ## Step 4: Define an extraction form
 
+Choose the Numbat menu, then "Edit extraction forms" and choose the
+"Add new extraction form" button. A new empty form will be added to
+the list. Click "edit" to the right of the name for the new extraction
+form. (You will be prompted to provide optional metadata for your
+form, which you can skip if you like, but you will be better-served in
+the long run if you provide good documentation for yourself.)
+
+Add elements to your form by clicking the "Add new element" button at
+the bottom of the form editor. A detailed description of the available
+form elements can be found in the [documentation for forms and
+extraction elements](forms.md).
+
 ## Step 5: Sign up other extractors
+
+
 
 ## Step 6: Assign and do extractions
 
