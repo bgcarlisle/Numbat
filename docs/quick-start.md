@@ -104,7 +104,9 @@ same way as marking an account's email as being verified.
 
 ## Step 6: Assign and do extractions
 
-
+A user's list of extractions to do is managed via the assignments
+page, which can be accessed under "Manage extraction assignments" in
+the Numbat menu.
 
 ## Step 7: Reconcile finished extractions
 
