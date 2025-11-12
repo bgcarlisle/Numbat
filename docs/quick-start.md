@@ -83,9 +83,28 @@ extraction elements](forms.md).
 
 ## Step 5: Sign up other extractors
 
+Tell other extractors to visit the URL of your Numbat instance and to
+click where it says "New here? Sign up." When they sign up, if Numbat
+is configured to send out emails, they will receive an email with a
+link prompting them to verify that their email is accurate.
 
+If Numbat is not configured to send out emails, or if the email is not
+received for whatever reason, an admin account can manually change the
+account so that Numbat takes that email address to be verified anyway.
+
+To do so, a user with admin privileges must choose "User
+administration" from the Numbat menu. Then, for every user on the
+instance, there is a drop-down menu that allows an admin user to
+update that account's email verification status.
+
+Before a user can start doing extractions, that user must have "User"
+level privileges. (By default, at signup, a user has "None"
+privileges.) User privileges can be assigned by an admin user in the
+same way as marking an account's email as being verified.
 
 ## Step 6: Assign and do extractions
+
+
 
 ## Step 7: Reconcile finished extractions
 
