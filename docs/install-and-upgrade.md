@@ -94,6 +94,22 @@ most recent version of Numbat using the following command:
 $ git pull
 ```
 
+If you copied the files over manually and unzipped them, I recommend
+deleting all the files in your Numbat root folder except `config.php`,
+the contents of `./uploads/files/`, the `./backup/dumpfiles/` folder
+and the `./attach/files/` folder, and then unzipping the latest
+version of Numbat and copying the new files over manually.
+
+Once the software files have been replaced, there is a script that
+detects changes that need to be made to your MySQL database
+configuration and applies them. This PHP script can be called by
+opening a web browser, visiting your Numbat instance, logging in as an
+admin user, and then typing your public-facing URL into the browser
+window with `db-migrations.php` at the end.
+
+E.g. If your Numbat instance was installed at
+https://domain-name.muffin/project-name/ then you should visit: https://domain-name.muffin/project-name/db-migrations.php
+
 ---
 
 [Previous: Quick start guide](quick-start.md)
