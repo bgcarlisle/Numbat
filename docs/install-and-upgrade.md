@@ -8,7 +8,8 @@ The recommended method for installing Numbat is using `git`, because
 this provides version control, however Numbat can also be installed
 manually by extracting the Numbat software into the directory on the
 web server as described in the [Numbat quick start
-guide](quick-start.md)
+guide](quick-start.md) The instructions here assume that the user has
+a base level of facility with basic Linux command line.
 
 Numbat requires a [LAMP
 stack](https://en.wikipedia.org/wiki/LAMP_(software_bundle)) (Linux,
@@ -16,8 +17,22 @@ Apache, MySQL, PHP) with the web server providing a public-facing
 address.
 
 Numbat is designed to co-exist with other instances of Numbat on the
-same domain or subdomain, however it is not recommended to share a
+same domain or subdomain, however it is *not* recommended to share a
 single MySQL database among multiple Numbat instances.
+
+Connect to your server through the command line via SSH. Your hosting
+provider will have your SSH login credentials, which will allow you to
+send commands to your server.
+
+Once you have successfully connected to your server, navigate to the
+directory into which you want to install Numbat, delete all the files
+that are already there, if any, and run the following command.
+
+```
+$ git clone https://github.com/bgcarlisle/Numbat.git ./
+```
+
+## Upgrading Numbat
 
 ---
 
