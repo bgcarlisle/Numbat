@@ -80,6 +80,20 @@ credentials, the path on disk to Numbat and the public URL for Numbat.
 
 ## Upgrading Numbat
 
+To upgrade Numbat, you must (1) replace all the Numbat software files
+that have changed between when it was installed and the newest version
+and (2) run the PHP script named `db-migrations.php`.
+
+If you used `git` to install Numbat in the first place, replacing all
+the software files that have changed is a simple matter of pulling the
+most recent changes from the Numbat `git` repo. First, SSH into your
+server, then navigate to the Numbat root folder. From there, pull the
+most recent version of Numbat using the following command:
+
+```
+$ git pull
+```
+
 ---
 
 [Previous: Quick start guide](quick-start.md)
