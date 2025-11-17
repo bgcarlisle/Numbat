@@ -28,7 +28,7 @@ Once you have successfully connected to your server, navigate to the
 directory into which you want to install Numbat, delete all the files
 that are already there, if any, and run the following command:
 
-```{bash}
+```
 $ git clone https://github.com/bgcarlisle/Numbat.git ./
 ```
 
