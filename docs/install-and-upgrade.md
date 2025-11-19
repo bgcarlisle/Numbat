@@ -21,16 +21,17 @@ provider will have your SSH login credentials, which will allow you to
 send commands to your server.
 
 Once you have successfully connected to your server, navigate to the
-directory into which you want to install Numbat, delete all the files
-that are already there, if any, and run the following command:
+directory into which you want to install Numbat, delete or move all
+the files that are already there, if any, and run the following
+command:
 
 ```
 $ git clone https://github.com/bgcarlisle/Numbat.git ./
 ```
 
-This will copy the Numbat software from the git repo onto your server,
-and it will also provide an easy means for upgrading to subsequent
-versions of Numbat.
+This will copy the Numbat software from the `git` repo onto your
+server, and it will also provide an easy means for upgrading to
+subsequent versions of Numbat.
 
 Take note of the full path to the Numbat folder root and the
 public-facing URL that corresponds to the Numbat folder.
@@ -47,7 +48,7 @@ MySQL username, password, database name and hostname, as you will need
 to enter this in the installer.
 
 To run the Numbat installer, open a browser and visit the URL that
-corresponds to the folder into which you cloned the Numbat git repo.
+corresponds to the folder into which you cloned the Numbat `git` repo.
 
 The installer will ask you to enter the following:
 
@@ -82,7 +83,7 @@ credentials, the path on disk to Numbat and the public URL for Numbat.
 
 To upgrade Numbat, you must (1) replace all the Numbat software files
 that have changed between when it was installed and the newest version
-and (2) run the PHP script named `db-migrations.php`.
+and (2) run the PHP script named `db-migrations.php` as an admin user.
 
 If you used `git` to install Numbat in the first place, replacing all
 the software files that have changed is a simple matter of pulling the
