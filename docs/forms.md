@@ -254,10 +254,10 @@ generate two columns in the database: `location_ca` and `location_de`
 
 ## Editing an extraction form
 
-An extraction form can be edited at any time. Go to "Edit extraction
-forms" under the Numbat menu and click the "Edit" link in the table
-row corresponding to the form of interest. This will open the form
-editor.
+An extraction form can be edited at any time, even after extractions
+have already been completed. Go to "Edit extraction forms" under the
+Numbat menu and click the "Edit" link in the table row corresponding
+to the form of interest. This will open the form editor.
 
 Be careful editing your form, as changes are saved automatically as
 they are made.
@@ -268,17 +268,56 @@ bars](../images/draggy.svg "Dragging area") area and dropping them in
 a new position marked by a bold white outline. For ease of re-ordering
 elements, you can vertically collapse an element's editor by clicking
 on the "collapse/expand" button at the top right. Changing the order
-of elements within a form will not cause any data loss.
+of elements within a form will *not* cause any data loss.
 
 You can delete an element by clicking "Delete" in the top right corner
 of any element in the form editor. (You will be prompted with "Yes,
 delete" and "Do not delete" before this change is saved to the
-database.) Deleting an element will result in potential data loss, as
-this will also delete the column containing any data that has been
+database.) Deleting an element *will result in potential data loss*,
+as this will also delete the column containing any data that has been
 extracted for that element already. Of course, if no extractions have
 been done yet with this form, no data loss is possible.
 
+Changing an extraction element after extractions are already complete
+may result in data loss, depending on the nature of the changes
+applied.
+
+Changing an element's Display Name will not result in data
+loss. Changing an element's database name will not result in data
+loss.
+
+Removing options from a Single Select element *will not* result in
+data loss, because the data are stored as text in a single
+column. Removing options from a Multi Select element *will* result in
+data loss, because the data are stored as TRUE/FALSE responses to each
+option, each in a column of its own.
+
 ## Documenting an extraction form
+
+Numbat provides two methods for documenting an extraction form:
+
+1. JSON-formatted export (`.json`), and
+2. Markdown-formatted description (`.md`) export.
+
+These are both available in the Forms table visible after choosing
+"Extraction forms" from the Numbat menu.
+
+The `.json` export provides a machine-readable file that contains the
+exact specification of your Numbat form in a format that can be read
+back into Numbat to produce exactly the same form that was
+exported. This file can be used as a backup of an in-progress project,
+sent to other researchers to be used in other projects or for
+reproducibility, or to document the exact extraction form used in a
+previously completed project. This file is not meant to be read by a
+human.
+
+The `.md` export provides a human-readable file that contains an exact
+description of your Numbat form in a format that can be converted into
+a Word document (via pandoc or R Studio, for example) and inserted
+into a research protocol or the appendix of a publication. This file
+is not meant to be machine-readable, and Numbat is not designed to
+interpret an `.md` file to construct a form that matches the
+description provided in one.
 
 ---
 
