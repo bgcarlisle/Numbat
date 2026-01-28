@@ -22,9 +22,9 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
     	    $stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `title` INT(11) NULL DEFAULT NULL AFTER `name`;");
 
     	    if ($stmt->execute()) {
-    		      echo "<p>Reference sets table updated with title column</p>";
+    		echo "<p>Reference sets table updated with title column</p>";
     	    } else {
-    		      echo "<p>Error updating reference sets table with title column</p>";
+    		echo "<p>Error updating reference sets table with title column</p>";
     	    }
 
     	    $dbh = null;
@@ -37,7 +37,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     } else {
 
-	     echo "<p>The reference sets table already has a title column</p>";
+	echo "<p>The reference sets table already has a title column</p>";
 
     }
 
@@ -49,9 +49,9 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
     	    $stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `authors` INT(11) NULL DEFAULT NULL AFTER `title`;");
 
     	    if ($stmt->execute()) {
-    		      echo "<p>Reference sets table updated with authors column</p>";
+    		echo "<p>Reference sets table updated with authors column</p>";
     	    } else {
-    		      echo "<p>Error updating reference sets table with authors column</p>";
+    		echo "<p>Error updating reference sets table with authors column</p>";
     	    }
 
     	    $dbh = null;
@@ -560,9 +560,9 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
     	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `formtype` VARCHAR(100) NULL DEFAULT 'extraction' AFTER `id`;");
 
     	    if ($stmt->execute()) {
-    		      echo "<p>The forms table has been updated with \"formtype\" column</p>";
+    		echo "<p>The forms table has been updated with \"formtype\" column</p>";
     	    } else {
-    		      echo "<p>Error updating the forms table with \"formtype\" column</p>";
+    		echo "<p>Error updating the forms table with \"formtype\" column</p>";
     	    }
 
     	    $dbh = null;
@@ -577,7 +577,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     } else {
 
-	    echo "<p>The forms table already has a 'formtype' column.</p>";
+	echo "<p>The forms table already has a 'formtype' column.</p>";
 
     }
 
@@ -589,9 +589,9 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
     	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `version` VARCHAR(50) NULL DEFAULT NULL AFTER `description`;");
 
     	    if ($stmt->execute()) {
-    		      echo "<p>The forms table has been updated with \"version\" column</p>";
+    		echo "<p>The forms table has been updated with \"version\" column</p>";
     	    } else {
-    		      echo "<p>Error updating the forms table with \"version\" column</p>";
+    		echo "<p>Error updating the forms table with \"version\" column</p>";
     	    }
 
     	    $dbh = null;
@@ -606,7 +606,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     } else {
 
-	    echo "<p>The forms table already has a 'version' column.</p>";
+	echo "<p>The forms table already has a 'version' column.</p>";
 
     }
 
@@ -1381,7 +1381,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 	
     }
-
+    
     // End
 
 } else { // Not admin

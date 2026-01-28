@@ -7,3 +7,4 @@ extract/tmp/*
 references/tmp/*
 attach/files/*
 forms/tmp/*
+.binder.el

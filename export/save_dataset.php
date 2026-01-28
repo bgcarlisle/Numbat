@@ -26,7 +26,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 
     $rscols_to_export = array();
     foreach ($rs_cols as $rs_col) {
-	if ($rs_col[0] != "id" & $rs_col[0] != "manual") {
+	if ($rs_col[0] != "id") {
 	    if ($rs_col[0] == "type") {
 		$rs_col[0] = "\`type\`";
 	    }
@@ -208,34 +208,6 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) >
 		echo $filename;
 
 		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT " . $select_cols . " FROM referenceset_" . $_POST['refsetid'] . ", msub_" . $_POST['formid'] . " WHERE msub_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND msub_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
-
-	    }
-
-
-            break;
-
-        case "citations":
-
-
-	    if ( $_POST['final'] == 0 ) {
-
-		// echo "cite\n\n";
-
-		$filename = $filename . "-cite_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-cite-extraction";
-
-		echo $filename;
-
-		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT * FROM referenceset_" . $_POST['refsetid'] . ", citations_" . $_POST['formid'] . " WHERE citations_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND citations_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
-
-	    } else {
-
-		// echo cite final;
-
-		$filename = $filename . "-cite_" . $_POST['formid'] . "-refset_" . $_POST['refsetid'] . "-cite-final";
-
-		echo $filename;
-
-		exec ( "mysql -u " . DB_USER . " -p" . DB_PASS . " -h " . DB_HOST . " " . DB_NAME . " -B -e \"SELECT * FROM referenceset_" . $_POST['refsetid'] . ", mcite_" . $_POST['formid'] . " WHERE mcite_" . $_POST['formid'] . ".refsetid = " . $_POST['refsetid'] . " AND mcite_" . $_POST['formid'] . ".referenceid = referenceset_" . $_POST['refsetid'] . ".id;\" > " . ABS_PATH . "export/" . $filename . ".tsv" );
 
 	    }
 

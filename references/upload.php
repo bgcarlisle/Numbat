@@ -2,6 +2,12 @@
 
 include_once ("../config.php");
 
+$illegal_columns = [
+    "id",
+    "referenceid",
+    "rid"
+];
+
 if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) == 4 ) {
 
     if ($_FILES["file"]["error"] > 0) { // There's an upload error
@@ -58,13 +64,13 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	    } else {
 
-        $lines = array();
+		$lines = array();
 
-        while (($udata = fgetcsv($file, 100000, "\t")) !== FALSE) {
-          $lines[] = $udata;
-        }
+		while (($udata = fgetcsv($file, 100000, "\t")) !== FALSE) {
+		    $lines[] = $udata;
+		}
 
-	      fclose ( $file );
+		fclose ( $file );
 
 		$counter = 0;
 
@@ -147,9 +153,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	    $column = strtolower($column);
 
-      if ($column == "id") {
-        $column = "imported_id";
-      }
+	    // Remove illegal column names
+	    if (in_array($column, $illegal_columns)) {
+		$column = "imported_" . $column;
+	    }
 
 	    // echo $column . " " . $coltype;
 	?>
@@ -186,9 +193,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    $column = strtolower($column);
 
-        if ($column == "id") {
-          $column = "imported_id";
-        }
+		    // Remove illegal column names
+		    if (in_array($column, $illegal_columns)) {
+			$column = "imported_" . $column;
+		    }
 
 		    if ( $column == "title" || $column =="ti" ) {
 			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
@@ -223,9 +231,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    $column = strtolower($column);
 
-        if ($column == "id") {
-          $column = "imported_id";
-        }
+		    // Remove illegal column names
+		    if (in_array($column, $illegal_columns)) {
+			$column = "imported_" . $column;
+		    }
 
 		    if ( ($column == "authors" || $column == "author" || $column == "locations" || $column == "au") && $selected == 0 ) {
 			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
@@ -261,9 +270,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    $column = strtolower($column);
 
-        if ($column == "id") {
-          $column = "imported_id";
-        }
+		    // Remove illegal column names
+		    if (in_array($column, $illegal_columns)) {
+			$column = "imported_" . $column;
+		    }
+
 
 		    if ( ($column == "year" || $column == "publication_year" || $column == "start_date" || $column == "yr") && $selected == 0 ) {
 			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
@@ -298,9 +309,10 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		    $column = strtolower($column);
 
-        if ($column == "id") {
-          $column = "imported_id";
-        }
+		    // Remove illegal column names
+		    if (in_array($column, $illegal_columns)) {
+			$column = "imported_" . $column;
+		    }
 
 		    if ( ($column == "journal" || $column == "publication_title" || $column == "status" || $column == "pt") && $selected == 0 ) {
 			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
@@ -335,6 +347,11 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		    $column = preg_replace('/(_)+$/', '', $column);
 
 		    $column = strtolower($column);
+
+		    // Remove illegal column names
+		    if (in_array($column, $illegal_columns)) {
+			$column = "imported_" . $column;
+		    }
 
 		    if ( ($column == "abstract" || $column == "abstract_note" || $column == "acronym" || $column == "ab") && $selected == 0) {
 			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
