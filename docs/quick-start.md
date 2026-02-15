@@ -110,7 +110,20 @@ the Numbat menu.
 
 ## Step 7: Reconcile finished extractions
 
+After at least two users have both marked a single extracted reference
+in the same reference set as "completed," a link to reconcile those
+extractions of that reference will appear in the "Reconcile finished
+extractions" page in the Numbat menu.
+
 ## Step 8: Export final data sets for analysis
+
+Numbat provides links to download TSV formatted data files containing
+extractions and final reconciled versions of extracted data. Only
+extractions or final versions that are marked as "completed" will be
+included.
+
+There is a separate download link for every sub-extraction and table
+within a single extraction form.
 
 ---
 
