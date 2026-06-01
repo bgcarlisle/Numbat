@@ -9,10 +9,10 @@ user on your Numbat instance, possibly the same one), the form to be
 used in this extraction, the reference set and individual reference
 within that reference set to extract.
 
-Assignments are added via the page found by clicking "Manage
-extraction assignments" from the Numbat menu. From this page, you will
-see a table containing all the reference sets in your Numbat instance,
-each with a "View" link.
+Assignments are added via the page found by clicking "Manage user
+assignments" from the Numbat menu. From this page, you will see a
+table containing all the reference sets in your Numbat instance, each
+with a "View" link.
 
 The "View" link leads to a page with a table containing one row per
 reference in the reference set in question, and a column for every
