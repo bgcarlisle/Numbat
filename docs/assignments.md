@@ -29,6 +29,50 @@ assigned references to screen. Normal extraction forms are presented
 on a per-reference basis, allowing extractors to click to open
 individual references to be extracted.
 
+Note: There is no "save changes" or "undo" on this page. Assignment
+changes are live instantly. So before adding or removing assignments,
+make sure you're doing what you mean to.
+
+Also note: Removing an assignment does *not* delete any extractions
+already completed by user. It only removes that extraction from their
+"Do extractions" list. It will still be available in the extractions
+export page, if it was completed.
+
+Assignments can be manually added or removed by clicking the extractor
+name in the grid on the reference set assignment page. When the user
+name has a "✓" beside it, the assignment has been successfully
+added. When he user name has an "✗" beside it, the assignment has been
+successfully removed.
+
+Assignments can be added or removed en masse using the tools provided
+above the grid of references on the reference set assignment
+page. This is done in 3 steps:
+
+1. Select references. Either check/uncheck the relevant rows in the
+   grid, or use the "select" tools above the grid. You can select a
+   random number of references, a random number of references with
+   assignments/extractions already done, a random number with
+   assignments/extractions already done with a particular form, or all
+   the references where a user-selected column corresponds to a value
+   of that column in the reference set. If Numbat is told to extract a
+   greater number of random references than there are that meet the
+   criteria provided (e.g. "select 50 random references" when the
+   reference set contains only 10 references), all of the references
+   that meet the criteria will be selected.
+2. Choose a form. A user can in principle be assigned to extract the
+   same reference using an arbitrary number of different forms.
+3. Choose a user. The action taken using the references and form
+   selected will only affect the chosen user. (Once the action is
+   completed, the selections will not be cleared, so you can repeat
+   them again for another user, if desired.)
+4. Perform the action of assigning the selected form and reference to
+   the user in question, or removing that assignment.
+
+There is a "Download assignments" link at the top-right of the grid on
+each reference set assignments page. This link allows the user to
+download a TSV of all assignments for that reference set and their
+extraction status.
+
 ---
 
 [Previous: Forms and extraction elements](forms.md)
