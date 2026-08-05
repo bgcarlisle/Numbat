@@ -41,8 +41,8 @@ export page, if it was completed.
 Assignments can be manually added or removed by clicking the extractor
 name in the grid on the reference set assignment page. When the user
 name has a "✓" beside it, the assignment has been successfully
-added. When he user name has an "✗" beside it, the assignment has been
-successfully removed.
+added. When the user name has an "✗" beside it, the assignment has
+been successfully removed.
 
 Assignments can be added or removed en masse using the tools provided
 above the grid of references on the reference set assignment

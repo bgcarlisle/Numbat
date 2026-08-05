@@ -48,7 +48,7 @@ extractions, edit reference sets and forms, grant user privileges, do
 extractions, reconcile extractions with other users and export
 data. There must always be at least one user with admin privileges.
 
-"Extractor" priveleges correspond to 2 in the database back-end. A
+"Extractor" privileges correspond to 2 in the database back-end. A
 user with this level of privileges can do extractions and reconcile
 extractions with other users, but not assign extractions, edit
 reference sets and forms, grant user privileges or export data.
