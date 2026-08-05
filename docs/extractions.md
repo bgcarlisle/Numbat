@@ -3,6 +3,6 @@
 # Extractions
 
 
-[Previous: Assignments](assignmets.md)
+[Previous: Assignments](assignments.md)
 
 [Next: Reconciliation](reconciliation.md)
