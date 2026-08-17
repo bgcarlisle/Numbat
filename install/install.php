@@ -19,10 +19,6 @@ $numbaturl = $protocol . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 	</script>
 	<!-- / jQuery -->
 
-	<!-- Google Fonts -->
-	<link href='https://fonts.googleapis.com/css?family=Fenix|Oxygen' rel='stylesheet' type='text/css'>
-	<!-- / Google Fonts -->
-
 	<!-- Numbat JS -->
 	<script type="text/javascript">
 
