@@ -1,6 +1,6 @@
 <?php
 
-if ($_SERVER["HTTPS"] == "on") {
+if (($_SERVER["HTTPS"] ?? '') == "on") {
 
     $numbaturl = "https://" . $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
 
