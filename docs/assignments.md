@@ -14,12 +14,15 @@ assignments" from the Numbat menu. From this page, you will see a
 table containing all the reference sets in your Numbat instance, each
 with a "View" link.
 
+## The assignment grid
+
 The "View" link leads to a page with a table containing one row per
 reference in the reference set in question, and a column for every
 form in the Numbat instance. Each cell contains all the names of users
-on your Numbat instance with a "✓" or an "✗" beside them, indicating
-which references in the reference set in question have been
-assigned to which users to extract with which forms.
+on your Numbat instance with a "✓" and a green outline or an "✗" and a
+red outline beside them, indicating which references in the reference
+set in question have been assigned to which users to extract with
+which forms.
 
 When an extractor is given an assignment, this appears on the page
 found by choosing "Do extractions" from the Numbat menu.
@@ -72,6 +75,37 @@ There is a "Download assignments" link at the top-right of the grid on
 each reference set assignments page. This link allows the user to
 download a TSV of all assignments for that reference set and their
 extraction status.
+Each extractor name can be manually clicked to assign or un-assign the
+reference and form indicated by the row and column, respectively. This
+is slow and cumbersome, so there is a set of tools for selecting
+references above the assignment grid.
+
+## Mass-selecting references for assignment
+
+The most basic tool allows a user to select a random number of
+references from the grid. The number of references to be selected is
+by default, half of the number of references in the reference set. If
+that number is equal to or greater than the number of references in
+the reference set, all will be selected. The next selection tool
+allows a user to select a random number of references that have
+already been assigned to other extractors with a particular form. The
+next selection tool allows random selection from among references that
+have had a given number of extractors complete their assignments.
+
+If the user had the forethought to include a column that contains
+groupings or 
+
+When the desired references have been selected, the checkbox at the
+far left of the assignment grid will be checked. This doesn't mean
+that anything has been assigned yet. You can hide the non-selected
+references using the button provided ("Hide non-selected references")
+and show them again with the "Show all references" button.
+
+## Known issues
+
+The assignment viewer page can lag substantially in the case of a
+large number of references. While there is no built-in limit to the
+number of references in a reference set, 
 
 ---
 

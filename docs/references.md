@@ -109,6 +109,27 @@ which columns in the uploaded TSV correspond to which columns in the
 already-uploaded reference set. Numbat will try to match columns
 automatically where they match exactly.
 
+## Recommendations
+
+While I have done my best to program Numbat to check for and warn
+about namespace collisions or errors resulting from unexpected
+characters in the column names, I recommend that you give all the
+columns alphanumeric names that do not contain spaces. (This will also
+help at export when you are probably working with column names in R.)
+
+Also, try to avoid column names like `id`, `reference`, `refid`, `rid`
+or `notes` that are likely to be used by other tables that this table
+is joined with (`nctid` is fine). If you have a unique database
+identifier that you want to preserve, I recommend something like
+`databasename_id` as a column name.
+
+If you plan to do multiple extraction based on groups that you assign
+beforehand, I recommend that you add a column to your reference set,
+name it `assignment_group` or something like that. Then, when it comes
+time to assign them to extractors, use the reference selection tool
+labelled "Select all references where (choose a column) is (value for
+column)".
+
 ---
 
 [Previous: Users and permissions](users.md)
