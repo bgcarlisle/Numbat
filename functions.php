@@ -23,7 +23,7 @@ function nbt_creds_check_out ( $username, $password ) { // Returns TRUE if the u
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT password, salt, emailverify FROM users WHERE username = :username");
 
 	$stmt->bindParam(':username', $user);
@@ -69,7 +69,7 @@ function nbt_get_username_for_userid ($userid) { // Returns username if the user
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT username FROM users WHERE id = :userid");
 
 	$stmt->bindParam(':userid', $user);
@@ -108,7 +108,7 @@ function nbt_get_userid_for_username ($username) { // Returns user id if the use
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT id FROM users WHERE username = :username");
 
 	$stmt->bindParam(':username', $user);
@@ -153,7 +153,7 @@ function nbt_log_user_in ( $username ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE users SET lastlogin=NOW() WHERE username = :username");
 
 	$stmt->bindParam(':username', $user);
@@ -176,7 +176,7 @@ function nbt_username_is_taken ( $username ) { // Returns TRUE if the username i
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT id FROM users WHERE username = :username");
 
 	$stmt->bindParam(':username', $user);
@@ -215,7 +215,7 @@ function nbt_email_is_in_use ( $email ) { // Returns TRUE if there is an account
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT id FROM users WHERE email = :email");
 
 	$stmt->bindParam(':email', $emailaddress);
@@ -257,7 +257,7 @@ function nbt_save_new_user ($username, $email, $password) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare('INSERT INTO users (username, password, salt, email, emailverify) VALUES (:username, :password, :salt, :email, :verification)');
 
 	$stmt->bindParam(':username', $theuser);
@@ -320,7 +320,7 @@ function nbt_send_password_recovery_email ( $username ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE users SET `passwordchangecode` = :code WHERE username = :username");
 
 	$stmt->bindParam(':code', $code);
@@ -343,7 +343,7 @@ function nbt_send_password_recovery_email ( $username ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT email FROM users WHERE username = :username LIMIT 1");
 
 	$stmt->bindParam(':username', $un);
@@ -388,7 +388,7 @@ function nbt_password_recovery_code_checks_out ( $username, $code) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT passwordchangecode FROM users WHERE username = :user LIMIT 1");
 
 	$stmt->bindParam(':user', $user);
@@ -440,7 +440,7 @@ function nbt_admin_generate_password_link ( $userid ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE users SET `passwordchangecode` = :code WHERE id = :uid");
 
 	    $stmt->bindParam(':code', $code);
@@ -482,7 +482,7 @@ function nbt_change_password ( $username, $newpass ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE users SET password = :newpass, salt = :salt, passwordchangecode = NULL WHERE username = :user LIMIT 1");
 
 	$stmt->bindParam(':user', $user);
@@ -509,7 +509,7 @@ function nbt_get_emailverify_for_userid ($userid) { // Returns user emailverify 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT emailverify FROM users WHERE id = :userid");
 
 	$stmt->bindParam(':userid', $user);
@@ -562,7 +562,7 @@ function nbt_verify_email_address ($username, $code) { // Returns TRUE if the us
 
 		try {
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		    $stmt = $dbh->prepare("UPDATE users SET emailverify = '0' WHERE id = :userid AND emailverify = :code");
 
 		    $stmt->bindParam(':userid', $user);
@@ -612,7 +612,7 @@ function nbt_get_name_for_refsetid ( $drugid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT name FROM referencesets WHERE id = :drugid LIMIT 1;");
 
 	$stmt->bindParam(':drugid', $did);
@@ -643,7 +643,7 @@ function nbt_get_refsetid_for_name ( $name ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT id FROM referencesets WHERE name = :name LIMIT 1;");
 
 	$stmt->bindParam(':name', $did);
@@ -674,7 +674,7 @@ function nbt_get_refset_for_id ( $refsetid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM referencesets WHERE id = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $rsid);
@@ -705,7 +705,7 @@ function nbt_get_all_references_for_refset ( $refsetid ) {
 
     try {
 
-    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` ORDER BY id ASC;");
 
     	$stmt->execute();
@@ -728,7 +728,7 @@ function nbt_get_all_extracted_references_for_refset_and_form ( $refsetid, $form
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `id` IN (SELECT `referenceid` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `status` = 2) ORDER BY id ASC;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -755,7 +755,7 @@ function nbt_get_all_extractions_for_refset_and_form ( $refsetid, $formid, $mins
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT *, " . $formid . " AS `formid` FROM `extractions_" . $formid . "`, `referenceset_" . $refsetid . "`, `users` WHERE `users`.`id` = `extractions_" . $formid . "`.`userid` AND `extractions_" . $formid . "`.`refsetid` = " . $refsetid . " AND `extractions_" . $formid . "`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND `extractions_" . $formid . "`.`status` >= " . $minstatus);
 
 	$stmt->execute();
@@ -778,7 +778,7 @@ function nbt_count_unique_references_assigned_by_refset_and_form ($refsetid, $fo
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT COUNT(DISTINCT(`referenceid`)) as `count` FROM `assignments` WHERE `formid` = :fid AND `refsetid` = :rsid;");
 
 	$stmt->bindParam(':rsid', $rsid);
@@ -809,7 +809,7 @@ function nbt_get_unique_references_assigned_by_refset_and_form_paginated ($refse
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `assignments`, `referenceset_" . $refsetid . "` WHERE `formid` = :fid AND `refsetid` = :rsid AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` GROUP BY referenceid ORDER BY referenceid ASC LIMIT 100 OFFSET " . ($screening_page - 1) * 100 . ";");
 
 	$stmt->bindParam(':rsid', $rsid);
@@ -838,7 +838,7 @@ function nbt_get_extractions_for_refset_ref_and_form ( $refsetid, $refid, $formi
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT *, (SELECT `username` FROM `users` WHERE `users`.`id` = `extractions_" . $formid . "`.`userid`) as `username` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `referenceid` = :ref AND `status` >= :status ORDER BY id ASC;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -869,7 +869,7 @@ function nbt_get_reference_for_refsetid_and_refid ( $refsetid, $refid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE id = :refid LIMIT 1;");
 
 	$stmt->bindParam(':refid', $rid);
@@ -900,7 +900,7 @@ function nbt_get_columns_for_refset ( $refsetid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SHOW columns FROM referenceset_" . $refsetid);
 
 	$stmt->execute();
@@ -927,7 +927,7 @@ function nbt_update_refset_metadata ( $refset, $column, $newvalue ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `referencesets` SET `" . $column . "` = :newvalue WHERE `id` = :id;");
 
 	$stmt->bindParam(':newvalue', $new);
@@ -961,7 +961,7 @@ function nbt_return_references_for_assignment_search ( $refsetid, $query ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE " . $titlecol . " LIKE :query OR " . $authorscol . " LIKE :query LIMIT 6;");
 
 	$stmt->bindParam(':query', $quer);
@@ -994,7 +994,7 @@ function nbt_update_extraction ( $fid, $id, $column, $value ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `extractions_" . $fid . "` SET `timestamp_finished` = NOW() WHERE id = :id and `timestamp_finished` IS NULL LIMIT 1;");
 
 	    $stmt->bindParam(':id', $rid);
@@ -1024,7 +1024,7 @@ function nbt_update_extraction ( $fid, $id, $column, $value ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `extractions_" . $fid . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $rid);
@@ -1062,7 +1062,7 @@ function nbt_update_sub_extraction ( $eid, $id, $column, $value ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `sub_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $subexid);
@@ -1100,7 +1100,7 @@ function nbt_update_msub_extraction ( $eid, $id, $column, $value ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `msub_" . $element['columnname'] . "` SET `" . $column . "` = :value WHERE id = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $subexid);
@@ -1136,7 +1136,7 @@ function nbt_toggle_extraction ( $formid, $id, $column ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("UPDATE `extractions_" . $formid . "` SET `" . $column . "` = IF(`" . $column . "`=1,0,1) WHERE id = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $rid);
@@ -1171,7 +1171,7 @@ function nbt_toggle_sub_extraction ( $elementid, $id, $column ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("UPDATE `sub_" . $element['columnname'] . "` SET `" . $column . "` = IF(`" . $column . "`=1,0,1) WHERE id = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $seid);
@@ -1206,7 +1206,7 @@ function nbt_toggle_msub_extraction ( $elementid, $id, $column ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("UPDATE `msub_" . $element['columnname'] . "` SET `" . $column . "` = IF(`" . $column . "`=1,0,1) WHERE id = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $seid);
@@ -1243,7 +1243,7 @@ function nbt_get_extraction ( $formid, $refsetid, $refid, $userid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO extractions_" . $formid . " (refsetid, referenceid, userid) VALUES (:refset, :refid, :userid);");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -1269,7 +1269,7 @@ function nbt_get_extraction ( $formid, $refsetid, $refid, $userid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("SELECT * FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `referenceid` = :refid AND `userid` = :userid LIMIT 1;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -1754,7 +1754,7 @@ function nbt_get_table_data_rows ( $elementid, $refsetid, $refid, $userid, $sub_
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -1798,7 +1798,7 @@ function nbt_get_sub_table_element_by_tablename ($tablename) {
 
     try {
 	
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `type` LIKE '%table%' AND `dbname` = :dbname LIMIT 1;");
 
 	$stmt->bindParam(':dbname', $dn);
@@ -1834,7 +1834,7 @@ function nbt_get_table_element_by_tablename ($tablename) {
 
     try {
 	
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE (`type` = 'table_data' OR `type` = 'ltable_data') AND `columnname` = :dbname LIMIT 1;");
 
 	$stmt->bindParam(':dbname', $dn);
@@ -1884,7 +1884,7 @@ function nbt_get_all_table_data_rows_for_refset ( $elementid, $refsetid, $sub_ex
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `tabledata_" . $suffix . "` WHERE refsetid = :refset ORDER BY id ASC;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -1913,7 +1913,7 @@ function nbt_get_all_sub_extraction_rows_for_refset ( $elementid, $refsetid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE refsetid = :refset ORDER BY id ASC;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -1942,7 +1942,7 @@ function nbt_get_all_sub_extraction_table_data_rows_for_refset ( $elementid, $re
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `tabledata_" . $element['columnname'] . "` WHERE refsetid = :refset ORDER BY id ASC;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -1983,7 +1983,7 @@ function nbt_get_all_reconciled_table_data_rows_for_refset ( $elementid, $refset
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `mtable_" . $suffix . "` WHERE refsetid = :refset ORDER BY id ASC;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -2012,7 +2012,7 @@ function nbt_get_all_reconciled_sub_extraction_rows_for_refset ( $elementid, $re
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `msub_" . $element['columnname'] . "` WHERE refsetid = :refset ORDER BY id ASC;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -2050,7 +2050,7 @@ function nbt_add_new_extraction_table_data_row ( $tableid, $refsetid, $refid, $u
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -2124,7 +2124,7 @@ function nbt_remove_master_table_row ( $elementid, $rowid, $sub_table = FALSE ) 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -2180,7 +2180,7 @@ function nbt_auto_insert_efficacy_table_rows ($drugid, $refid, $userid) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("INSERT INTO efficacy (drugid, referenceid, userid, outcome, arm) VALUES (:drugid, :refid, :userid, :outcome, :arm);");
 
 		$stmt->bindParam(':drugid', $did);
@@ -2229,7 +2229,7 @@ function nbt_auto_insert_safety_table_rows ($drugid, $refid, $userid) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare ("INSERT INTO safety (drugid, referenceid, userid, arm) VALUES (:drugid, :refid, :userid, :arm);");
 
 	    $stmt->bindParam(':drugid', $did);
@@ -2272,7 +2272,7 @@ function nbt_toggle_ref_inclusion ( $drugid, $refid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE " . $refsetname . " SET include = IF(`include`=1,0,1) WHERE id = :refid LIMIT 1;");
 
 	$stmt->bindParam(':refid', $rid);
@@ -2295,7 +2295,7 @@ function nbt_delete_extraction ( $formid, $extrid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	$stmt = $dbh->prepare("DELETE FROM `extractions_" . $formid . "` WHERE `id` = :extrid LIMIT 1;");
 
@@ -2321,7 +2321,7 @@ function nbt_get_completed_extractions ( $drugid, $refid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("SELECT * FROM extractions WHERE drugid = :drugid AND referenceid = :refid AND status = 2;");
 
 	$stmt->bindParam(':drugid', $did);
@@ -2350,7 +2350,7 @@ function nbt_set_master ( $drugid, $refid, $row, $value ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("UPDATE `master` SET " . $row . " = :value WHERE `drugid` = :drugid AND `referenceid` = :ref LIMIT 1;");
 
 	$stmt->bindParam(':value', $val);
@@ -2379,7 +2379,7 @@ function nbt_get_year_author_for_drug_and_ref ( $drugid, $refid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("SELECT * FROM " . $refsetname . " WHERE id = :refid LIMIT 1;");
 
 	$stmt->bindParam(':refid', $rid);
@@ -2420,7 +2420,7 @@ function nbt_copy_to_master ( $formid, $refsetid, $reference, $row, $extrid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("SELECT " . $row . " FROM `extractions_" . $formid . "` WHERE id = :extrid LIMIT 1;");
 
 	$stmt->bindParam(':extrid', $eid);
@@ -2453,7 +2453,7 @@ function nbt_copy_to_master ( $formid, $refsetid, $reference, $row, $extrid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("SELECT * FROM `formelements` WHERE `formid` = :fid AND `columnname` = :cname LIMIT 1;");
 
 	$stmt->bindParam(':fid', $fid);
@@ -2486,7 +2486,7 @@ function nbt_copy_to_master ( $formid, $refsetid, $reference, $row, $extrid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("UPDATE `m_extractions_" . $formid . "` SET " . $row . " = :value WHERE refsetid = :refset AND referenceid = :ref;");
 
 	$stmt->bindParam(':value', $val2);
@@ -2523,7 +2523,7 @@ function nbt_copy_multi_select_to_master ( $formid, $refsetid, $reference, $extr
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare ("SELECT `" . $element['columnname'] . "_" . $option['dbname'] . "` FROM `extractions_" . $formid . "` WHERE id = :extrid LIMIT 1;");
 
 	    $stmt->bindParam(':extrid', $eid);
@@ -2562,7 +2562,7 @@ function nbt_copy_multi_select_to_master ( $formid, $refsetid, $reference, $extr
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare ("UPDATE `m_extractions_" . $formid . "` SET " . $element['columnname'] . "_" . $option['dbname'] . " = :value WHERE refsetid = :refset AND referenceid = :ref LIMIT 1;");
 
 	    $stmt->bindParam(':value', $val2);
@@ -2623,7 +2623,7 @@ function nbt_get_assignments_for_user_and_refset ( $userid, $refsetid, $sort = "
 
     try {
 
-    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     	$stmt = $dbh->prepare ("SELECT *, `forms`.`id` as `formid`, `forms`.`name` as `formname` FROM `forms`, `assignments`, `referenceset_" . $refsetid . "` WHERE " . $ext_form . "`forms`.`id` = `assignments`.`formid` AND `assignments`.`referenceid` = `referenceset_" . $refsetid . "`.`id` AND userid = :userid AND `refsetid` = " . $refsetid . " AND whenassigned < NOW() " . $gpft . $sortquery);
 
     	$stmt->bindParam(':userid', $uid);
@@ -2652,7 +2652,7 @@ function nbt_get_assignments_for_refset_form_paginated ( $refsetid, $formid=NULL
 
     try {
 
-    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     	$stmt = $dbh->prepare ($query);
 
     	$stmt->bindParam(':fid', $fid);
@@ -2697,7 +2697,7 @@ function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid
 
     try {
 
-    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     	$stmt = $dbh->prepare ($query);
 
     	$stmt->bindParam(':userid', $uid);
@@ -2723,7 +2723,7 @@ function nbt_get_assignments_for_user_refset_form_paginated ( $userid, $refsetid
 function nbt_count_assignments_for_user_refset_form ($userid, $refsetid, $formid) {
     try {
 
-    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     	$stmt = $dbh->prepare ("SELECT COUNT(*) as `assign_count` FROM `assignments` WHERE `userid` = :userid AND `formid` = :fid AND `refsetid` = :rsid");
 
     	$stmt->bindParam(':userid', $uid);
@@ -2754,7 +2754,7 @@ function nbt_count_assignments_for_user_refset_form ($userid, $refsetid, $formid
 function nbt_count_assignments_for_refset_form ($refsetid, $formid) {
     try {
 
-    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     	$stmt = $dbh->prepare ("SELECT COUNT(*) as `assign_count` FROM `assignments` WHERE `formid` = :fid AND `refsetid` = :rsid");
 
     	$stmt->bindParam(':fid', $fid);
@@ -2783,7 +2783,7 @@ function nbt_get_status_for_assignment ( $assignment ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("SELECT `status` FROM `extractions_" . $assignment['formid'] . "` WHERE `referenceid` = " . $assignment['referenceid'] . " AND `refsetid` = " . $assignment['refsetid'] . " AND `userid` = " . $assignment['userid'] . " LIMIT 1;");
 
 	if ($stmt->execute()) {
@@ -2820,7 +2820,7 @@ function nbt_get_all_final_for_refset_and_form ( $refsetid, $formid ) {
     
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :refset;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -2853,7 +2853,7 @@ function nbt_get_final ( $formid, $refsetid, $refid, $insert = TRUE ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare ("INSERT INTO `m_extractions_" . $formid . "` (refsetid, referenceid) VALUES (:refset, :refid);");
 
 	    $stmt->bindParam(':refset', $rsid);
@@ -2878,7 +2878,7 @@ function nbt_get_final ( $formid, $refsetid, $refid, $insert = TRUE ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :refset AND `referenceid` = :refid LIMIT 1;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -2922,7 +2922,7 @@ function nbt_get_master_table_rows ( $elementid, $refsetid, $refid, $sub_table =
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -2966,7 +2966,7 @@ function nbt_copy_table_row_to_master ( $elementid, $refsetid, $refid, $original
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `tabledata_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $oid);
@@ -2993,7 +2993,7 @@ function nbt_copy_table_row_to_master ( $elementid, $refsetid, $refid, $original
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO `mtable_" . $element['columnname'] . "` (refsetid, referenceid) VALUES (:refset, :ref);");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -3032,7 +3032,7 @@ function nbt_copy_table_row_to_master ( $elementid, $refsetid, $refid, $original
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `mtable_" . $element['columnname'] . "` SET `" . $column['dbname'] . "` = :value WHERE id = :id LIMIT 1;");
 
 	    $stmt->bindParam(':id', $nid);
@@ -3071,7 +3071,7 @@ function nbt_add_empty_table_row_to_master ( $elementid, $refsetid, $refid, $sub
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -3110,7 +3110,7 @@ function nbt_get_privileges_for_userid ( $userid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT privileges FROM users WHERE id = :userid");
 
 	$stmt->bindParam(':userid', $user);
@@ -3149,7 +3149,7 @@ function nbt_get_all_users () {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM users;");
 
 	$stmt->execute();
@@ -3172,7 +3172,7 @@ function nbt_change_user_privileges ( $userid, $privileges ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE users SET privileges=:privileges WHERE id = :userid LIMIT 1;");
 
 	$stmt->bindParam(':userid', $user);
@@ -3201,7 +3201,7 @@ function nbt_manually_change_email_verification ( $userid, $newvalue ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE users SET emailverify=:newval WHERE id = :userid LIMIT 1;");
 
 	$stmt->bindParam(':userid', $user);
@@ -3230,7 +3230,7 @@ function nbt_get_all_ref_sets () {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM referencesets ORDER BY id ASC;");
 
 	$stmt->execute();
@@ -3253,7 +3253,7 @@ function nbt_get_all_extraction_forms () {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM forms ORDER BY `id` ASC;");
 
 	$stmt->execute();
@@ -3280,7 +3280,7 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
 
     try {
 
-    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     	$stmt = $dbh->prepare ("INSERT INTO forms (formtype, name, description, version, author, affiliation, project, protocol, projectdate) VALUES (:formtype, :name, :description, :version, :author, :affiliation, :project, :protocol, :projectdate);");
 
 	$stmt->bindParam(':formtype', $ft);
@@ -3328,7 +3328,7 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
     // Make a new extraction table with the name `extraction_newid`
     try {
 
-    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     	$stmt = $dbh->prepare("CREATE TABLE `extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `timestamp_finished` timestamp NULL DEFAULT NULL, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `status` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`,`userid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
     	if ($stmt->execute()) {
@@ -3347,7 +3347,7 @@ function nbt_new_extraction_form ( $formtype = "extraction", $formname = "New ex
 
     try {
 
-    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     	$stmt = $dbh->prepare("CREATE TABLE `m_extractions_" . $newid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `timestamp_started` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `timestamp_finished` timestamp NULL DEFAULT NULL, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `status` int(11) NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `refsetid` (`refsetid`,`referenceid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
     	if ($stmt->execute()) {
@@ -3398,7 +3398,7 @@ function nbt_delete_extraction_form ( $formid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `assignments` WHERE formid = :id;");
 
 	$stmt->bindParam(':id', $fid);
@@ -3421,7 +3421,7 @@ function nbt_delete_extraction_form ( $formid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `forms` WHERE id = :id LIMIT 1; DROP TABLE `extractions_" . $formid . "`; DROP TABLE `m_extractions_" . $formid . "`;");
 
 	$stmt->bindParam(':id', $fid);
@@ -3448,7 +3448,7 @@ function nbt_get_form_for_id ( $formid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `forms` WHERE `id` = :fid LIMIT 1");
 
 	$stmt->bindParam(':fid', $fid);
@@ -3486,7 +3486,7 @@ function check_for_forms_column ($columnname) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SHOW COLUMNS FROM `forms` LIKE :column;");
 
 	$stmt->bindParam(':column', $col);
@@ -3517,7 +3517,7 @@ function check_for_referencesets_column ($columnname) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SHOW COLUMNS FROM `referencesets` LIKE :column;");
 
 	$stmt->bindParam(':column', $col);
@@ -3550,7 +3550,7 @@ function nbt_change_form_metadata ( $formid, $column, $newval ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `forms` SET " . $column . "=:nv WHERE id = :formid LIMIT 1;");
 
 	    $stmt->bindParam(':formid', $fid);
@@ -3581,7 +3581,7 @@ function nbt_get_elements_for_formid ( $formid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid ORDER BY `sortorder` ASC;");
 
 	$stmt->bindParam(':fid', $fid);
@@ -3618,7 +3618,7 @@ function nbt_get_next_eid_in_form ( $formid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT `id` FROM `formelements` WHERE `formid` = :fid ORDER BY `id` DESC LIMIT 1;");
 
 	$stmt->bindParam(':fid', $fid);
@@ -3652,7 +3652,7 @@ function nbt_get_next_eid_in_form ( $formid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT AUTO_INCREMENT FROM information_schema.`TABLES` where TABLE_SCHEMA = 'numbat2dev' and TABLE_NAME = 'formelements';");
 
 	if ($stmt->execute()) {
@@ -3686,7 +3686,7 @@ function nbt_get_toggles_for_formid ( $formid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT DISTINCT(`toggle`) FROM `formelements` WHERE `toggle` != '' AND `formid` = :fid;");
 
 	$stmt->bindParam(':fid', $fid);
@@ -3720,7 +3720,7 @@ function nbt_get_form_element_for_elementid ( $elementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `id` = :eid LIMIT 1;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -3758,7 +3758,7 @@ function nbt_get_sub_element_for_subelementid ( $subelementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `id` = :seid LIMIT 1;");
 
 	$stmt->bindParam(':seid', $seid);
@@ -3796,7 +3796,7 @@ function nbt_get_all_subelements_for_formid ( $formid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid) ORDER BY `elementid`, `sortorder` ASC;");
 
 	$stmt->bindParam(':fid', $fid);
@@ -3830,7 +3830,7 @@ function nbt_get_select_for_selectid ( $selectid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `id` = :sid LIMIT 1;");
 
 	$stmt->bindParam(':sid', $sid);
@@ -3868,7 +3868,7 @@ function nbt_get_all_select_options_for_formid ( $formid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE (`elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid)) OR (`subelementid` IN (SELECT `id` FROM `subelements` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid))) ORDER BY elementid, subelementid, sortorder ASC;");
 
 	$stmt->bindParam(':fid', $fid);
@@ -3902,7 +3902,7 @@ function nbt_get_column_for_columnid ( $columnid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `tabledatacolumns` WHERE `id` = :cid LIMIT 1;");
 
 	$stmt->bindParam(':cid', $cid);
@@ -3946,18 +3946,24 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    if ($element == NULL) {
+	$element_sortorder = 1;
+    } else {
+	$element_sortorder = $element['sortorder'];
+    }
+
     // get all the elements after this one and increase their sortorder value by 1
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 
 	$stmt->bindParam(':fid', $fid);
 	$stmt->bindParam(':sort', $sort);
 
 	$fid = $formid;
-	$sort = $element['sortorder'];
+	$sort = $element_sortorder;
 
 	if ($stmt->execute()) {
 
@@ -3996,7 +4002,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'open_text_" . $counter . "';");
 
 		$stmt->execute();
@@ -4027,7 +4033,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding, regex) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding, :regex);");
 
 	$stmt->bindParam(':form', $fid);
@@ -4043,7 +4049,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 	$stmt->bindParam(':regex', $rx);
 
 	$fid = $formid;
-	$sort = $element['sortorder'] + 1;
+	$sort = $element_sortorder + 1;
 	$type = "open_text";
 	$col = $columnname;
 	$dn = $displayname;
@@ -4066,7 +4072,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -4081,7 +4087,7 @@ function nbt_add_open_text_field ( $formid, $elementid, $displayname = NULL, $co
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -4104,18 +4110,24 @@ function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $colum
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    if ($element == NULL) {
+	$element_sortorder = 1;
+    } else {
+	$element_sortorder = $element['sortorder'];
+    }
+
     // get all the elements after this one and increase their sortorder value by 1
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 
 	$stmt->bindParam(':fid', $fid);
 	$stmt->bindParam(':sort', $sort);
 
 	$fid = $formid;
-	$sort = $element['sortorder'];
+	$sort = $element_sortorder;
 
 	if ($stmt->execute()) {
 
@@ -4154,7 +4166,7 @@ function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $colum
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'tags_" . $counter . "';");
 
 		$stmt->execute();
@@ -4185,7 +4197,7 @@ function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $colum
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding, tagprompts) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding, :tagprompts);");
 
 	$stmt->bindParam(':form', $fid);
@@ -4201,7 +4213,7 @@ function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $colum
 	$stmt->bindParam(':tagprompts', $tp);
 
 	$fid = $formid;
-	$sort = $element['sortorder'] + 1;
+	$sort = $element_sortorder + 1;
 	$type = "tags";
 	$col = $columnname;
 	$dn = $displayname;
@@ -4224,7 +4236,7 @@ function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $colum
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -4239,7 +4251,7 @@ function nbt_add_tags_element ( $formid, $elementid, $displayname = NULL, $colum
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -4262,18 +4274,24 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    if ($element == NULL) {
+	$element_sortorder = 1;
+    } else {
+	$element_sortorder = $element['sortorder'];
+    }
+
     // get all the elements after this one and increase their sortorder value by 1
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 
 	$stmt->bindParam(':fid', $fid);
 	$stmt->bindParam(':sort', $sort);
 
 	$fid = $formid;
-	$sort = $element['sortorder'];
+	$sort = $element_sortorder;
 
 	if ($stmt->execute()) {
 
@@ -4312,7 +4330,7 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'prev_select_" . $counter . "';");
 
 		$stmt->execute();
@@ -4343,7 +4361,7 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
@@ -4358,7 +4376,7 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
 	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
-	$sort = $element['sortorder'] + 1;
+	$sort = $element_sortorder + 1;
 	$type = "prev_select";
 	$col = $columnname;
 	$dn = $displayname;
@@ -4380,7 +4398,7 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -4395,7 +4413,7 @@ function nbt_add_prev_select ( $formid, $elementid, $displayname = NULL, $column
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -4418,18 +4436,24 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    if ($element == NULL) {
+	$element_sortorder = 1;
+    } else {
+	$element_sortorder = $element['sortorder'];
+    }
+
     // get all the elements after this one and increase their sortorder value by 1
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 
 	$stmt->bindParam(':fid', $fid);
 	$stmt->bindParam(':sort', $sort);
 
 	$fid = $formid;
-	$sort = $element['sortorder'];
+	$sort = $element_sortorder;
 
 	if ($stmt->execute()) {
 
@@ -4468,7 +4492,7 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'text_area_" . $counter . "';");
 
 		$stmt->execute();
@@ -4499,7 +4523,7 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
@@ -4514,7 +4538,7 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
 	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
-	$sort = $element['sortorder'] + 1;
+	$sort = $element_sortorder + 1;
 	$type = "text_area";
 	$col = $columnname;
 	$dn = $displayname;
@@ -4546,7 +4570,7 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -4561,7 +4585,7 @@ function nbt_add_text_area_field ( $formid, $elementid, $displayname = NULL, $co
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -4602,7 +4626,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
 
 		$stmt->execute();
@@ -4617,7 +4641,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
 
 		$stmt->execute();
@@ -4636,7 +4660,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
 
 		$stmt->execute();
@@ -4651,7 +4675,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
 
 		$stmt->execute();
@@ -4670,7 +4694,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
 
 		$stmt->execute();
@@ -4685,7 +4709,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
 
 		$stmt->execute();
@@ -4704,7 +4728,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
 
 		$stmt->execute();
@@ -4719,7 +4743,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
 
 		$stmt->execute();
@@ -4754,7 +4778,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("DELETE FROM `tabledatacolumns` WHERE elementid = :id;");
 
 		$stmt->bindParam(':id', $eid);
@@ -4777,7 +4801,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("DROP TABLE `tabledata_" . $element['columnname'] . "`;");
 
 		if ($stmt->execute()) {
@@ -4796,7 +4820,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("DROP TABLE `mtable_" . $element['columnname'] . "`;");
 
 		if ($stmt->execute()) {
@@ -4819,7 +4843,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("DELETE FROM `tabledatacolumns` WHERE elementid = :id;");
 
 		$stmt->bindParam(':id', $eid);
@@ -4842,7 +4866,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("DROP TABLE `tabledata_" . $element['columnname'] . "`;");
 
 		if ($stmt->execute()) {
@@ -4861,7 +4885,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("DROP TABLE `mtable_" . $element['columnname'] . "`;");
 
 		if ($stmt->execute()) {
@@ -4884,7 +4908,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
 
 		$stmt->execute();
@@ -4899,7 +4923,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
 
 		$stmt->execute();
@@ -4918,7 +4942,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
 
 		$stmt->execute();
@@ -4933,7 +4957,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` DROP COLUMN " . $columnname . ";");
 
 		$stmt->execute();
@@ -4952,7 +4976,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("DROP TABLE `sub_" . $element['columnname'] . "`;");
 
 		if ($stmt->execute()) {
@@ -4971,7 +4995,7 @@ function nbt_delete_form_element ( $elementid ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("DROP TABLE `msub_" . $element['columnname'] . "`;");
 
 		if ($stmt->execute()) {
@@ -5004,7 +5028,7 @@ function nbt_delete_form_element ( $elementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `selectoptions` WHERE elementid = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $eid);
@@ -5027,7 +5051,7 @@ function nbt_delete_form_element ( $elementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `conditional_display` WHERE elementid = :eid;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -5050,7 +5074,7 @@ function nbt_delete_form_element ( $elementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `formelements` WHERE id = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $eid);
@@ -5110,7 +5134,7 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " " . $dbtype . ";");
 
 	if ($stmt->execute()) {
@@ -5129,7 +5153,7 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " " . $dbtype . ";");
 
 	if ($stmt->execute()) {
@@ -5150,7 +5174,7 @@ function nbt_change_column_name ( $elementid, $newcolumnname ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `formelements` SET `columnname`=:newname WHERE `id` = :eid");
 
 	    $stmt->bindParam(':eid', $eid);
@@ -5193,7 +5217,7 @@ function nbt_change_regex ( $elementid, $newregex ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `formelements` SET `regex`= NULL WHERE `id` = :eid");
 
 	    $stmt->bindParam(':eid', $eid);
@@ -5218,7 +5242,7 @@ function nbt_change_regex ( $elementid, $newregex ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `formelements` SET `regex`=:newregex WHERE `id` = :eid");
 
 	    $stmt->bindParam(':eid', $eid);
@@ -5251,7 +5275,7 @@ function nbt_change_tags_prompts ( $elementid, $newtagprompts ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `formelements` SET `tagprompts`= NULL WHERE `id` = :eid");
 
 	    $stmt->bindParam(':eid', $eid);
@@ -5276,7 +5300,7 @@ function nbt_change_tags_prompts ( $elementid, $newtagprompts ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `formelements` SET `tagprompts`=:newtp WHERE `id` = :eid");
 
 	    $stmt->bindParam(':eid', $eid);
@@ -5309,7 +5333,7 @@ function nbt_change_sub_tags_prompts ( $subelementid, $newtagprompts ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `subelements` SET `tagprompts`= NULL WHERE `id` = :seid");
 
 	    $stmt->bindParam(':seid', $seid);
@@ -5334,7 +5358,7 @@ function nbt_change_sub_tags_prompts ( $subelementid, $newtagprompts ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `subelements` SET `tagprompts`=:newtp WHERE `id` = :seid");
 
 	    $stmt->bindParam(':seid', $seid);
@@ -5367,7 +5391,7 @@ function nbt_change_subelement_regex ( $subelementid, $newregex ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `subelements` SET `regex`= NULL WHERE `id` = :seid");
 
 	    $stmt->bindParam(':seid', $seid);
@@ -5392,7 +5416,7 @@ function nbt_change_subelement_regex ( $subelementid, $newregex ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `subelements` SET `regex`=:newregex WHERE `id` = :seid");
 
 	    $stmt->bindParam(':seid', $seid);
@@ -5423,7 +5447,7 @@ function nbt_refdata_change_column_name ( $elementid, $newcolumnname ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `formelements` SET `columnname`=:newname WHERE `id` = :eid");
 
 	$stmt->bindParam(':eid', $eid);
@@ -5452,7 +5476,7 @@ function nbt_subrefdata_change_format ( $subelementid, $newformat ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `subelements` SET `reference_data_format`=:nf WHERE `id` = :seid");
 
 	$stmt->bindParam(':seid', $eid);
@@ -5483,7 +5507,7 @@ function nbt_change_display_name ( $elementid, $newdisplayname ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `formelements` SET `displayname`=:newname WHERE `id` = :eid");
 
 	$stmt->bindParam(':eid', $eid);
@@ -5524,7 +5548,7 @@ function nbt_change_element_codebook ( $elementid, $newcodebook ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `formelements` SET `codebook`=:codebook WHERE `id` = :eid");
 
 	$stmt->bindParam(':eid', $eid);
@@ -5563,7 +5587,7 @@ function nbt_update_element_sortorder ( $elementid, $sortorder ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `formelements` SET `sortorder` = :sort WHERE `id` = :eid");
 
 	$stmt->bindParam(':eid', $eid);
@@ -5590,7 +5614,7 @@ function nbt_update_subelement_sortorder ( $subelementid, $sortorder ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `subelements` SET `sortorder` = :sort WHERE `id` = :seid");
 
 	$stmt->bindParam(':seid', $seid);
@@ -5625,7 +5649,7 @@ function nbt_switch_elements_sortorder ( $element1id, $element2id ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `formelements` SET `sortorder` = :sort WHERE `id` = :eid");
 
 	$stmt->bindParam(':eid', $eid);
@@ -5646,7 +5670,7 @@ function nbt_switch_elements_sortorder ( $element1id, $element2id ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `formelements` SET `sortorder` = :sort WHERE `id` = :eid");
 
 	$stmt->bindParam(':eid', $eid);
@@ -5679,7 +5703,7 @@ function nbt_switch_selects_sortorder ( $select1id, $select2id ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `selectoptions` SET `sortorder` = :sort WHERE `id` = :sid");
 
 	$stmt->bindParam(':sid', $sid);
@@ -5700,7 +5724,7 @@ function nbt_switch_selects_sortorder ( $select1id, $select2id ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `selectoptions` SET `sortorder` = :sort WHERE `id` = :sid");
 
 	$stmt->bindParam(':sid', $sid);
@@ -5735,7 +5759,7 @@ function nbt_switch_subextraction_sortorder ( $elementid, $sub1id, $sub2id ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `sub_" . $element['columnname'] . "` SET `sortorder` = :sort WHERE `id` = :seid");
 
 	$stmt->bindParam(':seid', $seid);
@@ -5756,7 +5780,7 @@ function nbt_switch_subextraction_sortorder ( $elementid, $sub1id, $sub2id ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `sub_" . $element['columnname'] . "` SET `sortorder` = :sort WHERE `id` = :seid");
 
 	$stmt->bindParam(':seid', $seid);
@@ -5789,7 +5813,7 @@ function nbt_switch_tablecolumn_sortorder ( $column1id, $column2id ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `tabledatacolumns` SET `sortorder` = :sort WHERE `id` = :cid");
 
 	$stmt->bindParam(':cid', $cid);
@@ -5810,7 +5834,7 @@ function nbt_switch_tablecolumn_sortorder ( $column1id, $column2id ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("UPDATE `tabledatacolumns` SET `sortorder` = :sort WHERE `id` = :cid");
 
 	$stmt->bindParam(':cid', $cid);
@@ -5841,7 +5865,7 @@ function nbt_move_form_element ( $elementid, $direction ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :form AND `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
 
 	    $stmt->bindParam(':sort', $sort);
@@ -5888,7 +5912,7 @@ function nbt_move_form_element ( $elementid, $direction ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :form AND `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
 
 	    $stmt->bindParam(':sort', $sort);
@@ -5943,7 +5967,7 @@ function nbt_move_select_option ( $selectid, $direction ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `elementid` = :eid AND `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
 
 	    $stmt->bindParam(':sort', $sort);
@@ -5990,7 +6014,7 @@ function nbt_move_select_option ( $selectid, $direction ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `elementid` = :eid AND `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
 
 	    $stmt->bindParam(':sort', $sort);
@@ -6047,7 +6071,7 @@ function nbt_move_sub_extraction ( $elementid, $refsetid, $refid, $subextraction
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE `refsetid` = :refset AND `referenceid` = :ref AND `userid` = :user AND `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
 
 	    $stmt->bindParam(':refset', $rsid);
@@ -6098,7 +6122,7 @@ function nbt_move_sub_extraction ( $elementid, $refsetid, $refid, $subextraction
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE `refsetid` = :refset AND `referenceid` = :ref AND `userid` = :user AND `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
 
 	    $stmt->bindParam(':refset', $rsid);
@@ -6159,40 +6183,44 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
 
     // get all the elements after this one and increase their sortorder value by 1
 
-    try {
+    if ($element != NULL) {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
+	try {
 
-	$stmt->bindParam(':fid', $fid);
-	$stmt->bindParam(':sort', $sort);
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 
-	$fid = $formid;
-	$sort = $element['sortorder'];
+	    $stmt->bindParam(':fid', $fid);
+	    $stmt->bindParam(':sort', $sort);
 
-	if ($stmt->execute()) {
+	    $fid = $formid;
+	    $sort = $element['sortorder'];
 
-	    $result = $stmt->fetchAll();
+	    if ($stmt->execute()) {
 
-	    $dbh = null;
+		$result = $stmt->fetchAll();
 
-	    foreach ( $result as $row ) {
+		$dbh = null;
 
-		nbt_increase_element_sortorder ( $row['id'] );
+		foreach ( $result as $row ) {
+
+		    nbt_increase_element_sortorder ( $row['id'] );
+
+		}
+
+	    } else {
+
+		echo "MySQL fail";
 
 	    }
 
-	} else {
-
-	    echo "MySQL fail";
 
 	}
 
-
-    }
-
-    catch (PDOException $e) {
-	echo $e->getMessage();
+	catch (PDOException $e) {
+	    echo $e->getMessage();
+	}
+	
     }
 
     // find a good name for the new column
@@ -6207,7 +6235,7 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'single_select_" . $counter . "';");
 
 		$stmt->execute();
@@ -6236,9 +6264,15 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
 
     // then insert a new element into the form elements table
 
+    if ($element == NULL) {
+	$element_sortorder = 1;
+    } else {
+	$element_sortorder = $element['sortorder'] + 1;
+    }
+
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
@@ -6253,7 +6287,7 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
 	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
-	$sort = $element['sortorder'] + 1;
+	$sort = $element_sortorder;
 	$type = "single_select";
 	$col = $columnname;
 	$dn = $displayname;
@@ -6285,7 +6319,7 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
 
 	$stmt->execute();
@@ -6300,7 +6334,7 @@ function nbt_add_single_select ( $formid, $elementid, $displayname = NULL, $colu
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(200) DEFAULT NULL;");
 
 	$stmt->execute();
@@ -6321,7 +6355,7 @@ function nbt_get_all_select_options_for_element ( $elementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `elementid` = :eid ORDER BY `sortorder` ASC;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -6346,9 +6380,11 @@ function nbt_add_single_select_option ( $elementid, $displayname = NULL, $dbname
 
     // Already Bobby Tables proof
 
+    $highestsortorder = 0;
+
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -6384,7 +6420,7 @@ function nbt_add_single_select_option ( $elementid, $displayname = NULL, $dbname
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO selectoptions (elementid, sortorder, displayname, dbname, toggle) VALUES (:eid, :sort, :displayname, :dbname, :toggle);");
 
 	$stmt->bindParam(':eid', $eid);
@@ -6428,7 +6464,7 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -6474,7 +6510,7 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $element['formid'] . "` LIKE '" . $element['columnname'] . "_" . $counter . "';");
 
 		$stmt->execute();
@@ -6512,7 +6548,7 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO `selectoptions` (elementid, sortorder, dbname, displayname, toggle) VALUES (:eid, :sort, :column, :displayname, :toggle);");
 
 	$stmt->bindParam(':eid', $eid);
@@ -6548,7 +6584,7 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` ADD COLUMN " . $columnname . " INT(11) DEFAULT NULL;");
 
 	$stmt->execute();
@@ -6563,7 +6599,7 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` ADD COLUMN " . $columnname . " INT(11) DEFAULT NULL;");
 
 	$stmt->execute();
@@ -6582,7 +6618,7 @@ function nbt_remove_single_select_option ( $selectid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("DELETE FROM selectoptions WHERE id = :sid;");
 
 	$stmt->bindParam(':sid', $sid);
@@ -6609,7 +6645,7 @@ function nbt_remove_multi_select_option ( $elementid, $selectid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` DROP COLUMN " . $element['columnname'] . "_" . $select['dbname'] . ";");
 
 	$stmt->execute();
@@ -6624,7 +6660,7 @@ function nbt_remove_multi_select_option ( $elementid, $selectid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` DROP COLUMN " . $element['columnname'] . "_" . $select['dbname'] . ";");
 
 	$stmt->execute();
@@ -6639,7 +6675,7 @@ function nbt_remove_multi_select_option ( $elementid, $selectid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("DELETE FROM selectoptions WHERE id = :sid;");
 
 	$stmt->bindParam(':sid', $sid);
@@ -6668,7 +6704,7 @@ function nbt_remove_sub_multi_select_option ( $subelementid, $selectid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` DROP COLUMN " . $subelement['dbname'] . "_" . $select['dbname'] . ";");
 
 	$stmt->execute();
@@ -6683,7 +6719,7 @@ function nbt_remove_sub_multi_select_option ( $subelementid, $selectid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` DROP COLUMN " . $subelement['dbname'] . "_" . $select['dbname'] . ";");
 
 	$stmt->execute();
@@ -6698,7 +6734,7 @@ function nbt_remove_sub_multi_select_option ( $subelementid, $selectid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("DELETE FROM selectoptions WHERE id = :sid;");
 
 	$stmt->bindParam(':sid', $sid);
@@ -6723,7 +6759,7 @@ function nbt_change_element_toggle ( $elementid, $newtoggle ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `formelements` SET `toggle`=:newtoggle WHERE `id` = :eid");
 
 	$stmt->bindParam(':eid', $eid);
@@ -6764,7 +6800,7 @@ function nbt_update_single_select ( $selectid, $column, $newvalue ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `selectoptions` SET `" . $column . "`=:newvalue WHERE `id` = :sid");
 
 	$stmt->bindParam(':sid', $sid);
@@ -6809,18 +6845,24 @@ function nbt_add_multi_select ( $formid, $elementid, $displayname = NULL, $colum
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    if ($element == NULL) {
+	$element_sortorder = 1;
+    } else {
+	$element_sortorder = $element['sortorder'];
+    }
+
     // get all the elements after this one and increase their sortorder value by 1
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 
 	$stmt->bindParam(':fid', $fid);
 	$stmt->bindParam(':sort', $sort);
 
 	$fid = $formid;
-	$sort = $element['sortorder'];
+	$sort = $element_sortorder;
 
 	if ($stmt->execute()) {
 
@@ -6853,7 +6895,7 @@ function nbt_add_multi_select ( $formid, $elementid, $displayname = NULL, $colum
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
@@ -6868,7 +6910,7 @@ function nbt_add_multi_select ( $formid, $elementid, $displayname = NULL, $colum
 	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
-	$sort = $element['sortorder'] + 1;
+	$sort = $element_sortorder + 1;
 	$type = "multi_select";
 	$col = $columnname;
 	$dn = $displayname;
@@ -6906,7 +6948,7 @@ function nbt_increase_element_sortorder ( $elementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `formelements` SET `sortorder` = :sort WHERE `id` = :id LIMIT 1;");
 
 	$stmt->bindParam(':sort', $sort);
@@ -6933,18 +6975,24 @@ function nbt_add_section_heading ( $formid, $elementid, $displayname = NULL, $co
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    if ($element == NULL) {
+	$element_sortorder = 1;
+    } else {
+	$element_sortorder = $element['sortorder'];
+    }
+
     // get all the elements after this one and increase their sortorder value by 1
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 
 	$stmt->bindParam(':fid', $fid);
 	$stmt->bindParam(':sort', $sort);
 
 	$fid = $formid;
-	$sort = $element['sortorder'];
+	$sort = $element_sortorder;
 
 	if ($stmt->execute()) {
 
@@ -6975,7 +7023,7 @@ function nbt_add_section_heading ( $formid, $elementid, $displayname = NULL, $co
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
@@ -6989,7 +7037,7 @@ function nbt_add_section_heading ( $formid, $elementid, $displayname = NULL, $co
 	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
-	$sort = $element['sortorder'] + 1;
+	$sort = $element_sortorder + 1;
 	$type = "section_heading";
 	$dn = $displayname;
 	$cb = $codebook;
@@ -7022,7 +7070,7 @@ function nbt_update_multi_select_option_column ( $elementid, $selectid, $oldcolu
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $previous . " " . $newcolumnname . " INT(11) DEFAULT NULL;");
 
 	if ($stmt->execute()) {
@@ -7041,7 +7089,7 @@ function nbt_update_multi_select_option_column ( $elementid, $selectid, $oldcolu
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $previous . " " . $newcolumnname . " INT(11) DEFAULT NULL;");
 
 	if ($stmt->execute()) {
@@ -7062,7 +7110,7 @@ function nbt_update_multi_select_option_column ( $elementid, $selectid, $oldcolu
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `selectoptions` SET `dbname`=:newcolumn WHERE `id` = :sid");
 
 	    $stmt->bindParam(':sid', $sid);
@@ -7111,7 +7159,7 @@ function nbt_update_sub_multi_select_option_column ( $subelementid, $selectid, $
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` CHANGE " . $previous . " " . $newcolumnname . " INT(11) DEFAULT NULL;");
 
 	if ($stmt->execute()) {
@@ -7130,7 +7178,7 @@ function nbt_update_sub_multi_select_option_column ( $subelementid, $selectid, $
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` CHANGE " . $previous . " " . $newcolumnname . " INT(11) DEFAULT NULL;");
 
 	if ($stmt->execute()) {
@@ -7151,7 +7199,7 @@ function nbt_update_sub_multi_select_option_column ( $subelementid, $selectid, $
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `selectoptions` SET `dbname`=:newcolumn WHERE `id` = :sid");
 
 	    $stmt->bindParam(':sid', $sid);
@@ -7208,7 +7256,7 @@ function nbt_change_multi_select_column_prefix ( $elementid, $newcolumn ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . "_" . $select['dbname'] . " " . $newcolumn . "_" . $select['dbname'] . " INT(11) DEFAULT NULL;");
 
 	    if ($stmt->execute()) {
@@ -7227,7 +7275,7 @@ function nbt_change_multi_select_column_prefix ( $elementid, $newcolumn ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . "_" . $select['dbname'] . " " . $newcolumn . "_" . $select['dbname'] . " INT(11) DEFAULT NULL;");
 
 	    if ($stmt->execute()) {
@@ -7251,7 +7299,7 @@ function nbt_change_multi_select_column_prefix ( $elementid, $newcolumn ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `formelements` SET `columnname`=:newname WHERE `id` = :eid");
 
 	    $stmt->bindParam(':eid', $eid);
@@ -7300,18 +7348,24 @@ function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", 
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    if ($element == NULL) {
+	$element_sortorder = 1;
+    } else {
+	$element_sortorder = $element['sortorder'];
+    }
+
     // get all the elements after this one and increase their sortorder value by 1
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 
 	$stmt->bindParam(':fid', $fid);
 	$stmt->bindParam(':sort', $sort);
 
 	$fid = $formid;
-	$sort = $element['sortorder'];
+	$sort = $element_sortorder;
 
 	if ($stmt->execute()) {
 
@@ -7376,7 +7430,7 @@ function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("CREATE TABLE `tabledata_" . $suffix . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ($stmt->execute()) {
@@ -7395,7 +7449,7 @@ function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("CREATE TABLE `mtable_" . $suffix . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ($stmt->execute()) {
@@ -7414,7 +7468,7 @@ function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
@@ -7429,7 +7483,7 @@ function nbt_add_table_data ( $formid, $elementid, $tableformat = "table_data", 
 	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
-	$sort = $element['sortorder'] + 1;
+	$sort = $element_sortorder + 1;
 	$type = $tableformat;
 	$col = $suffix;
 	$dn = $displayname;
@@ -7470,7 +7524,7 @@ function nbt_get_all_columns_for_sub_table_data ( $subelementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `tabledatacolumns` WHERE `subelementid` = :seid ORDER BY `sortorder` ASC;");
 
 	$stmt->bindParam(':seid', $seid);
@@ -7504,7 +7558,7 @@ function nbt_get_all_columns_for_table_data ( $elementid, $sub_table = FALSE ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -7562,7 +7616,7 @@ function nbt_change_table_suffix ( $elementid, $newsuffix ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare ("RENAME TABLE `tabledata_" . $element['columnname'] . "` TO `tabledata_" . $newsuffix . "`;");
 
 	    if ($stmt->execute()) {
@@ -7581,7 +7635,7 @@ function nbt_change_table_suffix ( $elementid, $newsuffix ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare ("RENAME TABLE `mtable_" . $element['columnname'] . "` TO `mtable_" . $newsuffix . "`;");
 
 	    if ($stmt->execute()) {
@@ -7602,7 +7656,7 @@ function nbt_change_table_suffix ( $elementid, $newsuffix ) {
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("UPDATE `formelements` SET `columnname`=:newname WHERE `id` = :eid");
 
 		$stmt->bindParam(':eid', $eid);
@@ -7655,7 +7709,7 @@ function nbt_change_sub_table_suffix ( $subelementid, $newsuffix ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("RENAME TABLE `tabledata_" . $subelement['dbname'] . "` TO `tabledata_" . $newsuffix . "`;");
 
 	if ($stmt->execute()) {
@@ -7674,7 +7728,7 @@ function nbt_change_sub_table_suffix ( $subelementid, $newsuffix ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("RENAME TABLE `mtable_" . $subelement['dbname'] . "` TO `mtable_" . $newsuffix . "`;");
 
 	if ($stmt->execute()) {
@@ -7695,7 +7749,7 @@ function nbt_change_sub_table_suffix ( $subelementid, $newsuffix ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `subelements` SET `dbname`=:newname WHERE `id` = :seid");
 
 	    $stmt->bindParam(':seid', $seid);
@@ -7740,7 +7794,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -7804,7 +7858,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 		if ( $sub_table ) {
 
@@ -7851,7 +7905,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -7888,7 +7942,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	    if ( $sub_table ) {
 
@@ -7912,7 +7966,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	    if ( $sub_table ) {
 
@@ -7939,7 +7993,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare ("ALTER TABLE `tabledata_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 	    $stmt->execute();
@@ -7954,7 +8008,7 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare ("ALTER TABLE `mtable_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " TEXT DEFAULT NULL;");
 
 	    $stmt->execute();
@@ -7973,7 +8027,7 @@ function nbt_get_table_column_for_columnid ( $columnid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `tabledatacolumns` WHERE `id` = :cid LIMIT 1;");
 
 	$stmt->bindParam(':cid', $cid);
@@ -8011,7 +8065,7 @@ function nbt_get_all_table_data_cols_for_formid ( $formid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `tabledatacolumns` WHERE (`elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid)) OR (`subelementid` IN (SELECT `id` FROM `subelements` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid))) ORDER BY elementid, subelementid, sortorder ASC;");
 
 	$stmt->bindParam(':fid', $fid);
@@ -8060,7 +8114,7 @@ function nbt_remove_table_data_column ( $elementid, $columnid, $sub_table = FALS
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -8085,7 +8139,7 @@ function nbt_remove_table_data_column ( $elementid, $columnid, $sub_table = FALS
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -8110,7 +8164,7 @@ function nbt_remove_table_data_column ( $elementid, $columnid, $sub_table = FALS
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("DELETE FROM tabledatacolumns WHERE id = :cid;");
 
 	$stmt->bindParam(':cid', $cid);
@@ -8133,7 +8187,7 @@ function nbt_update_table_data_column_display ( $columnid, $newvalue ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `tabledatacolumns` SET `displayname`=:newvalue WHERE `id` = :cid");
 
 	$stmt->bindParam(':cid', $cid);
@@ -8172,7 +8226,7 @@ function nbt_move_table_data_column ( $columnid, $direction, $sub_table = FALSE 
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	    if ( $sub_table ) {
 
@@ -8237,7 +8291,7 @@ function nbt_move_table_data_column ( $columnid, $direction, $sub_table = FALSE 
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	    if ( $sub_table ) {
 
@@ -8338,7 +8392,7 @@ function nbt_update_table_data_column_db ( $columnid, $tableformat, $newcolumnna
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -8367,7 +8421,7 @@ function nbt_update_table_data_column_db ( $columnid, $tableformat, $newcolumnna
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -8398,7 +8452,7 @@ function nbt_update_table_data_column_db ( $columnid, $tableformat, $newcolumnna
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `tabledatacolumns` SET `dbname`=:newname WHERE `id` = :cid");
 
 	    $stmt->bindParam(':cid', $cid);
@@ -8445,18 +8499,24 @@ function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $c
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    if ($element == NULL) {
+	$element_sortorder = 1;
+    } else {
+	$element_sortorder = $element['sortorder'];
+    }
+
     // get all the elements after this one and increase their sortorder value by 1
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 
 	$stmt->bindParam(':fid', $fid);
 	$stmt->bindParam(':sort', $sort);
 
 	$fid = $formid;
-	$sort = $element['sortorder'];
+	$sort = $element_sortorder;
 
 	if ($stmt->execute()) {
 
@@ -8495,7 +8555,7 @@ function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $c
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'country_" . $counter . "';");
 
 		$stmt->execute();
@@ -8526,7 +8586,7 @@ function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $c
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
@@ -8542,7 +8602,7 @@ function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $c
 	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
-	$sort = $element['sortorder'] + 1;
+	$sort = $element_sortorder + 1;
 	$type = "country_selector";
 	$col = $columnname;
 	$dn = $displayname;
@@ -8564,7 +8624,7 @@ function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $c
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(50) DEFAULT NULL;");
 
 	$stmt->execute();
@@ -8579,7 +8639,7 @@ function nbt_add_country_selector ( $formid, $elementid, $displayname = NULL, $c
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " varchar(50) DEFAULT NULL;");
 
 	$stmt->execute();
@@ -8606,18 +8666,24 @@ function nbt_add_extraction_timer ( $formid, $elementid, $codebook = NULL, $togg
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    if ($element == NULL) {
+	$element_sortorder = 1;
+    } else {
+	$element_sortorder = $element['sortorder'];
+    }
+
     // get all the elements after this one and increase their sortorder value by 1
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 
 	$stmt->bindParam(':fid', $fid);
 	$stmt->bindParam(':sort', $sort);
 
 	$fid = $formid;
-	$sort = $element['sortorder'];
+	$sort = $element_sortorder;
 
 	if ($stmt->execute()) {
 
@@ -8647,7 +8713,7 @@ function nbt_add_extraction_timer ( $formid, $elementid, $codebook = NULL, $togg
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
@@ -8660,7 +8726,7 @@ function nbt_add_extraction_timer ( $formid, $elementid, $codebook = NULL, $togg
 	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
-	$sort = $element['sortorder'] + 1;
+	$sort = $element_sortorder + 1;
 	$type = "timer";
 	$cb = $codebook;
 	$tg = $toggle;
@@ -8688,18 +8754,22 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    if ($element == NULL) {
+	$element_sortorder = 1;
+    }
+
     // get all the elements after this one and increase their sortorder value by 1
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 
 	$stmt->bindParam(':fid', $fid);
 	$stmt->bindParam(':sort', $sort);
 
 	$fid = $formid;
-	$sort = $element['sortorder'];
+	$sort = $element_sortorder;
 
 	if ($stmt->execute()) {
 
@@ -8738,7 +8808,7 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $formid . "` LIKE 'date_" . $counter . "';");
 
 		$stmt->execute();
@@ -8768,7 +8838,7 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
@@ -8783,7 +8853,7 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
 	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
-	$sort = $element['sortorder'] + 1;
+	$sort = $element_sortorder + 1;
 	$type = "date_selector";
 	$col = $columnname;
 	$dn = $displayname;
@@ -8805,7 +8875,7 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $formid . "` ADD COLUMN " . $columnname . " DATE DEFAULT NULL;");
 
 	$stmt->execute();
@@ -8820,7 +8890,7 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $formid . "` ADD COLUMN " . $columnname . " DATE DEFAULT NULL;");
 
 	$stmt->execute();
@@ -8847,7 +8917,7 @@ function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " DATE DEFAULT NULL;");
 
 	if ($stmt->execute()) {
@@ -8866,7 +8936,7 @@ function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` CHANGE " . $element['columnname'] . " " . $newcolumnname . " DATE DEFAULT NULL;");
 
 	if ($stmt->execute()) {
@@ -8887,7 +8957,7 @@ function nbt_change_date_column_name ( $elementid, $newcolumnname ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `formelements` SET `columnname`=:newname WHERE `id` = :eid");
 
 	    $stmt->bindParam(':eid', $eid);
@@ -8928,7 +8998,7 @@ function nbt_toggle_subelement_copy_from_prev ( $subelementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `subelements` SET `copypreviousprompt`=IF(`copypreviousprompt`=1, 0, 1) WHERE `id` = :seid");
 
 	$stmt->bindParam(':seid', $seid);
@@ -9171,7 +9241,7 @@ function nbt_remove_table_data_row ( $tableid, $rowid, $sub_table = FALSE ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -9227,7 +9297,7 @@ function nbt_update_extraction_table_data ($tableid, $rowid, $column, $newvalue,
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -9274,7 +9344,7 @@ function nbt_update_final ( $formid, $refsetid, $refid, $column, $newvalue ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `" . $column . "` = :nv WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
 
 	$stmt->bindParam(':rsid', $rsid);
@@ -9323,7 +9393,7 @@ function nbt_update_extraction_mtable_data ($tableid, $rowid, $column, $newvalue
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	if ( $sub_table ) {
 
@@ -9369,7 +9439,7 @@ function nbt_get_all_assignments_for_refset ( $refsetid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT *, `assignments`.`id` AS `aid` FROM `referenceset_" . $refsetid . "`, `assignments`, `users`, `forms` WHERE `referenceset_". $refsetid ."`.`id` = `assignments`.`referenceid` AND `assignments`.`refsetid` = :rsid AND `assignments`.`userid` = `users`.`id` AND `assignments`.`formid` = `forms`.`id`");
 
 	$stmt->bindParam(':rsid', $rsid);
@@ -9396,7 +9466,7 @@ function nbtAddAssignment ( $userid, $formid, $refsetid, $refid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO `assignments` (userid, assignerid, formid, refsetid, referenceid) VALUES (:user, :assigner, :form, :refset, :ref)");
 
 	$stmt->bindParam(':user', $user);
@@ -9435,7 +9505,7 @@ function nbtDeleteAssignment ( $assignmentid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `assignments` WHERE id = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $aid);
@@ -9510,7 +9580,7 @@ function nbtAssign ( $user, $form, $refset, $refids ) {
     }
 
     try {
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare($query);
 
 	$stmt->bindParam(':assigner', $aid);
@@ -9594,7 +9664,7 @@ function nbtUnAssign ( $user, $form, $refset, $refids ) {
     }
 
     try {
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare($query);
 
 	$stmt->bindParam(':refset', $rsid);
@@ -9662,18 +9732,24 @@ function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suf
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    if ($element == NULL) {
+	$element_sortorder = 1;
+    } else {
+	$element_sortorder = $element['sortorder'];
+    }
+
     // get all the elements after this one and increase their sortorder value by 1
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 
 	$stmt->bindParam(':fid', $fid);
 	$stmt->bindParam(':sort', $sort);
 
 	$fid = $formid;
-	$sort = $element['sortorder'];
+	$sort = $element_sortorder;
 
 	if ($stmt->execute()) {
 
@@ -9738,7 +9814,7 @@ function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suf
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("CREATE TABLE `sub_" . $suffix . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `userid` int(11) NOT NULL, `sortorder` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ($stmt->execute()) {
@@ -9757,7 +9833,7 @@ function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suf
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("CREATE TABLE `msub_" . $suffix . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ($stmt->execute()) {
@@ -9776,7 +9852,7 @@ function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suf
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, columnname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :column, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
@@ -9791,7 +9867,7 @@ function nbt_add_sub_extraction ( $formid, $elementid, $displayname = NULL, $suf
 	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
-	$sort = $element['sortorder'] + 1;
+	$sort = $element_sortorder + 1;
 	$type = "sub_extraction";
 	$col = $suffix;
 	$dn = $displayname;
@@ -9828,7 +9904,7 @@ function nbt_get_sub_extraction_elements_for_elementid ( $elementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` ASC;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -9872,7 +9948,7 @@ function nbt_change_sub_extraction_suffix ( $elementid, $newsuffix ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("RENAME TABLE `sub_" . $element['columnname'] . "` TO `sub_" . $newsuffix . "`;");
 
 	if ($stmt->execute()) {
@@ -9891,7 +9967,7 @@ function nbt_change_sub_extraction_suffix ( $elementid, $newsuffix ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("RENAME TABLE `msub_" . $element['columnname'] . "` TO `msub_" . $newsuffix . "`;");
 
 	if ($stmt->execute()) {
@@ -9912,7 +9988,7 @@ function nbt_change_sub_extraction_suffix ( $elementid, $newsuffix ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `formelements` SET `columnname`=:newname WHERE `id` = :eid");
 
 	    $stmt->bindParam(':eid', $eid);
@@ -9960,7 +10036,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -10004,7 +10080,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'open_text_" . $counter . "';");
 
 		$stmt->execute();
@@ -10036,7 +10112,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, regex, copypreviousprompt, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:element, :sort, :type, :dbname, :displayname, :regex, :copypreviousprompt, :codebook, :toggle, :sv, :clo, :dh);");
 
 	$stmt->bindParam(':element', $eid);
@@ -10082,7 +10158,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -10097,7 +10173,7 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -10123,7 +10199,7 @@ function nbt_add_sub_ref_data ( $elementid, $displayname = NULL, $dbname = NULL,
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -10167,7 +10243,7 @@ function nbt_add_sub_ref_data ( $elementid, $displayname = NULL, $dbname = NULL,
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'reference_data_" . $counter . "';");
 
 		$stmt->execute();
@@ -10199,7 +10275,7 @@ function nbt_add_sub_ref_data ( $elementid, $displayname = NULL, $dbname = NULL,
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, regex, copypreviousprompt, codebook, toggle) VALUES (:element, :sort, :type, :dbname, :displayname, :regex, :copypreviousprompt, :codebook, :toggle);");
 
 	$stmt->bindParam(':element', $eid);
@@ -10239,7 +10315,7 @@ function nbt_add_sub_ref_data ( $elementid, $displayname = NULL, $dbname = NULL,
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -10254,7 +10330,7 @@ function nbt_add_sub_ref_data ( $elementid, $displayname = NULL, $dbname = NULL,
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -10280,7 +10356,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -10324,7 +10400,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'textarea_" . $counter . "';");
 
 		$stmt->execute();
@@ -10356,7 +10432,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO `subelements` (`elementid`, `sortorder`, `type`, `dbname`, `displayname`, `regex`, `copypreviousprompt`, `codebook`, `toggle`, `startup_visible`, `conditional_logical_operator`, `destructive_hiding`) VALUES (:element, :sort, :type, :dbname, :displayname, :regex, :copypreviousprompt, :codebook, :toggle, :sv, :clo, :dh);");
 
 	$stmt->bindParam(':element', $eid);
@@ -10402,7 +10478,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -10417,7 +10493,7 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -10443,7 +10519,7 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -10487,7 +10563,7 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'tags_" . $counter . "';");
 
 		$stmt->execute();
@@ -10519,7 +10595,7 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, regex, copypreviousprompt, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:element, :sort, :type, :dbname, :displayname, :regex, :copypreviousprompt, :codebook, :toggle, :sv, :clo, :dh);");
 
 	$stmt->bindParam(':element', $eid);
@@ -10565,7 +10641,7 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -10580,7 +10656,7 @@ function nbt_add_sub_tags_element ( $elementid, $displayname = NULL, $dbname = N
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " TEXT DEFAULT NULL;");
 
 	$stmt->execute();
@@ -10611,7 +10687,7 @@ function nbt_delete_sub_element ( $subelementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `subelements` WHERE id = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $seid);
@@ -10634,7 +10710,7 @@ function nbt_delete_sub_element ( $subelementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` DROP COLUMN " . $dbname . ";");
 
 	$stmt->execute();
@@ -10649,7 +10725,7 @@ function nbt_delete_sub_element ( $subelementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` DROP COLUMN " . $dbname . ";");
 
 	$stmt->execute();
@@ -10664,7 +10740,7 @@ function nbt_delete_sub_element ( $subelementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `selectoptions` WHERE `subelementid` = :id;");
 
 	$stmt->bindParam(':id', $seid);
@@ -10689,7 +10765,7 @@ function nbt_delete_sub_element ( $subelementid ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE `tabledata_" . $dbname . "`;");
 
 	    $stmt->execute();
@@ -10704,7 +10780,7 @@ function nbt_delete_sub_element ( $subelementid ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE `mtable_" . $dbname . "`;");
 
 	    $stmt->execute();
@@ -10723,7 +10799,7 @@ function nbt_delete_sub_element ( $subelementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `conditional_display` WHERE `subelementid` = :id;");
 
 	$stmt->bindParam(':id', $seid);
@@ -10748,7 +10824,7 @@ function nbt_change_sub_element_display_name ( $subelementid, $newdisplayname ) 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `subelements` SET `displayname`=:newname WHERE `id` = :seid");
 
 	$stmt->bindParam(':seid', $seid);
@@ -10823,7 +10899,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . " " . $newcolumnname . " " . $dbtype . ";");
 
 	if ($stmt->execute()) {
@@ -10842,7 +10918,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . " " . $newcolumnname . " " . $dbtype . ";");
 
 	if ($stmt->execute()) {
@@ -10863,7 +10939,7 @@ function nbt_change_sub_element_column_name ( $subelementid, $newcolumnname ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `subelements` SET `dbname`=:newname WHERE `id` = :seid");
 
 	    $stmt->bindParam(':seid', $seid);
@@ -10906,7 +10982,7 @@ function nbt_change_sub_element_codebook ( $subelementid, $newcodebook ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `subelements` SET `codebook`=:codebook WHERE `id` = :seid");
 
 	$stmt->bindParam(':seid', $seid);
@@ -10947,7 +11023,7 @@ function nbt_change_sub_element_toggle ( $subelementid, $newtoggle ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `subelements` SET `toggle`=:newtoggle WHERE `id` = :seid");
 
 	$stmt->bindParam(':seid', $seid);
@@ -10994,7 +11070,7 @@ function nbt_switch_sub_elements_sortorder ( $subelement1id, $subelement2id ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `subelements` SET `sortorder` = :sort WHERE `id` = :seid");
 
 	$stmt->bindParam(':seid', $seid);
@@ -11015,7 +11091,7 @@ function nbt_switch_sub_elements_sortorder ( $subelement1id, $subelement2id ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `subelements` SET `sortorder` = :sort WHERE `id` = :seid");
 
 	$stmt->bindParam(':seid', $seid);
@@ -11046,7 +11122,7 @@ function nbt_move_sub_element ( $subelementid, $direction ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid AND `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
 
 	    $stmt->bindParam(':sort', $sort);
@@ -11093,7 +11169,7 @@ function nbt_move_sub_element ( $subelementid, $direction ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid AND `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
 
 	    $stmt->bindParam(':sort', $sort);
@@ -11149,7 +11225,7 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -11197,7 +11273,7 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'single_select_" . $counter . "';");
 
 		$stmt->execute();
@@ -11228,7 +11304,7 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO `subelements` (elementid, sortorder, type, dbname, displayname, copypreviousprompt, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:element, :sort, :type, :column, :displayname, :copypreviousprompt, :codebook, :toggle, :sv, :clo, :dh);");
 
 	$stmt->bindParam(':element', $eid);
@@ -11282,7 +11358,7 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " varchar(50) DEFAULT NULL;");
 
 	$stmt->execute();
@@ -11297,7 +11373,7 @@ function nbt_add_sub_single_select ( $elementid, $displayname = NULL, $dbname = 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " varchar(50) DEFAULT NULL;");
 
 	$stmt->execute();
@@ -11316,7 +11392,7 @@ function nbt_get_all_select_options_for_sub_element ( $subelementid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `subelementid` = :seid ORDER BY `sortorder` ASC;");
 
 	$stmt->bindParam(':seid', $seid);
@@ -11344,7 +11420,7 @@ function nbt_add_sub_single_select_option ( $subelementid, $displayname = NULL, 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `subelementid` = :seid ORDER BY `sortorder` DESC LIMIT 1;");
 
 	$stmt->bindParam(':seid', $seid);
@@ -11380,7 +11456,7 @@ function nbt_add_sub_single_select_option ( $subelementid, $displayname = NULL, 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO selectoptions (subelementid, sortorder, displayname, dbname, toggle) VALUES (:seid, :sort, :displayname, :dbname, :toggle);");
 
 	$stmt->bindParam(':seid', $seid);
@@ -11428,7 +11504,7 @@ function nbt_move_sub_select_option ( $selectid, $direction ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `subelementid` = :seid AND `sortorder` < :sort ORDER BY sortorder DESC LIMIT 1;");
 
 	    $stmt->bindParam(':sort', $sort);
@@ -11475,7 +11551,7 @@ function nbt_move_sub_select_option ( $selectid, $direction ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `subelementid` = :seid AND `sortorder` > :sort ORDER BY sortorder ASC LIMIT 1;");
 
 	    $stmt->bindParam(':sort', $sort);
@@ -11533,7 +11609,7 @@ function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = N
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -11565,7 +11641,7 @@ function nbt_add_sub_multi_select ( $elementid, $displayname = NULL, $dbname = N
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, `type`, dbname, displayname, copypreviousprompt, codebook, toggle, `startup_visible`, `conditional_logical_operator`, `destructive_hiding`) VALUES (:element, :sort, :type, :column, :displayname, :copypreviousprompt, :codebook, :toggle, :sv, :clo, :dh);");
 
 	$stmt->bindParam(':element', $eid);
@@ -11620,7 +11696,7 @@ function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $c
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -11690,7 +11766,7 @@ function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $c
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("CREATE TABLE `tabledata_" . $suffix . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `subextractionid` int(11) NOT NULL, `userid` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ($stmt->execute()) {
@@ -11709,7 +11785,7 @@ function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $c
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("CREATE TABLE `mtable_" . $suffix . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `subextractionid` int(11) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ($stmt->execute()) {
@@ -11728,7 +11804,7 @@ function nbt_add_sub_table ( $elementid, $displayname = NULL, $suffix = NULL, $c
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:element, :sort, :type, :column, :displayname, :codebook, :toggle, :sv, :clo, :dh);");
 
 	$stmt->bindParam(':element', $eid);
@@ -11804,7 +11880,7 @@ function nbt_change_sub_multi_select_column_prefix ( $subelementid, $newcolumn )
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . "_" . $select['dbname'] . " " . $newcolumn . "_" . $select['dbname'] . " INT(11) DEFAULT NULL;");
 
 	    if ($stmt->execute()) {
@@ -11821,7 +11897,7 @@ function nbt_change_sub_multi_select_column_prefix ( $subelementid, $newcolumn )
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` CHANGE " . $subelement['dbname'] . "_" . $select['dbname'] . " " . $newcolumn . "_" . $select['dbname'] . " INT(11) DEFAULT NULL;");
 
 	    if ($stmt->execute()) {
@@ -11845,7 +11921,7 @@ function nbt_change_sub_multi_select_column_prefix ( $subelementid, $newcolumn )
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `subelements` SET `dbname`=:newname WHERE `id` = :seid");
 
 	    $stmt->bindParam(':seid', $seid);
@@ -11891,7 +11967,7 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `selectoptions` WHERE `subelementid` = :seid ORDER BY `sortorder` DESC LIMIT 1;");
 
 	$stmt->bindParam(':seid', $seid);
@@ -11938,7 +12014,7 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE '" . $subelement['dbname'] . "_" . $counter . "';");
 
 		$stmt->execute();
@@ -11974,7 +12050,7 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO `selectoptions` (subelementid, sortorder, dbname, displayname, toggle) VALUES (:seid, :sort, :column, :displayname, :toggle);");
 
 	$stmt->bindParam(':seid', $seid);
@@ -12010,7 +12086,7 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " INT(11) DEFAULT NULL;");
 
 	$stmt->execute();
@@ -12025,7 +12101,7 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $columnname . " INT(11) DEFAULT NULL;");
 
 	$stmt->execute();
@@ -12051,7 +12127,7 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `elementid` = :eid ORDER BY `sortorder` DESC LIMIT 1;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -12095,7 +12171,7 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("SHOW COLUMNS FROM `sub_" . $element['columnname'] . "` LIKE 'date_" . $counter . "';");
 
 		$stmt->execute();
@@ -12126,7 +12202,7 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO subelements (elementid, sortorder, type, dbname, displayname, copypreviousprompt, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:element, :sort, :type, :column, :displayname, :copypreviousprompt, :codebook, :toggle, :sv, :clo, :dh);");
 
 	$stmt->bindParam(':element', $eid);
@@ -12170,7 +12246,7 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `sub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " DATE DEFAULT NULL;");
 
 	$stmt->execute();
@@ -12185,7 +12261,7 @@ function nbt_add_sub_date_selector ( $elementid, $displayname = NULL, $dbname = 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `msub_" . $element['columnname'] . "` ADD COLUMN " . $dbname . " DATE DEFAULT NULL;");
 
 	$stmt->execute();
@@ -12206,7 +12282,7 @@ function nbt_get_sub_extractions ( $elementid, $refsetid, $refid, $userid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE refsetid = :refset AND referenceid = :ref AND userid = :user ORDER BY `sortorder` ASC;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -12239,7 +12315,7 @@ function nbt_get_master_sub_extractions ( $elementid, $refsetid, $refid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `msub_" . $element['columnname'] . "` WHERE refsetid = :refset AND referenceid = :ref ORDER BY id ASC;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -12272,7 +12348,7 @@ function nbt_add_new_sub_extraction ($elementid, $refsetid, $refid, $userid) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE `refsetid` = :refset AND `referenceid` = :refid AND `userid` = :userid ORDER BY `sortorder` DESC LIMIT 1;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -12312,7 +12388,7 @@ function nbt_add_new_sub_extraction ($elementid, $refsetid, $refid, $userid) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO `sub_" . $element['columnname'] . "` (refsetid, referenceid, userid, sortorder) VALUES (:refset, :refid, :userid, :newsort);");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -12355,7 +12431,7 @@ function nbt_remove_sub_extraction_instance ( $elementid, $subextractionid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("DELETE FROM `sub_" . $element['columnname'] . "` WHERE id = :seid;");
 
 	$stmt->bindParam(':seid', $seid);
@@ -12390,7 +12466,7 @@ function nbt_change_refset_name ( $refsetid, $newname ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE referencesets SET name=:newname WHERE id = :id");
 
 	$stmt->bindParam(':id', $rsid);
@@ -12423,7 +12499,7 @@ function nbt_make_new_refset_row ( $newname, $title, $authors, $year, $journal, 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("INSERT INTO `referencesets` (`name`, `title`, `authors`, `year`, `journal`, `abstract`) VALUES (:name, :title, :authors, :year, :journal, :abstract)");
 
 	$stmt->bindParam(':name', $name);
@@ -12488,7 +12564,7 @@ function nbt_make_new_refset_table ( $refsetid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("CREATE TABLE `referenceset_" . $refsetid . "` ( `id` int(11) NOT NULL AUTO_INCREMENT, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ($stmt->execute()) {
@@ -12533,7 +12609,7 @@ function nbt_add_column_to_refset_table ( $refsetid, $columnname, $columntype ) 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("ALTER TABLE `referenceset_" . $refsetid . "` ADD COLUMN `" . $columnname . "` " . $sqltype . ";");
 
 	if ( $stmt->execute() ) {
@@ -12576,7 +12652,7 @@ function nbt_insert_imported_extraction ( $formid, $refsetid, $usercolumn, $user
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("INSERT INTO `extractions_" . $formid . "` (" . $sqlcols . ", `refsetid`, `referenceid`, `userid`, `status`) VALUES (" . $sqlparams . ", :rsid, :rid, :uid, :sta)");
 
 	    $counter = 0;
@@ -12666,7 +12742,7 @@ function nbt_insert_imported_sub_extraction ( $elementid, $refsetid, $usercolumn
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("INSERT INTO `sub_" . $element['columnname'] . "` (" . $sqlcols . ", `refsetid`, `referenceid`, `userid`, `sortorder`) VALUES (" . $sqlparams . ", :rsid, :rid, :uid, :ord)");
 
 	    $counter = 0;
@@ -12767,7 +12843,7 @@ function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $userc
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 
 	    if ( $sub_extraction ) {
 		$stmt = $dbh->prepare("INSERT INTO `tabledata_" . $suffix . "` (" . $sqlcols . ", `refsetid`, `referenceid`, `userid`, `subextractionid`) VALUES (" . $sqlparams . ", :rsid, :rid, :uid, :seid)");
@@ -12850,7 +12926,7 @@ function nbt_insert_row_into_columns ( $refset, $columns, $values ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare ("INSERT INTO `referenceset_" . $refset . "` (" . $sqlcols . ") VALUES (" . $sqlparams . ")");
 
 	    $counter = 0;
@@ -12900,7 +12976,7 @@ function nbt_delete_refset ( $refsetid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `referencesets` WHERE id = :id LIMIT 1; DROP TABLE `referenceset_" . $refsetid . "`;");
 
 	$stmt->bindParam(':id', $rsid);
@@ -12931,7 +13007,7 @@ function nbt_delete_ref ( $refsetid, $refid ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DELETE FROM `referenceset_" . $refsetid . "` WHERE id = :id LIMIT 1;");
 
 	    $stmt->bindParam(':id', $rid);
@@ -12960,7 +13036,7 @@ function nbtQueryReferenceSet ( $refsetid, $query ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE " . $query . ";");
 
 	if ( $stmt->execute() ) {
@@ -12995,7 +13071,7 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE id = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $oid);
@@ -13022,7 +13098,7 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO `msub_" . $element['columnname'] . "` (refsetid, referenceid) VALUES (:refset, :ref);");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -13069,7 +13145,7 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 
 		    try {
 
-			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 			$stmt = $dbh->prepare("UPDATE `msub_" . $element['columnname'] . "` SET `" . $subelement['dbname'] . "_" . $option['dbname'] . "` = :value WHERE id = :id LIMIT 1;");
 
 			$stmt->bindParam(':id', $nid);
@@ -13098,7 +13174,7 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 
 		try {
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		    $stmt = $dbh->prepare("SELECT * FROM `tabledata_" . $subelement['dbname'] . "` WHERE `subextractionid` = :seid;");
 
 		    $stmt->bindParam(':seid', $seid);
@@ -13125,7 +13201,7 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 
 		    try {
 
-			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 			$stmt = $dbh->prepare ("INSERT INTO `mtable_" . $subelement['dbname'] . "` (refsetid, referenceid, subextractionid) VALUES (:refset, :ref, :seid);");
 
 			$stmt->bindParam(':refset', $rsid);
@@ -13164,7 +13240,7 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 
 			try {
 
-			    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+			    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 			    $stmt = $dbh->prepare("UPDATE `mtable_" . $subelement['dbname'] . "` SET `" . $column['dbname'] . "` = :value WHERE id = :id LIMIT 1;");
 
 			    $stmt->bindParam(':id', $nid);
@@ -13202,7 +13278,7 @@ function nbt_copy_sub_extraction_to_master ( $elementid, $refsetid, $refid, $ori
 
 		try {
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		    $stmt = $dbh->prepare("UPDATE `msub_" . $element['columnname'] . "` SET `" . $subelement['dbname'] . "` = :value WHERE id = :id LIMIT 1;");
 
 		    $stmt->bindParam(':id', $nid);
@@ -13247,7 +13323,7 @@ function nbt_remove_master_sub_extraction ( $elementid, $originalid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("DELETE FROM `msub_" . $element['columnname'] . "` WHERE id = :original;");
 
 	$stmt->bindParam(':original', $oid);
@@ -13272,7 +13348,7 @@ function nbt_remove_master_sub_extraction ( $elementid, $originalid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("SELECT * FROM `subelements` WHERE `elementid` = :eid AND `type` = 'table_data';");
 
 	$stmt->bindParam(':eid', $eid);
@@ -13291,7 +13367,7 @@ function nbt_remove_master_sub_extraction ( $elementid, $originalid ) {
 
 	    try {
 
-		$dbh2 = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh2 = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt2 = $dbh2->prepare ("DELETE FROM `mtable_" . $subelement['dbname'] . "` WHERE `subextractionid` = :oid;");
 
 		$stmt2->bindParam(':oid', $oid);
@@ -13328,7 +13404,7 @@ function nbt_get_sub_extraction_for_element_and_id ( $elementid, $subextractioni
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `sub_" . $element['columnname'] . "` WHERE `id` = :id LIMIT 1;");
 
 	$stmt->bindParam(':id', $seid);
@@ -13359,7 +13435,7 @@ function nbt_get_setting ( $key ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `settings` WHERE `key` = :key LIMIT 1;");
 
 	$stmt->bindParam(':key', $ke);
@@ -13394,18 +13470,24 @@ function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    if ($element == NULL) {
+	$element_sortorder = 1;
+    } else {
+	$element_sortorder = $element['sortorder'];
+    }
+
     // get all the elements after this one and increase their sortorder value by 1
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 
 	$stmt->bindParam(':fid', $fid);
 	$stmt->bindParam(':sort', $sort);
 
 	$fid = $formid;
-	$sort = $element['sortorder'];
+	$sort = $element_sortorder;
 
 	if ($stmt->execute()) {
 
@@ -13436,7 +13518,7 @@ function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, displayname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :displayname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
@@ -13450,7 +13532,7 @@ function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $
 	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
-	$sort = $element['sortorder'] + 1;
+	$sort = $element_sortorder + 1;
 	$type = "assignment_editor";
 	$dn = $displayname;
 	$cb = $codebook;
@@ -13478,18 +13560,24 @@ function nbt_add_reference_data ( $formid, $elementid, $displayname = NULL, $ref
 
     $element = nbt_get_form_element_for_elementid ( $elementid );
 
+    if ($element == NULL) {
+	$element_sortorder = 1;
+    } else {
+	$element_sortorder = $element['sortorder'];
+    }
+
     // get all the elements after this one and increase their sortorder value by 1
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `formid` = :fid AND `sortorder` > :sort;");
 
 	$stmt->bindParam(':fid', $fid);
 	$stmt->bindParam(':sort', $sort);
 
 	$fid = $formid;
-	$sort = $element['sortorder'];
+	$sort = $element_sortorder;
 
 	if ($stmt->execute()) {
 
@@ -13520,7 +13608,7 @@ function nbt_add_reference_data ( $formid, $elementid, $displayname = NULL, $ref
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("INSERT INTO formelements (formid, sortorder, type, displayname, columnname, codebook, toggle, startup_visible, conditional_logical_operator, destructive_hiding) VALUES (:form, :sort, :type, :displayname, :columnname, :codebook, :toggle, :startup_visible, :conditional_logical_operator, :destructive_hiding);");
 
 	$stmt->bindParam(':form', $fid);
@@ -13535,7 +13623,7 @@ function nbt_add_reference_data ( $formid, $elementid, $displayname = NULL, $ref
 	$stmt->bindParam(':destructive_hiding', $dh);
 
 	$fid = $formid;
-	$sort = $element['sortorder'] + 1;
+	$sort = $element_sortorder + 1;
 	$type = "reference_data";
 	$dn = $displayname;
 	$cn = $refdata;
@@ -13561,7 +13649,7 @@ function nbt_set_master_status ( $formid, $masterid, $newstatus ) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `timestamp_finished` = NOW() WHERE id = :fid LIMIT 1;");
 
 	    $stmt->bindParam(':fid', $fid);
@@ -13591,7 +13679,7 @@ function nbt_set_master_status ( $formid, $masterid, $newstatus ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare ("UPDATE `m_extractions_" . $formid . "` SET `status` = :value WHERE `id` = :mid LIMIT 1;");
 
 	$stmt->bindParam(':mid', $mid);
@@ -13618,7 +13706,7 @@ function nbt_search_multiples ( $refsetid, $query ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `title` LIKE :query OR `title` LIKE :altquery OR `authors` LIKE :query LIMIT 6;");
 
 	$stmt->bindParam(':query', $quer);
@@ -13647,7 +13735,7 @@ function nbt_get_all_assignments_for_refset_and_ref ( $refset, $ref ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `assignments` WHERE `refsetid` = :refset AND `referenceid` = :ref;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -13676,7 +13764,7 @@ function nbt_get_master_extractions_for_refset_ref_and_form ( $refsetid, $refid,
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :refset AND `referenceid` = :ref ORDER BY id ASC;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -13705,7 +13793,7 @@ function nbt_move_assignments_for_refset_fromref_toref ( $refset, $from_rid, $to
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `assignments` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
 
 	$stmt->bindParam(':torid', $trid);
@@ -13730,7 +13818,7 @@ function nbt_move_extractions_for_form_db_refset_fromref_toref ( $formid, $refse
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
 
 	$stmt->bindParam(':torid', $trid);
@@ -13765,7 +13853,7 @@ function nbt_move_extractions_for_form_db_refset_fromref_toref ( $formid, $refse
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("UPDATE `tabledata_" . $element['columnname'] . "` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
 
 		$stmt->bindParam(':torid', $trid);
@@ -13794,7 +13882,7 @@ function nbt_move_extractions_for_form_db_refset_fromref_toref ( $formid, $refse
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("UPDATE `sub_" . $element['columnname'] . "` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
 
 		$stmt->bindParam(':torid', $trid);
@@ -13825,7 +13913,7 @@ function nbt_move_master_for_form_db_refset_fromref_toref ( $formid, $refset, $f
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
 
 	$stmt->bindParam(':torid', $trid);
@@ -13857,7 +13945,7 @@ function nbt_move_master_for_form_db_refset_fromref_toref ( $formid, $refset, $f
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("UPDATE `mtable_" . $element['columnname'] . "` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
 
 		$stmt->bindParam(':torid', $trid);
@@ -13884,7 +13972,7 @@ function nbt_move_master_for_form_db_refset_fromref_toref ( $formid, $refset, $f
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("UPDATE `msub_" . $element['columnname'] . "` SET `referenceid` = :torid WHERE `refsetid` = :refset AND `referenceid` = :fromrid;");
 
 		$stmt->bindParam(':torid', $trid);
@@ -13913,7 +14001,7 @@ function nbt_get_all_reconciled_references_for_refset_and_form ( $refsetid, $for
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `referenceset_" . $refsetid . "` WHERE `id` IN (SELECT `referenceid` FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :refset AND `status` = 2) ORDER BY id ASC;");
 
 	$stmt->bindParam(':refset', $rsid);
@@ -13948,7 +14036,7 @@ function nbt_get_unique_entries_for_prev_select ( $elementid, $refsetid, $extrac
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT `" . $columnname . "` FROM `extractions_" . $formid . "` WHERE `refsetid` = :refset AND `id` != :exid AND `" . $columnname . "` IS NOT NULL AND `" . $columnname . "` != '' GROUP BY `" . $columnname . "` ORDER BY `" . $columnname . "` ASC;");
 
 	    $stmt->bindParam(':refset', $rsid);
@@ -13979,7 +14067,7 @@ function nbt_get_unique_values_for_refset_column ( $refsetid, $column ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT DISTINCT(" . $column . ") FROM `referenceset_" . $refsetid ."` ORDER BY `" . $column . "`;");
 
 	$stmt->execute();
@@ -14002,7 +14090,7 @@ function nbt_get_referenceids_for_refset_column_and_value ( $refsetid, $column, 
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT `id` FROM `referenceset_" . $refsetid ."` WHERE `" . $column . "` = :value;");
 
 	$stmt->bindParam(':value', $val);
@@ -14059,7 +14147,7 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 
 		try {
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		    $stmt = $dbh->prepare("SELECT `id` FROM `referenceset_" . $refsetid ."` ORDER BY RAND() LIMIT " . $k . ";");
 
 		    $stmt->execute();
@@ -14082,7 +14170,7 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 
 		try {
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		    $stmt = $dbh->prepare("SELECT id FROM `referenceset_" . $refsetid . "` WHERE (SELECT COUNT(DISTINCT(`userid`)) FROM assignments WHERE refsetid = " . $refsetid . " AND formid = " . $form . " AND assignments.referenceid = referenceset_" . $refsetid . ".id) " . $comp . " " . $n . " ORDER BY RAND() LIMIT " . $k . ";");
 
 		    $stmt->execute();
@@ -14105,7 +14193,7 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 
 		try {
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		    $stmt = $dbh->prepare("SELECT id FROM `referenceset_" . $refsetid . "` WHERE (SELECT COUNT(*) FROM extractions_" . $form . " WHERE status = 2 AND refsetid = " . $refsetid . " AND extractions_" . $form . ".referenceid = referenceset_" . $refsetid . ".id) " . $comp . " " . $n . " ORDER BY RAND() LIMIT " . $k . ";");
 
 		    $stmt->execute();
@@ -14128,7 +14216,7 @@ function nbt_get_k_random_referenceids_for_refset ( $refsetid, $k, $n, $crit, $c
 
 		try {
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		    $stmt = $dbh->prepare("SELECT id FROM `referenceset_" . $refsetid . "` WHERE (SELECT COUNT(*) FROM m_extractions_" . $form . " WHERE status = 2 AND refsetid = " . $refsetid . " AND m_extractions_" . $form . ".referenceid = referenceset_" . $refsetid . ".id) " . $comp . " " . $n . " ORDER BY RAND() LIMIT " . $k . ";");
 
 		    $stmt->execute();
@@ -14179,7 +14267,7 @@ function nbt_get_k_random_referenceids_for_refset_by_user ( $refsetid, $k, $form
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT id FROM `referenceset_" . $refsetid . "` WHERE (SELECT id FROM assignments WHERE refsetid = " . $refsetid . " AND formid = " . $form . " AND userid = " . $user . " AND assignments.referenceid = referenceset_" . $refsetid . ".id) " . $yn . " ORDER BY RAND() LIMIT " . $k . ";");
 
 	    $stmt->execute();
@@ -14247,7 +14335,7 @@ function nbt_get_k_random_referenceids_for_refset_by_user_and_users ( $refsetid,
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT id FROM `referenceset_" . $refsetid . "` WHERE (SELECT id FROM assignments WHERE refsetid = " . $refsetid . " AND formid = " . $form . " AND userid = " . $user . " AND assignments.referenceid = referenceset_" . $refsetid . ".id) " . $yn . " AND (SELECT COUNT(*) FROM assignments WHERE refsetid = " . $refsetid . " AND formid = " . $form . " AND userid != " . $user . " AND assignments.referenceid = `referenceset_" . $refsetid . "`.`id`) " . $comp . " " . $n . "  ORDER BY RAND() LIMIT " . $k . ";");
 
 	    $stmt->execute();
@@ -14274,7 +14362,7 @@ function get_incomplete_assignments_for_form_and_refset ( $formid, $refsetid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM assignments WHERE refsetid = :rsid AND formid = :fid AND referenceid NOT IN (SELECT `referenceid` FROM `extractions_" . $formid . "` WHERE extractions_" . $formid . ".refsetid = assignments.refsetid AND `status` = 2 AND extractions_" . $formid . ".userid = assignments.userid)");
 
 	$stmt->bindParam(':fid', $fid);
@@ -14305,7 +14393,7 @@ function nbt_get_times_for_extraction ( $formid, $refsetid, $refid, $userid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT UNIX_TIMESTAMP() - UNIX_TIMESTAMP(`timestamp_started`) as `time_started`, UNIX_TIMESTAMP() - UNIX_TIMESTAMP(`timestamp_finished`) as `time_finished` FROM `extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid");
 
 	$stmt->bindParam(':rsid', $rsid);
@@ -14344,7 +14432,7 @@ function nbt_restart_extraction_timer ( $formid, $refsetid, $refid, $userid ) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `timestamp_started` = NOW(), `timestamp_finished` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid");
 
 	$stmt->bindParam(':rsid', $rsid);
@@ -14379,7 +14467,7 @@ function nbt_clear_finished_extraction_timer ( $formid, $refsetid, $refid, $user
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `timestamp_finished` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid");
 
 	$stmt->bindParam(':rsid', $rsid);
@@ -14414,7 +14502,7 @@ function nbt_table_exists ($tablename) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SHOW TABLES LIKE '" . $tablename . "';");
 
 	$stmt->execute();
@@ -14460,7 +14548,7 @@ function nbt_toggle_element_startup_visible ($elementid) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `formelements` SET `startup_visible` = IF(`startup_visible`=1, 0, 1) WHERE `id` = :eid LIMIT 1;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -14487,7 +14575,7 @@ function nbt_toggle_subelement_startup_visible ($subelementid) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `subelements` SET `startup_visible` = IF(`startup_visible`=1, 0, 1) WHERE `id` = :seid LIMIT 1;");
 
 	$stmt->bindParam(':seid', $seid);
@@ -14514,7 +14602,7 @@ function nbt_add_conditional_display_event ($elementid) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("INSERT INTO `conditional_display` (`elementid`) VALUES (:eid);");
 
 	$stmt->bindParam(':eid', $eid);
@@ -14543,7 +14631,7 @@ function nbt_copy_conditional_display_event ($elementid, $subelementid, $trigger
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("INSERT INTO `conditional_display` (`elementid`, `subelementid`, `trigger_element`, `trigger_option`, `type`) VALUES (:eid, :seid, :teid, :to, :ty);");
 
 	$stmt->bindParam(':eid', $eid);
@@ -14580,7 +14668,7 @@ function nbt_add_sub_conditional_display_event ($subelementid) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("INSERT INTO `conditional_display` (`subelementid`) VALUES (:seid);");
 
 	$stmt->bindParam(':seid', $seid);
@@ -14609,7 +14697,7 @@ function nbt_remove_conditional_display_event ($eventid) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `conditional_display` WHERE `id` = :eid LIMIT 1;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -14638,7 +14726,7 @@ function nbt_get_conditional_events ($elementid) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `conditional_display` WHERE `elementid` = :eid;");
 
 	$stmt->bindParam(':eid', $eid);
@@ -14669,7 +14757,7 @@ function nbt_get_sub_conditional_events ($subelementid) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `conditional_display` WHERE `subelementid` = :seid;");
 
 	$stmt->bindParam(':seid', $seid);
@@ -14700,7 +14788,7 @@ function nbt_get_conditional_events_for_formid ($formid) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `conditional_display` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid) OR `subelementid` IN (SELECT `id` FROM `subelements` WHERE `elementid` IN (SELECT `id` FROM `formelements` WHERE `formid` = :fid));");
 
 	$stmt->bindParam(':fid', $fid);
@@ -14735,7 +14823,7 @@ function nbt_update_conditional_display_trigger_element ($eventid, $trigger_elem
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `conditional_display` SET `trigger_element` = :teid WHERE `id` = :eventid LIMIT 1;");
 
 	$stmt->bindParam(':teid', $teid);
@@ -14770,7 +14858,7 @@ function nbt_update_conditional_display_trigger_option ($eventid, $trigger_optio
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `conditional_display` SET `trigger_option` = :topt WHERE `id` = :eventid LIMIT 1;");
 
 	$stmt->bindParam(':topt', $topt);
@@ -14798,7 +14886,7 @@ function nbt_update_conditional_display_type ($eventid, $cd_type) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `conditional_display` SET `type` = :type WHERE `id` = :eventid LIMIT 1;");
 
 	$stmt->bindParam(':type', $type);
@@ -14825,7 +14913,7 @@ function nbt_update_conditional_display_logic ($elementid, $operator) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `formelements` SET `conditional_logical_operator` = :lopt WHERE `id` = :elementid LIMIT 1;");
 
 	$stmt->bindParam(':lopt', $lopt);
@@ -14852,7 +14940,7 @@ function nbt_update_sub_conditional_display_logic ($subelementid, $operator) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `subelements` SET `conditional_logical_operator` = :lopt WHERE `id` = :subelementid LIMIT 1;");
 
 	$stmt->bindParam(':lopt', $lopt);
@@ -14879,7 +14967,7 @@ function nbt_update_conditional_display_destructive_hiding ($elementid, $destruc
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `formelements` SET `destructive_hiding` = :dh WHERE `id` = :elementid LIMIT 1;");
 
 	$stmt->bindParam(':dh', $dh);
@@ -14906,7 +14994,7 @@ function nbt_update_sub_conditional_display_destructive_hiding ($subelementid, $
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("UPDATE `subelements` SET `destructive_hiding` = :dh WHERE `id` = :seid LIMIT 1;");
 
 	$stmt->bindParam(':dh', $dh);
@@ -14933,7 +15021,7 @@ function nbt_get_subextraction_elements_for_subextraction_dbname ($dbname) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `type` = 'sub_extraction' AND `columnname` = :dbname LIMIT 1;");
 
 	$stmt->bindParam(':dbname', $dn);
@@ -14968,7 +15056,7 @@ function nbt_get_element_for_subextraction_dbname ($dbname) {
 
     try {
 	
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `type` = 'sub_extraction' AND `columnname` = :dbname LIMIT 1;");
 
 	$stmt->bindParam(':dbname', $dn);
@@ -15017,7 +15105,7 @@ function nbt_assignments_for_export ($refset) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT `whenassigned`, `referenceset_" . $refsetid . "`.`id` as `referenceid`, `referenceset_" . $refsetid . "`.`" . $title_col_name . "` as `title`, `users`.`id` as `userid`, `username`, `forms`.`id` as `formid`, `forms`.`name` as `form` FROM `referenceset_" . $refsetid . "`, `assignments`, `users`, `forms` WHERE `assignments`.`refsetid` = " . $refsetid . " AND `referenceset_" . $refsetid . "`.`id` = `assignments`.`referenceid` AND `users`.`id` = `assignments`.`userid` AND `forms`.`id` = `assignments`.`formid`;");
 
 	if ($stmt->execute()) {
@@ -15048,7 +15136,7 @@ function nbt_get_completions_for_assignment_export ($refsetid) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT `formid` FROM `assignments` WHERE `refsetid` = :rsid GROUP BY `formid`");
 
 	$stmt->bindParam(':rsid', $rsid);
@@ -15083,7 +15171,7 @@ function nbt_get_completions_for_assignment_export ($refsetid) {
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT `referenceid`, `userid`, `timestamp_finished`, `status`, '" . $fid . "' as `formid` FROM `extractions_" . $fid . "` WHERE `refsetid` = :rsid");
 
 	    $stmt->bindParam(':rsid', $rsid);
@@ -15122,7 +15210,7 @@ function nbt_new_file_upload ($filename, $userid) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("INSERT INTO `uploads` (`userid`, `filename`) VALUES (:uid, :fn);");
 
 	$stmt->bindParam(':uid', $uid);
@@ -15157,7 +15245,7 @@ function nbt_get_all_uploads () {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `uploads`, `users` WHERE `uploads`.`userid` = `users`.`id` ORDER BY `when_uploaded` DESC;");
 
 	if ( $stmt->execute() ) {
@@ -15203,7 +15291,7 @@ function nbt_delete_uploaded_file ($fileid) {
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `uploads` WHERE `id` = :upid;");
 
 	$stmt->bindParam(':upid', $upid1);
@@ -15228,7 +15316,7 @@ function nbt_delete_uploaded_file ($fileid) {
 
     try {
 
-    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     	$stmt = $dbh->prepare("DELETE FROM `uploads` WHERE `id` = :upid LIMIT 1;");
 
     	$stmt->bindParam(':upid', $upid2);
@@ -15281,7 +15369,7 @@ function nbt_screening_include ($formid, $refsetid, $referenceid) {
 
   try {
 
-    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     $stmt = $dbh->prepare("SELECT * FROM `extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
 
     $stmt->bindParam(':rsid', $rsid);
@@ -15310,7 +15398,7 @@ function nbt_screening_include ($formid, $refsetid, $referenceid) {
     // Add a row to the db
     try {
 
-      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
       $stmt = $dbh->prepare("INSERT INTO `extractions_" . $formid . "` (`refsetid`, `referenceid`, `userid`, `include`, `status`, `timestamp_finished`) VALUES (:rsid, :rid, :uid, 1, 2, NOW())");
 
       $stmt->bindParam(':rsid', $rsid);
@@ -15341,7 +15429,7 @@ function nbt_screening_include ($formid, $refsetid, $referenceid) {
         // Clear exclusion reason
         try {
 
-          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
           $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `include` = 1, `exclusion_reason` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
 
           $stmt->bindParam(':rsid', $rsid);
@@ -15374,7 +15462,7 @@ function nbt_screening_include ($formid, $refsetid, $referenceid) {
         // Clear exclusion reason
         try {
 
-          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
           $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `include` = NULL, `exclusion_reason` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
 
           $stmt->bindParam(':rsid', $rsid);
@@ -15406,7 +15494,7 @@ function nbt_screening_include ($formid, $refsetid, $referenceid) {
         // Update include to 0
         try {
 
-          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
           $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `include` = 0 WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
 
           $stmt->bindParam(':rsid', $rsid);
@@ -15449,7 +15537,7 @@ function nbt_screening_reconcile_include ($formid, $refsetid, $referenceid) {
     
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
 
 	$stmt->bindParam(':rsid', $rsid);
@@ -15476,7 +15564,7 @@ function nbt_screening_reconcile_include ($formid, $refsetid, $referenceid) {
 	// Add a row to the db
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("INSERT INTO `m_extractions_" . $formid . "` (`refsetid`, `referenceid`, `include`, `status`, `timestamp_finished`) VALUES (:rsid, :rid, 1, 2, NOW())");
 
 	    $stmt->bindParam(':rsid', $rsid);
@@ -15505,7 +15593,7 @@ function nbt_screening_reconcile_include ($formid, $refsetid, $referenceid) {
 		// Clear exclusion reason
 		try {
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		    $stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `include` = 1, `exclusion_reason` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
 
 		    $stmt->bindParam(':rsid', $rsid);
@@ -15536,7 +15624,7 @@ function nbt_screening_reconcile_include ($formid, $refsetid, $referenceid) {
 		// Clear exclusion reason
 		try {
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		    $stmt = $dbh->prepare("DELETE FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
 
 		    $stmt->bindParam(':rsid', $rsid);
@@ -15563,7 +15651,7 @@ function nbt_screening_reconcile_include ($formid, $refsetid, $referenceid) {
 		// Update include to 0
 		try {
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		    $stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `include` = 0 WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
 
 		    $stmt->bindParam(':rsid', $rsid);
@@ -15603,7 +15691,7 @@ function nbt_screening_exclude ($formid, $refsetid, $referenceid, $reason) {
 
   try {
 
-    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     $stmt = $dbh->prepare("SELECT * FROM `extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
 
     $stmt->bindParam(':rsid', $rsid);
@@ -15632,7 +15720,7 @@ function nbt_screening_exclude ($formid, $refsetid, $referenceid, $reason) {
 
     try {
 
-      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
       $stmt = $dbh->prepare("INSERT INTO `extractions_" . $formid . "` (`refsetid`, `referenceid`, `userid`, `include`, `exclusion_reason`, `status`, `timestamp_finished`) VALUES (:rsid, :rid, :uid, 0, :er, 2, NOW())");
 
       $stmt->bindParam(':rsid', $rsid);
@@ -15663,7 +15751,7 @@ function nbt_screening_exclude ($formid, $refsetid, $referenceid, $reason) {
 
       try {
 
-        $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `include` = 0, `exclusion_reason` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
 
         $stmt->bindParam(':rsid', $rsid);
@@ -15690,7 +15778,7 @@ function nbt_screening_exclude ($formid, $refsetid, $referenceid, $reason) {
 
       try {
 
-        $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `include` = 0, `exclusion_reason` = :er WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
 
         $stmt->bindParam(':rsid', $rsid);
@@ -15729,7 +15817,7 @@ function nbt_screening_reconcile_exclude ($formid, $refsetid, $referenceid, $rea
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SELECT * FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
 
 	$stmt->bindParam(':rsid', $rsid);
@@ -15756,7 +15844,7 @@ function nbt_screening_reconcile_exclude ($formid, $refsetid, $referenceid, $rea
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("INSERT INTO `m_extractions_" . $formid . "` (`refsetid`, `referenceid`, `include`, `exclusion_reason`, `status`, `timestamp_finished`) VALUES (:rsid, :rid, 0, :er, 2, NOW())");
 
 	    $stmt->bindParam(':rsid', $rsid);
@@ -15785,7 +15873,7 @@ function nbt_screening_reconcile_exclude ($formid, $refsetid, $referenceid, $rea
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `include` = 0, `exclusion_reason` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
 
 		$stmt->bindParam(':rsid', $rsid);
@@ -15810,7 +15898,7 @@ function nbt_screening_reconcile_exclude ($formid, $refsetid, $referenceid, $rea
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `include` = 0, `exclusion_reason` = :er WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
 
 		$stmt->bindParam(':rsid', $rsid);
@@ -15845,7 +15933,7 @@ function nbt_screening_notes ($formid, $refsetid, $referenceid, $notes) {
 
   try {
 
-    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     $stmt = $dbh->prepare("SELECT * FROM `extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
 
     $stmt->bindParam(':rsid', $rsid);
@@ -15874,7 +15962,7 @@ function nbt_screening_notes ($formid, $refsetid, $referenceid, $notes) {
     // Insert a new row
     try {
 
-      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
       $stmt = $dbh->prepare("INSERT INTO `extractions_" . $formid . "` (`refsetid`, `referenceid`, `userid`, `status`, `timestamp_finished`, `extractor_notes`) VALUES (:rsid, :rid, :uid, 2, NOW(), :notes)");
 
       $stmt->bindParam(':rsid', $rsid);
@@ -15903,7 +15991,7 @@ function nbt_screening_notes ($formid, $refsetid, $referenceid, $notes) {
     // Update the existing row
     try {
 
-      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
       $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `extractor_notes` = :notes WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
 
       $stmt->bindParam(':rsid', $rsid);

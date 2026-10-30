@@ -42,9 +42,9 @@ if ( nbt_user_is_logged_in () ) { // User is logged in
 		
 		$lines = array();
 
-		while (($udata = fgetcsv($file, 100000, "\t")) !== FALSE) {
-		    $lines[] = $udata;
-		}
+		while (($udata = fgetcsv($file, 100000, "\t", "\"", "\\")) !== FALSE) {
+		$lines[] = $udata;
+	    }
 
 		fclose ( $file );
 

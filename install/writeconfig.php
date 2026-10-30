@@ -41,7 +41,7 @@
 
 	try { // assignments table
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `assignments`; CREATE TABLE `assignments` ( `id` int(11) NOT NULL AUTO_INCREMENT, `whenassigned` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `userid` int(11) NOT NULL, `assignerid` int(11) NOT NULL, `formid` int(11) NOT NULL, `refsetid` int(11) NOT NULL, `referenceid` int(11) NOT NULL, `hidden` int(11) NOT NULL DEFAULT '0', PRIMARY KEY (`id`), UNIQUE KEY `assign_once` (`userid`,`formid`,`refsetid`,`referenceid`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	    if ( $stmt->execute() ) {
@@ -66,7 +66,7 @@
 
 	try { // citations columns table
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `citationscolumns`; CREATE TABLE `citationscolumns` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `elementid` int(11) DEFAULT NULL, `displayname` varchar(200) DEFAULT NULL, `dbname` varchar(50) DEFAULT NULL, `remind` int(11) DEFAULT '0', `caps` int(11) DEFAULT '0', `sortorder` int(11) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
 	    if ( $stmt->execute() ) {
@@ -91,7 +91,7 @@
 
 	try { // form elements table
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `formelements`; CREATE TABLE `formelements` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `formid` int(11) DEFAULT NULL, `sortorder` int(11) DEFAULT NULL, `type` varchar(20) DEFAULT NULL, `columnname` varchar(2500) DEFAULT NULL, `displayname` varchar(200) DEFAULT NULL, `codebook` varchar(2000) DEFAULT NULL, `toggle` varchar(50) DEFAULT NULL, `startup_visible` INT(11) NULL DEFAULT 1, `conditional_logical_operator` CHAR(3) NULL DEFAULT 'any', `destructive_hiding` INT(11) NULL DEFAULT 1, `regex` varchar(500) DEFAULT NULL, `tagprompts` TEXT DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
 	    if ( $stmt->execute() ) {
@@ -116,7 +116,7 @@
 
 	try { // forms table
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `forms`; CREATE TABLE `forms` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `formtype` varchar(100) NOT NULL DEFAULT 'extraction', `name` varchar(500) DEFAULT NULL, `description` varchar(1000) DEFAULT NULL, `version` varchar(50) DEFAULT NULL, `author` varchar(2500) DEFAULT NULL, `affiliation` varchar(2500) DEFAULT NULL, `project` varchar(2500) DEFAULT NULL, `protocol` varchar(2500) DEFAULT NULL, projectdate varchar(500) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
 	    if ( $stmt->execute() ) {
@@ -141,7 +141,7 @@
 
 	try { // reference sets table
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `referencesets`; CREATE TABLE `referencesets` ( `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(200) NOT NULL DEFAULT '', `title` int(11) DEFAULT NULL, `authors` int(11) DEFAULT NULL, `year` int(11) DEFAULT NULL, `journal` int(11) DEFAULT NULL, `abstract` int(11) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	    if ( $stmt->execute() ) {
@@ -166,7 +166,7 @@
 
 	try { // selection options table
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `selectoptions`; CREATE TABLE `selectoptions` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `elementid` int(11) DEFAULT NULL, `subelementid` int(11) DEFAULT NULL, `displayname` varchar(200) DEFAULT NULL, `dbname` varchar(50) DEFAULT NULL, `toggle` varchar(50) DEFAULT NULL, `sortorder` int(11) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
 	    if ( $stmt->execute() ) {
@@ -191,7 +191,7 @@
 
 	try { // settings table
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `settings`; CREATE TABLE `settings` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `key` varchar(100) DEFAULT NULL, `value` varchar(500) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
 	    if ( $stmt->execute() ) {
@@ -216,7 +216,7 @@
 
 	try { // sub elements table
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `subelements`; CREATE TABLE `subelements` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `elementid` int(11) DEFAULT NULL, `sortorder` int(11) DEFAULT NULL, `type` varchar(20) DEFAULT NULL, `dbname` varchar(50) DEFAULT NULL, `displayname` varchar(200) DEFAULT NULL, `codebook` varchar(2000) DEFAULT NULL, `toggle` varchar(50) DEFAULT NULL, `startup_visible` INT(11) NULL DEFAULT 1, `conditional_logical_operator` CHAR(3) NULL DEFAULT 'any', `destructive_hiding` INT(11) NULL DEFAULT 1, `regex` varchar(500) DEFAULT NULL, `copypreviousprompt` int NOT NULL DEFAULT 1, `tagprompts` TEXT DEFAULT NULL, `reference_data_format` TEXT DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
 	    if ( $stmt->execute() ) {
@@ -241,7 +241,7 @@
 
 	try { // tabledata columns table
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `tabledatacolumns`; CREATE TABLE `tabledatacolumns` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `elementid` int(11) DEFAULT NULL, `subelementid` int(11) DEFAULT NULL, `displayname` varchar(200) DEFAULT NULL, `dbname` varchar(50) DEFAULT NULL, `sortorder` int(11) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
 	    if ( $stmt->execute() ) {
@@ -266,8 +266,8 @@
 
 	try { // users table
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `users`; CREATE TABLE `users` ( `id` int(11) NOT NULL AUTO_INCREMENT, `username` varchar(30) NOT NULL, `password` varchar(64) NOT NULL, `salt` varchar(3) NOT NULL, `email` varchar(300) NOT NULL, `privileges` int(11) DEFAULT '0', `emailverify` varchar(10) NOT NULL, `lastlogin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `passwordchangecode` varchar(10) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `users`; CREATE TABLE `users` ( `id` int(11) NOT NULL AUTO_INCREMENT, `username` varchar(30) NOT NULL, `password` varchar(64) NOT NULL, `salt` varchar(3) NOT NULL, `email` varchar(300) NOT NULL, `privileges` int(11) DEFAULT '0', `emailverify` varchar(10) NOT NULL, `lastlogin` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, `passwordchangecode` varchar(10) NOT NULL DEFAULT '', PRIMARY KEY (`id`) ) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	    if ( $stmt->execute() ) {
 
@@ -291,7 +291,7 @@
 
 	try { // uploads table
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `uploads`; CREATE TABLE `uploads` ( `id` int(11) NOT NULL AUTO_INCREMENT, `when_uploaded` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `userid` int(11) NOT NULL, `filename` TEXT NOT NULL, PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	    if ( $stmt->execute() ) {
@@ -316,7 +316,7 @@
 
 	try { // conditional display table
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `conditional_display`; CREATE TABLE `conditional_display` ( `id` int(11) NOT NULL AUTO_INCREMENT, `elementid` int(11) DEFAULT NULL, `subelementid` int(11) DEFAULT NULL, `trigger_element` int(11) DEFAULT NULL, `trigger_option` int(11) DEFAULT NULL, `type` varchar(50) DEFAULT 'is', PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	    if ( $stmt->execute() ) {
@@ -345,7 +345,7 @@
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("INSERT INTO `users` (`username`, `password`, `salt`, `email`, `emailverify`, `privileges`) VALUES (:username, :password, :salt, :email, :verification, :privileges);");
 
 	    $stmt->bindParam(':username', $theuser);
@@ -396,7 +396,7 @@
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("INSERT INTO `settings` (`key`, `value`) VALUES (:key, :value);");
 
 	    $stmt->bindParam(':key', $key);
@@ -417,7 +417,7 @@
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("INSERT INTO `settings` (`key`, `value`) VALUES (:key, :value);");
 
 	    $stmt->bindParam(':key', $key);

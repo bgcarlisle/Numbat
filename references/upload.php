@@ -66,7 +66,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		$lines = array();
 
-		while (($udata = fgetcsv($file, 100000, "\t")) !== FALSE) {
+		while (($udata = fgetcsv($file, 100000, "\t", "\"", "\\")) !== FALSE) {
 		    $lines[] = $udata;
 		}
 
