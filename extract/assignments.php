@@ -2,6 +2,14 @@
 
 $referencesets = nbt_get_all_ref_sets();
 
+if (! isset($_GET['sort'])) {
+    $_GET['sort'] = NULL;
+}
+
+if (! isset($_GET['sortdirection'])) {
+    $_GET['sortdirection'] = NULL;
+}
+
 ?>
 <div class="nbtContentPanel nbtGreyGradient">
   <h2>
@@ -21,7 +29,7 @@ $referencesets = nbt_get_all_ref_sets();
               <tr>
                 <td><?php echo $refset['name']; ?></td>
                 <td><?php echo $assignment['formname']; ?></td>
-                <td><a href="<?php echo SITE_URL; ?>extract/?action=screen&form=<?php echo $assignment['formid']; ?>&refset=<?php echo $assignment['refsetid']; ?>&screeningpage=1" target="_blank">Screen</a></td>
+                <td><a href="<?php echo SITE_URL; ?>extract/?action=screen&form=<?php echo $assignment['formid']; ?>&refset=<?php echo $refset['id']; ?>&screeningpage=1" target="_blank">Screen</a></td>
               </tr>
           <?php } ?>
         <?php } ?>
