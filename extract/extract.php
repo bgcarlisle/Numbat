@@ -6,23 +6,34 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 <div id="nbtManualRefs" class="nbtInlineManualNewRef">&nbsp;</div>
 <div class="nbtNonsidebar">
     <div class="nbtContentPanel">
-	<h2><?php echo $ref[$refset['title']]; ?></h2>
-	<p><?php echo $ref[$refset['authors']]; ?></p>
 	<?php
 
-	if (( $ref[$refset['journal']] != "") && ($ref[$refset['year']] != "")) {
+	// Reference metadata
 
-	    echo '<p><span class="nbtJournalName">';
+	$refmeta = $refset['refmeta'];
 
-	    echo $ref[$refset['journal']];
+	preg_match_all(
+	    '/\$([A-Za-z0-9_-]+)/',
+	    $refset['refmeta'],
+	    $cols_to_replace
+	);
 
-	    echo '</span>: ';
+	foreach ( $cols_to_replace[0] as $col_to_replace ) {
 
-	    echo $ref[$refset['year']];
-
-	    echo '</p>';
-
+	    $refmeta = preg_replace (
+		"/\\" . $col_to_replace . "\b/",
+		$ref[substr($col_to_replace, 1)],
+		$refmeta
+	    );
 	}
+
+	// $refmeta = str_replace("\n", "<br>", $refmeta);
+
+	echo "<div>" . $refmeta . "</div>";
+
+	?>
+	
+	<?php
 
 	if ( is_dir ( ABS_PATH . "attach/files/" . $_GET['refset'] . "/" ) ) {
 
@@ -82,25 +93,38 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
 
 	?>
     </div>
-    <div class="nbtContentPanel">
-	<h3>Abstract</h3>
-	<p class="nbtFinePrint"><a href="#" onclick="event.preventDefault();$('#nbtAbstract').slideToggle(200);">Show / hide abstract</a></p>
-	<p id="nbtAbstract">
-	    <?php
+    <?php
 
-	    if ( $ref[$refset['abstract']] != NULL) {
+    // Reference metadata (more)
 
-		echo $ref[$refset['abstract']];
+    $refmetamore = $refset['refmetamore'];
 
-	    } else {
+    preg_match_all(
+	'/\$([A-Za-z0-9_-]+)/',
+	$refset['refmetamore'],
+	$cols_to_replace
+    );
 
-		echo "[No abstract]";
+    foreach ( $cols_to_replace[0] as $col_to_replace ) {
 
-	    }
+	$refmetamore = preg_replace (
+	    "/\\" . $col_to_replace . "\b/",
+	    $ref[substr($col_to_replace, 1)],
+	    $refmetamore
+	);
+    }
 
-	    ?>
-	</p>
-    </div>
+    $refmetamore = str_replace("\n", "<br>", $refmetamore);
+
+    if ($refmetamore != "") {
+    ?><div class="nbtContentPanel">
+	<p><a href="#" onclick="event.preventDefault();$('#nbtAbstract').slideToggle(200);">Show / hide more metadata</a></p>
+	<div id="nbtAbstract"><?php echo $refmetamore; ?></div>
+    </div><?php
+    }
+
+    ?>
+
     <div class="nbtContentPanel">
 	<h3>Status of extraction</h3>
 	<?php nbt_echo_single_select ($_GET['form'], $extraction, "status", array (

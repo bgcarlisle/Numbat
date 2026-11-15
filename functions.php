@@ -925,6 +925,11 @@ function nbt_update_refset_metadata ( $refset, $column, $newvalue ) {
 	$newvalue = NULL;
     }
 
+    // Check that the column to be changed is either refmeta or refmetamore
+    if (! in_array($column, array("refmeta", "refmetamore"))) {
+	return FALSE;
+    }
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -12542,46 +12547,21 @@ function nbt_change_refset_name ( $refsetid, $newname ) {
 
 }
 
-function nbt_make_new_refset_row ( $newname, $title, $authors, $year, $journal, $abstract ) { // Returns the id of the new refset
+function nbt_make_new_refset_row ( $newname, $refmeta, $refmetamore ) { // Returns the id of the new refset
 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("INSERT INTO `referencesets` (`name`, `title`, `authors`, `year`, `journal`, `abstract`) VALUES (:name, :title, :authors, :year, :journal, :abstract)");
+	$stmt = $dbh->prepare("INSERT INTO `referencesets` (`name`, `refmeta`, `refmetamore`) VALUES (:name, :rm, :rmm)");
 
 	$stmt->bindParam(':name', $name);
-	$stmt->bindParam(':title', $ti);
-	$stmt->bindParam(':authors', $au);
-	$stmt->bindParam(':year', $ye);
-	$stmt->bindParam(':journal', $jo);
-	$stmt->bindParam(':abstract', $ab);
+	$stmt->bindParam(':rm', $rm);
+	$stmt->bindParam(':rmm', $rmm);
 	$name = $newname;
 	// Have to add 1 to each one, because the id column is added to each table by Numbat
-	if (is_int($title)) {
-	    $ti = $title + 1;
-	} else {
-	    $ti = NULL;
-	}
-	if (is_int($authors)) {
-	    $au = $authors + 1;
-	} else {
-	    $au = NULL;
-	}
-	if (is_int($year)) {
-	    $ye = $year + 1;
-	} else {
-	    $ye = NULL;
-	}
-	if (is_int($journal)) {
-	    $jo = $journal + 1;
-	} else {
-	    $jo = NULL;
-	}
-	if (is_int($abstract)) {
-	    $ab = $abstract + 1;
-	} else {
-	    $ab = NULL;
-	}
+
+	$rm = $refmeta;
+	$rmm = $refmetamore;
 
 	$stmt->execute();
 

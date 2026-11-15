@@ -93,13 +93,56 @@ foreach ($formelements as $element) {
           ?>
           <tr class="nbtFocusableScreeningRow">
             <td>
-              <h3><?php echo $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['title']]; ?></h3>
-              <p>
-                <?php echo $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['authors']]; ?>
-                <?php echo $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['journal']]; ?>
-                <?php echo $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['year']]; ?>
-              </p>
-              <p><?php echo str_replace("\n", "<br>", $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][$refset['abstract']]); ?></p>
+		<p>
+		    <?php
+
+		    $refmeta = $refset['refmeta'];
+
+		    preg_match_all(
+			'/\$([A-Za-z0-9_-]+)/',
+			$refset['refmeta'],
+			$cols_to_replace
+		    );
+
+		    foreach ( $cols_to_replace[0] as $col_to_replace ) {
+
+			$refmeta = preg_replace (
+			    "/\\" . $col_to_replace . "\b/",
+			    $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][substr($col_to_replace, 1)],
+			    $refmeta
+			);
+		    }
+
+		    $refmeta = str_replace("\n", "<br>", $refmeta);
+
+		    echo $refmeta;
+
+		    ?>
+		</p>
+		<p><?php
+		   
+		   $refmetamore = $refset['refmetamore'];
+		   
+		   preg_match_all(
+		       '/\$([A-Za-z0-9_-]+)/',
+		       $refset['refmetamore'],
+		       $cols_to_replace
+		   );
+
+		   foreach ( $cols_to_replace[0] as $col_to_replace ) {
+		       
+		       $refmetamore = preg_replace (
+			   "/\\" . $col_to_replace . "\b/",
+			   $refs[array_search($assignment['referenceid'], array_column($refs, "id"))][substr($col_to_replace, 1)],
+			   $refmetamore
+		       );
+		   }
+
+		    $refmetamore = str_replace("\n", "<br>", $refmetamore);
+
+		    echo $refmetamore;
+
+		   ?></p>
 	      <div><?php
 		   
 		   foreach ($formelements as $ele) {

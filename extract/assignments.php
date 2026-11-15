@@ -118,15 +118,31 @@ if (! isset($_GET['sortdirection'])) {
 	    ?>
 	    <td><?php echo substr ($assignment['whenassigned'], 0, 10); ?></td>
 	    <td>
-    		<h4><?php echo $ref[$refset['title']]; ?></h4>
-    		<p><?php echo $ref[$refset['authors']]; ?></p>
-    		<?php
+		<?php
+		// Refmeta
+		
+		$refmeta = $refset['refmeta'];
 
-    		if ( $ref[$refset['journal']] != "" && $ref[$refset['year']] != "" ) {
+		preg_match_all(
+		    '/\$([A-Za-z0-9_-]+)/',
+		    $refset['refmeta'],
+		    $cols_to_replace
+		);
 
-		        ?><p><?php echo $ref[$refset['journal']]; ?>: <?php echo $ref[$refset['year']]; ?></p><?php
+		foreach ( $cols_to_replace[0] as $col_to_replace ) {
 
-	      } ?>
+		    $refmeta = preg_replace (
+			"/\\" . $col_to_replace . "\b/",
+			$ref[substr($col_to_replace, 1)],
+			$refmeta
+		    );
+		}
+
+		// $refmeta = str_replace("\n", "<br>", $refmeta);
+
+		echo "<div>" . $refmeta . "</div>";
+		
+		?>
       </td>
 	    <td><?php
 

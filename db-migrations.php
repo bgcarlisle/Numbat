@@ -10,75 +10,27 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     echo '<h2>Database migrations</h2>';
 
-    // 1. Add columns for reference sets meta-data
+    // 1. Columns for reference sets meta-data
 
     echo '<h3>Reference set meta-data</h3>';
 
-    if ( ! check_for_referencesets_column ("title") ) {
-
-    	try {
-
-    	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-    	    $stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `title` INT(11) NULL DEFAULT NULL AFTER `name`;");
-
-    	    if ($stmt->execute()) {
-    		echo "<p>Reference sets table updated with title column</p>";
-    	    } else {
-    		echo "<p>Error updating reference sets table with title column</p>";
-    	    }
-
-    	    $dbh = null;
-
-    	}
-
-    	catch (PDOException $e) {
-    	    echo $e->getMessage();
-    	}
-
-    } else {
-
-	echo "<p>The reference sets table already has a title column</p>";
-
-    }
-
-    if ( ! check_for_referencesets_column ("authors") ) {
-
-    	try {
-
-    	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-    	    $stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `authors` INT(11) NULL DEFAULT NULL AFTER `title`;");
-
-    	    if ($stmt->execute()) {
-    		echo "<p>Reference sets table updated with authors column</p>";
-    	    } else {
-    		echo "<p>Error updating reference sets table with authors column</p>";
-    	    }
-
-    	    $dbh = null;
-
-    	}
-
-    	catch (PDOException $e) {
-    	    echo $e->getMessage();
-    	}
-
-    } else {
-
-	echo "<p>The reference sets table already has an authors column</p>";
-
-    }
-
-    if ( ! check_for_referencesets_column ("year") ) {
+    // Check for the refmeta column
+    if ( ! check_for_referencesets_column ("refmeta") ) {
+	// It's not there
+	
+	$refsets = FALSE;
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `year` INT(11) NULL DEFAULT NULL AFTER `authors`;");
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("SELECT * FROM `referencesets`;");
 
 	    if ($stmt->execute()) {
-		echo "<p>Reference sets table updated with year column</p>";
+
+		$refsets = $stmt->fetchAll();
+
 	    } else {
-		echo "<p>Error updating reference sets table with year column</p>";
+		echo "<p>Error getting reference sets</p>";
 	    }
 
 	    $dbh = null;
@@ -86,72 +38,135 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 
 	catch (PDOException $e) {
-
 	    echo $e->getMessage();
-
 	}
 
-    } else {
+	if ($refsets) {
 
-	echo "<p>The reference sets table already has a year column</p>";
+	    // add refmeta, refmetamore columns
+	    try {
 
-    }
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `refmeta` TEXT NULL DEFAULT NULL AFTER `abstract`, ADD COLUMN `refmetamore` TEXT NULL DEFAULT NULL AFTER `refmeta`;");
 
-    if ( ! check_for_referencesets_column ("journal") ) {
+		if ($stmt->execute()) {
+		    echo "<p>The referencesets table has been updated with the \"refmeta\" and \"refmetamore\" columns</p>";
+		} else {
+		    echo "<p>Error updating the referencesets table with \"refmeta\" and \"refmetamore\" columns</p>";
+		}
 
-	try {
+		$dbh = null;
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `journal` INT(11) NULL DEFAULT NULL AFTER `year`;");
-
-	    if ($stmt->execute()) {
-		echo "<p>Reference sets table updated with journal column</p>";
-	    } else {
-		echo "<p>Error updating reference sets table with journal column</p>";
 	    }
 
-	    $dbh = null;
-
-	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-
-    } else {
-
-	echo "<p>The reference sets table already has a journal column</p>";
-
-    }
-
-    if ( ! check_for_referencesets_column ("abstract") ) {
-
-	try {
-
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `abstract` INT(11) NULL DEFAULT NULL AFTER `journal`;");
-
-	    if ($stmt->execute()) {
-		echo "<p>Reference sets table updated with abstract column</p>";
-	    } else {
-		echo "<p>Error updating reference sets table with abstract column</p>";
+	    catch (PDOException $e) {
+		echo $e->getMessage();
 	    }
 
-	    $dbh = null;
+	    // remove old metadata columns
+	    try {
 
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("ALTER TABLE `referencesets` DROP `title`, DROP `authors`, DROP `year`, DROP `journal`, DROP `abstract`;");
+
+		if ($stmt->execute()) {
+		    echo "<p>The \"title\", \"authors\", \"journal\", \"year\", \"abstract\" columns have been removed from the referencesets table</p>";
+		} else {
+		    echo "<p>Error removing the \"title\", \"authors\", \"journal\", \"year\", \"abstract\" columns from the referencesets table</p>";
+		}
+
+		$dbh = null;
+
+	    }
+
+	    catch (PDOException $e) {
+		echo $e->getMessage();
+	    }
+
+	    // loop through all the refsets and add a refmeta value based on the previous
+	    foreach ($refsets as $rs) {
+
+		$newrefmeta = "";
+		$newrefmetamore = "";
+
+		// get the current meta column values
+		
+		try {
+
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $stmt = $dbh->prepare("SHOW COLUMNS FROM `referenceset_" . $rs['id'] . "`");
+
+		    if ($stmt->execute()) {
+
+			$cols = $stmt->fetchAll();
+
+		    } else {
+			echo "<p>Error getting columns for reference set " . $rs['id'] . "</p>";
+		    }
+
+		    $dbh = null;
+
+		}
+
+		catch (PDOException $e) {
+		    echo $e->getMessage();
+		}
+
+		echo $rs['name'] . "<br>";
+		
+		if (
+		    is_numeric($rs['title']) &&
+		    is_numeric($rs['authors']) &&
+		    is_numeric($rs['journal']) &&
+		    is_numeric($rs['year'])
+		) {
+		    $newrefmeta = "<h3>$" . $cols[$rs['title']]['Field'] .  "</h3> $" . $cols[$rs['authors']]['Field'] . ". <b>$" . $cols[$rs['journal']]['Field'] . ",</b> $" . $cols[$rs['year']]['Field'];
+		    
+		} else {
+		    if (is_numeric($rs['title'])) {
+			$newrefmeta .= "<h3>$" . $cols[$rs['title']]['Field'] . "</h3> ";
+		    }
+		    if (is_numeric($rs['authors'])) {
+			$newrefmeta .= "$" . $cols[$rs['authors']]['Field'] . ". ";
+		    }
+		    if (is_numeric($rs['journal'])) {
+			$newrefmeta .= "$" . $cols[$rs['journal']]['Field'] . ". ";
+		    }
+		    if (is_numeric($rs['year'])) {
+			$newrefmeta .= "$" . $cols[$rs['year']]['Field'] . ". ";
+		    }
+		    $newrefmeta = trim($newrefmeta);
+		}
+
+		if (is_numeric($rs['abstract'])) {
+		    $newrefmetamore = "$" . $cols[$rs['abstract']]['Field'];
+		}
+
+		try {
+
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $stmt = $dbh->prepare("UPDATE referencesets SET `refmeta` = :rm, `refmetamore` = :rmm WHERE `id` = :rsid");
+
+		    $stmt->bindParam(':rm', $rm);
+		    $stmt->bindParam(':rmm', $rmm);
+		    $stmt->bindParam(':rsid', $rsid);
+
+		    $rm = $newrefmeta;
+		    $rmm = $newrefmetamore;
+		    $rsid = $rs['id'];
+
+		    $stmt->execute();
+
+		    $dbh = null;
+
+		}
+
+		catch (PDOException $e) {
+		    echo $e->getMessage();
+		}
+		
+	    }
 	}
-
-	catch (PDOException $e) {
-
-	    echo $e->getMessage();
-
-	}
-
-    } else {
-
-	echo "<p>The reference sets table already has an abstract column</p>";
 
     }
 
@@ -161,7 +176,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SHOW COLUMNS FROM `formelements` LIKE 'columnname';");
 
 	$stmt->execute();
@@ -176,7 +191,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		try {
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		    $stmt = $dbh->prepare("ALTER TABLE `formelements` CHANGE COLUMN `columnname` `columnname` VARCHAR(2500) NULL DEFAULT NULL;");
 
 		    if ($stmt->execute()) {
@@ -221,7 +236,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `extractions_" . $form['id'] . "` LIKE 'timestamp_finished';");
 
 	    $stmt->execute();
@@ -234,7 +249,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		try {
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		    $stmt = $dbh->prepare("ALTER TABLE `extractions_" . $form['id'] . "` ADD COLUMN `timestamp_finished` TIMESTAMP NULL DEFAULT NULL AFTER `timestamp_started`;");
 
 		    if ($stmt->execute()) {
@@ -276,7 +291,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `m_extractions_" . $form['id'] . "` LIKE 'timestamp_finished';");
 
 	    $stmt->execute();
@@ -289,7 +304,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		try {
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		    $stmt = $dbh->prepare("ALTER TABLE `m_extractions_" . $form['id'] . "` ADD COLUMN `timestamp_finished` TIMESTAMP NULL DEFAULT NULL AFTER `timestamp_started`;");
 
 		    if ($stmt->execute()) {
@@ -330,7 +345,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SHOW COLUMNS FROM `subelements` LIKE 'codebook';");
 
 	$stmt->execute();
@@ -345,7 +360,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 		try {
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		    $stmt = $dbh->prepare("ALTER TABLE `subelements` CHANGE COLUMN `codebook` `codebook` VARCHAR(2000) NULL DEFAULT NULL;");
 
 		    if ($stmt->execute()) {
@@ -386,7 +401,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SHOW COLUMNS FROM `formelements` LIKE 'regex';");
 
 	$stmt->execute();
@@ -399,7 +414,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("ALTER TABLE `formelements` ADD `regex` VARCHAR(500) NULL DEFAULT NULL AFTER `toggle`;");
 
 		if ($stmt->execute()) {
@@ -436,7 +451,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("SHOW COLUMNS FROM `subelements` LIKE 'regex';");
 
 	$stmt->execute();
@@ -449,7 +464,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	    try {
 
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 		$stmt = $dbh->prepare("ALTER TABLE `subelements` ADD `regex` VARCHAR(500) NULL DEFAULT NULL AFTER `toggle`;");
 
 		if ($stmt->execute()) {
@@ -488,7 +503,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `subelements` LIKE :column;");
 
 	    $stmt->bindParam(':column', $col);
@@ -523,7 +538,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `subelements` ADD COLUMN `copypreviousprompt` INT NOT NULL DEFAULT '1' AFTER `regex`;");
 
 	    if ($stmt->execute()) {
@@ -556,7 +571,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     	try {
 
-    	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `formtype` VARCHAR(100) NULL DEFAULT 'extraction' AFTER `id`;");
 
     	    if ($stmt->execute()) {
@@ -585,7 +600,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     	try {
 
-    	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+    	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
     	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `version` VARCHAR(50) NULL DEFAULT NULL AFTER `description`;");
 
     	    if ($stmt->execute()) {
@@ -614,7 +629,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `author` VARCHAR(2500) NULL DEFAULT NULL AFTER `version`;");
 
 	    if ($stmt->execute()) {
@@ -643,7 +658,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `affiliation` VARCHAR(2500) NULL DEFAULT NULL AFTER `author`;");
 
 	    if ($stmt->execute()) {
@@ -672,7 +687,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `project` VARCHAR(2500) NULL DEFAULT NULL AFTER `affiliation`;");
 
 	    if ($stmt->execute()) {
@@ -701,7 +716,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `protocol` VARCHAR(2500) NULL DEFAULT NULL AFTER `project`;");
 
 	    if ($stmt->execute()) {
@@ -730,7 +745,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `forms` ADD COLUMN `projectdate` VARCHAR(500) NULL DEFAULT NULL AFTER `protocol`;");
 
 	    if ($stmt->execute()) {
@@ -759,7 +774,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("CREATE TABLE IF NOT EXISTS `conditional_display` (`id` int(11) NOT NULL AUTO_INCREMENT, `elementid` int(11) DEFAULT NULL, `trigger_element` int(11) DEFAULT NULL, `trigger_option` int(11) DEFAULT NULL, `type` varchar(50) DEFAULT 'is', PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ($stmt->execute()) {
@@ -782,7 +797,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `formelements` LIKE :column;");
 
 	    $stmt->bindParam(':column', $col);
@@ -815,7 +830,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `formelements` ADD COLUMN `startup_visible` INT(11) NULL DEFAULT 1 AFTER `toggle`;");
 
 	    if ($stmt->execute()) {
@@ -842,7 +857,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `formelements` ADD COLUMN `conditional_logical_operator` CHAR(3) NULL DEFAULT 'any' AFTER `startup_visible`;");
 
 	    if ($stmt->execute()) {
@@ -869,7 +884,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `formelements` ADD COLUMN `destructive_hiding` INT(11) NULL DEFAULT 1 AFTER `conditional_logical_operator`;");
 
 	    if ($stmt->execute()) {
@@ -898,7 +913,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `subelements` ADD COLUMN `startup_visible` INT(11) NULL DEFAULT 1 AFTER `toggle`;");
 
 	    if ($stmt->execute()) {
@@ -925,7 +940,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `subelements` ADD COLUMN `conditional_logical_operator` CHAR(3) NULL DEFAULT 'any' AFTER `startup_visible`;");
 
 	    if ($stmt->execute()) {
@@ -952,7 +967,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `subelements` ADD COLUMN `destructive_hiding` INT(11) NULL DEFAULT '1' AFTER `conditional_logical_operator`;");
 
 	    if ($stmt->execute()) {
@@ -981,7 +996,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SHOW COLUMNS FROM `conditional_display` LIKE :column;");
 
 	    $stmt->bindParam(':column', $col);
@@ -1014,7 +1029,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `conditional_display` ADD COLUMN `subelementid` INT(11) NULL DEFAULT NULL AFTER `elementid`;");
 
 	    if ($stmt->execute()) {
@@ -1043,7 +1058,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT * FROM `formelements` WHERE `type` = 'open_text' OR `type` = 'prev_select';");
 
 	    $stmt->execute();
@@ -1068,7 +1083,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("SELECT * FROM `subelements` WHERE `type` = 'open_text';");
 
 	    $stmt->execute();
@@ -1100,7 +1115,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `" . $tablename . "` MODIFY `" . $columnname . "` TEXT;");
 
 	    if ($stmt->execute()) {
@@ -1122,7 +1137,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `" . $tablename . "` MODIFY `" . $columnname . "` TEXT;");
 
 	    if ($stmt->execute()) {
@@ -1152,7 +1167,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `" . $tablename . "` MODIFY `" . $columnname . "` TEXT;");
 
 	    if ($stmt->execute()) {
@@ -1174,7 +1189,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `" . $tablename . "` MODIFY `" . $columnname . "` TEXT;");
 
 	    if ($stmt->execute()) {
@@ -1198,7 +1213,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `formelements` ADD COLUMN `tagprompts` TEXT NULL DEFAULT NULL AFTER `regex`;");
 
 	    if ($stmt->execute()) {
@@ -1226,7 +1241,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `subelements` ADD COLUMN `tagprompts` TEXT NULL DEFAULT NULL AFTER `copypreviousprompt`;");
 
 	    if ($stmt->execute()) {
@@ -1255,7 +1270,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
 	try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	    $stmt = $dbh->prepare("ALTER TABLE `subelements` ADD COLUMN `reference_data_format` TEXT NULL DEFAULT NULL AFTER `tagprompts`;");
 
 	    if ($stmt->execute()) {
@@ -1285,7 +1300,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
     // Elements
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `conditional_display` WHERE `subelementid` IS NULL AND `elementid` NOT IN (SELECT `id` FROM `formelements`);");
 
 	if ($stmt->execute()) {
@@ -1305,7 +1320,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
     // Sub-elements
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("DELETE FROM `conditional_display` WHERE `elementid` IS NULL AND `subelementid` NOT IN (SELECT `id` FROM `subelements`);");
 
 	if ($stmt->execute()) {
@@ -1326,7 +1341,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 
     try {
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
 	$stmt = $dbh->prepare("CREATE TABLE IF NOT EXISTS `uploads` (`id` int(11) NOT NULL AUTO_INCREMENT, `when_uploaded` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `userid` int(11) NOT NULL, `filename` TEXT NOT NULL, PRIMARY KEY (`id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8;");
 
 	if ($stmt->execute()) {

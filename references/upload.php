@@ -89,6 +89,7 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	<?php
 
 	$colcount = 0;
+	$newcols = [];
 
 	foreach ( $columns as $column ) {
 
@@ -158,6 +159,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 		$column = "imported_" . $column;
 	    }
 
+	    $newcols[$colcount] = $column;
+
 	    // echo $column . " " . $coltype;
 	?>
 
@@ -171,200 +174,77 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	}
 
 	?>
-	<h3>Choose columns for reference metadata</h3>
+	<h3>Choose reference metadata</h3>
+	<?php
+
+	$refmeta = "";
+
+	if (in_array("nct_number", $newcols)) {
+
+	    $refmeta .= '<h4>$nct_number</h4>
+'; // Line break is intentional
+	    
+	    if (in_array("study_title", $newcols)) {
+
+		$refmeta .= '<p>$study_title';
+
+		if (in_array("start_date", $newcols)) {
+		    $refmeta .= ' | $start_date';
+
+		    if (in_array("primary_completion_date", $newcols)) {
+			$refmeta .= ' to $primary_completion_date';
+		    }
+		}
+		
+		$refmeta .= '</p>';
+		
+	    }
+	   
+	}
+
+	$refmetamore = "";
+
+	if (in_array("abstract", $newcols)) {
+
+	    $refmetamore = '<p>$abstract</p>';
+	    
+	} else {
+
+	    if (in_array("study_design", $newcols)) {
+
+	    $refmetamore = '<p>$study_design</p>';
+		
+	    }
+	}
+
+	?>
 	<div style="margin-bottom: 20px;">
-	    <p>Title</p>
-	    <select name="nbtTitleColumn">
-		<option value="NULL">Choose a column</option>
+	    <p>Basic reference metadata: You must indicate which metadata are displayed to users who work with this reference set by choosing which columns are displayed. To display the contents of the `title` column, for example, enter $title into the following text field (HTML formatting allowed).</p>
+	    <div style="padding: 5px 5px 0 5px; margin-bottom: 10px">
+		<p>Columns in this reference set:</p>
 		<?php
 
-		$colcount = 0;
-
-		foreach ($columns as $column) {
-		    // rename the column headings
-
-		    $column = str_replace(" ", "_", $column);
-
-		    $column = preg_replace('/[^A-Za-z0-9 ]/', "_", $column);
-
-		    $column = preg_replace('/^(_)+/', '', $column);
-
-		    $column = preg_replace('/(_)+$/', '', $column);
-
-		    $column = strtolower($column);
-
-		    // Remove illegal column names
-		    if (in_array($column, $illegal_columns)) {
-			$column = "imported_" . $column;
-		    }
-
-		    if ( $column == "title" || $column =="ti" ) {
-			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
-		    } else {
-			echo '<option value="' . $colcount . '">' . $column . '</option>';
-		    }
-
-		    $colcount++;
+		foreach ($newcols as $col) {
+		    echo '<span style="border: 1px solid #333; padding: 1px 4px 0 4px; border-radius: 3px; margin: 2px 4px 4px 4px; white-space: nowrap;" onclick="$(\'#nbtMetadata-refmeta\').append(\' $' . $col . '\');">$' . $col  . '</span>
+'; // Line break is intentional
 		}
-
+		
 		?>
-	    </select>
-
-	    <p>Authors</p>
-	    <select name="nbtAuthorsColumn">
-		<option value="NULL">Choose a column</option>
+	    </div>
+	    <textarea id="nbtMetadata-refmeta" style="width: 100%; height: 150px;" name="nbtRefmeta"><?php echo $refmeta; ?></textarea>
+	    <p>Extended reference metadata: this data is only shown to extractors when they click the "more" button. You might include a reference abstract here, for example.</p>
+	    <div style="padding: 5px 5px 0 5px; margin-bottom: 10px">
+		<p>Columns in this reference set:</p>
 		<?php
 
-		$colcount = 0;
-		$selected = 0;
-
-		foreach ($columns as $column) {
-		    // rename the column headings
-
-		    $column = str_replace(" ", "_", $column);
-
-		    $column = preg_replace('/[^A-Za-z0-9 ]/', "_", $column);
-
-		    $column = preg_replace('/^(_)+/', '', $column);
-
-		    $column = preg_replace('/(_)+$/', '', $column);
-
-		    $column = strtolower($column);
-
-		    // Remove illegal column names
-		    if (in_array($column, $illegal_columns)) {
-			$column = "imported_" . $column;
-		    }
-
-		    if ( ($column == "authors" || $column == "author" || $column == "locations" || $column == "au") && $selected == 0 ) {
-			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
-			$selected++;
-		    } else {
-			echo '<option value="' . $colcount . '">' . $column . '</option>';
-		    }
-
-		    $colcount++;
+		foreach ($newcols as $col) {
+		    echo '<span style="border: 1px solid #333; padding: 1px 4px 0 4px; border-radius: 3px; margin: 2px 4px 4px 4px; white-space: nowrap;" onclick="$(\'#nbtMetadata-refmetamore\').append(\' $' . $col . '\');">$' . $col  . '</span>
+';
 		}
-
+		
 		?>
-	    </select>
-
-	    <p>Year</p>
-	    <select name="nbtYearColumn">
-		<option value="NULL">Choose a column</option>
-		<?php
-
-		$colcount = 0;
-		$selected = 0;
-
-		foreach ($columns as $column) {
-		    // rename the column headings
-
-		    $column = str_replace(" ", "_", $column);
-
-		    $column = preg_replace('/[^A-Za-z0-9 ]/', "_", $column);
-
-		    $column = preg_replace('/^(_)+/', '', $column);
-
-		    $column = preg_replace('/(_)+$/', '', $column);
-
-		    $column = strtolower($column);
-
-		    // Remove illegal column names
-		    if (in_array($column, $illegal_columns)) {
-			$column = "imported_" . $column;
-		    }
-
-
-		    if ( ($column == "year" || $column == "publication_year" || $column == "start_date" || $column == "yr") && $selected == 0 ) {
-			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
-		    } else {
-			echo '<option value="' . $colcount . '">' . $column . '</option>';
-		    }
-
-		    $colcount++;
-		}
-
-		?>
-	    </select>
-
-	    <p>Journal</p>
-	    <select name="nbtJournalColumn">
-		<option value="NULL">Choose a column</option>
-		<?php
-
-		$colcount = 0;
-		$selected = 0;
-
-		foreach ($columns as $column) {
-		    // rename the column headings
-
-		    $column = str_replace(" ", "_", $column);
-
-		    $column = preg_replace('/[^A-Za-z0-9 ]/', "_", $column);
-
-		    $column = preg_replace('/^(_)+/', '', $column);
-
-		    $column = preg_replace('/(_)+$/', '', $column);
-
-		    $column = strtolower($column);
-
-		    // Remove illegal column names
-		    if (in_array($column, $illegal_columns)) {
-			$column = "imported_" . $column;
-		    }
-
-		    if ( ($column == "journal" || $column == "publication_title" || $column == "status" || $column == "pt") && $selected == 0 ) {
-			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
-			$selected++;
-		    } else {
-			echo '<option value="' . $colcount . '">' . $column . '</option>';
-		    }
-
-		    $colcount++;
-		}
-
-		?>
-	    </select>
-
-	    <p>Abstract</p>
-	    <select name="nbtAbstractColumn">
-		<option value="NULL">Choose a column</option>
-		<?php
-
-		$colcount = 0;
-		$selected = 0;
-
-		foreach ($columns as $column) {
-		    // rename the column headings
-
-		    $column = str_replace(" ", "_", $column);
-
-		    $column = preg_replace('/[^A-Za-z0-9 ]/', "_", $column);
-
-		    $column = preg_replace('/^(_)+/', '', $column);
-
-		    $column = preg_replace('/(_)+$/', '', $column);
-
-		    $column = strtolower($column);
-
-		    // Remove illegal column names
-		    if (in_array($column, $illegal_columns)) {
-			$column = "imported_" . $column;
-		    }
-
-		    if ( ($column == "abstract" || $column == "abstract_note" || $column == "acronym" || $column == "ab") && $selected == 0) {
-			echo '<option value="' . $colcount . '" selected>' . $column . '</option>';
-			$selected++;
-		    } else {
-			echo '<option value="' . $colcount . '">' . $column . '</option>';
-		    }
-
-		    $colcount++;
-		}
-
-		?>
-	    </select>
+	    </div>
+	    <textarea id="nbtMetadata-refmetamore" style="width: 100%; height: 150px;" name="nbtRefmetamore"><?php echo $refmetamore; ?></textarea>
 	</div>
 	<input type="submit" value="Save changes">
     </form>

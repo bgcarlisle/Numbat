@@ -339,12 +339,29 @@ foreach ($forms as $form) {
 	    echo '<input type="checkbox" id="nbtAssignSelectRefID' . $reference['id'] . '" class="nbtAssignSelect" value="' . $reference['id'] . '" style="margin: 8px 12px 8px 2px;">';
 
 	    echo "</td><td>";
-	    
-	    echo "<h4>" . $reference[$refset['title']] . "</h4>";
 
-	    echo "<p>" . $reference[$refset['authors']] . "</p>";
+	    // Reference metadata
 
-	    echo "<p>" . $reference[$refset['journal']] . ": " . $reference[$refset['year']] ."</p>";
+	    $refmeta = $refset['refmeta'];
+
+	    preg_match_all(
+		'/\$([A-Za-z0-9_-]+)/',
+		$refset['refmeta'],
+		$cols_to_replace
+	    );
+
+	    foreach ( $cols_to_replace[0] as $col_to_replace ) {
+
+		$refmeta = preg_replace (
+		    "/\\" . $col_to_replace . "\b/",
+		    $reference[substr($col_to_replace, 1)],
+		    $refmeta
+		);
+	    }
+
+	    // $refmeta = str_replace("\n", "<br>", $refmeta);
+
+	    echo "<div>" . $refmeta . "</div>";
 
 	    echo "</td>";
 
