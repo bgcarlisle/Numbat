@@ -174,6 +174,8 @@ function nbt_log_user_in ( $username ) {
 
 function nbt_username_is_taken ( $username ) { // Returns TRUE if the username is already registered; FALSE otherwise
 
+    $founduser = 0;
+    
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
@@ -213,6 +215,8 @@ function nbt_username_is_taken ( $username ) { // Returns TRUE if the username i
 
 function nbt_email_is_in_use ( $email ) { // Returns TRUE if there is an account with that email address already; FALSE otherwise
 
+    $foundemail = 0;
+    
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
