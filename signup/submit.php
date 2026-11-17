@@ -34,7 +34,7 @@ if ( ! preg_match("/^[0-9A-Za-z.\-_]+$/", $_POST['nbtSignupUsername']) ) { // If
 				
 			} else { // Email is not in use
 				
-				if ( $_POST['nbtSignUpPassword1'] != $_POST['nbtSignUpPassword2'] ) { // Two passwords are not the same
+				if ( $_POST['nbtSignupPassword1'] != $_POST['nbtSignupPassword2'] ) { // Two passwords are not the same
 					
 					echo "<p class=\"nbtSignupError nbtFeedbackBad nbtFinePrint\">You must type the same password twice</p>";
 		
