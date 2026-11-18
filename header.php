@@ -65,6 +65,11 @@
 		    </a>
 		</li>
 		<li>
+		    <a href="<?php echo SITE_URL; ?>email/">
+			Outgoing email settings
+		    </a>
+		</li>
+		<li>
 		    <a href="<?php echo SITE_URL; ?>references/">
 			Manage reference sets
 		    </a>
