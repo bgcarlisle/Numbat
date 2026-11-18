@@ -5,6 +5,10 @@ session_start ();
 define('INSTALL_HASH', substr (hash('sha256', SITE_URL), 0, 10));
 define('NUMBAT_VERSION', '2.13');
 
+// For PHPMailer
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 function nbt_user_is_logged_in () {
 
     if ( isset ($_SESSION[INSTALL_HASH . '_nbt_valid_login']) && $_SESSION[INSTALL_HASH . '_nbt_valid_login'] == 1 ) {
@@ -254,6 +258,36 @@ function nbt_email_is_in_use ( $email ) { // Returns TRUE if there is an account
 
 }
 
+function nbt_send_email ($to, $subject, $body) {
+    require_once ABS_PATH . 'phpmailer-src/Exception.php';
+    require_once ABS_PATH . 'phpmailer-src/PHPMailer.php';
+    require_once ABS_PATH . 'phpmailer-src/SMTP.php';
+
+    $mail = new PHPMailer(true);
+
+    try {
+	$mail->isSMTP();
+	$mail->Host       = nbt_get_setting ("smtp_host");
+	$mail->SMTPAuth   = true;
+	$mail->Username   = nbt_get_setting ("smtp_user");
+	$mail->Password   = nbt_get_setting ("smtp_password");
+	$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+	$mail->Port       = 587;
+
+	$mail->setFrom(nbt_get_setting ("admin_email"), 'Numbat');
+	$mail->addAddress($to);
+
+	$mail->isHTML(true);
+	$mail->Subject = $subject;
+	$mail->Body    = $body;
+
+	return $mail->send();
+    } catch (Exception $e) {
+	error_log("Numbat Mailer Error: {$mail->ErrorInfo}");
+	return false;
+    }
+}
+
 function nbt_save_new_user ($username, $email, $password) {
     // Note that this function does NOT check whether the user exists, the email has already been used, etc.
     // Returns TRUE if it works properly.
@@ -300,7 +334,7 @@ function nbt_save_new_user ($username, $email, $password) {
 
 	$message = $message . "\n\n" . "Enjoy! :)";
 
-	mail ($email, "Confirm your email address for Numbat", $message, "From: Numbat <" . nbt_get_setting ( "admin_email" ) . ">");
+	nbt_send_email ($email, "Confirm your email address for Numbat", $message);
 
 	return TRUE;
 
@@ -384,7 +418,7 @@ function nbt_send_password_recovery_email ( $username ) {
 
     $message = $message . "\n\n" . "Enjoy! :)";
 
-    mail ($email, "Numbat password reset", $message, "From: Numbat <" . nbt_get_setting ( "admin_email" ) . ">");
+    nbt_send_email ($email, "Numbat password reset", $message);
 
 }
 
@@ -1334,11 +1368,11 @@ function nbt_get_extraction ( $formid, $refsetid, $refid, $userid ) {
 
 	    }
 
-    }
+	}
 
-    catch (PDOException $e) {
-	echo $e->getMessage();
-    }
+	catch (PDOException $e) {
+	    echo $e->getMessage();
+	}
 	
     } else {
 	return $extraction;
