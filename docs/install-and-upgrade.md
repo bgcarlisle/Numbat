@@ -2,6 +2,89 @@
 
 # Installing and upgrading Numbat
 
+## Installing a LAMP server for Numbat via Docker
+
+You can skip this step if you are using a hosting provider like
+Dreamhost or similar.
+
+Create a file named `Dockerfile` in the root directory of your
+project with the following contents:
+
+```
+FROM php:8.5-apache
+
+# Install required PHP extensions
+RUN docker-php-ext-install pdo pdo_mysql
+```
+
+Create a file named `docker-compose.yml` in the same directory with
+the following contents:
+
+```
+services:
+  # Numbat Web App (Apache & PHP)
+  numbat-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: numbat-web
+    restart: unless-stopped
+    ports:
+      - "8080:80" # Remove this if using a reverse proxy
+    volumes:
+      - .:/var/www/html
+    networks:
+      - numbat-network
+    depends_on:
+      - numbat-db
+
+  # MySQL Database
+  numbat-db:
+    image: mysql:8.0
+    container_name: numbat-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: change_me_root_password
+      MYSQL_DATABASE: numbat
+      MYSQL_USER: numbat_user
+      MYSQL_PASSWORD: change_me_db_password
+    volumes:
+      - numbat_db_data:/var/lib/mysql
+    networks:
+      - numbat-network
+
+  # phpMyAdmin (Optional - Database Management)
+  numbat-phpmyadmin:
+    image: lscr.io/linuxserver/phpmyadmin:latest
+    container_name: numbat-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8081:80" # Remove this if using a reverse proxy
+    environment:
+      - PMA_HOST=numbat-db
+      - UPLOAD_LIMIT=128M
+      # Uncomment the lines below if running behind an HTTPS reverse proxy:
+      # - PMA_ABSOLUTE_URI=https://yourdomain.com/phpmyadmin/
+      # - SECURE_PROXY=1
+      # - PMA_HTTPS=true
+    networks:
+      - numbat-network
+    depends_on:
+      - numbat-db
+
+networks:
+  numbat-network:
+    driver: bridge
+
+volumes:
+  numbat_db_data:
+```
+
+This will expose port 8080 for Numbat and 8081 for phpMyAdmin (in case
+you need to work on the backend). If you are using a reverse proxy,
+you can remove the "ports" section and attach the containers to your
+proxy's network instead.
+
 ## Installing Numbat
 
 The recommended method for installing Numbat is using `git`, because
@@ -14,16 +97,20 @@ a base level of facility with basic Linux command line.
 Numbat requires a [LAMP
 stack](https://en.wikipedia.org/wiki/LAMP_(software_bundle)) (Linux,
 Apache, MySQL, PHP) with the web server providing a public-facing
-address.
+address. You can install that via Docker using the step above if you
+are self-hosting, or you can get the basic shared Linux hosting from a
+service provider like Dreamhost or similar.
 
-Connect to your server through the command line via SSH. Your hosting
+Connect to your server through the command line via SSH. (Your hosting
 provider will have your SSH login credentials, which will allow you to
-send commands to your server.
+send commands to your server, or if you set up a homeserver, use those
+credentials.)
 
 Once you have successfully connected to your server, navigate to the
-directory into which you want to install Numbat, delete or move all
-the files that are already there, if any, and run the following
-command:
+directory into which you want to install Numbat (if you used the
+Docker setup above, make a new folder in the `www` folder in the root
+of your LAMP stack project), delete or move all the files that are
+already there, if any, and run the following command:
 
 ```
 $ git clone https://github.com/bgcarlisle/Numbat.git ./
@@ -37,11 +124,17 @@ Take note of the full path to the Numbat folder root and the
 public-facing URL that corresponds to the Numbat folder.
 
 Before you can open Numbat and run the installer, you must have an
-empty MySQL database with read and write permissions ready to connect.
+empty MySQL database with read and write permissions ready to
+connect. Either create one using your hosting service's tools, or if
+you are self-hosting using Docker, log in using the root MySQL
+credentials you used in `docker-compose.yml` and create a new user
+there specific to your Numbat instance.
 
-While Numbat is designed to co-exist with other instances of Numbat on
-the same domain or subdomain, however it is *not* recommended to share
-a single MySQL database among multiple Numbat instances.
+Numbat *is* designed to co-exist with other instances of Numbat on the
+same domain or subdomain (you could have one Numbat at
+`yourdomain.com/project1` and another at `yourdomain.com/project2`),
+however it is *not* recommended to share a single MySQL database among
+multiple Numbat instances.
 
 When you have set the MySQL database backend up, take note of the
 MySQL username, password, database name and hostname, as you will need
