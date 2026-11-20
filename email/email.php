@@ -9,10 +9,10 @@
     $outgoing_email_activated = nbt_get_setting ("outgoing_email_activated");
 
     ?>
-    <p>Outgoing mail activated</p>
+    <p>Outgoing mail enabled</p>
     <select id="nbtOutgoingEmailToggle" onchange="nbtChangeOutgoingEmail();">
-	<option value="1"<?php if ($outgoing_email_activated == "1") { echo " selected"; } ?>>Outgoing email activated</option>
-	<option value ="0"<?php if ($outgoing_email_activated == "0") { echo " selected"; } ?>>Outgoing email not activated</option>
+	<option value="1"<?php if ($outgoing_email_activated == "1") { echo " selected"; } ?>>Outgoing email enabled</option>
+	<option value ="0"<?php if ($outgoing_email_activated == "0") { echo " selected"; } ?>>Outgoing email disabled</option>
     </select>
 
     <p>SMTP hostname (e.g. "smtp.emailcompany.com")</p>
