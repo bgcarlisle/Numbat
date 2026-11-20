@@ -324,19 +324,17 @@ function nbt_save_new_user ($username, $email, $password) {
 
 	$dbh = null;
 
-	$message = "Greetings!";
+	$message = "<p>Greetings!</p>";
 
-	$message = $message . "\n\n" . "You are receiving this message because your email was registered for an account on an installation of Numbat with the following user name:";
+	$message .= "<p>You are receiving this message because your email was registered for an account on an installation of Numbat with the following user name: " . $username . "</p>";
 
-	$message = $message . " " . $username;
+	$message .= "<p>If you are receiving this email in error, just ignore it.</p>";
 
-	$message = $message . "\n\n" . "If you are receiving this email in error, just ignore it.";
+	$message .= "<p>To verify your email and activate your account, click the following link.</p>";
 
-	$message = $message . "\n\n" . "To verify your email and activate your account, click the following link.";
+	$message .= "<p>" . SITE_URL . "signup/?username=" . $username . "&code=" . $verification . "</p>";
 
-	$message = $message . "\n\n" . SITE_URL . "signup/?username=" . $username . "&code=" . $verification;
-
-	$message = $message . "\n\n" . "Enjoy! :)";
+	$message .= "<p>Enjoy! :)</p>";
 
 	nbt_send_email ($email, "Confirm your email address for Numbat", $message);
 
@@ -412,15 +410,15 @@ function nbt_send_password_recovery_email ( $username ) {
 
     // Then, email the user with a link including the hash
 
-    $message = "Greetings!";
+    $message = "<p>Greetings!</p>";
 
-    $message = $message . "\n\n" . "You are receiving this message because someone (probably you) requested that your password be reset. If you did not request your password to be reset, just ignore this email.";
+    $message .= "<p>You are receiving this message because someone (probably you) requested that your password be reset. If you did not request your password to be reset, just ignore this email.</p>";
 
-    $message = $message . "\n\n" . "To reset your password, open the following address in your browser.";
+    $message .= "<p>To reset your password, open the following address in your browser.</p>";
 
-    $message = $message . "\n\n" . SITE_URL . "forgot/?username=" . $username . "&code=" . $passwordchangecode;
+    $message .= "<p>" . SITE_URL . "forgot/?username=" . $username . "&code=" . $passwordchangecode . "</p>";
 
-    $message = $message . "\n\n" . "Enjoy! :)";
+    $message .= "<p>Enjoy! :)</p>";
 
     nbt_send_email ($email, "Numbat password reset", $message);
 
