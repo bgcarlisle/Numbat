@@ -80,7 +80,8 @@ volumes:
   numbat_db_data: {}
 ```
 
-Make sure to update the passwords.
+Make sure to update the passwords. **For the love of god, change
+passwords.**
 
 This will expose port 8080 for Numbat and 8081 for phpMyAdmin (in case
 you need to work on the backend). If you are using a reverse proxy,
