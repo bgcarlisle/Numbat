@@ -6027,6 +6027,32 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 
  }
 
+ function nbtSaveOutgoingEmailSetting (textinput, field) {
+     
+     $.ajax ({
+	 url: numbaturl + 'email/update_setting.php',
+	 type: 'post',
+	 data: {
+	     field: field,
+	     newval: textinput.val()
+	 },
+	 dataType: 'html'
+     }).done( function (response) {
+	 if (response != 'Saved') {
+	     $('#nbtUploadRow' + fileid + ' td').addClass('nbtBadField');
+	     setTimeout( function () {
+		 $('#nbtUploadRow' + fileid).slideUp();
+	     }, 1000);
+	     
+	 } else {
+	     $('#nbtUploadRow' + fileid + ' td').addClass('nbtGoodField');
+	     setTimeout( function () {
+		 $('#nbtUploadRow' + fileid).slideUp();
+	     }, 1000);
+	 }
+     });
+ }
+
 </script>
 </body>
 </html>
