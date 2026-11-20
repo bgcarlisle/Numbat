@@ -259,33 +259,37 @@ function nbt_email_is_in_use ( $email ) { // Returns TRUE if there is an account
 }
 
 function nbt_send_email ($to, $subject, $body) {
-    require_once ABS_PATH . 'phpmailer-src/Exception.php';
-    require_once ABS_PATH . 'phpmailer-src/PHPMailer.php';
-    require_once ABS_PATH . 'phpmailer-src/SMTP.php';
 
-    $mail = new PHPMailer(true);
+    if (nbt_get_setting ("outgoing_email_activated") == "1") {
+	require_once ABS_PATH . 'phpmailer-src/Exception.php';
+	require_once ABS_PATH . 'phpmailer-src/PHPMailer.php';
+	require_once ABS_PATH . 'phpmailer-src/SMTP.php';
 
-    try {
-	$mail->isSMTP();
-	$mail->Host       = nbt_get_setting ("smtp_host");
-	$mail->SMTPAuth   = true;
-	$mail->Username   = nbt_get_setting ("smtp_user");
-	$mail->Password   = nbt_get_setting ("smtp_password");
-	$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-	$mail->Port       = 587;
+	$mail = new PHPMailer(true);
 
-	$mail->setFrom(nbt_get_setting ("admin_email"), 'Numbat');
-	$mail->addAddress($to);
+	try {
+	    $mail->isSMTP();
+	    $mail->Host       = nbt_get_setting ("smtp_host");
+	    $mail->SMTPAuth   = true;
+	    $mail->Username   = nbt_get_setting ("smtp_user");
+	    $mail->Password   = nbt_get_setting ("smtp_password");
+	    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+	    $mail->Port       = 587;
 
-	$mail->isHTML(true);
-	$mail->Subject = $subject;
-	$mail->Body    = $body;
+	    $mail->setFrom(nbt_get_setting ("admin_email"), 'Numbat');
+	    $mail->addAddress($to);
 
-	return $mail->send();
-    } catch (Exception $e) {
-	error_log("Numbat Mailer Error: {$mail->ErrorInfo}");
-	return false;
+	    $mail->isHTML(true);
+	    $mail->Subject = $subject;
+	    $mail->Body    = $body;
+
+	    return $mail->send();
+	} catch (Exception $e) {
+	    error_log("Numbat Mailer Error: {$mail->ErrorInfo}");
+	    return false;
+	}
     }
+    
 }
 
 function nbt_save_new_user ($username, $email, $password) {
