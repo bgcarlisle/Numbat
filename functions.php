@@ -6677,7 +6677,7 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` ADD COLUMN " . $columnname . " INT(11) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `extractions_" . $element['formid'] . "` ADD COLUMN " . $columnname . " INT(11) DEFAULT 0;");
 
 	$stmt->execute();
 
@@ -6692,7 +6692,7 @@ function nbt_add_multi_select_option ( $elementid, $displayname = NULL, $dbname 
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` ADD COLUMN " . $columnname . " INT(11) DEFAULT NULL;");
+	$stmt = $dbh->prepare ("ALTER TABLE `m_extractions_" . $element['formid'] . "` ADD COLUMN " . $columnname . " INT(11) DEFAULT 0;");
 
 	$stmt->execute();
 
