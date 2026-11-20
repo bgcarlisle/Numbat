@@ -166,6 +166,29 @@ The absolute path and site URL fields should be detected and filled in
 by Numbat automatically. Look them over to see if they look wildly
 wrong or are left blank or something.
 
+The installer will also ask you whether you want to enable outgoing
+email. This allows a user to reset their own password in case they
+forget it. Even if email is disabled, any admin user can generate a
+password reset link for any user and send it to them through their own
+means, but this is convenient to allow users to do it themselves, and
+to provide an extra layer of backup in the case the admins also forget
+their passwords.
+
+To enable outgoing email, you will need an email address with SMTP
+access that authenticates via STARTTLS on port 587. You will need to
+enter:
+
+* The outgoing email "from" address
+* SMTP host (will probably look like "smtp.emailprovider.com")
+* SMTP user name (in many cases, this is just the email address again)
+* SMTP password (many email providers allow you to create app-specific
+  passwords for your email accout; this is recommended)
+  
+Click "Test email settings" and it will try sending an email to the
+email provided using the credentials provided. For troubleshooting
+purposes, the email includes the SMTP host and user name, the time it
+was sent, but (for security reasons) not the password used.
+
 The Numbat project name field is a short amount of text that will help
 you and other extractors distinguish this Numbat instance from others
 they may use. Make it descriptive and specific.

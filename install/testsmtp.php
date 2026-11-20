@@ -10,6 +10,11 @@ require_once __DIR__ . '/../phpmailer-src/SMTP.php';
 
 $mail = new PHPMailer(true);
 
+$body = "<p>The email credentials you entered are working!</p>";
+$body .= "<p>Host: " . $_POST['smtp_host'];
+$body .= "<p>User: " . $_POST['smtp_user'];
+$body .= "<p>Sent: " . date("Y-m-d H:i:s");
+
 try {
     $mail->isSMTP();
     $mail->Host       = $_POST['smtp_host'];
@@ -24,7 +29,7 @@ try {
 
     $mail->isHTML(true);
     $mail->Subject = "Numbat test email";
-    $mail->Body    = "The email credentials you entered are working! Sent: " . date("Y-m-d H:i:s");
+    $mail->Body    = $body;
 
     if ($mail->send()) {
 	echo "Mail sent";

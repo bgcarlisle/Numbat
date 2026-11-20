@@ -116,7 +116,10 @@ $numbaturl = $protocol . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
 	<link rel="stylesheet" href="<?php echo $numbaturl; ?>css/numbat.css" />
 	<style>
 	 .nbtSubExtraction p {
-	     margin-top: 5px;
+	     margin-top: 8px;
+	 }
+	 .nbtSubExtraction p.nbtFinePrint {
+	     margin-top: 1px;
 	 }
 	</style>
 	<!-- / CSS -->
@@ -166,15 +169,17 @@ $numbaturl = $protocol . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
 		<p>Enable outgoing email</p>
 		<p class="nbtFinePrint">If you enable outgoing email here, Numbat can send a link to reset your password in case you forget it. If you choose to live dangerously, you can use Numbat without outgoing email capacity, and an admin user can manually send links to reset their emails. But if all the admins forget and outgoing email has not been enabled, you gotta muck around in the database.</p>
 		<select id="nbtEnableOutgoingEmail">
-		    <option>Enable outgoing email</option>
-		    <option>Disable outgoing email</option>
+		    <option value="1">Enable outgoing email</option>
+		    <option value="0">Disable outgoing email</option>
 		</select>
 		<p>Admin email</p>
 		<p class="nbtFinePrint">This is the email that Numbat will use when sending confirmation emails.</p>
 		<input type="text" id="nbtEmail">
 		<p>SMTP host</p>
+		<p class="nbtFinePrint">E.g. "smtp.emailprovider.com"</p>
 		<input type="text" id="nbtSMTP_host">
 		<p>SMTP user name</p>
+		<p class="nbtFinePrint">There's a good chance that this and the "Admin email" field above are the same thing.</p>
 		<input type="text" id="nbtSMTP_user">
 		<p>SMTP password</p>
 		<input type="text" id="nbtSMTP_password">
