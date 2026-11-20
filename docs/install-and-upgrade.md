@@ -32,7 +32,7 @@ services:
     ports:
       - "8080:80" # Remove this if using a reverse proxy
     volumes:
-      - .:/var/www/html
+      - ./www:/var/www/html
     networks:
       - numbat-network
     depends_on:
@@ -77,8 +77,10 @@ networks:
     driver: bridge
 
 volumes:
-  numbat_db_data:
+  numbat_db_data: {}
 ```
+
+Make sure to update the passwords.
 
 This will expose port 8080 for Numbat and 8081 for phpMyAdmin (in case
 you need to work on the backend). If you are using a reverse proxy,
@@ -108,8 +110,10 @@ credentials.)
 
 Once you have successfully connected to your server, navigate to the
 directory into which you want to install Numbat (if you used the
-Docker setup above, make a new folder in the `www` folder in the root
-of your LAMP stack project), delete or move all the files that are
+Docker setup above, make a new folder in the `www` folder ... or you
+can use the `www` folder in the root of your LAMP stack project, I'm
+not your dad, you do you, but you might need to `chown` the folder to
+your current user to do so), delete or move all the files that are
 already there, if any, and run the following command:
 
 ```
