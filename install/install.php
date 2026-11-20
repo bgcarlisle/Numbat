@@ -35,31 +35,51 @@ $numbaturl = $protocol . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
 		 },
 		 dataType: 'html'
 	     }).done ( function (html) {
-
 		 $('#nbtDBTestFeedback').html(html);
 
 		 if ( html == 'Successful connexion to MySQL database' ) {
-
 		     $('#nbtDBTestFeedback').removeClass('nbtFeedbackBad').addClass('nbtFeedbackGood');
-
 		 } else {
-
 		     $('#nbtDBTestFeedback').removeClass('nbtFeedbackGood').addClass('nbtFeedbackBad');
-
 		 }
 
 		 $('#nbtDBTestFeedback').slideDown( 500, function () {
-
 		     setTimeout ( function () {
-
 			 $('#nbtDBTestFeedback').slideUp(500);
-
 		     }, 3000 );
-
 		 });
-
 	     });
 
+	 }
+
+	 function nbtTestOutgoingEmail () {
+
+	     $.ajax ({
+		 url: '<?php echo $numbaturl; ?>install/testsmtp.php',
+		 type: 'post',
+		 data: {
+		     smtp_email: $('#nbtEmail').val(),
+		     smtp_host: $('#nbtSMTP_host').val(),
+		     smtp_user: $('#nbtSMTP_user').val(),
+		     smtp_password: $('#nbtSMTP_password').val()
+		 },
+		 dataType: 'html'
+	     }).done ( function (html) {
+		 $('#nbtSMTPTestFeedback').html(html);
+
+		 if ( html == 'Mail sent' ) {
+		     $('#nbtSMTPTestFeedback').removeClass('nbtFeedbackBad').addClass('nbtFeedbackGood');
+		 } else {
+		     $('#nbtSMTPTestFeedback').removeClass('nbtFeedbackGood').addClass('nbtFeedbackBad');
+		 }
+
+		 $('#nbtSMTPTestFeedback').slideDown( 500, function () {
+		     setTimeout ( function () {
+			 $('#nbtSMTPTestFeedback').slideUp(500);
+		     }, 3000 );
+		 });
+	     });
+	     
 	 }
 
 	 function nbtWriteConfig () {
@@ -94,6 +114,11 @@ $numbaturl = $protocol . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
 	<!-- CSS -->
 	<link rel="stylesheet" href="<?php echo $numbaturl; ?>css/reset.css" />
 	<link rel="stylesheet" href="<?php echo $numbaturl; ?>css/numbat.css" />
+	<style>
+	 .nbtSubExtraction p {
+	     margin-top: 5px;
+	 }
+	</style>
 	<!-- / CSS -->
 
 	<link rel="SHORTCUT ICON" href="<?php echo $numbaturl; ?>images/favicon.ico"/>
@@ -137,6 +162,26 @@ $numbaturl = $protocol . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
 		<input id="nbtSiteURL" type="text" value="<?php echo $numbaturl; ?>">
 	    </div>
 	    <div class="nbtSubExtraction">
+		<h3>Outgoing email settings</h3>
+		<p>Enable outgoing email</p>
+		<p class="nbtFinePrint">If you enable outgoing email here, Numbat can send a link to reset your password in case you forget it. If you choose to live dangerously, you can use Numbat without outgoing email capacity, and an admin user can manually send links to reset their emails. But if all the admins forget and outgoing email has not been enabled, you gotta muck around in the database.</p>
+		<select id="nbtEnableOutgoingEmail">
+		    <option>Enable outgoing email</option>
+		    <option>Disable outgoing email</option>
+		</select>
+		<p>Admin email</p>
+		<p class="nbtFinePrint">This is the email that Numbat will use when sending confirmation emails.</p>
+		<input type="text" id="nbtEmail">
+		<p>SMTP host</p>
+		<input type="text" id="nbtSMTP_host">
+		<p>SMTP user name</p>
+		<input type="text" id="nbtSMTP_user">
+		<p>SMTP password</p>
+		<input type="text" id="nbtSMTP_password">
+		<button style="display: block; margin-top: 25px;" onclick="nbtTestOutgoingEmail();">Test email settings</button>
+		<p id="nbtSMTPTestFeedback" class="nbtFeedback nbtHidden nbtFinePrint">&nbsp;</p>
+	    </div>
+	    <div class="nbtSubExtraction">
 		<h3>Numbat details</h3>
 		<p>Numbat project name</p>
 		<p class="nbtFinePrint">E.g. "Systematic Review for Signals, Safety and Success grant"</p>
@@ -146,9 +191,6 @@ $numbaturl = $protocol . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
 		<input type="text" id="nbtUsername">
 		<p>Admin password</p>
 		<input type="password" id="nbtPassword">
-		<p>Admin email</p>
-		<p class="nbtFinePrint">This is the email that Numbat will use when sending confirmation emails.</p>
-		<input type="text" id="nbtEmail">
 	    </div>
 	    <button onclick="nbtWriteConfig();">Install Numbat</button>
 	</div>
