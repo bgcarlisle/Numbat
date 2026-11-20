@@ -28,6 +28,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: numbat-web
+	user: "1000:1000" # For if you want to do dev work
     restart: unless-stopped
     ports:
       - "8080:80" # Remove this if using a reverse proxy
@@ -150,12 +151,15 @@ corresponds to the folder into which you cloned the Numbat `git` repo.
 
 The installer will ask you to enter the following:
 
-* Full path to Numbat folder root
-* Public-facing URL for Numbat folder
-* MySQL username for an empty MySQL database
-* MySQL password
-* MySQL database name
-* MySQL hostname
+(In brackets are the values to enter if you used the Docker setup
+above)
+
+* Full path to Numbat folder root (`/var/www/html/`)
+* Public-facing URL for Numbat folder (`http://localhost:8080/`)
+* MySQL username for an empty MySQL database (`numbat_user`)
+* MySQL password (`change_me_db_password`, seriously change this)
+* MySQL database name (`numbat`)
+* MySQL hostname (`numbat-db`)
 
 Click the "Test database connexion" button when you have entered
 these. If Numbat is able to connect to your database, you'll get a
