@@ -17,6 +17,8 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
     // Check for the refmeta column
     if ( ! check_for_referencesets_column ("refmeta") ) {
 	// It's not there
+
+	echo "<p>No metadata column</p>";
 	
 	$refsets = FALSE;
 
@@ -41,27 +43,48 @@ if ( nbt_get_privileges_for_userid ( $_SESSION[INSTALL_HASH . '_nbt_userid'] ) =
 	    echo $e->getMessage();
 	}
 
+	echo "<p>Adding metadata columns</p>";
+
+	// add refmeta, refmetamore columns
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `refmeta` TEXT;");
+
+	    if ($stmt->execute()) {
+		echo "<p>The referencesets table has been updated with the \"refmeta\" and \"refmetamore\" columns</p>";
+	    } else {
+		echo "<p>Error updating the referencesets table with \"refmeta\" and \"refmetamore\" columns</p>";
+	    }
+
+	    $dbh = null;
+
+	}
+
+	catch (PDOException $e) {
+	    echo $e->getMessage();
+	}
+	
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `refmetamore` TEXT;");
+
+	    if ($stmt->execute()) {
+		echo "<p>The referencesets table has been updated with the \"refmeta\" and \"refmetamore\" columns</p>";
+	    } else {
+		echo "<p>Error updating the referencesets table with \"refmeta\" and \"refmetamore\" columns</p>";
+	    }
+
+	    $dbh = null;
+
+	}
+
+	catch (PDOException $e) {
+	    echo $e->getMessage();
+	}
+	
 	if ($refsets) {
-
-	    // add refmeta, refmetamore columns
-	    try {
-
-		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		$stmt = $dbh->prepare("ALTER TABLE `referencesets` ADD COLUMN `refmeta` TEXT NULL DEFAULT NULL AFTER `abstract`, ADD COLUMN `refmetamore` TEXT NULL DEFAULT NULL AFTER `refmeta`;");
-
-		if ($stmt->execute()) {
-		    echo "<p>The referencesets table has been updated with the \"refmeta\" and \"refmetamore\" columns</p>";
-		} else {
-		    echo "<p>Error updating the referencesets table with \"refmeta\" and \"refmetamore\" columns</p>";
-		}
-
-		$dbh = null;
-
-	    }
-
-	    catch (PDOException $e) {
-		echo $e->getMessage();
-	    }
 
 	    // remove old metadata columns
 	    try {

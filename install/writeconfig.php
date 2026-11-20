@@ -142,7 +142,7 @@
 	try { // reference sets table
 
 	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `referencesets`; CREATE TABLE `referencesets` ( `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(200) NOT NULL DEFAULT '', `refmeta` TEXT DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+	    $stmt = $dbh->prepare("DROP TABLE IF EXISTS `referencesets`; CREATE TABLE `referencesets` ( `id` int(11) NOT NULL AUTO_INCREMENT, `name` varchar(200) NOT NULL DEFAULT '', `refmeta` TEXT DEFAULT NULL, `refmetamore` TEXT DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
 	    if ( $stmt->execute() ) {
 
@@ -419,6 +419,7 @@
 	    
 	}
 
+	nbtAddSettings("outgoing_email_activated", $_POST['outgoing_enabled']);
 	nbtAddSettings("project_name", $_POST['nbt_projname']);
 	nbtAddSettings("admin_email", $_POST['nbt_email']);
 	nbtAddSettings("smtp_host", $_POST['smtp_host']);
