@@ -394,48 +394,37 @@
 
 	// add numbat settings (project name and admin email)
 
-	try {
+	function nbtAddSettings ($key, $value) {
 
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("INSERT INTO `settings` (`key`, `value`) VALUES (:key, :value);");
+	    try {
 
-	    $stmt->bindParam(':key', $key);
-	    $stmt->bindParam(':value', $val);
+		$dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("INSERT INTO `settings` (`key`, `value`) VALUES (:key, :value);");
 
-	    $key = "project_name";
-	    $val = $_POST['nbt_projname'];
+		$stmt->bindParam(':key', $k);
+		$stmt->bindParam(':value', $v);
 
-	    $stmt->execute();
+		$k = $key;
+		$v = $value;
 
-	    $dbh = null;
+		$stmt->execute();
 
+		$dbh = null;
+
+	    }
+
+	    catch (PDOException $e) {
+		echo $e->getMessage();
+	    }
+	    
 	}
 
-	catch (PDOException $e) {
-	    echo $e->getMessage();
-	}
-
-	try {
-
-	    $dbh = new PDO('mysql:dbname=' . $_POST['dbname'] . ';host=' . $_POST['dbhost'], $_POST['dbusername'], $_POST['dbpassword'], array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("INSERT INTO `settings` (`key`, `value`) VALUES (:key, :value);");
-
-	    $stmt->bindParam(':key', $key);
-	    $stmt->bindParam(':value', $val);
-
-	    $key = "admin_email";
-	    $val = $_POST['nbt_email'];
-
-	    $stmt->execute();
-
-	    $dbh = null;
-
-	}
-
-	catch (PDOException $e) {
-	    echo $e->getMessage();
-	}
-
+	nbtAddSettings("project_name", $_POST['nbt_projname']);
+	nbtAddSettings("admin_email", $_POST['nbt_email']);
+	nbtAddSettings("smtp_host", $_POST['smtp_host']);
+	nbtAddSettings("smtp_user", $_POST['smtp_user']);
+	nbtAddSettings("smtp_password", $_POST['smtp_password']);
+	
 	// make a place to save backup mysql dumps
 
 	if ( ! file_exists ( $_POST['abs_path'] . "backup/dumpfiles/" ) ) {

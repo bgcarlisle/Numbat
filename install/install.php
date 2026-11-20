@@ -97,7 +97,10 @@ $numbaturl = $protocol . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
 		     nbt_projname: $('#nbtProjectName').val(),
 		     nbt_username: $('#nbtUsername').val(),
 		     nbt_password: $('#nbtPassword').val(),
-		     nbt_email: $('#nbtEmail').val()
+		     nbt_email: $('#nbtEmail').val(),
+		     smtp_host: $('#nbtSMTP_host').val(),
+		     smtp_user: $('#nbtSMTP_user').val(),
+		     smtp_password: $('#nbtSMTP_password').val()
 		 },
 		 dataType: 'html'
 	     }).done ( function (html) {
