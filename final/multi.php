@@ -38,12 +38,14 @@ if ( count ( $refsets ) > 0 ) {
 
 								foreach ( $extractedrefs as $extractedref ) {
 
-									$master = nbt_get_final ( $form['id'], $refset['id'], $extractedref['id'], FALSE );
-										// All the completed extractions:
-										$extractions = nbt_get_extractions_for_refset_ref_and_form ($refset['id'], $extractedref['id'], $form['id']);
+								    $master = nbt_get_final ( $form['id'], $refset['id'], $extractedref['id'], FALSE );
+								    // All the completed extractions:
+								    $extractions = nbt_get_extractions_for_refset_ref_and_form ($refset['id'], $extractedref['id'], $form['id']);
 
 
-									?><tr<?php
+								?><tr<?php
+
+								     if (isset($master)) {
 
 										switch ( $master['status'] ) {
 
@@ -66,6 +68,10 @@ if ( count ( $refsets ) > 0 ) {
 											break;
 
 										}
+									 
+																				   } else {
+																				       echo ' class="nbtMasterNotYetStarted' . $refset['id'] . '"';
+																				   }
 
 										?>>
 										<td>
@@ -85,29 +91,33 @@ if ( count ( $refsets ) > 0 ) {
 											?>
 										</td>
 										<td>
-											<?php
+										    <?php
+
+										    if (isset($master)) {
 
 											switch ( $master['status'] ) {
 
-												case 0:
-
-													?>Not yet started<?php
-
-												break;
-
-												case 1:
-
-													?>In progress<?php
+											    case 0:
+												echo "Not yet started";
 
 												break;
 
-												case 2:
+											    case 1:
+												echo "In progress";
 
-													?>Completed<?php
+												break;
+
+											    case 2:
+
+												echo "Completed";
 
 												break;
 
 											}
+											
+										    } else {
+											echo "Not yet started";
+										    }
 
 											?>
 										</td>
