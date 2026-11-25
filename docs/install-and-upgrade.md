@@ -17,6 +17,16 @@ FROM php:8.5-apache
 RUN docker-php-ext-install pdo pdo_mysql
 ```
 
+Create a file named `timezone.ini` in the same directory with the
+following contents:
+
+```
+date.timezone = America/Toronto
+```
+
+(Of course, you can update the time zone to whatever is appropriate
+for your location.)
+
 Create a file named `docker-compose.yml` in the same directory with
 the following contents:
 
@@ -28,12 +38,15 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: numbat-web
-	user: "1000:1000" # For if you want to do dev work
+    user: "1000:1000" # For if you want to do dev work
     restart: unless-stopped
     ports:
       - "8080:80" # Remove this if using a reverse proxy
+    environment:
+      - TZ=America/Toronto
     volumes:
       - ./www:/var/www/html
+      - ./timezone.ini:/usr/local/etc/php/conf.d/timezone.ini
     networks:
       - numbat-network
     depends_on:
@@ -45,10 +58,11 @@ services:
     container_name: numbat-db
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: change_me_root_password
-      MYSQL_DATABASE: numbat
-      MYSQL_USER: numbat_user
-      MYSQL_PASSWORD: change_me_db_password
+      - TZ=America/Toronto
+      - MYSQL_ROOT_PASSWORD=change_me_root_password
+      - MYSQL_DATABASE=numbat
+      - MYSQL_USER=numbat_user
+      - MYSQL_PASSWORD=change_me_db_password
     volumes:
       - numbat_db_data:/var/lib/mysql
     networks:
@@ -56,18 +70,21 @@ services:
 
   # phpMyAdmin (Optional - Database Management)
   numbat-phpmyadmin:
-    image: lscr.io/linuxserver/phpmyadmin:latest
+    image: phpmyadmin:latest
     container_name: numbat-phpmyadmin
     restart: unless-stopped
     ports:
       - "8081:80" # Remove this if using a reverse proxy
     environment:
+      - TZ=America/Toronto
       - PMA_HOST=numbat-db
       - UPLOAD_LIMIT=128M
       # Uncomment the lines below if running behind an HTTPS reverse proxy:
       # - PMA_ABSOLUTE_URI=https://yourdomain.com/phpmyadmin/
       # - SECURE_PROXY=1
       # - PMA_HTTPS=true
+    volumes:
+      - ./timezone.ini:/usr/local/etc/php/conf.d/timezone.ini
     networks:
       - numbat-network
     depends_on:
