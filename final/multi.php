@@ -47,104 +47,102 @@ if ( count ( $refsets ) > 0 ) {
 
 								     if (isset($master)) {
 
-										switch ( $master['status'] ) {
+									 switch ( $master['status'] ) {
 
-											case 0:
+									     case 0:
+										 echo ' class="nbtMasterNotYetStarted' . $refset['id'] . '"';
+										 break;
 
-												?> class="nbtMasterNotYetStarted<?php echo $refset['id']; ?>"<?php
+									     case 1:
+										 echo ' class="nbtMasterInProgress' . $refset['id'] . '"';
+										 break;
 
-											break;
+									     case 2:
+										 echo ' class="nbtMasterCompleted' . $refset['id'] . ' nbtHidden"';
+										 break;
 
-											case 1:
-
-												?> class="nbtMasterInProgress<?php echo $refset['id']; ?>"<?php
-
-											break;
-
-											case 2:
-
-												?> class="nbtMasterCompleted<?php echo $refset['id']; ?> nbtHidden"<?php
-
-											break;
-
-										}
+									 }
 									 
-																				   } else {
-																				       echo ' class="nbtMasterNotYetStarted' . $refset['id'] . '"';
-																				   }
+								     } else {
+									 echo ' class="nbtMasterNotYetStarted' . $refset['id'] . '"';
+								     }
 
-										?>>
-										<td>
-											<h4><?php echo $extractedref[$refset['title']]; ?></h4>
-											<p><?php echo $extractedref[$refset['authors']]; ?>, <em><?php echo $extractedref[$refset['journal']]; ?></em>: <?php echo $extractedref[$refset['year']]; ?></p></td>
-										<td>
-											<?php
+								     ?>>
+								    <td>
+									<h4><?php echo $extractedref[$refset['title']]; ?></h4>
+									<p><?php echo $extractedref[$refset['authors']]; ?>, <em><?php echo $extractedref[$refset['journal']]; ?></em>: <?php echo $extractedref[$refset['year']]; ?></p></td>
+								    <td>
+									<?php
 
-											// $extractions = nbt_get_extractions_for_refset_ref_and_form ( $refset['id'], $extractedref['id'], $form['id'] );
+									// $extractions = nbt_get_extractions_for_refset_ref_and_form ( $refset['id'], $extractedref['id'], $form['id'] );
 
-											foreach ( $extractions as $extraction ) {
+									foreach ( $extractions as $extraction ) {
 
-												?><span class="nbtExtractionName"><?php echo $extraction['username']; ?></span><?php
+									    echo '<span class="nbtExtractionName">' . $extraction['username'] . '</span>';
 
-											}
 
-											?>
-										</td>
-										<td>
-										    <?php
+									}
 
-										    if (isset($master)) {
+									?>
+								    </td>
+								    <td>
+									<?php
 
-											switch ( $master['status'] ) {
+									if (isset($master)) {
 
-											    case 0:
-												echo "Not yet started";
+									    switch ( $master['status'] ) {
 
-												break;
+										case 0:
+										    echo "Not yet started";
 
-											    case 1:
-												echo "In progress";
+										    break;
 
-												break;
+										case 1:
+										    echo "In progress";
 
-											    case 2:
+										    break;
 
-												echo "Completed";
+										case 2:
 
-												break;
+										    echo "Completed";
 
-											}
-											
-										    } else {
-											echo "Not yet started";
-										    }
+										    break;
 
-											?>
-										</td>
-										<td>
-											<?php
+									    }
+									    
+									} else {
+									    echo "Not yet started";
+									}
 
-											if ( count ( $extractions ) > 1 ) {
+									?>
+								    </td>
+								    <td>
+									<?php
 
-												?><a href="<?php echo SITE_URL; ?>final/?action=reconcile&form=<?php echo $form['id']; ?>&refset=<?php echo $refset['id']; ?>&ref=<?php echo $extractedref['id']; ?>" target="_blank">Reconcile extractions</a><?php
+									if ( count ( $extractions ) > 1 ) {
 
-											} else {
+									?>
+									    <a href="<?php echo SITE_URL; ?>final/?action=reconcile&form=<?php echo $form['id']; ?>&refset=<?php echo $refset['id']; ?>&ref=<?php echo $extractedref['id']; ?>" target="_blank">Reconcile extractions</a>
+									<?php
 
-												?>Only one extraction done<?php
+									} else {
 
-											}
+									    echo "Only one extraction done";
 
-											?>
-										</td>
-									</tr><?php
+									}
+
+									?>
+								    </td>
+								</tr>
+								<?php
 
 								}
 
-							?></table><?php
-
-							break;
-
-						case "screening":
+								echo "<\table>";
+								
+								break;
+								
+								case "screening":
 
 							// Get the number of assignments for pagination
 
