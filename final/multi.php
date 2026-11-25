@@ -69,8 +69,30 @@ if ( count ( $refsets ) > 0 ) {
 
 								     ?>>
 								    <td>
-									<h4><?php echo $extractedref[$refset['title']]; ?></h4>
-									<p><?php echo $extractedref[$refset['authors']]; ?>, <em><?php echo $extractedref[$refset['journal']]; ?></em>: <?php echo $extractedref[$refset['year']]; ?></p></td>
+									<?php
+
+									$refmeta = $refset['refmeta'];
+									
+									preg_match_all(
+									'/\$([A-Za-z0-9_-]+)/',
+									$refset['refmeta'],
+									$cols_to_replace
+									);
+
+									
+									foreach ( $cols_to_replace[0] as $col_to_replace ) {
+
+									    $refmeta = preg_replace (
+										"/\\" . $col_to_replace . "\b/",
+										$extractedref[substr($col_to_replace, 1)],
+										$refmeta
+									    );
+									}
+
+									echo "<div>" . $refmeta . "</div>";
+									
+									?>
+								    </td>
 								    <td>
 									<?php
 
