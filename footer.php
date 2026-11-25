@@ -350,207 +350,207 @@
      // Screening
      if ($('#nbtScreeningGrid').length) { // If there's the screening table
 
-       formid = $('#nbtScreeningGrid').data('formid');
-       rsid = $('#nbtScreeningGrid').data('refsetid');
+	 formid = $('#nbtScreeningGrid').data('formid');
+	 rsid = $('#nbtScreeningGrid').data('refsetid');
 
-       // Focus goes where clicked
-       $('#nbtScreeningGrid tr.nbtFocusableScreeningRow').on('click', function () {
-         if (! $(this).hasClass('nbtScreeningFocus')) {
-           $('#nbtScreeningGrid tr').removeClass('nbtScreeningFocus');
-           $(this).addClass('nbtScreeningFocus');
-         } else {
-           $('#nbtScreeningGrid tr').removeClass('nbtScreeningFocus');
-         }
-
-       });
-
-       // Add screening keyboard shortcuts
-       document.addEventListener('keyup', function (event) {
-         if (! $('input.nbtScreeningNotes:focus').length) { // These don't work when a notes is in focus
-
-           if (! (event.getModifierState("Alt") | event.getModifierState("Control") | event.getModifierState("Meta"))) {
-             // These don't work if Control, Alt or Meta are being pressed
-             if (event.keyCode == 74) { // Letter j
-               if ($('.nbtScreeningFocus').length) {
-                 if ($('.nbtScreeningFocus').next('.nbtFocusableScreeningRow:visible').length) {
-                   $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').next('.nbtFocusableScreeningRow:visible').addClass('nbtScreeningFocus');
-                   $('html, body').animate({
-                     scrollTop: $('.nbtScreeningFocus').offset().top - 50
-                   }, 250);
-                 }
-               } else {
-                 $('.nbtFocusableScreeningRow:visible:first').addClass('nbtScreeningFocus');
-               }
-
+	 // Focus goes where clicked
+	 $('#nbtScreeningGrid tr.nbtFocusableScreeningRow').on('click', function () {
+             if (! $(this).hasClass('nbtScreeningFocus')) {
+		 $('#nbtScreeningGrid tr').removeClass('nbtScreeningFocus');
+		 $(this).addClass('nbtScreeningFocus');
+             } else {
+		 $('#nbtScreeningGrid tr').removeClass('nbtScreeningFocus');
              }
 
-             if (event.keyCode == 75) { // Letter k
-               if ($('.nbtScreeningFocus').length) {
-                 if ($('.nbtScreeningFocus').prev('.nbtFocusableScreeningRow:visible').length) {
-                   $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').prev('.nbtFocusableScreeningRow:visible').addClass('nbtScreeningFocus');
-                   $('html, body').animate({
-                     scrollTop: $('.nbtScreeningFocus').offset().top - 50
-                   }, 250);
-                 }
-               } else {
-                 $('.nbtFocusableScreeningRow:visible:last').addClass('nbtScreeningFocus');
-               }
+	 });
+
+	 // Add screening keyboard shortcuts
+	 document.addEventListener('keyup', function (event) {
+             if (! $('input.nbtScreeningNotes:focus').length) { // These don't work when a notes is in focus
+
+		 if (! (event.getModifierState("Alt") | event.getModifierState("Control") | event.getModifierState("Meta"))) {
+		     // These don't work if Control, Alt or Meta are being pressed
+		     if (event.keyCode == 74) { // Letter j
+			 if ($('.nbtScreeningFocus').length) {
+			     if ($('.nbtScreeningFocus').next('.nbtFocusableScreeningRow:visible').length) {
+				 $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').next('.nbtFocusableScreeningRow:visible').addClass('nbtScreeningFocus');
+				 $('html, body').animate({
+				     scrollTop: $('.nbtScreeningFocus').offset().top - 50
+				 }, 250);
+			     }
+			 } else {
+			     $('.nbtFocusableScreeningRow:visible:first').addClass('nbtScreeningFocus');
+			 }
+
+		     }
+
+		     if (event.keyCode == 75) { // Letter k
+			 if ($('.nbtScreeningFocus').length) {
+			     if ($('.nbtScreeningFocus').prev('.nbtFocusableScreeningRow:visible').length) {
+				 $('.nbtScreeningFocus').removeClass('nbtScreeningFocus').prev('.nbtFocusableScreeningRow:visible').addClass('nbtScreeningFocus');
+				 $('html, body').animate({
+				     scrollTop: $('.nbtScreeningFocus').offset().top - 50
+				 }, 250);
+			     }
+			 } else {
+			     $('.nbtFocusableScreeningRow:visible:last').addClass('nbtScreeningFocus');
+			 }
+		     }
+
+		     if (event.keyCode == 27) { // Esc key
+			 // Removes focus
+			 $('#nbtScreeningGrid tr').removeClass('nbtScreeningFocus');
+		     }
+
+		     if (event.keyCode == 49 || event.keyCode == 97) { // 1 or numpad 1
+			 // Mark as include
+			 $('.nbtScreeningFocus .nbtScreeningIncludeBox').click();
+		     }
+
+		     if ((event.keyCode >= 50 && event.keyCode <= 57) || (event.keyCode >= 98 && event.keyCode <= 105)) {
+			 if (event.keyCode <= 57) {
+			     num = event.keyCode - 48;
+			 } else {
+			     num = event.keyCode - 96;
+			 }
+
+			 boxnum = num - 2;
+
+			 // Mark exclusion reason
+			 $('.nbtScreeningFocus .nbtScreeningExcludeBox' + boxnum).click();
+		     }
+
+		     if (event.keyCode == 48 || event.keyCode == 96) { // 0 or numpad 0
+			 $('.nbtScreeningFocus input.nbtScreeningNotes').focus();
+		     }
+
+		     if (event.keyCode == 72) {
+			 $('.nbtScreeningDone').parent().fadeToggle(0);
+		     }
+
+		 }
+
+             } else { // A notes input is focused
+		 if (event.keyCode == 27) { // Esc key
+		     // Removes focus
+		     $('.nbtScreeningFocus input.nbtScreeningNotes').blur();
+		 }
              }
 
-             if (event.keyCode == 27) { // Esc key
-               // Removes focus
-               $('#nbtScreeningGrid tr').removeClass('nbtScreeningFocus');
-             }
+	 }); // End of screening keyboard shortcuts
 
-             if (event.keyCode == 49 || event.keyCode == 97) { // 1 or numpad 1
-               // Mark as include
-               $('.nbtScreeningFocus .nbtScreeningIncludeBox').click();
-             }
+	 // When the include box is clicked
+	 $('.nbtScreeningIncludeBox').on('click', function (event) {
+             event.stopPropagation();
 
-             if ((event.keyCode >= 50 && event.keyCode <= 57) || (event.keyCode >= 98 && event.keyCode <= 105)) {
-               if (event.keyCode <= 57) {
-                 num = event.keyCode - 48;
-               } else {
-                 num = event.keyCode - 96;
-               }
+             includebox = $(this);
+             $.ajax ({
+		 url: numbaturl + 'extract/updatescreening.php',
+		 type: 'post',
+		 data: {
+		     action: 'include',
+		     fid: formid,
+		     refset: rsid,
+		     rid: $(this).data('referenceid')
+		 },
+		 dataType: 'html'
+             }).done ( function (response) {
 
-               boxnum = num - 2;
+		 switch (response) {
+		     case "1":
+			 includebox.css("background-color","#ccffcc");
+			 includebox.html('Include');
+			 includebox.addClass('nbtScreeningDone');
+			 includebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
+			 break;
+		     case "0":
+			 includebox.css("background-color","#ffcccc");
+			 includebox.addClass('nbtScreeningDone');
+			 includebox.html('Exclude');
+			 break;
+		     case "null":
+			 includebox.css("background-color","");
+			 includebox.html('Include?');
+			 includebox.removeClass('nbtScreeningDone');
+			 includebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
+			 break;
+		     case "Error":
+			 alert('Error saving');
+			 break;
+		 }
 
-               // Mark exclusion reason
-               $('.nbtScreeningFocus .nbtScreeningExcludeBox' + boxnum).click();
-             }
+             });
 
-             if (event.keyCode == 48 || event.keyCode == 96) { // 0 or numpad 0
-               $('.nbtScreeningFocus input.nbtScreeningNotes').focus();
-             }
+	 });
 
-             if (event.keyCode == 72) {
-               $('.nbtScreeningDone').parent().fadeToggle(0);
-             }
+	 // When an exclude box is clicked
+	 $('.nbtScreeningExcludeBox').on('click', function (event) {
+             event.stopPropagation();
 
-           }
+             excludebox = $(this);
+             $.ajax ({
+		 url: numbaturl + 'extract/updatescreening.php',
+		 type: 'post',
+		 data: {
+		     action: 'exclude',
+		     reason: $(this).data('excludereason'),
+		     fid: formid,
+		     refset: rsid,
+		     rid: $(this).data('referenceid')
+		 },
+		 dataType: 'html'
+             }).done ( function (response) {
 
-         } else { // A notes input is focused
-           if (event.keyCode == 27) { // Esc key
-             // Removes focus
-             $('.nbtScreeningFocus input.nbtScreeningNotes').blur();
-           }
-         }
+		 if (response == "Clear all") {
+		     excludebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
+		 } else {
+		     if ( response != "Error") {
+			 excludebox.parent().children('.nbtScreeningIncludeBox').css("background-color", "#ffcccc").html('Exclude');
+			 excludebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
+			 excludebox.css("background-color","#ffcccc");
+		     } else {
+			 alert('Error saving');
+		     }
 
-       }); // End of screening keyboard shortcuts
+		 }
 
-       // When the include box is clicked
-       $('.nbtScreeningIncludeBox').on('click', function (event) {
-         event.stopPropagation();
+             });
 
-         includebox = $(this);
-         $.ajax ({
-           url: numbaturl + 'extract/updatescreening.php',
-           type: 'post',
-           data: {
-            action: 'include',
-            fid: formid,
-            refset: rsid,
-            rid: $(this).data('referenceid')
-           },
-           dataType: 'html'
-         }).done ( function (response) {
+	 });
 
-          switch (response) {
-            case "1":
-              includebox.css("background-color","#ccffcc");
-              includebox.html('Include');
-              includebox.addClass('nbtScreeningDone');
-              includebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
-              break;
-            case "0":
-              includebox.css("background-color","#ffcccc");
-              includebox.addClass('nbtScreeningDone');
-              includebox.html('Exclude');
-              break;
-            case "null":
-              includebox.css("background-color","");
-              includebox.html('Include?');
-              includebox.removeClass('nbtScreeningDone');
-              includebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
-              break;
-            case "Error":
-              alert('Error saving');
-              break;
-          }
+	 // When the notes field is clicked
+	 $('input.nbtScreeningNotes').on('click', function (event) {
+             event.stopPropagation(); // Don't focus/unfocus the row
+	 });
 
-         });
+	 // When the notes field is unfocused
+	 $('input.nbtScreeningNotes').on('blur', function () {
 
-       });
+             notesfield = $(this);
+             $.ajax ({
+		 url: numbaturl + 'extract/updatescreening.php',
+		 type: 'post',
+		 data: {
+		     action: 'notes',
+		     notes: $(this).val(),
+		     fid: formid,
+		     refset: rsid,
+		     rid: $(this).data('referenceid')
+		 },
+		 dataType: 'html'
+             }).done ( function (response) {
 
-       // When an exclude box is clicked
-       $('.nbtScreeningExcludeBox').on('click', function (event) {
-         event.stopPropagation();
+		 if (response == "Saved") {
+		     notesfield.css("background-color","#ccffcc");
+		     setTimeout( function () {
+         		 notesfield.css("background-color","");
+         	     }, 1000);
+		 } else {
+		     alert("Error saving")
+		 }
 
-        excludebox = $(this);
-        $.ajax ({
-          url: numbaturl + 'extract/updatescreening.php',
-          type: 'post',
-          data: {
-           action: 'exclude',
-           reason: $(this).data('excludereason'),
-           fid: formid,
-           refset: rsid,
-           rid: $(this).data('referenceid')
-          },
-          dataType: 'html'
-        }).done ( function (response) {
-
-          if (response == "Clear all") {
-            excludebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
-          } else {
-            if ( response != "Error") {
-              excludebox.parent().children('.nbtScreeningIncludeBox').css("background-color", "#ffcccc").html('Exclude');
-              excludebox.parent().children('.nbtScreeningExcludeBox').css("background-color", "");
-              excludebox.css("background-color","#ffcccc");
-            } else {
-              alert('Error saving');
-            }
-
-          }
-
-        });
-
-       });
-
-       // When the notes field is clicked
-       $('input.nbtScreeningNotes').on('click', function (event) {
-         event.stopPropagation(); // Don't focus/unfocus the row
-       });
-
-      // When the notes field is unfocused
-       $('input.nbtScreeningNotes').on('blur', function () {
-
-        notesfield = $(this);
-        $.ajax ({
-          url: numbaturl + 'extract/updatescreening.php',
-          type: 'post',
-          data: {
-           action: 'notes',
-           notes: $(this).val(),
-           fid: formid,
-           refset: rsid,
-           rid: $(this).data('referenceid')
-          },
-          dataType: 'html'
-        }).done ( function (response) {
-
-          if (response == "Saved") {
-            notesfield.css("background-color","#ccffcc");
-            setTimeout( function () {
-         	     notesfield.css("background-color","");
-         	 }, 1000);
-          } else {
-            alert("Error saving")
-          }
-
-        });
-       });
+             });
+	 });
 
 
      } // End of screening
@@ -818,7 +818,7 @@
   	     user: userid,
   	     privileges: $('#nbtUserPrivileges' + userid).val()
     	 },
-	     dataType: 'html'
+	 dataType: 'html'
      }).done ( function (html) {
 
     	 $('#nbtPrivilegeFeedback').html(html);
@@ -881,12 +881,12 @@
     	 url: numbaturl + 'forms/newform.php',
     	 type: 'post',
     	 data: {
-         formtype: type
+             formtype: type
     	 },
     	 dataType: 'html'
      }).done ( function (html) {
 
-	     $('#nbtFormsTable').html(html);
+	 $('#nbtFormsTable').html(html);
 
      });
 
@@ -1534,7 +1534,7 @@
 
  }
 
-function nbtAddSubTagToSelected ( eid, seid, tagval, subexid, columnname ) {
+ function nbtAddSubTagToSelected ( eid, seid, tagval, subexid, columnname ) {
 
      tagval = tagval.replace(";", "_");
 
@@ -1570,7 +1570,7 @@ function nbtAddSubTagToSelected ( eid, seid, tagval, subexid, columnname ) {
 
  }
 
-function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) {
+ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) {
 
      tagval = tagval.replace(";", "_");
 
@@ -2884,10 +2884,10 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 
      if ( $('#' + buttonid).hasClass('nbtTextOptionChosen') ) { // If it's already selected
 
-	     $.ajax ({
-		 url: numbaturl + 'extract/updateextraction.php',
-		 type: 'post',
-		 data: {
+	 $.ajax ({
+	     url: numbaturl + 'extract/updateextraction.php',
+	     type: 'post',
+	     data: {
 		 fid: formid,
 		 id: extractionid,
 		 question: questionlabel,
@@ -6018,23 +6018,25 @@ function nbtAddSubTagToSelectedFinal ( eid, seid, tagval, subexid, columnname ) 
 	     alert('Error deleting file');
 	 } else {
 	     $('#nbtUploadRow' + fileid + ' td').addClass('nbtBadField');
-	      setTimeout( function () {
-		  $('#nbtUploadRow' + fileid).slideUp();
-	      }, 1000);
+	     setTimeout( function () {
+		 $('#nbtUploadRow' + fileid).slideUp();
+	     }, 1000);
 
 	 }
      });
 
  }
 
- function nbtSaveOutgoingEmailSetting (textinput, field) {
+ function nbtSaveOutgoingEmailSettings (textinput, field) {
      
      $.ajax ({
-	 url: numbaturl + 'email/update_setting.php',
+	 url: numbaturl + 'email/update-email.php',
 	 type: 'post',
 	 data: {
-	     field: field,
-	     newval: textinput.val()
+	     enabled: $('#nbtOutgoingEmailToggle').val(),
+	     host: $('#nbtOutgoingEmailHost').val(),
+	     user: $('#nbtOutgoingEmailUser').val(),
+	     password: $('#nbtOutgoingEmailPassword').val()
 	 },
 	 dataType: 'html'
      }).done( function (response) {
