@@ -160,7 +160,7 @@ if ( count ( $refsets ) > 0 ) {
 
 								}
 
-								echo "<\table>";
+								echo "</table>";
 								
 								break;
 								
