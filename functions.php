@@ -12987,54 +12987,54 @@ function nbt_insert_imported_table_data ( $formid, $elementid, $refsetid, $userc
 
 function nbt_insert_row_into_columns ( $refset, $columns, $values ) {
 
-	$sqlcols = "`" . implode ( "`, `", $columns ) . "`";
+    $sqlcols = "`" . implode ( "`, `", $columns ) . "`";
 
-	$sqlparams = ":" . implode ( ", :", $columns );
+    $sqlparams = ":" . implode ( ", :", $columns );
 
-	try {
+    try {
 
-	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare ("INSERT INTO `referenceset_" . $refset . "` (" . $sqlcols . ") VALUES (" . $sqlparams . ")");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare ("INSERT INTO `referenceset_" . $refset . "` (" . $sqlcols . ") VALUES (" . $sqlparams . ")");
 
-	    $counter = 0;
-	    $colvars = array ();
+	$counter = 0;
+	$colvars = array ();
 
-	    foreach ( $columns as $column ) {
+	foreach ( $columns as $column ) {
 
-        $stmt->bindParam(':' . $column, $colvars[$counter]);
+            $stmt->bindParam(':' . $column, $colvars[$counter]);
 
-        // This removes quotes if they're at the beginning and the end of a field
+            // This removes quotes if they're at the beginning and the end of a field
 
-        $length = strlen ($values[$counter]);
+            $length = strlen ($values[$counter]);
 
-        if ( ( substr ($values[$counter], $length-1, 1) == "\"" ) && ( substr ($values[$counter], 0, 1) == "\"" ) ) {
+            if ( ( substr ($values[$counter], $length-1, 1) == "\"" ) && ( substr ($values[$counter], 0, 1) == "\"" ) ) {
 
-            $values[$counter] = substr ( $values[$counter], 1, $length-2 );
+		$values[$counter] = substr ( $values[$counter], 1, $length-2 );
 
-        }
+            }
 
-        $colvars[$counter] = $values[$counter];
+            $colvars[$counter] = $values[$counter];
 
-        $counter++;
-
-      }
-
-	    if ($stmt->execute()) {
-
-    		$dbh = null;
-    		return TRUE;
-
-	    } else {
-
-    		$dbh = null;
-    		return FALSE;
-	    }
+            $counter++;
 
 	}
 
-	catch (PDOException $e) {
-	    echo $e->getMessage();
+	if ($stmt->execute()) {
+
+    	    $dbh = null;
+    	    return TRUE;
+
+	} else {
+
+    	    $dbh = null;
+    	    return FALSE;
 	}
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
 
 
 }
@@ -13498,35 +13498,80 @@ function nbt_get_sub_extraction_for_element_and_id ( $elementid, $subextractioni
 
 }
 
-function nbt_get_setting ( $key ) {
-
+function nbt_get_setting ($key, $default = null) {
     try {
+        $dbh = new PDO(
+            'mysql:dbname=' . DB_NAME . ';host=' . DB_HOST . ';charset=utf8',
+            DB_USER,
+            DB_PASS
+        );
+        $stmt = $dbh->prepare("SELECT `value` FROM `settings` WHERE `key` = :key LIMIT 1;");
+        $stmt->execute([':key' => $key]);
 
-	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM `settings` WHERE `key` = :key LIMIT 1;");
+        $value = $stmt->fetchColumn();
+        $dbh = null;
 
-	$stmt->bindParam(':key', $ke);
+        return $value !== false ? $value : $default;
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+        return $default;
+    }
+}
 
-	$ke = $key;
+function nbt_set_setting ($key, $value) {
 
-	$stmt->execute();
+    $current = nbt_get_setting($key);
 
-	$result = $stmt->fetchAll();
+    if (is_null($current)) {
+	// There is no value for that key already, so just add a new one
+	try {
 
-	$dbh = null;
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("INSERT INTO `settings` (`key`, `value`) VALUES (:key, :value));");
 
-	foreach ($result as $row) {
+	    $stmt->bindParam(':key', $ke);
+	    $stmt->bindParam(':value', $va);
 
-	    return $row['value'];
+	    $ke = $key;
+	    $va = $value;
+
+	    if ($stmt->execute()) {
+		return TRUE;
+	    }
+
+	    $dbh = null;
+	    
+	}
+
+	catch (PDOException $e) {
+	    echo $e->getMessage();
+	}
+    } else {
+	// There is a value for that key, so update it	
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE `settings` SET `value` = :value WHERE `key` = :key LIMIT 1;");
+
+	    $stmt->bindParam(':key', $ke);
+	    $stmt->bindParam(':value', $va);
+
+	    $ke = $key;
+	    $va = $value;
+
+	    if ($stmt->execute()) {
+		return TRUE;
+	    }
+	    
+	    $dbh = null;
 
 	}
 
+	catch (PDOException $e) {
+	    echo $e->getMessage();
+	}
     }
-
-    catch (PDOException $e) {
-	echo $e->getMessage();
-    }
-
+    
 }
 
 function nbt_add_assignment_editor ( $formid, $elementid, $displayname = NULL, $codebook = NULL, $toggle = NULL, $startup_visible = 1, $conditional_logical_operator = "any", $destructive_hiding = 1 ) {
@@ -15399,7 +15444,7 @@ function nbt_delete_uploaded_file ($fileid) {
     }
 
     catch (PDOException $e) {
-	     echo $e->getMessage();
+	echo $e->getMessage();
     }
 
     // Delete from disk
@@ -15426,194 +15471,179 @@ function nbt_delete_uploaded_file ($fileid) {
 
 }
 
-function nbt_screening_include ($formid, $refsetid, $referenceid) {
-  // Get the current state of include and switch as follows:
-  // NULL -> 1
-  // 1 -> 0
-  // 0 -> NULL
-
-  $formid = intval($formid);
-
-  try {
-
-    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-    $stmt = $dbh->prepare("SELECT * FROM `extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
-
-    $stmt->bindParam(':rsid', $rsid);
-    $stmt->bindParam(':rid', $rid);
-    $stmt->bindParam(':uid', $uid);
-
-    $rsid = $refsetid;
-    $rid = $referenceid;
-    $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
-
-    if ( $stmt->execute() ) {
-      $result = $stmt->fetchAll();
-      $extraction_started = count($result);
-      $db_include = $result[0]['include'];
-    } else {
-      return "Error";
-    }
-
-  }
-
-  catch (PDOException $e) {
-     echo $e->getMessage();
-  }
-
-  if ($extraction_started == 0) {
-    // Add a row to the db
-    try {
-
-      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-      $stmt = $dbh->prepare("INSERT INTO `extractions_" . $formid . "` (`refsetid`, `referenceid`, `userid`, `include`, `status`, `timestamp_finished`) VALUES (:rsid, :rid, :uid, 1, 2, NOW())");
-
-      $stmt->bindParam(':rsid', $rsid);
-      $stmt->bindParam(':rid', $rid);
-      $stmt->bindParam(':uid', $uid);
-
-      $rsid = $refsetid;
-      $rid = $referenceid;
-      $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
-
-      if ( $stmt->execute() ) {
-        return 1;
-      } else {
-        return "Error";
-      }
-
-    }
-
-    catch (PDOException $e) {
-       echo $e->getMessage();
-    }
-
-  } else {
-    // Update the row in the db
-    switch ($db_include) {
-      case NULL:
-        // Update include to 1
-        // Clear exclusion reason
-        try {
-
-          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-          $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `include` = 1, `exclusion_reason` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
-
-          $stmt->bindParam(':rsid', $rsid);
-          $stmt->bindParam(':rid', $rid);
-          $stmt->bindParam(':uid', $uid);
-
-          $rsid = $refsetid;
-          $rid = $referenceid;
-          $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
-
-          if ( $stmt->execute() ) {
-            $result = $stmt->fetchAll();
-            $extraction_started = count($result);
-            return "1";
-          } else {
-            return "Error";
-          }
-
-        }
-
-        catch (PDOException $e) {
-           echo $e->getMessage();
-        }
-
-        break;
-
-      case 0:
-        // Update include to NULL
-        // Clear exclusion reason
-        try {
-
-          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-          $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `include` = NULL, `exclusion_reason` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
-
-          $stmt->bindParam(':rsid', $rsid);
-          $stmt->bindParam(':rid', $rid);
-          $stmt->bindParam(':uid', $uid);
-
-          $rsid = $refsetid;
-          $rid = $referenceid;
-          $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
-
-          if ( $stmt->execute() ) {
-            $result = $stmt->fetchAll();
-            $extraction_started = count($result);
-            return "null";
-          } else {
-            return "Error";
-          }
-
-        }
-
-        catch (PDOException $e) {
-           echo $e->getMessage();
-        }
-
-        break;
-
-      case 1:
-        // Update include to 0
-        try {
-
-          $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-          $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `include` = 0 WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
-
-          $stmt->bindParam(':rsid', $rsid);
-          $stmt->bindParam(':rid', $rid);
-          $stmt->bindParam(':uid', $uid);
-
-          $rsid = $refsetid;
-          $rid = $referenceid;
-          $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
-
-          if ( $stmt->execute() ) {
-            $result = $stmt->fetchAll();
-            $extraction_started = count($result);
-            return 0;
-          } else {
-            return "Error";
-          }
-
-        }
-
-        catch (PDOException $e) {
-           echo $e->getMessage();
-        }
-
-        break;
-
-    }
-
-  }
-}
-
-function nbt_screening_reconcile_include ($formid, $refsetid, $referenceid) {
+function nbt_screening_include($formid, $refsetid, $referenceid) {
     // Get the current state of include and switch as follows:
     // NULL -> 1
     // 1 -> 0
     // 0 -> NULL
 
     $formid = intval($formid);
-    
+    $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
+
+    try {
+        // Open the database connection
+        $dbh = new PDO(
+            'mysql:dbname=' . DB_NAME . ';host=' . DB_HOST . ';charset=utf8',
+            DB_USER,
+            DB_PASS,
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
+
+        // Check for an existing row
+        $stmt = $dbh->prepare("SELECT `include` FROM `extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1");
+        $stmt->execute([
+            ':rsid' => $refsetid,
+            ':rid'  => $referenceid,
+            ':uid'  => $uid
+        ]);
+        
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // If no row exists, insert a new one
+        if (!$row) {
+            $insert = $dbh->prepare("INSERT INTO `extractions_" . $formid . "` (`refsetid`, `referenceid`, `userid`, `include`, `status`, `timestamp_finished`) VALUES (:rsid, :rid, :uid, 1, 2, NOW())");
+            $insert->execute([
+                ':rsid' => $refsetid,
+                ':rid'  => $referenceid,
+                ':uid'  => $uid
+            ]);
+            return "1";
+        }
+
+        // Determine the next state
+        $db_include = $row['include'];
+        
+        if ($db_include === null) {
+            $new_include = 1;
+            $clear_reason = true;
+            $return_val = "1";
+        } elseif ((int)$db_include === 1) {
+            $new_include = 0;
+            $clear_reason = false;
+            $return_val = "0";
+        } else { // $db_include is 0
+            $new_include = null;
+            $clear_reason = true;
+            $return_val = "null";
+        }
+
+        // Update the existing row
+        $sql = $clear_reason
+        ? "UPDATE `extractions_" . $formid . "` SET `include` = :inc, `exclusion_reason` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1"
+             : "UPDATE `extractions_" . $formid . "` SET `include` = :inc WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1";
+
+        $update = $dbh->prepare($sql);
+        $update->execute([
+            ':inc'  => $new_include,
+            ':rsid' => $refsetid,
+            ':rid'  => $referenceid,
+            ':uid'  => $uid
+        ]);
+
+        return $return_val;
+
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+        return "Error";
+    }
+}
+
+function nbt_screening_reconcile_include($formid, $refsetid, $referenceid) {
+    // Get the current state of include and switch as follows:
+    // NULL (or no row) -> 1
+    // 1 -> 0
+    // 0 -> DELETE row (returns "null")
+
+    $formid = intval($formid);
+
+    try {
+        // Open the database connection
+        $dbh = new PDO(
+            'mysql:dbname=' . DB_NAME . ';host=' . DB_HOST . ';charset=utf8',
+            DB_USER,
+            DB_PASS,
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
+
+        //  Check for an existing row
+        $stmt = $dbh->prepare("SELECT `include` FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1");
+        $stmt->execute([
+            ':rsid' => $refsetid,
+            ':rid'  => $referenceid
+        ]);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // If no row exists, insert a new one
+        if (!$row) {
+            $insert = $dbh->prepare("INSERT INTO `m_extractions_" . $formid . "` (`refsetid`, `referenceid`, `include`, `status`, `timestamp_finished`) VALUES (:rsid, :rid, 1, 2, NOW())");
+            $insert->execute([
+                ':rsid' => $refsetid,
+                ':rid'  => $referenceid
+            ]);
+            return "1";
+        }
+
+        //  Determine the next state
+        $db_include = $row['include'];
+
+        if ($db_include === null) {
+            // Update include to 1 and clear exclusion reason
+            $update = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `include` = 1, `exclusion_reason` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1");
+            $update->execute([
+                ':rsid' => $refsetid,
+                ':rid'  => $referenceid
+            ]);
+            return "1";
+
+        } elseif ((int)$db_include === 1) {
+            // Update include to 0
+            $update = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `include` = 0 WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1");
+            $update->execute([
+                ':rsid' => $refsetid,
+                ':rid'  => $referenceid
+            ]);
+            return "0";
+
+        } else {
+            // $db_include is 0: Remove row from final table
+            $delete = $dbh->prepare("DELETE FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1");
+            $delete->execute([
+                ':rsid' => $refsetid,
+                ':rid'  => $referenceid
+            ]);
+            return "null";
+        }
+
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+        return "Error";
+    }
+}
+
+function nbt_screening_exclude ($formid, $refsetid, $referenceid, $reason) {
+    // Get the current db row
+    // If there is no row, insert one
+
+    $formid = intval($formid);
+
     try {
 
 	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	$stmt = $dbh->prepare("SELECT * FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
+	$stmt = $dbh->prepare("SELECT * FROM `extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
 
 	$stmt->bindParam(':rsid', $rsid);
 	$stmt->bindParam(':rid', $rid);
+	$stmt->bindParam(':uid', $uid);
 
 	$rsid = $refsetid;
 	$rid = $referenceid;
+	$uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
 
 	if ( $stmt->execute() ) {
 	    $result = $stmt->fetchAll();
 	    $extraction_started = count($result);
-	    $db_include = $result[0]['include'];
+	    $db_exclude = $result[0]['exclusion_reason'];
 	} else {
 	    return "Error";
 	}
@@ -15624,21 +15654,25 @@ function nbt_screening_reconcile_include ($formid, $refsetid, $referenceid) {
 	echo $e->getMessage();
     }
 
-    if ($extraction_started == 0) {
-	// Add a row to the db
+    if ($extraction_started == 0) { // No row in db yet
+
 	try {
 
 	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-	    $stmt = $dbh->prepare("INSERT INTO `m_extractions_" . $formid . "` (`refsetid`, `referenceid`, `include`, `status`, `timestamp_finished`) VALUES (:rsid, :rid, 1, 2, NOW())");
+	    $stmt = $dbh->prepare("INSERT INTO `extractions_" . $formid . "` (`refsetid`, `referenceid`, `userid`, `include`, `exclusion_reason`, `status`, `timestamp_finished`) VALUES (:rsid, :rid, :uid, 0, :er, 2, NOW())");
 
 	    $stmt->bindParam(':rsid', $rsid);
 	    $stmt->bindParam(':rid', $rid);
+	    $stmt->bindParam(':uid', $uid);
+	    $stmt->bindParam(':er', $er);
 
 	    $rsid = $refsetid;
 	    $rid = $referenceid;
+	    $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
+	    $er = $reason;
 
 	    if ( $stmt->execute() ) {
-		return 1;
+		return $reason;
 	    } else {
 		return "Error";
 	    }
@@ -15649,227 +15683,67 @@ function nbt_screening_reconcile_include ($formid, $refsetid, $referenceid) {
 	    echo $e->getMessage();
 	}
 
-    } else {
-	// Update the row in the db
-	switch ($db_include) {
-	    case NULL:
-		// Update include to 1
-		// Clear exclusion reason
-		try {
+    } else { // There's an extraction row already
 
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		    $stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `include` = 1, `exclusion_reason` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
+	if ($db_exclude == $reason) { // If they're un-clicking an already selected exclusion reason
 
-		    $stmt->bindParam(':rsid', $rsid);
-		    $stmt->bindParam(':rid', $rid);
+	    try {
 
-		    $rsid = $refsetid;
-		    $rid = $referenceid;
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `include` = 0, `exclusion_reason` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
 
-		    if ( $stmt->execute() ) {
-			$result = $stmt->fetchAll();
-			$extraction_started = count($result);
-			$db_include = $result[0]['include'];
-			return "1";
-		    } else {
-			return "Error";
-		    }
+		$stmt->bindParam(':rsid', $rsid);
+		$stmt->bindParam(':rid', $rid);
+		$stmt->bindParam(':uid', $uid);
 
+		$rsid = $refsetid;
+		$rid = $referenceid;
+		$uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
+
+		if ( $stmt->execute() ) {
+		    return "Clear all";
+		} else {
+		    return "Error";
 		}
 
-		catch (PDOException $e) {
-		    echo $e->getMessage();
+	    }
+
+	    catch (PDOException $e) {
+		echo $e->getMessage();
+	    }
+
+	} else { // They're clicking on one that hasn't already been selected
+
+	    try {
+
+		$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+		$stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `include` = 0, `exclusion_reason` = :er WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
+
+		$stmt->bindParam(':rsid', $rsid);
+		$stmt->bindParam(':rid', $rid);
+		$stmt->bindParam(':uid', $uid);
+		$stmt->bindParam(':er', $er);
+
+		$rsid = $refsetid;
+		$rid = $referenceid;
+		$uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
+		$er = $reason;
+
+		if ( $stmt->execute() ) {
+		    return $reason;
+		} else {
+		    return "Error";
 		}
 
-		break;
+	    }
 
-	    case 0:
-		// Remove row from final table
-		// Clear exclusion reason
-		try {
-
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		    $stmt = $dbh->prepare("DELETE FROM `m_extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
-
-		    $stmt->bindParam(':rsid', $rsid);
-		    $stmt->bindParam(':rid', $rid);
-
-		    $rsid = $refsetid;
-		    $rid = $referenceid;
-
-		    if ( $stmt->execute() ) {
-			return "null";
-		    } else {
-			return "Error";
-		    }
-
-		}
-
-		catch (PDOException $e) {
-		    echo $e->getMessage();
-		}
-
-		break;
-
-	    case 1:
-		// Update include to 0
-		try {
-
-		    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-		    $stmt = $dbh->prepare("UPDATE `m_extractions_" . $formid . "` SET `include` = 0 WHERE `refsetid` = :rsid AND `referenceid` = :rid LIMIT 1;");
-
-		    $stmt->bindParam(':rsid', $rsid);
-		    $stmt->bindParam(':rid', $rid);
-
-		    $rsid = $refsetid;
-		    $rid = $referenceid;
-
-		    if ( $stmt->execute() ) {
-			$result = $stmt->fetchAll();
-			$extraction_started = count($result);
-			$db_include = $result[0]['include'];
-			return 0;
-		    } else {
-			return "Error";
-		    }
-
-		}
-
-		catch (PDOException $e) {
-		    echo $e->getMessage();
-		}
-
-		break;
+	    catch (PDOException $e) {
+		echo $e->getMessage();
+	    }
 
 	}
 
     }
-    
-}
-
-function nbt_screening_exclude ($formid, $refsetid, $referenceid, $reason) {
-  // Get the current db row
-  // If there is no row, insert one
-
-  $formid = intval($formid);
-
-  try {
-
-    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-    $stmt = $dbh->prepare("SELECT * FROM `extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
-
-    $stmt->bindParam(':rsid', $rsid);
-    $stmt->bindParam(':rid', $rid);
-    $stmt->bindParam(':uid', $uid);
-
-    $rsid = $refsetid;
-    $rid = $referenceid;
-    $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
-
-    if ( $stmt->execute() ) {
-      $result = $stmt->fetchAll();
-      $extraction_started = count($result);
-      $db_exclude = $result[0]['exclusion_reason'];
-    } else {
-      return "Error";
-    }
-
-  }
-
-  catch (PDOException $e) {
-     echo $e->getMessage();
-  }
-
-  if ($extraction_started == 0) { // No row in db yet
-
-    try {
-
-      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-      $stmt = $dbh->prepare("INSERT INTO `extractions_" . $formid . "` (`refsetid`, `referenceid`, `userid`, `include`, `exclusion_reason`, `status`, `timestamp_finished`) VALUES (:rsid, :rid, :uid, 0, :er, 2, NOW())");
-
-      $stmt->bindParam(':rsid', $rsid);
-      $stmt->bindParam(':rid', $rid);
-      $stmt->bindParam(':uid', $uid);
-      $stmt->bindParam(':er', $er);
-
-      $rsid = $refsetid;
-      $rid = $referenceid;
-      $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
-      $er = $reason;
-
-      if ( $stmt->execute() ) {
-        return $reason;
-      } else {
-        return "Error";
-      }
-
-    }
-
-    catch (PDOException $e) {
-       echo $e->getMessage();
-    }
-
-  } else { // There's an extraction row already
-
-    if ($db_exclude == $reason) { // If they're un-clicking an already selected exclusion reason
-
-      try {
-
-        $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-        $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `include` = 0, `exclusion_reason` = NULL WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
-
-        $stmt->bindParam(':rsid', $rsid);
-        $stmt->bindParam(':rid', $rid);
-        $stmt->bindParam(':uid', $uid);
-
-        $rsid = $refsetid;
-        $rid = $referenceid;
-        $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
-
-        if ( $stmt->execute() ) {
-          return "Clear all";
-        } else {
-          return "Error";
-        }
-
-      }
-
-      catch (PDOException $e) {
-         echo $e->getMessage();
-      }
-
-    } else { // They're clicking on one that hasn't already been selected
-
-      try {
-
-        $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-        $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `include` = 0, `exclusion_reason` = :er WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
-
-        $stmt->bindParam(':rsid', $rsid);
-        $stmt->bindParam(':rid', $rid);
-        $stmt->bindParam(':uid', $uid);
-        $stmt->bindParam(':er', $er);
-
-        $rsid = $refsetid;
-        $rid = $referenceid;
-        $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
-        $er = $reason;
-
-        if ( $stmt->execute() ) {
-          return $reason;
-        } else {
-          return "Error";
-        }
-
-      }
-
-      catch (PDOException $e) {
-         echo $e->getMessage();
-      }
-
-    }
-
-  }
 
 }
 
@@ -15993,92 +15867,92 @@ function nbt_screening_reconcile_exclude ($formid, $refsetid, $referenceid, $rea
 
 function nbt_screening_notes ($formid, $refsetid, $referenceid, $notes) {
 
-  $formid = intval($formid);
+    $formid = intval($formid);
 
-  try {
+    try {
 
-    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-    $stmt = $dbh->prepare("SELECT * FROM `extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
+	$dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	$stmt = $dbh->prepare("SELECT * FROM `extractions_" . $formid . "` WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
 
-    $stmt->bindParam(':rsid', $rsid);
-    $stmt->bindParam(':rid', $rid);
-    $stmt->bindParam(':uid', $uid);
+	$stmt->bindParam(':rsid', $rsid);
+	$stmt->bindParam(':rid', $rid);
+	$stmt->bindParam(':uid', $uid);
 
-    $rsid = $refsetid;
-    $rid = $referenceid;
-    $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
+	$rsid = $refsetid;
+	$rid = $referenceid;
+	$uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
 
-    if ( $stmt->execute() ) {
-      $result = $stmt->fetchAll();
-      $extraction_started = count($result);
+	if ( $stmt->execute() ) {
+	    $result = $stmt->fetchAll();
+	    $extraction_started = count($result);
+	} else {
+	    return "Error";
+	}
+
+    }
+
+    catch (PDOException $e) {
+	echo $e->getMessage();
+    }
+
+    if ($extraction_started == 0) {
+	// Insert a new row
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("INSERT INTO `extractions_" . $formid . "` (`refsetid`, `referenceid`, `userid`, `status`, `timestamp_finished`, `extractor_notes`) VALUES (:rsid, :rid, :uid, 2, NOW(), :notes)");
+
+	    $stmt->bindParam(':rsid', $rsid);
+	    $stmt->bindParam(':rid', $rid);
+	    $stmt->bindParam(':uid', $uid);
+	    $stmt->bindParam(':notes', $notes);
+
+	    $rsid = $refsetid;
+	    $rid = $referenceid;
+	    $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
+	    $no = $notes;
+
+	    if ( $stmt->execute() ) {
+		return "Saved";
+	    } else {
+		return "Error";
+	    }
+
+	}
+
+	catch (PDOException $e) {
+	    echo $e->getMessage();
+	}
+
     } else {
-      return "Error";
+	// Update the existing row
+	try {
+
+	    $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
+	    $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `extractor_notes` = :notes WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
+
+	    $stmt->bindParam(':rsid', $rsid);
+	    $stmt->bindParam(':rid', $rid);
+	    $stmt->bindParam(':uid', $uid);
+	    $stmt->bindParam(':notes', $no);
+
+	    $rsid = $refsetid;
+	    $rid = $referenceid;
+	    $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
+	    $no = $notes;
+
+	    if ( $stmt->execute() ) {
+		return "Saved";
+	    } else {
+		return "Error";
+	    }
+
+	}
+
+	catch (PDOException $e) {
+	    echo $e->getMessage();
+	}
     }
-
-  }
-
-  catch (PDOException $e) {
-     echo $e->getMessage();
-  }
-
-  if ($extraction_started == 0) {
-    // Insert a new row
-    try {
-
-      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-      $stmt = $dbh->prepare("INSERT INTO `extractions_" . $formid . "` (`refsetid`, `referenceid`, `userid`, `status`, `timestamp_finished`, `extractor_notes`) VALUES (:rsid, :rid, :uid, 2, NOW(), :notes)");
-
-      $stmt->bindParam(':rsid', $rsid);
-      $stmt->bindParam(':rid', $rid);
-      $stmt->bindParam(':uid', $uid);
-      $stmt->bindParam(':notes', $notes);
-
-      $rsid = $refsetid;
-      $rid = $referenceid;
-      $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
-      $no = $notes;
-
-      if ( $stmt->execute() ) {
-        return "Saved";
-      } else {
-        return "Error";
-      }
-
-    }
-
-    catch (PDOException $e) {
-       echo $e->getMessage();
-    }
-
-  } else {
-    // Update the existing row
-    try {
-
-      $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_HOST, DB_USER, DB_PASS, array(Pdo\Mysql::ATTR_INIT_COMMAND => "SET NAMES utf8"));
-      $stmt = $dbh->prepare("UPDATE `extractions_" . $formid . "` SET `extractor_notes` = :notes WHERE `refsetid` = :rsid AND `referenceid` = :rid AND `userid` = :uid LIMIT 1;");
-
-      $stmt->bindParam(':rsid', $rsid);
-      $stmt->bindParam(':rid', $rid);
-      $stmt->bindParam(':uid', $uid);
-      $stmt->bindParam(':notes', $no);
-
-      $rsid = $refsetid;
-      $rid = $referenceid;
-      $uid = $_SESSION[INSTALL_HASH . '_nbt_userid'];
-      $no = $notes;
-
-      if ( $stmt->execute() ) {
-        return "Saved";
-      } else {
-        return "Error";
-      }
-
-    }
-
-    catch (PDOException $e) {
-       echo $e->getMessage();
-    }
-  }
 
 }
 
