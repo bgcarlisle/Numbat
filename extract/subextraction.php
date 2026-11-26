@@ -33,7 +33,7 @@ foreach ( $subextractions as $subextraction ) {
 
 		nbt_echo_subextraction_text_field ($nbtSubExtractionElementID, $subextraction, $subelement['dbname'], 500, FALSE, $subelement['regex']); // Needs fixin'
 
-		if ( $previous != NULL & $subelement['copypreviousprompt'] == 1 ) {
+		if ( !empty($previous) && isset($subelement['copypreviousprompt']) && $subelement['copypreviousprompt'] == 1 ) {
 
 		    echo '<button style="display: block; margin-top: 4px;" onclick="$(\'#nbtSub' . $subextraction['id'] . 'TextField' . $subelement['dbname'] . '\').val( $(\'#nbtSub' . $previous['id'] . 'TextField' . $subelement['dbname'] . '\').val() ); nbtSaveSubExtractionTextField(' . $nbtSubExtractionElementID . ', ' . $subextraction['id'] . ', \'' . $subelement['dbname'] . '\', \'nbtSub' . $subextraction['id'] . 'TextField' . $subelement['dbname'] . '\', \'nbtSub' . $subextraction['id'] . 'TextField' . $subelement['dbname'] . 'Feedback\');">Copy from previous</button>';
 
@@ -164,124 +164,120 @@ foreach ( $subextractions as $subextraction ) {
 
 	    case "date_selector":
 
-    ?><div id="nbtSubelementContainer<?php echo $subelement['id']; ?>-<?php echo $subextraction['id']; ?>"<?php if ($subelement['startup_visible'] != 1) { echo ' class="nbtHidden"'; } ?>><?php
+		echo '<div id="nbtSubelementContainer' . $subelement['id'] . '-' . $subextraction['id'] . '"' . ($subelement['startup_visible'] != 1 ? ' class="nbtHidden"' : '') . '>';
+		nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
 
-																							   nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
+		nbt_echo_sub_date_selector ($nbtSubExtractionElementID, $subextraction, $subelement['dbname']);
 
-																							   nbt_echo_sub_date_selector ($nbtSubExtractionElementID, $subextraction, $subelement['dbname']);
+		if ( !empty($previous) && isset($subelement['copypreviousprompt']) && $subelement['copypreviousprompt'] == 1 ) {
 
-																							   if ( $previous != NULL & $subelement['copypreviousprompt'] == 1) {
+		    echo "<button style=\"display: block; margin-top: 4px;\" onclick=\"$('#nbtSub{$subextraction['id']}DateField{$subelement['dbname']}').val('{$previous[$subelement['dbname']]}');nbtSaveSubExtractionDateField({$nbtSubExtractionElementID}, {$subextraction['id']}, '{$subelement['dbname']}', 'nbtSub{$subextraction['id']}DateField{$subelement['dbname']}', 'nbtSub{$subextraction['id']}TextField{$subelement['dbname']}Feedback');\">Copy from previous</button>";
+		}
 
-																							   ?><button style="display: block; margin-top: 4px;" onclick="$('#nbtSub<?php echo $subextraction['id']; ?>DateField<?php echo $subelement['dbname']; ?>').val('<?php echo $previous[$subelement['dbname']]; ?>');nbtSaveSubExtractionDateField(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>DateField<?php echo $subelement['dbname']; ?>', 'nbtSub<?php echo $subextraction['id']; ?>TextField<?php echo $subelement['dbname']; ?>Feedback');">Copy from previous</button><?php
+		echo "</div>";
+		break;
 
-																																																																																															  }
+	    case "single_select":
 
-																																																																																															  ?></div><?php
+		echo '<div id="nbtSubelementContainer' . $subelement['id'] . '-' . $subextraction['id'] . '"' . ($subelement['startup_visible'] != 1 ? ' class="nbtHidden"' : '') . '>';
 
-																																																																																																  break;
+		nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
 
-																																																																																																  case "single_select":
+		$answers = array ();
+		$toggles = array ();
 
-																																																																																																  ?><div id="nbtSubelementContainer<?php echo $subelement['id']; ?>-<?php echo $subextraction['id']; ?>"<?php if ($subelement['startup_visible'] != 1) { echo ' class="nbtHidden"'; } ?>><?php
+		$selectoptions = nbt_get_all_select_options_for_sub_element ( $subelement['id'] );
 
-																																																																																																																							 nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
+		foreach ( $selectoptions as $option ) {
 
-																																																																																																																							 $answers = array ();
-																																																																																																																							 $toggles = array ();
-
-																																																																																																																							 $selectoptions = nbt_get_all_select_options_for_sub_element ( $subelement['id'] );
-
-																																																																																																																							 foreach ( $selectoptions as $option ) {
-
-																																																																																																																							     $answers[$option['dbname']] = $option['displayname'];
-																																																																																																																							     $toggles[$option['dbname']] = $option['toggle'];
-
-																																																																																																																							 }
-
-																																																																																																																							 nbt_echo_subextraction_single_select ( $nbtSubExtractionElementID, $subelement['id'], $subextraction, $subelement['dbname'], $answers, $toggles );
-
-																																																																																																																							 if ( $previous != NULL & $subelement['copypreviousprompt'] == 1 ) {
-
-																																																																																																																							 ?><button style="margin-left: 20px;" onclick="nbtCopySEPreviousSingleSelect(<?php echo $subelement['id']; ?>, <?php echo $previous['id']; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $subelement['dbname']; ?>');">Copy from previous</button><?php
-
-																																																																																																																																																									   }
-
-																																																																																																																																																									   ?></div><?php
-
-																																																																																																																																																										   break;
-
-																																																																																																																																																										   case "multi_select":
-
-																																																																																																																																																										   ?><div id="nbtSubelementContainer<?php echo $subelement['id']; ?>-<?php echo $subextraction['id']; ?>"<?php if ($subelement['startup_visible'] != 1) { echo ' class="nbtHidden"'; } ?>><?php
-
-																																																																																																																																																																																	  nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
-
-																																																																																																																																																																																	  $answers = array ();
-																																																																																																																																																																																	  $toggles = array ();
-
-																																																																																																																																																																																	  $selectoptions = nbt_get_all_select_options_for_sub_element ( $subelement['id'] );
-
-																																																																																																																																																																																	  foreach ( $selectoptions as $option ) {
-
-																																																																																																																																																																																	      $answers[$option['dbname']] = $option['displayname'];
-																																																																																																																																																																																	      $toggles[$option['dbname']] = $option['toggle'];
-
-																																																																																																																																																																																	  }
-
-																																																																																																																																																																																	  nbt_echo_subextraction_multi_select ($nbtSubExtractionElementID, $subelement['id'], $subextraction, $subelement['dbname'], $answers, $toggles );
-
-																																																																																																																																																																																	  if ( $previous != NULL & $subelement['copypreviousprompt'] == 1 ) {
-
-																																																																																																																																																																																	  ?><button style="margin-left: 20px;" onclick="nbtCopySEPreviousMultiSelect(<?php echo $nbtSubExtractionElementID; ?>, <?php echo $previous['id']; ?>, <?php echo $subextraction['id']; ?>, '<?php echo $subelement['dbname']; ?>');">Copy from previous</button><?php
-
-																																																																																																																																																																																																																	  }
-
-																																																																																																																																																																																																																	  ?></div><?php
-
-																																																																																																																																																																																																																		  break;
-																																																																																																																																																																																																																		  
-																																																																																																																																																																																																																		  case "table_data":
-
-																																																																																																																																																																																																																		  ?><div id="nbtSubelementContainer<?php echo $subelement['id']; ?>-<?php echo $subextraction['id']; ?>"<?php if ($subelement['startup_visible'] != 1) { echo ' class="nbtHidden"'; } ?>><?php
-
-																																																																																																																																																																																																																																									 nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
-
-																																																																																																																																																																																																																																									 ?><div id="nbtSubTableExtraction<?php echo $subelement['id']; ?>-<?php echo $subextraction['id']; ?>"><?php
-
-																																																																																																																																																																																																																																																					       $nbtExtractTableDataID = $subelement['id'];
-
-																																																																																																																																																																																																																																																					       if ( ! isset ( $nbtExtractRefSet ) ) {
-
-																																																																																																																																																																																																																																																						   $nbtExtractRefSet = $_GET['refset'];
-
-																																																																																																																																																																																																																																																					       }
-
-																																																																																																																																																																																																																																																					       if ( ! isset ( $nbtExtractRefID ) ) {
-
-																																																																																																																																																																																																																																																						   $nbtExtractRefID = $_GET['ref'];
-
-																																																																																																																																																																																																																																																					       }
-
-
-																																																																																																																																																																																																																																																					       $tableformat = "table_data";
-																																																																																																																																																																																																																																																					       $nbtSubTableSubextractionID = $subextraction['id'];
-
-																																																																																																																																																																																																																																																					       include ('./subtabledata.php');
-
-																																																																																																																																																																																																																																																					       ?></div>
-
-					</div><?php
-
-				break;
-
-			}
+		    $answers[$option['dbname']] = $option['displayname'];
+		    $toggles[$option['dbname']] = $option['toggle'];
 
 		}
 
-	?></div><?php
+		nbt_echo_subextraction_single_select ( $nbtSubExtractionElementID, $subelement['id'], $subextraction, $subelement['dbname'], $answers, $toggles );
 
-	$previous = $subextraction;
+		if ( $previous != NULL & $subelement['copypreviousprompt'] == 1 ) {
 
-}
+		    echo "<button style=\"margin-left: 20px;\" onclick=\"nbtCopySEPreviousSingleSelect({$subelement['id']}, {$previous['id']}, {$subextraction['id']}, '{$subelement['dbname']}');\">Copy from previous</button>";
+		}
 
-?><button onclick="nbtNewSubExtraction ( <?php echo $nbtSubExtractionElementID; ?>, <?php echo $nbtExtractRefSet; ?>, <?php echo $nbtExtractRefID; ?>, <?php echo $_SESSION[INSTALL_HASH . '_nbt_userid']; ?> );">Add new sub-extraction</button>
+		echo "</div>";
+
+		break;
+
+	    case "multi_select":
+
+		echo '<div id="nbtSubelementContainer' . $subelement['id'] . '-' . $subextraction['id'] . '"' . ($subelement['startup_visible'] != 1 ? ' class="nbtHidden"' : '') . '>';
+		
+		nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
+
+		$answers = array ();
+		$toggles = array ();
+
+		$selectoptions = nbt_get_all_select_options_for_sub_element ( $subelement['id'] );
+
+		foreach ( $selectoptions as $option ) {
+
+		    $answers[$option['dbname']] = $option['displayname'];
+		    $toggles[$option['dbname']] = $option['toggle'];
+
+		}
+
+		nbt_echo_subextraction_multi_select ($nbtSubExtractionElementID, $subelement['id'], $subextraction, $subelement['dbname'], $answers, $toggles );
+
+		if ( $previous != NULL & $subelement['copypreviousprompt'] == 1 ) {
+
+		    echo "<button style=\"margin-left: 20px;\" onclick=\"nbtCopySEPreviousMultiSelect({$nbtSubExtractionElementID}, {$previous['id']}, {$subextraction['id']}, '{$subelement['dbname']}');\">Copy from previous</button>";
+
+		}
+
+		echo "</div>";
+		break;
+		
+	    case "table_data":
+
+		echo '<div id="nbtSubelementContainer' . $subelement['id'] . '-' . $subextraction['id'] . '"' . ($subelement['startup_visible'] != 1 ? ' class="nbtHidden"' : '') . '>';
+
+		nbt_echo_display_name_and_codebook ( $subelement['displayname'], $subelement['codebook'] );
+
+		echo "<div id=\"nbtSubTableExtraction{$subelement['id']}-{$subextraction['id']}\">";
+
+		$nbtExtractTableDataID = $subelement['id'];
+
+		if ( ! isset ( $nbtExtractRefSet ) ) {
+
+		    $nbtExtractRefSet = $_GET['refset'];
+
+		}
+
+		if ( ! isset ( $nbtExtractRefID ) ) {
+
+		    $nbtExtractRefID = $_GET['ref'];
+
+		}
+
+
+		$tableformat = "table_data";
+		$nbtSubTableSubextractionID = $subextraction['id'];
+
+		include ('./subtabledata.php');
+
+		echo "</div></div>";
+
+		
+
+		break;
+
+	}
+
+    }
+
+    echo "</div>";
+
+    $previous = $subextraction;
+
+    }
+
+    ?>
+    <button onclick="nbtNewSubExtraction ( <?php echo $nbtSubExtractionElementID; ?>, <?php echo $nbtExtractRefSet; ?>, <?php echo $nbtExtractRefID; ?>, <?php echo $_SESSION[INSTALL_HASH . '_nbt_userid']; ?> );">Add new sub-extraction</button>
