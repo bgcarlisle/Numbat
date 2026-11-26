@@ -128,7 +128,7 @@ foreach ( $subextractions as $subextraction ) {
 
 		echo '<input id="SelectedSubTagsText' . $subelement['id'] . '-' . $subextraction['id'] . '" type="hidden" value="' . $subextraction[$subelement['dbname']] . '">';
 
-		$selectedtags = explode(";", $subextraction[$subelement['dbname']]);
+		$selectedtags = explode(";", $subextraction[$subelement['dbname']] ?? '');
 		$selectedtags = array_map('trim', $selectedtags);
 
 		echo '<table class="nbtTabledData" id="SelectedSubTagsTable' . $subelement['id'] . '-' . $subextraction['id'] . '">';
@@ -189,15 +189,13 @@ foreach ( $subextractions as $subextraction ) {
 		$selectoptions = nbt_get_all_select_options_for_sub_element ( $subelement['id'] );
 
 		foreach ( $selectoptions as $option ) {
-
 		    $answers[$option['dbname']] = $option['displayname'];
 		    $toggles[$option['dbname']] = $option['toggle'];
-
 		}
 
 		nbt_echo_subextraction_single_select ( $nbtSubExtractionElementID, $subelement['id'], $subextraction, $subelement['dbname'], $answers, $toggles );
 
-		if ( $previous != NULL & $subelement['copypreviousprompt'] == 1 ) {
+		if ( !empty($previous) && isset($subelement['copypreviousprompt']) && $subelement['copypreviousprompt'] == 1 ) {
 
 		    echo "<button style=\"margin-left: 20px;\" onclick=\"nbtCopySEPreviousSingleSelect({$subelement['id']}, {$previous['id']}, {$subextraction['id']}, '{$subelement['dbname']}');\">Copy from previous</button>";
 		}
@@ -226,7 +224,7 @@ foreach ( $subextractions as $subextraction ) {
 
 		nbt_echo_subextraction_multi_select ($nbtSubExtractionElementID, $subelement['id'], $subextraction, $subelement['dbname'], $answers, $toggles );
 
-		if ( $previous != NULL & $subelement['copypreviousprompt'] == 1 ) {
+		if ( !empty($previous) && isset($subelement['copypreviousprompt']) && $subelement['copypreviousprompt'] == 1 ) {
 
 		    echo "<button style=\"margin-left: 20px;\" onclick=\"nbtCopySEPreviousMultiSelect({$nbtSubExtractionElementID}, {$previous['id']}, {$subextraction['id']}, '{$subelement['dbname']}');\">Copy from previous</button>";
 
