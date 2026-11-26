@@ -57,7 +57,11 @@ if ($events) { foreach ($events as $event) { ?>
 
 	<?php
 
-	$options = nbt_get_all_select_options_for_element ($selected_trigger_element);
+	if (isset($selected_trigger_element)) {
+	    $options = nbt_get_all_select_options_for_element ($selected_trigger_element);
+	} else {
+	    $options = [];
+	}
 
 	switch ($event['type']) {
 	    case "is":
