@@ -8016,7 +8016,11 @@ function nbt_add_table_data_column ( $elementid, $tableformat = "table_data", $s
 	$stmt->bindParam(':displayname', $dn);
 
 	$eid = $elementid;
-	$sort = $highestsortorder + 1;
+	if (isset($highestsortorder)) {
+	    $sort = $highestsortorder + 1;
+	} else {
+	    $sort = 1;
+	}
 	$col = $columnname;
 	$dn = $displayname;
 
@@ -8848,6 +8852,8 @@ function nbt_add_date_selector ( $formid, $elementid, $displayname = NULL, $colu
 
     if ($element == NULL) {
 	$element_sortorder = 1;
+    } else {
+	$element_sortorder = $element['sortorder'];
     }
 
     // get all the elements after this one and increase their sortorder value by 1
@@ -10221,7 +10227,11 @@ function nbt_add_sub_open_text_field ( $elementid, $displayname = NULL, $dbname 
 	$stmt->bindParam(':dh', $dh);
 
 	$eid = $elementid;
-	$sort = $highestsortorder + 1;
+	if (isset($highestsortorder)) {
+	    $sort = $highestsortorder + 1;
+	} else {
+	    $sort = 1;
+	}
 	$type = "open_text";
 	$dbn = $dbname;
 	$dn = $displayname;
@@ -10461,7 +10471,12 @@ function nbt_add_sub_text_area_field ( $elementid, $displayname = NULL, $dbname 
 
 	    $dbh = null;
 
-	    $highestsortorder = $result[0]['sortorder'];
+	    if (count($result) > 0) {
+		$highestsortorder = $result[0]['sortorder'];
+	    } else {
+		$highestsortorder = 1;
+	    }
+
 
 	} else {
 
@@ -11558,7 +11573,11 @@ function nbt_add_sub_single_select_option ( $subelementid, $displayname = NULL, 
 	$stmt->bindParam(':toggle', $tg);
 
 	$seid = $subelementid;
-	$sort = $highestsortorder + 1;
+	if (isset($highestsortorder)) {
+	    $sort = $highestsortorder + 1;
+	} else {
+	    $sort = 1;
+	}
 	$dn = $displayname;
 	$dbn = $dbname;
 	$tg = $toggle;
@@ -12152,7 +12171,11 @@ function nbt_add_sub_multi_select_option ( $subelementid, $displayname = NULL, $
 	$stmt->bindParam(':toggle', $tg);
 
 	$seid = $subelementid;
-	$sort = $highestsortorder + 1;
+	if (isset($highestsortorder)) {
+	    $sort = $highestsortorder + 1;
+	} else {
+	    $sort = 1;
+	}
 	$col = $dbname;
 	$dn = $displayname;
 	$tg = $toggle;
@@ -12491,7 +12514,11 @@ function nbt_add_new_sub_extraction ($elementid, $refsetid, $refid, $userid) {
 	$rsid = $refsetid;
 	$rid = $refid;
 	$uid = $userid;
-	$nso = $highestsortorder + 1;
+	if (isset($highestsortorder)) {
+	    $nso = $highestsortorder + 1;
+	} else {
+	    $nso = 1;
+	}
 
 	if ($stmt->execute()) {
 
