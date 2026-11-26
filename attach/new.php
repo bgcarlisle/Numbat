@@ -7,58 +7,68 @@
 
       if ( isset ( $_GET['refset'] ) && isset ( $_GET['ref'] ) ) {
 
-            ?><p class="nbtFinePrint">Choose a file to attach to the following reference</p><?php
+	  echo '<p class="nbtFinePrint">Choose a file to attach to the following reference</p>';
+	  
+	  $ref = nbt_get_reference_for_refsetid_and_refid ( $_GET['refset'], $_GET['ref'] );
 
-            $ref = nbt_get_reference_for_refsetid_and_refid ( $_GET['refset'], $_GET['ref'] );
+	  $refset = nbt_get_refset_for_id ( $_GET['refset'] );
 
-            $refset = nbt_get_refset_for_id ( $_GET['refset'] );
-											    
-            ?><h4><?php echo $ref[$refset['title']]; ?>.</h4>
-            <p class="nbtFinePrint"><?php echo $ref[$refset['authors']]; ?>.
-            <?php
+	  $refmeta = $refset['refmeta'];
 
-            if ( $ref[$refset['journal']] != "" && $ref[$refset['year']] != "" ) {
+	  preg_match_all(
+	      '/\$([A-Za-z0-9_-]+)/',
+	      $refset['refmeta'],
+	      $cols_to_replace
+	  );
 
-                  ?><span class="nbtJournalName"><?php echo $ref[$refset['journal']]; ?></span>: <?php echo $ref[$refset['year']]; ?>.<?php
+	  
+	  foreach ( $cols_to_replace[0] as $col_to_replace ) {
 
-            }
+	      $refmeta = preg_replace (
+		  "/\\" . $col_to_replace . "\b/",
+		  $ref[substr($col_to_replace, 1)],
+		  $refmeta
+	      );
+	  }
 
-            ?></p>
-            <form action="<?php echo SITE_URL; ?>attach/upload.php" method="post" enctype="multipart/form-data">
-                  <input type="file" name="file" id="file">
-                  <input type="hidden" name="refsetid" value="<?php echo $_GET['refset']; ?>">
-                  <input type="hidden" name="refid" value="<?php echo $_GET['ref']; ?>">
-                  <button>Attach file</button>
-            </form><?php
+	  echo "<div>" . $refmeta . "</div>";	  
 
-      } else {
+      ?></p>
+      <form action="<?php echo SITE_URL; ?>attach/upload.php" method="post" enctype="multipart/form-data">
+          <input type="file" name="file" id="file">
+          <input type="hidden" name="refsetid" value="<?php echo $_GET['refset']; ?>">
+          <input type="hidden" name="refid" value="<?php echo $_GET['ref']; ?>">
+          <button>Attach file</button>
+      </form><?php
 
-            ?><p>Select a reference set and search for a reference</p>
+	     } else {
 
-            <select id="nbtAssignRefSet" onchange="$('#nbtSelectedRefSet').html('referenceset_' + $(this).val())">
-                  <option value="NULL">Choose a reference set</option>
-                  <?php
+             ?><p>Select a reference set and search for a reference</p>
 
-                  $refsets = nbt_get_all_ref_sets ();
+          <select id="nbtAssignRefSet" onchange="$('#nbtSelectedRefSet').html('referenceset_' + $(this).val())">
+              <option value="NULL">Choose a reference set</option>
+              <?php
 
-                  foreach ( $refsets as $refset ) {
+              $refsets = nbt_get_all_ref_sets ();
 
-                        ?><option value="<?php echo $refset['id']; ?>"><?php echo $refset['name']; ?></option><?php
+              foreach ( $refsets as $refset ) {
 
-                  }
+              ?><option value="<?php echo $refset['id']; ?>"><?php echo $refset['name']; ?></option><?php
 
-                  ?>
-            </select>
+												    }
 
-            <div id="nbtAssignReferenceSearch">
-                  <p>Search for a reference to assign</p>
-                  <input type="text" class="nbtCitationFinder" id="nbtReferenceFinder" onkeyup="nbtFindReferenceToAttach();">
-                  <div class="nbtCitationSuggestions" id="nbtFoundReferencesForAssigment">&nbsp;</div>
+												    ?>
+          </select>
 
-            </div><?php
+          <div id="nbtAssignReferenceSearch">
+              <p>Search for a reference to assign</p>
+              <input type="text" class="nbtCitationFinder" id="nbtReferenceFinder" onkeyup="nbtFindReferenceToAttach();">
+              <div class="nbtCitationSuggestions" id="nbtFoundReferencesForAssigment">&nbsp;</div>
 
-      }
+          </div><?php
 
-      ?>
+		}
+
+		?>
 
 </div>
