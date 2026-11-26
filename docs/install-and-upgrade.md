@@ -25,7 +25,8 @@ date.timezone = America/Toronto
 ```
 
 (Of course, you can update the time zone to whatever is appropriate
-for your location.)
+for your location. Just make sure to also change it in the file
+below.)
 
 Create a file named `docker-compose.yml` in the same directory with
 the following contents:
