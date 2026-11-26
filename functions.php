@@ -15956,4 +15956,23 @@ function nbt_screening_notes ($formid, $refsetid, $referenceid, $notes) {
 
 }
 
+function nbt_save_outgoing_email_settings ($enabled, $host, $user, $password) {
+
+    if ($password != "") {
+	// Password is not blank, update password field
+	nbt_set_setting("outgoing_email_activated", $enabled);
+	nbt_set_setting("smtp_host", $host);
+	nbt_set_setting("smtp_user", $user);
+	nbt_set_setting("smtp_password", $password);
+	
+    } else {
+	// Password is blank, do NOT update password field
+	nbt_set_setting("outgoing_email_activated", $enabled);
+	nbt_set_setting("smtp_host", $host);
+	nbt_set_setting("smtp_user", $user);
+    }
+    
+}
+
+
 ?>

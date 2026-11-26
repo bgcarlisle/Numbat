@@ -6040,17 +6040,18 @@
 	 },
 	 dataType: 'html'
      }).done( function (response) {
+	 $('#nbtEmailUpdateFeedback').html(response).slideDown();
 	 if (response != 'Saved') {
-	     $('#nbtUploadRow' + fileid + ' td').addClass('nbtBadField');
+	     $('#nbtEmailUpdateFeedback').addClass('nbtFeedbackBad');
 	     setTimeout( function () {
-		 $('#nbtUploadRow' + fileid).slideUp();
-	     }, 1000);
+		 $('#nbtEmailUpdateFeedback').slideUp();
+	     }, 3000);
 	     
 	 } else {
-	     $('#nbtUploadRow' + fileid + ' td').addClass('nbtGoodField');
+	     $('#nbtEmailUpdateFeedback').addClass('nbtFeedbackGood');
 	     setTimeout( function () {
-		 $('#nbtUploadRow' + fileid).slideUp();
-	     }, 1000);
+		 $('#nbtEmailUpdateFeedback').slideUp();
+	     }, 3000);
 	 }
      });
  }

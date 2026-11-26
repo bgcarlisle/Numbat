@@ -32,7 +32,7 @@
 
     <div>
 	<button onclick="nbtSaveOutgoingEmailSettings();">Save changes</button>
-	<div id="nbtEmailUpdateFeedback">&nbsp;</div>
+	<span id="nbtEmailUpdateFeedback" style="margin-top: 5px; padding: 2px 5px;">&nbsp;</span>
     </div>
 
 </div>
