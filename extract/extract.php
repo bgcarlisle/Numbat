@@ -102,10 +102,10 @@ $formelements = nbt_get_elements_for_formid ( $_GET['form'] );
     preg_match_all(
 	'/\$([A-Za-z0-9_-]+)/',
 	$refset['refmetamore'],
-	$cols_to_replace
+	$mcols_to_replace
     );
 
-    foreach ( $cols_to_replace[0] as $col_to_replace ) {
+    foreach ( $mcols_to_replace[0] as $col_to_replace ) {
 
 	$refmetamore = preg_replace (
 	    "/\\" . $col_to_replace . "\b/",
